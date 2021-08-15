@@ -1,19 +1,18 @@
 import React, {CSSProperties} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
     AppBar,
-    Box,
-    Button, Card, CardContent,
-    Checkbox, ClickAwayListener,
-    Container, createStyles,
+    Card,
+    Container,
     createTheme,
-    CssBaseline, Grow, List, makeStyles, Menu, MenuItem, MenuList,
-    MuiThemeProvider, Paper, Popper, Theme,
+    CssBaseline,
+    Grow,
+    MuiThemeProvider,
+    Popper,
     Typography
 } from "@material-ui/core";
-import {orange, red} from "@material-ui/core/colors";
-import {CommonProps} from "@material-ui/core/OverridableComponent";
+import {red} from "@material-ui/core/colors";
+import {CButton, Center, Column, Text} from "./ImprovedApi";
 
 const stackTrace: StackTrace = {
     text: "java.lang.StackOverflowError: charTyped event handler",
@@ -27,7 +26,7 @@ const stackTrace: StackTrace = {
             children: []
         },
         {
-            text: "java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)",
+            text: "java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)",
             children: []
         },
         {
@@ -52,97 +51,102 @@ function App() {
         <MuiThemeProvider theme={outerTheme}>
             <CssBaseline/>
 
-            <Card style={{marginTop: 70, marginLeft: 10, width: "max-content"}}>
-                <Typography variant="h6" style={{padding: 10}}>
-                    7/19/21 8:03 PM
-                </Typography>
-            </Card>
-            <Box style={{display: "flex", justifyContent: "center"}}>
-                <Card style={{width: "max-content", margin: 10, paddingLeft: 20, paddingRight: 20}}>
-                    <Typography variant="h6" style={{padding: 10}} align={"center"}>
-                        charTyped event handler
-                    </Typography>
-                </Card>
-            </Box>
+            <AppBar color="inherit">
+                <Typography align={"center"} variant="h3">Minecraft Crash Report</Typography>
+            </AppBar>
 
-            <Container>
-                <Typography align={"center"}>
-                    Why did you do that?
-                </Typography>
+            <div style={{marginTop: 70}}>
+                {/*<Grid container direction="row" style = {{marginTop: 70}}>*/}
+                {/*    /!*<Text text = "  asdf"/>*!/*/}
+                {/*    /!*<Text text = "   addddloha"/>*!/*/}
+                {/*    <Grid item>*/}
+                <Column style={{position: "absolute"}}>
+                    {/*todo make the time be above the other stuff on mobile*/}
+                    <Card style={{marginLeft: 10, width: "max-content"}}>
+                        <Text text="7/19/21 8:03 PM" variant="h6" style={{padding: 10}}/>
+                    </Card>
+                    {/*TODO: make the sections use a sidebar on mobile*/}
 
-                <Dropdown trace={stackTrace}/>
+                    {/*</Grid>*/}
+                    {/*<Grid item  xs style = {{position:"absolute"}}>*/}
+                </Column>
 
-                <AppBar color="inherit">
-                    <Typography align={"center"} variant="h3">Minecraft Crash Report</Typography>
-                </AppBar>
+                <Center>
 
-            </Container>
-            <Section/>
+                    <Container>
+                        <Center>
+                            <Card style={{width: "max-content", margin: 10, paddingLeft: 20, paddingRight: 20,}}>
+                                <Text text="charTyped event handler" variant="h6" style={{padding: 10}}
+                                      align={"center"}/>
+                            </Card>
+                        </Center>
+
+                        <Text text="Why did you do that?" align={"center"}/>
+                        <StackTraceUi trace={stackTrace}/>
+                        <Center>
+                            <Section/>
+                        </Center>
+
+                    </Container>
+
+                </Center>
+            </div>
+
+
         </MuiThemeProvider>
 
 
     )
 }
 
-interface StyleProp {
-    style?: CSSProperties
-}
 
-interface HasChildren {
-    children: React.ReactNode
-}
-
-function Dropdown({trace, depth = 0}: { trace: StackTrace, depth?: number }) {
+function StackTraceUi({trace, depth = 0}: { trace: StackTrace, depth?: number }) {
     const [open, setOpen] = React.useState(false);
     return (
-        <div>
-            <div style={{
+        <Column>
+            <CButton onClick={() => setOpen(!open)} style={{
                 marginLeft: depth * 30,
                 marginTop: 5,
-                marginBottom: 5
-            }} onClick={() => setOpen(!open)}>
-                <NiceButton>
-                    {trace.text}
-                </NiceButton>
-            </div>
+                marginBottom: 5,
+                marginRight: 5
+            }}>
+                <Text text={trace.text} style={{whiteSpace: "pre-wrap", wordBreak: "break-word", minWidth: 500}}/>
+            </CButton>
 
-            {open && trace.children.map((child) =>
-                <Dropdown depth={depth + 1} trace={child}/>
+            {/*When opened, display the child dropdowns*/}
+            {open && trace.children.map((child, index) =>
+                <StackTraceUi key={index} depth={depth + 1} trace={child}/>
             )}
-        </div>
+        </Column>
     )
 }
 
-function NiceButton(props: { ref?: React.Ref<unknown> } & StyleProp & HasChildren) {
-    return <Paper ref={props.ref} style={props.style}>
-        <MenuItem style={{whiteSpace: "pre-wrap", wordBreak: "break-word"}}>
-            {props.children}
-        </MenuItem>
-    </Paper>
-}
-
-
 function Section() {
     const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef<HTMLButtonElement>(null);
     return (
-        <div style = {{padding: 10}}>
-            {!open && <Box onClick={() => setOpen(!open)} style={{width: "max-content"}}>
-                <Paper ref={anchorRef}>
-                    <MenuItem style={{whiteSpace: "pre-wrap", wordBreak: "break-word"}}>
-                        Affected World
-                    </MenuItem>
-                </Paper>
-            </Box>}
+        <div style={{padding: 10}}>
+            <CButton onClick={() => setOpen(!open)}
+                     style={{width: 'max-content', padding: 20}}
+                     popper={
+                         <Popper open={open} placement={"right-start"} transition>
+                             {({TransitionProps}) => (
+                                 <Grow {...TransitionProps}>
+                                     <CButton onClick={() => setOpen(!open)}
+                                              style={{minWidth: 400, maxWidth: 500, margin: 10}}>
+                                         <Text style={{whiteSpace: "pre-wrap", wordBreak: "break-word"}}
+                                               text="All players: 2 total; [class_746['Kana_Pei'/14604, l='ClientLevel', x=834.50,
+                                     y=59.00,
+                                     z=-348.50],
+                                     class_745['Alex'/2164, l='ClientLevel', x=864.45, y=63.00, z=-301.68]]"/>
+                                     </CButton>
+                                 </Grow>
+                             )}
 
+                         </Popper>
+                     }>
 
-            {open && <Paper style = {{width: "80%",}} onClick={() => setOpen(!open)}>
-                <MenuItem style={{whiteSpace: "pre-wrap", wordBreak: "break-word"}} >
-                    ll players: 2 total; [class_746['Kana_Pei'/14604, l='ClientLevel', x=834.50, y=59.00, z=-348.50],
-                    class_745['Alex'/2164, l='ClientLevel', x=864.45, y=63.00, z=-301.68]]
-                </MenuItem>
-            </Paper>}
-
+                <Text text="Affected World"/>
+            </CButton>
 
         </div>
     )
