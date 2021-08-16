@@ -1,10 +1,11 @@
 import React, {CSSProperties} from 'react';
-import './App.css';
+import '../App.css';
 import {AppBar, Card, Container, createTheme, CssBaseline, MuiThemeProvider, Typography} from "@material-ui/core";
 import {red} from "@material-ui/core/colors";
 import {CButton, Center, Column, Text} from "./ImprovedApi";
-import {CrashReport, CrashReportSection, StackTrace, StackTraceElement} from "./CrashReport";
+import {CrashReport, CrashReportSection, StackTrace, StackTraceElement} from "../model/CrashReport";
 import {CrashReportUi} from "./CrashReportUi";
+import {parseCrashReport, testLog} from "../model/CrashReportParser";
 
 
 const testStackTrace: StackTrace = {
@@ -29,7 +30,7 @@ const testElementStackTrace: StackTraceElement[] = [
 const testCrashReport: CrashReport = {
     stacktrace: testStackTrace,
     time: "7/19/21 8:03 PM",
-    message: "charTyped event handler",
+    description: "charTyped event handler",
     wittyComment: "Why did you do that?",
     sections: [
         {

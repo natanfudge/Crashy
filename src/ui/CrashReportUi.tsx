@@ -5,7 +5,7 @@ import {
     StackTrace,
     StackTraceElement,
     SystemDetails
-} from "./CrashReport";
+} from "../model/CrashReport";
 import {CButton, Center, Column, Text} from "./ImprovedApi";
 import {Card, Container, Grid, Paper} from "@material-ui/core";
 import React, {CSSProperties} from "react";
@@ -44,7 +44,7 @@ export function CrashReportUi(report: CrashReport) {
         <Container>
             <Center>
                 <Card style={{width: "max-content", margin: 10, paddingLeft: 20, paddingRight: 20,}}>
-                    <Text text={report.message} variant="h6" style={{padding: 10}}
+                    <Text text={report.description} variant="h6" style={{padding: 10}}
                           align={"center"}/>
                 </Card>
             </Center>

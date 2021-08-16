@@ -2,7 +2,7 @@ export function Foo() {
 }
 
 export interface CrashReport {
-    message: String
+    description: String
     wittyComment: String
     time: String,
     sections: CrashReportSection[]
