@@ -5,7 +5,6 @@ import {red} from "@material-ui/core/colors";
 import {CButton, Center, Column, Text} from "./ImprovedApi";
 import {CrashReport, CrashReportSection, StackTrace, StackTraceElement} from "../model/CrashReport";
 import {CrashReportUi} from "./CrashReportUi";
-import {parseCrashReport, testLog} from "../model/CrashReportParser";
 
 
 const testStackTrace: StackTrace = {

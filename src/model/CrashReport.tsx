@@ -2,34 +2,35 @@ export function Foo() {
 }
 
 export interface CrashReport {
-    description: String
-    wittyComment: String
-    time: String,
+    description: string
+    wittyComment: string
+    time: string,
     sections: CrashReportSection[]
     stacktrace: StackTrace
     systemDetails: SystemDetails
 }
 
+export type StringMap = { [key: string]: string }
 export interface SystemDetails {
     //TODO: pull out the modlist, make it handle multiline a bit better
-    sections: { [key: string]: string };
+    sections: StringMap;
 }
 
-export type StackTraceElement = String
+export type StackTraceElement = string
 
 export interface StackTrace {
-    message: String
+    message: string
     children: StackTrace[]
     trace: StackTraceElement[]
 }
 
 export interface CrashReportSection {
-    title: String
+    title: string
     elements: CrashReportSectionElement[]
     stacktrace?: StackTraceElement[]
 }
 
 export interface CrashReportSectionElement {
-    name: String
-    detail: String
+    name: string
+    detail: string
 }

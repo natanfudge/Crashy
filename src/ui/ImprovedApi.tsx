@@ -46,7 +46,7 @@ export function TextTheme(props: TextThemeProps) {
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {
-    text: String
+    text: string
 }
 
 export function Text(props: TextProps) {

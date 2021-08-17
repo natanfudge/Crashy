@@ -33,6 +33,7 @@ import React, {CSSProperties} from "react";
 //TODO: add 'Copy Link/Share (mobile)/Modify Visibility/Delete' buttons to the banner
 //TODO: cleanup the way stacktrace lines are displayed...
 //TODO: add a 'raw' button
+//TODO: add a mappings dropdown
 export function CrashReportUi(report: CrashReport) {
     return <div>
         {/*todo make the time be above the other stuff on mobile*/}
