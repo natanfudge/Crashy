@@ -62,6 +62,8 @@ import {crashWithOptifine, testLog} from "../model/TestCrashes";
 //     }
 // }
 
+const parsed = parseCrashReport(crashWithOptifine);
+
 //TODO: note that developers generally prefer their crashlog to be in simple texts, so try to get rid of the elevation stuff.
 function App() {
     const outerTheme = createTheme({
@@ -83,7 +85,7 @@ function App() {
             </AppBar>
 
             <div style={{marginTop: 70}}>
-                {CrashReportUi(parseCrashReport(crashWithOptifine))}
+                {CrashReportUi(parsed)}
                 {/*<Grid container direction="row" style = {{marginTop: 70}}>*/}
                 {/*    /!*<Text text = "  asdf"/>*!/*/}
                 {/*    /!*<Text text = "   addddloha"/>*!/*/}

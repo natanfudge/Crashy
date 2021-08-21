@@ -6,9 +6,19 @@ import {
     StackTraceElement,
     SystemDetails
 } from "../model/CrashReport";
-import {CButton, Center, Column, Text} from "./ImprovedApi";
-import {Card, Container, Grid, Paper} from "@material-ui/core";
+import {CButton, Center, Column, Row, Text} from "./ImprovedApi";
+import {Card, Container, Grid, Paper, SvgIcon} from "@material-ui/core";
 import React, {CSSProperties} from "react";
+import {AccessTime} from "@material-ui/icons";
+import JavaLogo from "../media/java-icon.svg"
+import MinecraftLogo from "../media/minecraft_cube.svg"
+import FabricLogo from "../media/fabric_logo.svg"
+import ForgeLogo from "../media/forge_logo.svg"
+import WindowsLogo from "../media/windows_logo.svg"
+import LinuxLogo from "../media/linux_logo.svg"
+import MacosLogo from "../media/macos_logo.svg"
+import QuestionMarkIcon from "../media/questionmark_icon_white.svg"
+// import AccessTimeIcon from "@material-ui/icons/AccessTo"
 
 //TODO: make sure we display information in the most efficient way possible:
 // - 0-clicks:
@@ -37,12 +47,81 @@ import React, {CSSProperties} from "react";
 
 //TODO: add option to create an issue in the mod author's github page instantly, and link to that issue in the crash log page
 //TODO: index crashes in google and allow some way to communicate to solve crashes together, then maybe show an official 'solve with:' solution
+
+export function VitalInformation(props: {image: string, text: string}) {
+    return <Card style={{width: "max-content", marginTop: 10}}>
+        <Row style={{paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10}}>
+            <img src = {props.image} style = {{height: 30, marginRight: 10}}/>
+            <Text text={props.text} variant="h6"/>
+        </Row>
+    </Card>
+}
+
+enum Loader {
+    Fabric,Forge
+}
+
+interface LoaderInfo {
+    loader: Loader
+    version: string
+}
+
+enum OperatingSystem {
+    Windows,
+    Macos,
+    Linux,
+    Unknown
+}
+
+interface OperatingSystemInfo {
+    operatingSystem: OperatingSystem
+    name: string
+}
+
+function getOperatingSystemIcon(operatingSystem: OperatingSystem) : string {
+    switch (operatingSystem){
+        case OperatingSystem.Windows:
+            return WindowsLogo;
+        case OperatingSystem.Linux:
+            return LinuxLogo;
+        case OperatingSystem.Macos:
+            return MacosLogo;
+        case OperatingSystem.Unknown:
+            return QuestionMarkIcon
+    }
+}
+
 export function CrashReportUi(report: CrashReport) {
+    const loader : LoaderInfo = {
+        loader: Loader.Fabric,
+        version: "0.7.4"
+    }
+
+    const loaderName = loader.loader === Loader.Fabric ? "Fabric Loader " : "Forge ";
+
+    const operatingSystem: OperatingSystemInfo = {
+        operatingSystem: OperatingSystem.Windows,
+        name: "Windows 11"
+    }
+
     return <div>
         {/*todo make the time be above the other stuff on mobile*/}
-        <Card style={{marginLeft: 10, width: "max-content", position: "absolute"}}>
-            <Text text={report.time} variant="h6" style={{padding: 10}}/>
-        </Card>
+
+        <Column style={{marginLeft: 10, position: "absolute"}}>
+            <VitalInformation image={MinecraftLogo} text={"1.17.1"}/>
+            <VitalInformation image={loader.loader === Loader.Forge? ForgeLogo : FabricLogo} text={loaderName + loader.version}/>
+            <VitalInformation image={JavaLogo} text={"16"}/>
+            <VitalInformation image={getOperatingSystemIcon(operatingSystem.operatingSystem)} text={operatingSystem.name}/>
+
+            <Card style={{width: "max-content", marginTop: 10}}>
+                <Row style={{padding: 10}}>
+                    <AccessTime style={{margin: "auto 10 auto 0"}}/>
+                    <Text text={report.time} variant="h6"/>
+                </Row>
+            </Card>
+        </Column>
+
+
         {/*TODO: make the sections use a sidebar on mobile*/}
 
         <Container>
@@ -82,7 +161,7 @@ function StackTraceUi({stackTrace, depth = 0}: { stackTrace: StackTrace, depth?:
 
                 {open && stackTrace.trace.map((element, index) => {
                     return <CButton onClick={() => 0} style={{
-                        marginLeft:  30,
+                        marginLeft: 30,
                         marginTop: 5,
                         marginBottom: 5,
                         marginRight: 5

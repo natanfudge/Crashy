@@ -15,8 +15,16 @@ export interface ParentComponentProps extends ComponentProps {
 }
 
 export function Center(props: ParentComponentProps) {
-    return <div style={{display: "flex", justifyContent: "center"}}>
-        {props.children}
+    const {children, style, ...otherProps} = props;
+    return <div style={{display: "flex", justifyContent: "center", ...style}} {...otherProps}>
+        {children}
+    </div>
+}
+
+export function Row(props: ParentComponentProps) {
+    const {children, style, ...otherProps} = props;
+    return <div className="row" style={{display: "flex", ...style}} {...otherProps}>
+        {children}
     </div>
 }
 
@@ -65,7 +73,7 @@ export function CButton(props: Require<ParentComponentProps, 'onClick'>) {
     const {children, style: {padding, ...paperStyles} = {}, ...paperProps} = props
 
     const button = <Paper style={paperStyles} {...paperProps}>
-        <MenuItem style = {{padding: padding}}>
+        <MenuItem style={{padding: padding}}>
             {children}
         </MenuItem>
     </Paper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="320.97473"
+   height="350.83356"
+   id="svg1968"
+   sodipodi:version="0.32"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   version="1.0"
+   sodipodi:docname="MacOS-Logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1970" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="-102.14286"
+     inkscape:cy="156.42857"
+     inkscape:document-units="px"
+     inkscape:current-layer="Ebene_x0020_1"
+     width="165.11mm"
+     height="156.84mm"
+     units="mm"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata1973">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(3355.9682,917.0743)">
+    <g
+       id="Ebene_x0020_1"
+       transform="matrix(2.429911,0,0,2.429911,-3488.653,-919.7613)"
+       inkscape:label="Ebene 1"
+       inkscape:groupmode="layer">
+      <metadata
+         id="CorelCorpID_0Corel-Layer" />
+      <g
+         id="_228026664">
+        <g
+           id="g4158">
+          <path
+             d="m 54.6048,19.5378 h 75.2626 c -22.7522,41.6104 -20.1066,60.822 -19.9675,60.6708 h 24.5755 c -0.55632,2.25264 -7.3806,27.6596 -0.768,46.8472 H 54.6048 Z"
+             id="_226915152"
+             style="fill:#8294c9;fill-rule:nonzero" />
+          <path
+             d="m 186.698,127.056 h -54.5269 c -6.63672,-17.0771 0.19044,-44.5945 0.768,-46.8472 h -24.5755 c -0.16032,0.1512 -0.88596,-23.23 19.9676,-60.6708 h 58.3668 z"
+             id="_137919136"
+             style="fill:#c9d3ec;fill-rule:nonzero" />
+          <polygon
+             points="150.603,35.6656 150.603,51.0252 143.691,51.0252 143.691,35.6656 "
+             id="_226601952"
+             style="fill:#000000;fill-rule:nonzero" />
+          <polygon
+             points="93.7721,35.6656 93.7721,51.0252 86.8602,51.0252 86.8602,35.6656 "
+             id="_22274024"
+             style="fill:#32438f;fill-rule:nonzero" />
+          <path
+             d="m 126.795,100.944 c -21.4824,0.9192 -36.3614,-2.68788 -49.151,-9.21576 l -3.072,5.37588 c 12.7141,7.42584 33.0023,10.9241 52.223,9.98376 z"
+             id="_228133648"
+             style="fill:#32438f;fill-rule:nonzero" />
+          <path
+             d="m 136.011,145.487 c -10.3254,-20.672 -11.7979,-44.4343 -7.67976,-61.4388 h -23.0396 c 0.55332,-36.1165 18.9638,-66.1193 33.0234,-82.9424 l 4.60788,3.83988 c -11.6256,14.4103 -28.5968,39.6601 -31.4874,72.9587 h 24.5755 c -1.932,6.94512 -3.477,14.4949 -3.83988,22.2715 14.111,-1.36356 21.4402,-3.14448 31.4874,-8.44776 l 3.83988,5.37588 c -9.07668,5.004 -21.7273,8.27844 -35.3273,9.21576 0.63792,12.1487 3.35916,24.0223 9.21588,36.0954 l -5.376,3.07188 z"
+             id="_140071192"
+             style="fill:#000000;fill-rule:nonzero" />
+        </g>
+        <g
+           id="g4166" />
+      </g>
+    </g>
+  </g>
+</svg>
