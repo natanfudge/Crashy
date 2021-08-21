@@ -34,6 +34,9 @@ import React, {CSSProperties} from "react";
 //TODO: cleanup the way stacktrace lines are displayed...
 //TODO: add a 'raw' button
 //TODO: add a mappings dropdown
+
+//TODO: add option to create an issue in the mod author's github page instantly, and link to that issue in the crash log page
+//TODO: index crashes in google and allow some way to communicate to solve crashes together, then maybe show an official 'solve with:' solution
 export function CrashReportUi(report: CrashReport) {
     return <div>
         {/*todo make the time be above the other stuff on mobile*/}
@@ -72,14 +75,14 @@ function StackTraceUi({stackTrace, depth = 0}: { stackTrace: StackTrace, depth?:
                 marginBottom: 5,
                 marginRight: 5
             }}>
-                <CButton onClick={() => setOpen(!open)}>
+                <CButton onClick={() => setOpen(!open)} style={{border: "2px solid green"}}>
                     <Text text={stackTrace.message}
                           style={textStyle}/>
                 </CButton>
 
                 {open && stackTrace.trace.map((element, index) => {
                     return <CButton onClick={() => 0} style={{
-                        marginLeft: (depth + 1) * 30,
+                        marginLeft:  30,
                         marginTop: 5,
                         marginBottom: 5,
                         marginRight: 5
@@ -91,9 +94,10 @@ function StackTraceUi({stackTrace, depth = 0}: { stackTrace: StackTrace, depth?:
 
 
             {/*When opened, display the child dropdowns*/}
-            {open && stackTrace.children.map((child, index) =>
-                <StackTraceUi key={index} depth={depth + 1} stackTrace={child}/>
-            )}
+            {
+                open && stackTrace.causedBy &&
+                <StackTraceUi depth={depth + 1} stackTrace={stackTrace.causedBy}/>
+            }
         </Column>
     )
 }
@@ -117,8 +121,8 @@ function Section(props: { section: CrashReportSection }) {
             </Center>
 
             {open && <Column>
-                {props.section.stacktrace !== undefined && SectionStackTrace(props.section.stacktrace)}
-                { SectionDetails(props.section.elements)}
+                {props.section.stacktrace && SectionStackTrace(props.section.stacktrace)}
+                {props.section.details && SectionDetails(props.section.details)}
             </Column>
             }
 
@@ -130,7 +134,7 @@ function SectionStackTrace(stackTrace: StackTraceElement[]) {
     const asTrace: StackTrace = {
         trace: stackTrace,
         message: "Stack Trace",
-        children: []
+        causedBy: undefined
     }
     return <StackTraceUi stackTrace={asTrace}/>
 }
@@ -145,12 +149,12 @@ function SystemDetailsUi(systemDetails: SystemDetails) {
     const asSectionDetails = Object.keys(systemDetails.sections).map((key) => {
         return {name: key, detail: systemDetails.sections[key]}
     });
-    const asSection : CrashReportSection = {
-        title : "System Details",
+    const asSection: CrashReportSection = {
+        title: "System Details",
         stacktrace: undefined,
-        elements: asSectionDetails
+        details: asSectionDetails
     }
-    return <Section section ={asSection}/>
+    return <Section section={asSection}/>
 }
 
 function SectionElement(props: { element: CrashReportSectionElement }) {

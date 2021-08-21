@@ -20,14 +20,15 @@ export type StackTraceElement = string
 
 export interface StackTrace {
     message: string
-    children: StackTrace[]
+    causedBy?: StackTrace
     trace: StackTraceElement[]
 }
 
 export interface CrashReportSection {
     title: string
-    elements: CrashReportSectionElement[]
+    details?: CrashReportSectionElement[]
     stacktrace?: StackTraceElement[]
+    thread?: string
 }
 
 export interface CrashReportSectionElement {

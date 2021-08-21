@@ -3,7 +3,8 @@ import {
     CrashReportSection,
     CrashReportSectionElement,
     StackTrace,
-    StackTraceElement, StringMap,
+    StackTraceElement,
+    StringMap,
     SystemDetails
 } from "./CrashReport";
 
@@ -19,91 +20,37 @@ class StringBuilder {
     }
 }
 
+//TODO: since we support mappings in the site, we should shut down support for deobfuscating mappings in NEC itself.
 export function parseCrashReport(rawReport: string): CrashReport {
     let cursor = 0;
 
-    function current(): string {
-        return rawReport[cursor];
-    }
+    skipString("---- Minecraft Crash Report ----\n")
 
-    function currentAndNext(): string {
-        return current() + next();
-    }
+    const wittyComment = parseWittyComment();
 
-    function readCurrent(): string {
-        const value = current();
-        skip();
-        return value;
-    }
+    // Skip empty line
+    skip();
 
-    function skip() {
-        cursor++;
-    }
+    const time = parseTime();
+    const description = parseDescription();
 
-    function skipNumber(number: number) {
-        cursor += number;
-    }
+    // Skip empty line
+    skip();
 
-    //TODO: see if this can be optimized by calculating length AOT
-    function skipString(string: string) {
-        skipNumber(string.length);
-    }
+    const stacktrace = parseStackTrace();
 
-    function nextIsString(string: string): boolean {
-        for (let i = 0; i < string.length; i++) {
-            if (rawReport[cursor + i] !== string[i]) return false;
-        }
-        return true;
-    }
+    skipString("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n---------------------------------------------------------------------------------------\n\n")
 
-    function isEof(): boolean {
-        return cursor >= rawReport.length;
-    }
+    const sections = parseSections();
+    const systemDetails = pullSystemDetailsFrom(sections);
 
-    function next(): string {
-        return rawReport[cursor + 1];
-    }
-
-    function skipChars(chars: string[]) {
-        while (chars.includes(current()) && !isEof()) {
-            skip();
-        }
-    }
-
-    function buildString(builder: (str: StringBuilder) => void): string {
-        let str = new StringBuilder('');
-        builder(str);
-        return str.str;
-    }
-
-    // function parseTitle(): string {
-    //     return buildString(str => {
-    //         while (next() !== '-') {
-    //             str.append(parseCurrent());
-    //         }
-    //     })
-    // }
-
-    function readUntilChar(char: string): string {
-        return buildString(str => {
-            while (current() !== char && !isEof()) {
-                str.append(readCurrent());
-            }
-        })
-    }
-
-    function readUntilNextChar(char: string): string {
-        return buildString(str => {
-            while (next() !== char && !isEof()) {
-                str.append(readCurrent());
-            }
-        })
-    }
-
-    function readLine(): string {
-        const value = readUntilChar('\n');
-        skip();
-        return value;
+    return {
+        systemDetails,
+        sections,
+        description,
+        time,
+        wittyComment,
+        stacktrace
     }
 
     function parseWittyComment(): string {
@@ -124,10 +71,14 @@ export function parseCrashReport(rawReport: string): CrashReport {
     function parseStackTrace(): StackTrace {
         const message = readLine();
         const trace = parseStackTraceElements();
+
+        let causedBy: StackTrace | undefined = undefined;
+        if (nextIsString("Caused by: ")) {
+            skipString("Caused by: ");
+            causedBy = parseStackTrace()
+        }
         return {
-            children: [
-                //TODO: need better examples of this
-            ],
+            causedBy: causedBy,
             message: message,
             trace: trace
         }
@@ -135,7 +86,7 @@ export function parseCrashReport(rawReport: string): CrashReport {
 
     function parseStackTraceElements(): StackTraceElement[] {
         const trace = [];
-        while (current() !== '\n' && !isEof()) {
+        while (current() === '\t' && !isEof()) {
             trace.push(parseStackTraceElement());
         }
         return trace
@@ -143,16 +94,21 @@ export function parseCrashReport(rawReport: string): CrashReport {
 
     function parseStackTraceElement(): StackTraceElement {
         // Skip leading tab
-        skipString("\tat ");
+        skip();
+
+        // Most trace lines start with 'at ', but sometimes the last line says '... X more'. In that case we save the 'X more'.
+        if (nextIsString("at ")) {
+            skipString("at ")
+        } else {
+            skipString("... ")
+        }
         return readLine();
     }
 
+
     function parseSections(): CrashReportSection[] {
         const sections = [];
-        while (!isEof()
-            //TODO: implement stack trace parsing so we can get rid of this check. note that we treat the system details like a normal section here.
-            // && sections.length === 0
-            ) {
+        while (!isEof()) {
             sections.push(parseSection())
         }
         return sections;
@@ -161,28 +117,48 @@ export function parseCrashReport(rawReport: string): CrashReport {
     function parseSection(): CrashReportSection {
         skipChars(['-', ' ']);
         const title = readUntilNextChar('-');
-        skipString(" --\nDetails:\n")
+        skipString(" --\n")
 
-        const elements = [];
-        while (!isEof() && !nextIsString("Stacktrace:\n")) {
-            elements.push(parseSectionElement());
-        }
+        let thread = parseSectionThread();
+        let details = parseSectionDetails();
+        let stacktrace = parseSectionStacktrace();
 
-        skipString("Stacktrace:\n")
-        const stackTrace = parseStackTraceElements()
         // Skip empty line
         skip();
 
-        return {
-            title,
-            elements,
-            stacktrace: stackTrace
-        }
+        return {thread, title, details, stacktrace}
     }
 
-    //	ModLauncher services:
-    // 		/mixin-0.8.2.jar mixin PLUGINSERVICE
-    // 		/eventbus-4.0.0.jar eventbus PLUGINSERVICE
+    function parseSectionThread() {
+        let thread: string | undefined = undefined;
+        if (nextIsString("Thread: ")) {
+            skipString("Thread: ")
+            thread = readLine();
+        }
+        return thread;
+    }
+
+    function parseSectionDetails() {
+        let details: CrashReportSectionElement[] | undefined
+        if (nextIsString("Details:")) {
+            skipString("Details:\n")
+            details = [];
+            while (!isEof() && current() === "\t") {
+                details.push(parseSectionElement());
+            }
+        }
+        return details;
+    }
+
+    function parseSectionStacktrace() {
+        let stacktrace: StackTraceElement[] | undefined
+        if (nextIsString("Stacktrace:")) {
+            skipString("Stacktrace:\n");
+            stacktrace = parseStackTraceElements();
+        }
+        return stacktrace;
+    }
+
     function parseSectionElement(): CrashReportSectionElement {
         // Skip leading tab
         skip();
@@ -198,43 +174,93 @@ export function parseCrashReport(rawReport: string): CrashReport {
         return {detail, name}
     }
 
-    skipString("---- Minecraft Crash Report ----\n")
 
-    const wittyComment = parseWittyComment();
 
-    // Skip empty line
-    skip();
+    function skipChars(chars: string[]) {
+        while (chars.includes(current()) && !isEof()) {
+            skip();
+        }
+    }
 
-    const time = parseTime();
-    const description = parseDescription();
+    function current(): string {
+        return rawReport[cursor];
+    }
 
-    // Skip empty line
-    skip();
+    function readLine(): string {
+        const value = readUntilChar('\n');
+        skip();
+        return value;
+    }
 
-    const stacktrace = parseStackTrace();
+    function skip() {
+        cursor++;
+    }
 
-    skipString("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n---------------------------------------------------------------------------------------\n\n")
+    //TODO: see if this can be optimized by calculating length AOT
+    function skipString(string: string) {
+        skipNumber(string.length);
+    }
 
-    const sections = parseSections();
+    function skipNumber(number: number) {
+        cursor += number;
+    }
 
-    const systemDetails = pullSystemDetailsFrom(sections);
+    function nextIsString(string: string): boolean {
+        for (let i = 0; i < string.length; i++) {
+            if (rawReport[cursor + i] !== string[i]) return false;
+        }
+        return true;
+    }
 
-    return {
-        systemDetails,
-        sections,
-        description,
-        time,
-        wittyComment,
-        stacktrace
+    function readUntilNextChar(char: string): string {
+        return buildString(str => {
+            while (next() !== char && !isEof()) {
+                str.append(readCurrent());
+            }
+        })
+    }
+
+    function buildString(builder: (str: StringBuilder) => void): string {
+        let str = new StringBuilder('');
+        builder(str);
+        return str.str;
+    }
+
+    function next(): string {
+        return rawReport[cursor + 1];
+    }
+
+    function isEof(): boolean {
+        return cursor >= rawReport.length;
+    }
+
+    function readCurrent(): string {
+        const value = current();
+        skip();
+        return value;
+    }
+
+    function currentAndNext(): string {
+        return current() + next();
+    }
+
+    function readUntilChar(char: string): string {
+        return buildString(str => {
+            while (current() !== char && !isEof()) {
+                str.append(readCurrent());
+            }
+        })
     }
 }
 
 function pullSystemDetailsFrom(sections: CrashReportSection[]) {
-    // The system details is parsed as the last section, but the data structure we want treats system details in a special way,
+    // The system details is parsed as a section, but the data structure we want treats system details in a special way,
     // so we pull it out and put it in its own object.
-    const systemDetailsSectionAsNormalSection = sections.pop()!;
+    const systemDetailsSectionAsNormalSection = sections.find((section) => section.title === "System Details")!
+    // Remove system details from the sections list
+    sections.splice(sections.indexOf(systemDetailsSectionAsNormalSection), 1)
     const systemDetailsSections: StringMap = {}
-    for (const element of systemDetailsSectionAsNormalSection.elements) {
+    for (const element of systemDetailsSectionAsNormalSection.details!) {
         systemDetailsSections[element.name] = element.detail
     }
     const systemDetails: SystemDetails = {

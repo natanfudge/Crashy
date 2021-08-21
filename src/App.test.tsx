@@ -2,7 +2,7 @@ import React from 'react';
 import {render, screen} from '@testing-library/react';
 import App from './ui/App';
 import {parseCrashReport} from "./model/CrashReportParser";
-import {CrashReportSection, CrashReportSectionElement} from "./model/CrashReport";
+import {crashWithOptifine, testLog} from "./model/TestCrashes";
 
 test('renders learn react link', () => {
     render(<App/>);
@@ -11,153 +11,14 @@ test('renders learn react link', () => {
 });
 
 
-const testLog = `---- Minecraft Crash Report ----
-// Don't be sad, have a hug! <3
-
-Time: 15.08.21 17:36
-Description: Unexpected error
-
-java.lang.NullPointerException: Unexpected error
-\tat net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344) ~[?:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,xf:OptiFine:default,pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}
-\tat net.minecraft.client.Minecraft.func_71407_l(Minecraft.java:1422) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.Minecraft.func_195542_b(Minecraft.java:953) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:607) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.Minecraft.handler$zzh000$afterCrashHandled(Minecraft.java:2540) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:623) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.main.Main.main(Main.java:184) [?:?] {re:classloading,re:mixin,pl:runtimedistcleaner:A,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_51] {}
-\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_51] {}
-\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_51] {}
-\tat java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_51] {}
-\tat net.minecraftforge.fml.loading.FMLClientLaunchProvider.lambda$launchService$0(FMLClientLaunchProvider.java:51) [forge-1.16.5-36.1.16.jar:36.1] {}
-\tat net.minecraftforge.fml.loading.FMLClientLaunchProvider$$Lambda$451/3671592.call(Unknown Source) [forge-1.16.5-36.1.16.jar:36.1] {}
-\tat cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:37) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:54) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:72) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.Launcher.run(Launcher.java:82) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.0.9.jar:?] {re:classloading}
-
-
-A detailed walkthrough of the error, its code path and all known details is as follows:
----------------------------------------------------------------------------------------
-
--- Affected level --
-Details:
-\tAll players: 1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]
-\tChunk stats: Client Chunk Cache: 361, 225
-\tLevel dimension: minecraft:overworld
-\tLevel spawn location: World: (-245,64,-292), Chunk: (at 11,4,12 in -16,-19; contains blocks -256,0,-304 to -241,255,-289), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)
-\tLevel time: 29891 game time, 126559960 day time
-\tServer brand: Waterfall <- Airplane
-\tServer type: Non-integrated multiplayer server
-Stacktrace:
-\tat net.minecraft.client.world.ClientWorld.func_72914_a(ClientWorld.java:617) ~[?:?] {re:classloading,xf:OptiFine:default}
-\tat net.minecraft.client.Minecraft.func_71396_d(Minecraft.java:2029) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat fudge.notenoughcrashes.mixinhandlers.InGameCatcher.handleClientCrash(InGameCatcher.java:28) ~[?:?] {re:mixin,re:classloading}
-\tat net.minecraft.client.Minecraft.modify$zzh000$onCrash(Minecraft.java:2548) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:628) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.Minecraft.handler$zzh000$afterCrashHandled(Minecraft.java:2540) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.Minecraft.func_99999_d(Minecraft.java:623) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat net.minecraft.client.main.Main.main(Main.java:184) [?:?] {re:classloading,re:mixin,pl:runtimedistcleaner:A,pl:mixin:A,pl:runtimedistcleaner:A}
-\tat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_51] {}
-\tat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:1.8.0_51] {}
-\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:1.8.0_51] {}
-\tat java.lang.reflect.Method.invoke(Method.java:497) ~[?:1.8.0_51] {}
-\tat net.minecraftforge.fml.loading.FMLClientLaunchProvider.lambda$launchService$0(FMLClientLaunchProvider.java:51) [forge-1.16.5-36.1.16.jar:36.1] {}
-\tat net.minecraftforge.fml.loading.FMLClientLaunchProvider$$Lambda$451/3671592.call(Unknown Source) [forge-1.16.5-36.1.16.jar:36.1] {}
-\tat cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:37) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:54) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:72) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.Launcher.run(Launcher.java:82) [modlauncher-8.0.9.jar:?] {re:classloading}
-\tat cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.0.9.jar:?] {re:classloading}
-
--- System Details --
-Details:
-\tMinecraft Version: 1.16.5
-\tMinecraft Version ID: 1.16.5
-\tOperating System: Windows 7 (x86) version 6.1
-\tJava Version: 1.8.0_51, Oracle Corporation
-\tJava VM Version: Java HotSpot(TM) Client VM (mixed mode), Oracle Corporation
-\tMemory: 550771464 bytes (525 MB) / 1073741824 bytes (1024 MB) up to 1073741824 bytes (1024 MB)
-\tCPUs: 2
-\tJVM Flags: 9 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xss1M -Xmx1G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=16M
-\tModLauncher: 8.0.9+86+master.3cf110c
-\tModLauncher launch target: fmlclient
-\tModLauncher naming: srg
-\tModLauncher services: 
-\t\t/mixin-0.8.2.jar mixin PLUGINSERVICE 
-\t\t/eventbus-4.0.0.jar eventbus PLUGINSERVICE 
-\t\t/forge-1.16.5-36.1.16.jar object_holder_definalize PLUGINSERVICE 
-\t\t/forge-1.16.5-36.1.16.jar runtime_enum_extender PLUGINSERVICE 
-\t\t/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE 
-\t\t/forge-1.16.5-36.1.16.jar capability_inject_definalize PLUGINSERVICE 
-\t\t/forge-1.16.5-36.1.16.jar runtimedistcleaner PLUGINSERVICE 
-\t\t/mixin-0.8.2.jar mixin TRANSFORMATIONSERVICE 
-\t\t/optifine_1.16.5_hd_u_g8.jar OptiFine TRANSFORMATIONSERVICE 
-\t\t/forge-1.16.5-36.1.16.jar fml TRANSFORMATIONSERVICE 
-\tFML: 36.1
-\tForge: net.minecraftforge:36.1.16
-\tFML Language Providers: 
-\t\tjavafml@36.1
-\t\tminecraft@1
-\tMod List: 
-\t\tforge-1.16.5-36.1.16-client.jar                   |Minecraft                     |minecraft                     |1.16.5              |DONE      |NOSIGNATURE
-\t\tnotenoughcrashes-3.2.0-forge.jar                  |Not Enough Crashes            |notenoughcrashes              |3.2.0               |DONE      |NOSIGNATURE
-\t\tcameraoverhaul-1_0-1_16_4.jar                     |Camera Overhaul               |cameraoverhaul                |1.0.0               |DONE      |NOSIGNATURE
-\t\tforge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90
-\t\ttoolswap-1.16.2-1.3.2.jar                         |ToolSwap                      |toolswap                      |1.3.2               |DONE      |NOSIGNATURE
-\t\tworldedit-mod-7.2.5-dist.jar                      |WorldEdit                     |worldedit                     |7.2.5+57d5ac9       |DONE      |NOSIGNATURE
-\t\tadvanced-xray-forge-1.16.5-2.7.0.jar              |Advanced XRay                 |xray                          |2.7.0               |DONE      |NOSIGNATURE
-\t\tshulkertooltip-1.9.9-1.jar                        |Shulker Tooltip               |shulkertooltip                |1.9.9               |DONE      |NOSIGNATURE
-\t\tjei-1.16.5-7.7.1.118.jar                          |Just Enough Items             |jei                           |7.7.1.118           |DONE      |NOSIGNATURE
-
-
-\tCrash Report UUID: 1d842d1d-3c83-4466-94e4-e704392c8255
-\tSuspected Mods: Unknown
-\tLaunched Version: 1.16.5-forge-36.1.16
-\tBackend library: LWJGL version 3.2.2 build 10
-\tBackend API: GeForce GT 240M/PCIe/SSE2 GL version 3.3.0, NVIDIA Corporation
-\tGL Caps: Using framebuffer using OpenGL 3.0
-\tUsing VBOs: Yes
-\tIs Modded: Definitely; Client brand changed to 'forge'
-\tType: Client (map_client.txt)
-\tGraphics mode: fancy
-\tResource Packs: vanilla, mod_resources, file/VanillaTweaks_r586244.zip
-\tCurrent Language: ??????? (??????)
-\tCPU: 2x Intel(R) Core(TM)2 Duo CPU T6600 @ 2.20GHz
-\tClient Crashes Since Restart: 2
-\tIntegrated Server Crashes Since Restart: 0
-\tOptiFine Version: OptiFine_1.16.5_HD_U_G8
-\tOptiFine Build: 20210515-161946
-\tRender Distance Chunks: 9
-\tMipmaps: 2
-\tAnisotropic Filtering: 1
-\tAntialiasing: 0
-\tMultitexture: false
-\tShaders: null
-\tOpenGlVersion: 3.3.0
-\tOpenGlRenderer: GeForce GT 240M/PCIe/SSE2
-\tOpenGlVendor: NVIDIA Corporation
-\tCpuCount: 2
-\tLaunched Version: 1.16.5-forge-36.1.16
-\tBackend library: LWJGL version 3.2.2 build 10
-\tBackend API: GeForce GT 240M/PCIe/SSE2 GL version 3.3.0, NVIDIA Corporation
-\tGL Caps: Using framebuffer using OpenGL 3.0
-\tUsing VBOs: Yes
-\tIs Modded: Definitely; Client brand changed to 'forge'
-\tType: Client (map_client.txt)
-\tGraphics mode: fancy
-\tResource Packs: vanilla, mod_resources, file/VanillaTweaks_r586244.zip
-\tCurrent Language: ??????? (??????)
-\tCPU: 2x Intel(R) Core(TM)2 Duo CPU T6600 @ 2.20GHz`
-
-test('Crash Report is parsed correctly', () => {
+test('First Crash Report is parsed correctly', () => {
     const report = parseCrashReport(testLog);
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
     expect(report.time).toEqual("15.08.21 17:36")
     expect(report.description).toEqual("Unexpected error")
-    expect(report.stacktrace.message).toEqual("java.lang.NullPointerException: Unexpected error")
-    expect(report.stacktrace.trace).toEqual([
+    const stacktrace = report.stacktrace
+    expect(stacktrace.message).toEqual("java.lang.NullPointerException: Unexpected error")
+    expect(stacktrace.trace).toEqual([
         "net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344) ~[?:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,xf:OptiFine:default,pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}",
         "net.minecraft.client.Minecraft.func_71407_l(Minecraft.java:1422) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}",
         "net.minecraft.client.Minecraft.func_195542_b(Minecraft.java:953) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}",
@@ -178,8 +39,9 @@ test('Crash Report is parsed correctly', () => {
         "cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.0.9.jar:?] {re:classloading}",
     ])
     expect(report.sections.length).toEqual(1)
-    expect(report.sections[0].title).toEqual("Affected level")
-    expect(report.sections[0].elements).toEqual(
+    const section = report.sections[0]
+    expect(section.title).toEqual("Affected level")
+    expect(section.details).toEqual(
         [
             {
                 name: "All players",
@@ -212,7 +74,7 @@ test('Crash Report is parsed correctly', () => {
 
         ]
     )
-    expect(report.sections[0].stacktrace).toEqual([
+    expect(section.stacktrace).toEqual([
             "net.minecraft.client.world.ClientWorld.func_72914_a(ClientWorld.java:617) ~[?:?] {re:classloading,xf:OptiFine:default}",
             "net.minecraft.client.Minecraft.func_71396_d(Minecraft.java:2029) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}",
             "fudge.notenoughcrashes.mixinhandlers.InGameCatcher.handleClientCrash(InGameCatcher.java:28) ~[?:?] {re:mixin,re:classloading}",
@@ -235,47 +97,151 @@ test('Crash Report is parsed correctly', () => {
         ]
     )
 
+    const systemDetails = report.systemDetails.sections;
 
-    expect(report.systemDetails.sections["Minecraft Version"]).toEqual("1.16.5");
-    expect(report.systemDetails.sections["Minecraft Version ID"]).toEqual("1.16.5");
-    expect(report.systemDetails.sections["Operating System"]).toEqual(
+    expect(systemDetails["Minecraft Version"]).toEqual("1.16.5");
+    expect(systemDetails["Minecraft Version ID"]).toEqual("1.16.5");
+    expect(systemDetails["Operating System"]).toEqual(
         "Windows 7 (x86) version 6.1"
     );
-    expect(report.systemDetails.sections["Memory"]).toEqual(
-         "550771464 bytes (525 MB) / 1073741824 bytes (1024 MB) up to 1073741824 bytes (1024 MB)"
+    expect(systemDetails["Memory"]).toEqual(
+        "550771464 bytes (525 MB) / 1073741824 bytes (1024 MB) up to 1073741824 bytes (1024 MB)"
     );
-    expect(report.systemDetails.sections["JVM Flags"]).toEqual(
-         "9 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xss1M -Xmx1G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=16M"
+    expect(systemDetails["JVM Flags"]).toEqual(
+        "9 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xss1M -Xmx1G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=16M"
     );
-    expect(report.systemDetails.sections["ModLauncher services"]).toEqual(
-         "\n\t/mixin-0.8.2.jar mixin PLUGINSERVICE " +
-                "\n\t/eventbus-4.0.0.jar eventbus PLUGINSERVICE " +
-                "\n\t/forge-1.16.5-36.1.16.jar object_holder_definalize PLUGINSERVICE " +
-                "\n\t/forge-1.16.5-36.1.16.jar runtime_enum_extender PLUGINSERVICE " +
-                "\n\t/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE " +
-                "\n\t/forge-1.16.5-36.1.16.jar capability_inject_definalize PLUGINSERVICE " +
-                "\n\t/forge-1.16.5-36.1.16.jar runtimedistcleaner PLUGINSERVICE " +
-                "\n\t/mixin-0.8.2.jar mixin TRANSFORMATIONSERVICE " +
-                "\n\t/optifine_1.16.5_hd_u_g8.jar OptiFine TRANSFORMATIONSERVICE " +
-                "\n\t/forge-1.16.5-36.1.16.jar fml TRANSFORMATIONSERVICE "
+    expect(systemDetails["ModLauncher services"]).toEqual(
+        "\n\t/mixin-0.8.2.jar mixin PLUGINSERVICE " +
+        "\n\t/eventbus-4.0.0.jar eventbus PLUGINSERVICE " +
+        "\n\t/forge-1.16.5-36.1.16.jar object_holder_definalize PLUGINSERVICE " +
+        "\n\t/forge-1.16.5-36.1.16.jar runtime_enum_extender PLUGINSERVICE " +
+        "\n\t/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE " +
+        "\n\t/forge-1.16.5-36.1.16.jar capability_inject_definalize PLUGINSERVICE " +
+        "\n\t/forge-1.16.5-36.1.16.jar runtimedistcleaner PLUGINSERVICE " +
+        "\n\t/mixin-0.8.2.jar mixin TRANSFORMATIONSERVICE " +
+        "\n\t/optifine_1.16.5_hd_u_g8.jar OptiFine TRANSFORMATIONSERVICE " +
+        "\n\t/forge-1.16.5-36.1.16.jar fml TRANSFORMATIONSERVICE "
     );
-    expect(report.systemDetails.sections["FML"]).toEqual("36.1");
-    expect(report.systemDetails.sections["FML Language Providers"]).toEqual( "\n\tjavafml@36.1\n\tminecraft@1");
-    expect(report.systemDetails.sections["Mod List"]).toEqual( "\n\tforge-1.16.5-36.1.16-client.jar                   |Minecraft                     |minecraft                     |1.16.5              |DONE      |NOSIGNATURE" +
-            "\n\tnotenoughcrashes-3.2.0-forge.jar                  |Not Enough Crashes            |notenoughcrashes              |3.2.0               |DONE      |NOSIGNATURE" +
-            "\n\tcameraoverhaul-1_0-1_16_4.jar                     |Camera Overhaul               |cameraoverhaul                |1.0.0               |DONE      |NOSIGNATURE" +
-            "\n\tforge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90" +
-            "\n\ttoolswap-1.16.2-1.3.2.jar                         |ToolSwap                      |toolswap                      |1.3.2               |DONE      |NOSIGNATURE" +
-            "\n\tworldedit-mod-7.2.5-dist.jar                      |WorldEdit                     |worldedit                     |7.2.5+57d5ac9       |DONE      |NOSIGNATURE" +
-            "\n\tadvanced-xray-forge-1.16.5-2.7.0.jar              |Advanced XRay                 |xray                          |2.7.0               |DONE      |NOSIGNATURE" +
-            "\n\tshulkertooltip-1.9.9-1.jar                        |Shulker Tooltip               |shulkertooltip                |1.9.9               |DONE      |NOSIGNATURE" +
-            "\n\tjei-1.16.5-7.7.1.118.jar                          |Just Enough Items             |jei                           |7.7.1.118           |DONE      |NOSIGNATURE"
+    expect(systemDetails["FML"]).toEqual("36.1");
+    expect(systemDetails["FML Language Providers"]).toEqual("\n\tjavafml@36.1\n\tminecraft@1");
+    expect(systemDetails["Mod List"]).toEqual("\n\tforge-1.16.5-36.1.16-client.jar                   |Minecraft                     |minecraft                     |1.16.5              |DONE      |NOSIGNATURE" +
+        "\n\tnotenoughcrashes-3.2.0-forge.jar                  |Not Enough Crashes            |notenoughcrashes              |3.2.0               |DONE      |NOSIGNATURE" +
+        "\n\tcameraoverhaul-1_0-1_16_4.jar                     |Camera Overhaul               |cameraoverhaul                |1.0.0               |DONE      |NOSIGNATURE" +
+        "\n\tforge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90" +
+        "\n\ttoolswap-1.16.2-1.3.2.jar                         |ToolSwap                      |toolswap                      |1.3.2               |DONE      |NOSIGNATURE" +
+        "\n\tworldedit-mod-7.2.5-dist.jar                      |WorldEdit                     |worldedit                     |7.2.5+57d5ac9       |DONE      |NOSIGNATURE" +
+        "\n\tadvanced-xray-forge-1.16.5-2.7.0.jar              |Advanced XRay                 |xray                          |2.7.0               |DONE      |NOSIGNATURE" +
+        "\n\tshulkertooltip-1.9.9-1.jar                        |Shulker Tooltip               |shulkertooltip                |1.9.9               |DONE      |NOSIGNATURE" +
+        "\n\tjei-1.16.5-7.7.1.118.jar                          |Just Enough Items             |jei                           |7.7.1.118           |DONE      |NOSIGNATURE"
     );
-    expect(report.systemDetails.sections["GL Caps"]).toEqual( "Using framebuffer using OpenGL 3.0")
-    expect(report.systemDetails.sections["Integrated Server Crashes Since Restart"]).toEqual("0")
-    expect(report.systemDetails.sections["OpenGlRenderer"]).toEqual("GeForce GT 240M/PCIe/SSE2")
-    expect(report.systemDetails.sections["CPU"]).toEqual( "2x Intel(R) Core(TM)2 Duo CPU T6600 @ 2.20GHz")
+    expect(systemDetails["GL Caps"]).toEqual("Using framebuffer using OpenGL 3.0")
+    expect(systemDetails["Integrated Server Crashes Since Restart"]).toEqual("0")
+    expect(systemDetails["OpenGlRenderer"]).toEqual("GeForce GT 240M/PCIe/SSE2")
+    expect(systemDetails["CPU"]).toEqual("2x Intel(R) Core(TM)2 Duo CPU T6600 @ 2.20GHz")
 
-    expect(Object.keys(report.systemDetails.sections).length).toEqual(43)
+    expect(Object.keys(systemDetails).length).toEqual(43)
 });
 
+test("Optifine crash report is parsed correctly", () => {
+    const report = parseCrashReport(crashWithOptifine)
+    expect(report.wittyComment).toBe("Hi. I'm Minecraft, and I'm a crashaholic.")
+    expect(report.stacktrace.trace).toEqual([
+            "Not Enough Crashes deobfuscated stack trace.(1.17+build.13)",
+            "org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:363)",
+            "org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClass(MixinTransformer.java:208)",
+            "org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClassBytes(MixinTransformer.java:178)",
+            "org.spongepowered.asm.mixin.transformer.FabricMixinTransformerProxy.transformClassBytes(FabricMixinTransformerProxy.java:23)",
+            "net.fabricmc.loader.launch.knot.KnotClassDelegate.getPostMixinClassByteArray(KnotClassDelegate.java:162)",
+            "net.fabricmc.loader.launch.knot.KnotClassLoader.loadClass(KnotClassLoader.java:154)",
+            "java.lang.ClassLoader.loadClass(ClassLoader.java:519)",
+            "net.minecraft.client.render.GameRenderer.updateWorldIcon(GameRenderer:1339)",
+            "net.minecraft.client.render.GameRenderer.render(GameRenderer:1158)",
+            "net.minecraft.client.MinecraftClient.render(MinecraftClient:1114)",
+            "net.minecraft.client.MinecraftClient.run(MinecraftClient:730)",
+            "net.minecraft.client.main.Main.main(Main:217)",
+            "jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)",
+            "jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)",
+            "jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)",
+            "java.lang.reflect.Method.invoke(Method.java:567)",
+            "net.fabricmc.loader.game.MinecraftGameProvider.launch(MinecraftGameProvider.java:234)",
+            "net.fabricmc.loader.launch.knot.Knot.launch(Knot.java:153)",
+            "net.fabricmc.loader.launch.knot.KnotClient.main(KnotClient.java:28)",
+            "jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)",
+            "jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)",
+            "jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)",
+            "java.lang.reflect.Method.invoke(Method.java:567)",
+            "org.multimc.onesix.OneSixLauncher.launchWithMainClass(OneSixLauncher.java:196)",
+            "org.multimc.onesix.OneSixLauncher.launch(OneSixLauncher.java:231)",
+            "org.multimc.EntryPoint.listen(EntryPoint.java:143)",
+            "org.multimc.EntryPoint.main(EntryPoint.java:34)",
+        ]
+    )
+    const childStackTrace = report.stacktrace.causedBy!;
+    expect(childStackTrace.message).toEqual(
+        "org.spongepowered.asm.mixin.throwables.MixinApplyError: Mixin [screenshotclipboard.mixins.json:ScreenshotMixin] from phase [DEFAULT] in config [screenshotclipboard.mixins.json] FAILED during APPLY"
+    )
+    expect(childStackTrace.trace).toEqual([
+        "org.spongepowered.asm.mixin.transformer.MixinProcessor.handleMixinError(MixinProcessor.java:642)",
+        "org.spongepowered.asm.mixin.transformer.MixinProcessor.handleMixinApplyError(MixinProcessor.java:594)",
+        "org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:356)",
+        "26 more",
+    ])
+    const childChildStackTrace = childStackTrace.causedBy!;
+    expect(childChildStackTrace.message).toEqual(
+        "org.spongepowered.asm.mixin.injection.throwables.InvalidInjectionException: Invalid descriptor on screenshotclipboard.mixins.json:ScreenshotMixin->@Inject::screenshotCaptured(Lnet/minecraft/class_1011;Ljava/io/File;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V! Expected (Lnet/minecraft/class_1011;Ljava/io/File;Ljava/lang/Object;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V but found (Lnet/minecraft/class_1011;Ljava/io/File;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V [INJECT Applicator Phase -> screenshotclipboard.mixins.json:ScreenshotMixin -> Apply Injections ->  -> Inject -> screenshotclipboard.mixins.json:ScreenshotMixin->@Inject::screenshotCaptured(Lnet/minecraft/class_1011;Ljava/io/File;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V]"
+    )
+    expect(childChildStackTrace.trace).toEqual([
+        "Not Enough Crashes deobfuscated stack trace.(1.17+build.13)",
+        "org.spongepowered.asm.mixin.injection.callback.CallbackInjector.inject(CallbackInjector.java:517)",
+        "org.spongepowered.asm.mixin.injection.callback.CallbackInjector.inject(CallbackInjector.java:447)",
+        "org.spongepowered.asm.mixin.injection.code.Injector.inject(Injector.java:264)",
+        "org.spongepowered.asm.mixin.injection.struct.InjectionInfo.inject(InjectionInfo.java:385)",
+        "org.spongepowered.asm.mixin.transformer.MixinTargetContext.applyInjections(MixinTargetContext.java:1284)",
+        "org.spongepowered.asm.mixin.transformer.MixinApplicatorStandard.applyInjections(MixinApplicatorStandard.java:1042)",
+        "org.spongepowered.asm.mixin.transformer.MixinApplicatorStandard.applyMixin(MixinApplicatorStandard.java:395)",
+        "org.spongepowered.asm.mixin.transformer.MixinApplicatorStandard.apply(MixinApplicatorStandard.java:320)",
+        "org.spongepowered.asm.mixin.transformer.TargetClassContext.applyMixins(TargetClassContext.java:345)",
+        "org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:569)",
+        "org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:351)",
+        "26 more",
+    ])
+
+    expect(report.sections.length).toEqual(4)
+    const head = report.sections[0]
+    expect(head.title).toEqual("Head")
+    expect(head.thread).toEqual("Render thread")
+    expect(head.details).toEqual(undefined)
+    expect(head.stacktrace).toEqual([
+        "org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:363)",
+        "org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClass(MixinTransformer.java:208)",
+        "org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClassBytes(MixinTransformer.java:178)",
+        "org.spongepowered.asm.mixin.transformer.FabricMixinTransformerProxy.transformClassBytes(FabricMixinTransformerProxy.java:23)",
+        "net.fabricmc.loader.launch.knot.KnotClassDelegate.getPostMixinClassByteArray(KnotClassDelegate.java:162)",
+        "net.fabricmc.loader.launch.knot.KnotClassLoader.loadClass(KnotClassLoader.java:154)",
+    ])
+
+    const lastReload = report.sections[2]
+    expect(lastReload.title).toEqual("Last reload")
+    expect(lastReload.thread).toEqual(undefined)
+    expect(lastReload.stacktrace).toEqual(undefined)
+    expect(lastReload.details).toEqual([
+        {name: "Reload number", detail :"1"},
+        {name: "Reload reason", detail :"initial"},
+        {name: "Finished", detail :"Yes"},
+        {name: "Packs", detail :"Default, Fabric Mods"},
+    ])
+
+    expect(report.systemDetails.sections["Memory"]).toEqual("875362304 bytes (834 MiB) / 2059403264 bytes (1964 MiB) up to 6291456000 bytes (6000 MiB)")
+    expect(report.systemDetails.sections["CpuCount"]).toEqual("16")
+
+    const optifabric = report.sections[3]
+    expect(optifabric.title).toEqual("OptiFabric")
+    expect(optifabric.details).toEqual([
+        {name: "OptiFine jar designed for", detail: "1.17"},
+        {name: "OptiFine jar version", detail: "OptiFine_1.17_HD_U_G9_pre21"},
+        {name: "OptiFine jar status", detail: "Valid OptiFine installer"},
+        {name: "OptiFine remapped jar", detail: "C:/Users/natan/Desktop/MultiMC/instances/1.17 NEC error identifying test/.minecraft/.optifine/OptiFine_1.17_HD_U_G9_pre21/Optifine-mapped.jar"},
+        {name: "OptiFabric error", detail: "<None>"},
+    ])
+
+})
