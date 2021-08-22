@@ -15,6 +15,7 @@ import {CButton, Text} from "./ImprovedApi";
 import {Surface} from "./improvedapi/Material";
 import {Image} from "./improvedapi/Core";
 import {
+    CrashContext,
     LoaderType,
     OperatingSystemType,
     RichCrashReport,
@@ -76,6 +77,14 @@ function getOperatingSystemIcon(operatingSystem: OperatingSystemType): string {
     }
 }
 
+function formatTime(time: Date) {
+    const isPm = time.getHours() > 12
+    const hour = isPm ? (time.getHours() - 12) : time.getHours();
+    const suffix = isPm ? "PM" : "AM"
+    const minutes = time.getMinutes() > 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
+    return `${time.getDate()}/${time.getMonth()}/${time.getFullYear() - 2000} ${hour}:${minutes} ${suffix}`;
+}
+
 export function CrashReportUi(report: RichCrashReport) {
     // const loader: Loader = {
     //     type: LoaderType.Fabric,
@@ -90,12 +99,7 @@ export function CrashReportUi(report: RichCrashReport) {
 
     const context = report.context;
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
-    const time = context.time;
-    const isPm = time.getHours() > 12
-    const hour = isPm ? (time.getHours() - 12) : time.getHours();
-    const suffix = isPm ? "PM" : "AM"
-    const minutes = time.getMinutes() > 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
-    const displayedTime = `${time.getDate()}/${time.getMonth()}/${time.getFullYear() - 2000} ${hour}:${minutes} ${suffix}`
+    const displayedTime = formatTime(context.time);
 
     return <Stack margin={{top: 70}}>
         <Column margin={{left: 10}}>
