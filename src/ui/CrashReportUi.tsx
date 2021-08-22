@@ -6,10 +6,8 @@ import {
     StackTraceElement,
     SystemDetails
 } from "../model/CrashReport";
-import {CButton, Center, Column, Row, Text} from "./ImprovedApi";
-import {Card, Container, Grid, Paper, SvgIcon} from "@material-ui/core";
+import {Divider, Grid, Paper} from "@material-ui/core";
 import React, {CSSProperties} from "react";
-import {AccessTime} from "@material-ui/icons";
 import JavaLogo from "../media/java-icon.svg"
 import MinecraftLogo from "../media/minecraft_cube.svg"
 import FabricLogo from "../media/fabric_logo.svg"
@@ -18,6 +16,11 @@ import WindowsLogo from "../media/windows_logo.svg"
 import LinuxLogo from "../media/linux_logo.svg"
 import MacosLogo from "../media/macos_logo.svg"
 import QuestionMarkIcon from "../media/questionmark_icon_white.svg"
+import ClockIcon from "../media/clock_white.svg"
+import {Column, Row, Stack} from "./improvedapi/Flex";
+import {CButton, Text} from "./ImprovedApi";
+import {Surface} from "./improvedapi/Material";
+import {Image} from "./improvedapi/Core";
 // import AccessTimeIcon from "@material-ui/icons/AccessTo"
 
 //TODO: make sure we display information in the most efficient way possible:
@@ -47,18 +50,19 @@ import QuestionMarkIcon from "../media/questionmark_icon_white.svg"
 
 //TODO: add option to create an issue in the mod author's github page instantly, and link to that issue in the crash log page
 //TODO: index crashes in google and allow some way to communicate to solve crashes together, then maybe show an official 'solve with:' solution
+//TODO: add many 'click to copy' buttons
 
-export function VitalInformation(props: {image: string, text: string}) {
-    return <Card style={{width: "max-content", marginTop: 10}}>
-        <Row style={{paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10}}>
-            <img src = {props.image} style = {{height: 30, marginRight: 10}}/>
+export function SideInfo(props: { image: string, text: string }) {
+    return <Surface margin={{top: 10}}>
+        <Row padding={{vertical: 5, horizontal: 10}}>
+            <Image src={props.image} margin={{right: 10}} height={30} alt="Icon"/>
             <Text text={props.text} variant="h6"/>
         </Row>
-    </Card>
+    </Surface>
 }
 
 enum Loader {
-    Fabric,Forge
+    Fabric, Forge
 }
 
 interface LoaderInfo {
@@ -78,8 +82,8 @@ interface OperatingSystemInfo {
     name: string
 }
 
-function getOperatingSystemIcon(operatingSystem: OperatingSystem) : string {
-    switch (operatingSystem){
+function getOperatingSystemIcon(operatingSystem: OperatingSystem): string {
+    switch (operatingSystem) {
         case OperatingSystem.Windows:
             return WindowsLogo;
         case OperatingSystem.Linux:
@@ -92,7 +96,7 @@ function getOperatingSystemIcon(operatingSystem: OperatingSystem) : string {
 }
 
 export function CrashReportUi(report: CrashReport) {
-    const loader : LoaderInfo = {
+    const loader: LoaderInfo = {
         loader: Loader.Fabric,
         version: "0.7.4"
     }
@@ -104,81 +108,85 @@ export function CrashReportUi(report: CrashReport) {
         name: "Windows 11"
     }
 
-    return <div>
-        {/*todo make the time be above the other stuff on mobile*/}
-
-        <Column style={{marginLeft: 10, position: "absolute"}}>
-            <VitalInformation image={MinecraftLogo} text={"1.17.1"}/>
-            <VitalInformation image={loader.loader === Loader.Forge? ForgeLogo : FabricLogo} text={loaderName + loader.version}/>
-            <VitalInformation image={JavaLogo} text={"16"}/>
-            <VitalInformation image={getOperatingSystemIcon(operatingSystem.operatingSystem)} text={operatingSystem.name}/>
-
-            <Card style={{width: "max-content", marginTop: 10}}>
-                <Row style={{padding: 10}}>
-                    <AccessTime style={{margin: "auto 10 auto 0"}}/>
-                    <Text text={report.time} variant="h6"/>
-                </Row>
-            </Card>
+    return <Stack margin={{top: 70}}>
+        <Column margin={{left: 10}}>
+            <SideInfo image={MinecraftLogo} text="1.17.1"/>
+            <SideInfo image={loader.loader === Loader.Forge ? ForgeLogo : FabricLogo}
+                      text={loaderName + loader.version}/>
+            <SideInfo image={JavaLogo} text="16"/>
+            <SideInfo image={getOperatingSystemIcon(operatingSystem.operatingSystem)}
+                      text={operatingSystem.name}/>
+            <SideInfo image={ClockIcon} text={report.time}/>
         </Column>
 
 
         {/*TODO: make the sections use a sidebar on mobile*/}
 
-        <Container>
-            <Center>
-                <Card style={{width: "max-content", margin: 10, paddingLeft: 20, paddingRight: 20,}}>
-                    <Text text={report.description} variant="h6" style={{padding: 10}}
-                          align={"center"}/>
-                </Card>
-            </Center>
 
-            <Text text={report.wittyComment} align={"center"}/>
+        <Column width={"max"} alignItems={"center"} >
+            <Column alignSelf="center" margin={{bottom: 10}}>
+                <Text text={report.description} variant="h4" color={"error"} margin={{horizontal: 100}}/>
+                <Divider style={{width: "100%"}}/>
+            </Column>
+
+            <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
             <StackTraceUi stackTrace={report.stacktrace}/>
-            {SystemDetailsUi(report.systemDetails)}
-            <Center>
-                {Sections(report.sections)}
-            </Center>
+        </Column>
 
-        </Container>
-    </div>
+    </Stack>
+
+
 }
-
+//todo: rich stack trace
 function StackTraceUi({stackTrace, depth = 0}: { stackTrace: StackTrace, depth?: number }) {
     const [open, setOpen] = React.useState(false);
     const textStyle: CSSProperties = {whiteSpace: "pre-wrap", wordBreak: "break-word", minWidth: 500}
-    return (
-        <Column>
-            <Column style={{
-                marginLeft: depth * 30,
-                marginTop: 5,
-                marginBottom: 5,
-                marginRight: 5
-            }}>
-                <CButton onClick={() => setOpen(!open)} style={{border: "2px solid green"}}>
-                    <Text text={stackTrace.message}
-                          style={textStyle}/>
-                </CButton>
+    return <Column padding={{left:300, right: 50}}>
+        <Text text={stackTrace.message} variant={"h5"}/>
+        <Divider/>
+        {stackTrace.trace.map((traceElement) => {
+            return <Row margin={{left: 30}} >
+                <Text text={"◉"} margin = {{right: 10}}/>
+                <Text text={traceElement}  style={{
+                    whiteSpace: "pre-wrap",
+                    wordBreak: "break-word",
+                }}/>
+            </Row>
 
-                {open && stackTrace.trace.map((element, index) => {
-                    return <CButton onClick={() => 0} style={{
-                        marginLeft: 30,
-                        marginTop: 5,
-                        marginBottom: 5,
-                        marginRight: 5
-                    }}>
-                        <Text key={index} text={element} style={textStyle}/>
-                    </CButton>;
-                })}
-            </Column>
+        })}
+    </Column>
+    // <Column>
+    //     <Column style={{
+    //         marginLeft: depth * 30,
+    //         marginTop: 5,
+    //         marginBottom: 5,
+    //         marginRight: 5
+    //     }}>
+    //         <CButton onClick={() => setOpen(!open)} style={{border: "2px solid green"}}>
+    //             <Text text={stackTrace.message}
+    //                   style={textStyle}/>
+    //         </CButton>
+    //
+    //         {open && stackTrace.trace.map((element, index) => {
+    //             return <CButton onClick={() => 0} style={{
+    //                 marginLeft: 30,
+    //                 marginTop: 5,
+    //                 marginBottom: 5,
+    //                 marginRight: 5
+    //             }}>
+    //                 <Text key={index} text={element} style={textStyle}/>
+    //             </CButton>;
+    //         })}
+    //     </Column>
+    //
+    //
+    //     {/*When opened, display the child dropdowns*/}
+    //     {
+    //         open && stackTrace.causedBy &&
+    //         <StackTraceUi depth={depth + 1} stackTrace={stackTrace.causedBy}/>
+    //     }
+    // </Column>
 
-
-            {/*When opened, display the child dropdowns*/}
-            {
-                open && stackTrace.causedBy &&
-                <StackTraceUi depth={depth + 1} stackTrace={stackTrace.causedBy}/>
-            }
-        </Column>
-    )
 }
 
 function Sections(sections: CrashReportSection[]) {
@@ -191,13 +199,13 @@ function Section(props: { section: CrashReportSection }) {
 
     return (
         <Column style={{paddingTop: 10, width: "100%"}}>
-            <Center>
-                <CButton onClick={() => setOpen(!open)}
-                         style={{width: 'max-content', padding: 20}}>
+            {/*<Center>*/}
+            <CButton onClick={() => setOpen(!open)}
+                     style={{width: 'max-content', padding: 20}}>
 
-                    <Text text={props.section.title}/>
-                </CButton>
-            </Center>
+                <Text text={props.section.title}/>
+            </CButton>
+            {/*</Center>*/}
 
             {open && <Column>
                 {props.section.stacktrace && SectionStackTrace(props.section.stacktrace)}

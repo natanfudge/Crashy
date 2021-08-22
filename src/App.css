@@ -1,3 +1,7 @@
-div.row * {
-    display: inline-block;
+/*div.row * {*/
+/*    display: inline-block;*/
+/*}*/
+
+div.stack > * {
+    position: absolute;
 }

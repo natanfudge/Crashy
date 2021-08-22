@@ -1,36 +1,20 @@
-import React, {CSSProperties, MouseEventHandler} from "react";
+import React from "react";
 import {MenuItem, Paper, PropTypes, Typography} from "@material-ui/core";
 import {Variant as ThemeVariant} from "@material-ui/core/styles/createTypography";
+import {deflattenStyle, ParentProps} from "./improvedapi/Element";
 
-export interface ComponentProps {
-    style?: CSSProperties
-    onClick?: MouseEventHandler<HTMLDivElement>
-    //TODO: currently only works for CButton
-    popper?: React.ReactElement<any, any>
-    // reference?: React.Ref<HTMLDivElement>
-}
 
-export interface ParentComponentProps extends ComponentProps {
-    children: React.ReactNode
-}
+// export function Center(props: ParentComponentProps) {
+//     const {children, style, ...otherProps} = props;
+//     return <div style={{display: "flex", justifyContent: "center", ...style}} {...otherProps}>
+//         {children}
+//     </div>
+// }
 
-export function Center(props: ParentComponentProps) {
-    const {children, style, ...otherProps} = props;
-    return <div style={{display: "flex", justifyContent: "center", ...style}} {...otherProps}>
-        {children}
-    </div>
-}
-
-export function Row(props: ParentComponentProps) {
-    const {children, style, ...otherProps} = props;
-    return <div className="row" style={{display: "flex", ...style}} {...otherProps}>
-        {children}
-    </div>
-}
 
 type Variant = ThemeVariant | 'srOnly';
 
-export interface TextThemeProps extends ComponentProps, ParentComponentProps {
+export interface TextThemeProps extends ParentProps {
     align?: PropTypes.Alignment;
     color?:
         | 'initial'
@@ -49,8 +33,7 @@ export interface TextThemeProps extends ComponentProps, ParentComponentProps {
 }
 
 export function TextTheme(props: TextThemeProps) {
-    // const typographyProps
-    return <Typography {...props}/>
+    return <Typography {...deflattenStyle(props)}/>
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {
@@ -58,18 +41,14 @@ export interface TextProps extends Omit<TextThemeProps, 'children'> {
 }
 
 export function Text(props: TextProps) {
-    return <TextTheme {...props}>
-        {props.text}
-    </TextTheme>
+    const {text, ...otherProps} = props;
+    return <TextTheme {...otherProps}>{text}</TextTheme>
 }
 
-export function Column(props: ParentComponentProps) {
-    return <div {...props}/>
-}
 
 type Require<T, K extends keyof T> = T & Required<Pick<T, K>>;
 
-export function CButton(props: Require<ParentComponentProps, 'onClick'>) {
+export function CButton(props: Require<ParentProps, 'onClick'>) {
     const {children, style: {padding, ...paperStyles} = {}, ...paperProps} = props
 
     const button = <Paper style={paperStyles} {...paperProps}>
@@ -79,14 +58,14 @@ export function CButton(props: Require<ParentComponentProps, 'onClick'>) {
     </Paper>
 
     const anchorRef = React.useRef<HTMLDivElement>(null);
-    if (props.popper === undefined) {
-        return button
-    } else {
-        return <div>
-            <div ref={anchorRef}>
-                {button}
-            </div>
-            {React.cloneElement(props.popper, {anchorEl: anchorRef.current})}
-        </div>
-    }
+    // if (props.popper === undefined) {
+    return button
+    // } else {
+    //     return <div>
+    //         <div ref={anchorRef}>
+    //             {button}
+    //         </div>
+    //         {React.cloneElement(props.popper, {anchorEl: anchorRef.current})}
+    //     </div>
+    // }
 }
