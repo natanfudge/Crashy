@@ -1,11 +1,4 @@
-import {
-    CrashReport,
-    CrashReportSection,
-    CrashReportSectionElement,
-    StackTrace,
-    StackTraceElement,
-    SystemDetails
-} from "../model/CrashReport";
+import {StringMap} from "../model/CrashReport";
 import {Divider, Grid, Paper} from "@material-ui/core";
 import React, {CSSProperties} from "react";
 import JavaLogo from "../media/java-icon.svg"
@@ -21,6 +14,14 @@ import {Column, Row, Stack} from "./improvedapi/Flex";
 import {CButton, Text} from "./ImprovedApi";
 import {Surface} from "./improvedapi/Material";
 import {Image} from "./improvedapi/Core";
+import {
+    LoaderType,
+    OperatingSystemType,
+    RichCrashReport,
+    RichCrashReportSection,
+    RichStackTrace,
+    RichStackTraceElement
+} from "../model/RichCrashReport";
 // import AccessTimeIcon from "@material-ui/icons/AccessTo"
 
 //TODO: make sure we display information in the most efficient way possible:
@@ -61,99 +62,88 @@ export function SideInfo(props: { image: string, text: string }) {
     </Surface>
 }
 
-enum Loader {
-    Fabric, Forge
-}
 
-interface LoaderInfo {
-    loader: Loader
-    version: string
-}
-
-enum OperatingSystem {
-    Windows,
-    Macos,
-    Linux,
-    Unknown
-}
-
-interface OperatingSystemInfo {
-    operatingSystem: OperatingSystem
-    name: string
-}
-
-function getOperatingSystemIcon(operatingSystem: OperatingSystem): string {
+function getOperatingSystemIcon(operatingSystem: OperatingSystemType): string {
     switch (operatingSystem) {
-        case OperatingSystem.Windows:
+        case OperatingSystemType.Windows:
             return WindowsLogo;
-        case OperatingSystem.Linux:
+        case OperatingSystemType.Linux:
             return LinuxLogo;
-        case OperatingSystem.Macos:
+        case OperatingSystemType.Macos:
             return MacosLogo;
-        case OperatingSystem.Unknown:
+        case OperatingSystemType.Unknown:
             return QuestionMarkIcon
     }
 }
 
-export function CrashReportUi(report: CrashReport) {
-    const loader: LoaderInfo = {
-        loader: Loader.Fabric,
-        version: "0.7.4"
-    }
+export function CrashReportUi(report: RichCrashReport) {
+    // const loader: Loader = {
+    //     type: LoaderType.Fabric,
+    //     version: "0.7.4"
+    // }
+    //
+    //
+    // const operatingSystem: OperatingSystem = {
+    //     type: OperatingSystemType.Windows,
+    //     name: "Windows 11"
+    // }
 
-    const loaderName = loader.loader === Loader.Fabric ? "Fabric Loader " : "Forge ";
-
-    const operatingSystem: OperatingSystemInfo = {
-        operatingSystem: OperatingSystem.Windows,
-        name: "Windows 11"
-    }
+    const context = report.context;
+    const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
+    const time = context.time;
+    const isPm = time.getHours() > 12
+    const hour = isPm ? (time.getHours() - 12) : time.getHours();
+    const suffix = isPm ? "PM" : "AM"
+    const minutes = time.getMinutes() > 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
+    const displayedTime = `${time.getDate()}/${time.getMonth()}/${time.getFullYear() - 2000} ${hour}:${minutes} ${suffix}`
 
     return <Stack margin={{top: 70}}>
         <Column margin={{left: 10}}>
             <SideInfo image={MinecraftLogo} text="1.17.1"/>
-            <SideInfo image={loader.loader === Loader.Forge ? ForgeLogo : FabricLogo}
-                      text={loaderName + loader.version}/>
+            <SideInfo image={context.loader.type === LoaderType.Forge ? ForgeLogo : FabricLogo}
+                      text={loaderName + context.loader.version}/>
             <SideInfo image={JavaLogo} text="16"/>
-            <SideInfo image={getOperatingSystemIcon(operatingSystem.operatingSystem)}
-                      text={operatingSystem.name}/>
-            <SideInfo image={ClockIcon} text={report.time}/>
+            <SideInfo image={getOperatingSystemIcon(context.operatingSystem.type)}
+                      text={context.operatingSystem.name}/>
+            <SideInfo image={ClockIcon} text={displayedTime}/>
         </Column>
 
 
         {/*TODO: make the sections use a sidebar on mobile*/}
 
 
-        <Column width={"max"} alignItems={"center"} >
+        <Column width={"max"} alignItems={"center"}>
             <Column alignSelf="center" margin={{bottom: 10}}>
-                <Text text={report.description} variant="h4" color={"error"} margin={{horizontal: 100}}/>
+                <Text text={report.title} variant="h4" color={"error"} margin={{horizontal: 100}}/>
                 <Divider style={{width: "100%"}}/>
             </Column>
 
             <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
-            <StackTraceUi stackTrace={report.stacktrace}/>
+            <StackTraceUi stackTrace={report.stackTrace}/>
         </Column>
 
     </Stack>
 
 
 }
+
 //todo: rich stack trace
-function StackTraceUi({stackTrace, depth = 0}: { stackTrace: StackTrace, depth?: number }) {
+function StackTraceUi({stackTrace, depth = 0}: { stackTrace: RichStackTrace, depth?: number }) {
     const [open, setOpen] = React.useState(false);
     const textStyle: CSSProperties = {whiteSpace: "pre-wrap", wordBreak: "break-word", minWidth: 500}
-    return <Column padding={{left:300, right: 50}}>
-        <Text text={stackTrace.message} variant={"h5"}/>
-        <Divider/>
-        {stackTrace.trace.map((traceElement) => {
-            return <Row margin={{left: 30}} >
-                <Text text={"◉"} margin = {{right: 10}}/>
-                <Text text={traceElement}  style={{
-                    whiteSpace: "pre-wrap",
-                    wordBreak: "break-word",
-                }}/>
-            </Row>
+    return <Column padding={{left: 300, right: 50}}>
+        {/*<Text text={stackTrace.message} variant={"h5"}/>*/}
+        {/*<Divider/>*/}
+        {/*{stackTrace.trace.map((traceElement) => {*/}
+        {/*    return <Row margin={{left: 30}}>*/}
+        {/*        <Text text={"at"} color={"textSecondary"} margin={{right: 10}}/>*/}
+        {/*        <Text text={traceElement} style={{*/}
+        {/*            whiteSpace: "pre-wrap",*/}
+        {/*            wordBreak: "break-word",*/}
+        {/*        }}/>*/}
+        {/*    </Row>*/}
 
-        })}
+        {/*})}*/}
     </Column>
     // <Column>
     //     <Column style={{
@@ -189,11 +179,11 @@ function StackTraceUi({stackTrace, depth = 0}: { stackTrace: StackTrace, depth?:
 
 }
 
-function Sections(sections: CrashReportSection[]) {
+function Sections(sections: RichCrashReportSection[]) {
     return sections.map((section, index) => <Section key={index} section={section}/>)
 }
 
-function Section(props: { section: CrashReportSection }) {
+function Section(props: { section: RichCrashReportSection }) {
     const [open, setOpen] = React.useState(false);
 
 
@@ -203,12 +193,12 @@ function Section(props: { section: CrashReportSection }) {
             <CButton onClick={() => setOpen(!open)}
                      style={{width: 'max-content', padding: 20}}>
 
-                <Text text={props.section.title}/>
+                <Text text={props.section.name}/>
             </CButton>
             {/*</Center>*/}
 
             {open && <Column>
-                {props.section.stacktrace && SectionStackTrace(props.section.stacktrace)}
+                {props.section.stackTrace && SectionStackTrace(props.section.stackTrace)}
                 {props.section.details && SectionDetails(props.section.details)}
             </Column>
             }
@@ -217,34 +207,49 @@ function Section(props: { section: CrashReportSection }) {
     )
 }
 
-function SectionStackTrace(stackTrace: StackTraceElement[]) {
-    const asTrace: StackTrace = {
-        trace: stackTrace,
-        message: "Stack Trace",
+function SectionStackTrace(stackTrace: RichStackTraceElement[]) {
+    const asTrace: RichStackTrace = {
+
+        // trace: stackTrace,
+        message: {
+            message: "Stack Trace",
+            class: {
+                packageName: "TODO",
+                simpleName: "TODO"
+            }
+        },
+        elements: stackTrace,
+        // message: "Stack Trace",
         causedBy: undefined
     }
     return <StackTraceUi stackTrace={asTrace}/>
 }
 
-function SectionDetails(sectionElements: CrashReportSectionElement[]) {
-    return sectionElements.map((element, index) => {
-        return <SectionElement key={index} element={element}/>
+function SectionDetails(sectionElements: StringMap) {
+    return objectMap(sectionElements, (key, value, index) => {
+        return <SectionElement key={index} element={{name: key, detail: value}}/>
     })
 }
 
-function SystemDetailsUi(systemDetails: SystemDetails) {
-    const asSectionDetails = Object.keys(systemDetails.sections).map((key) => {
-        return {name: key, detail: systemDetails.sections[key]}
-    });
-    const asSection: CrashReportSection = {
-        title: "System Details",
-        stacktrace: undefined,
-        details: asSectionDetails
-    }
-    return <Section section={asSection}/>
+function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {
+    return Object.keys(object).map(function (key, index) {
+        return mapFn(key, object[key], index);
+    }, {})
 }
 
-function SectionElement(props: { element: CrashReportSectionElement }) {
+// function SystemDetailsUi(systemDetails: SystemDetails) {
+//     const asSectionDetails = Object.keys(systemDetails.sections).map((key) => {
+//         return {name: key, detail: systemDetails.sections[key]}
+//     });
+//     const asSection: CrashReportSection = {
+//         title: "System Details",
+//         stacktrace: undefined,
+//         details: asSectionDetails
+//     }
+//     return <Section section={asSection}/>
+// }
+
+function SectionElement(props: { element: { name: string, detail: string } }) {
     const [open, setOpen] = React.useState(false)
     return <Grid container direction={"row"} style={{margin: 5}}>
         <Grid item xs={2}>

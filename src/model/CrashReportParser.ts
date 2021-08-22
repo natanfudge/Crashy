@@ -1,7 +1,6 @@
 import {
     CrashReport,
     CrashReportSection,
-    CrashReportSectionElement,
     StackTrace,
     StackTraceElement,
     StringMap,
@@ -42,10 +41,10 @@ export function parseCrashReport(rawReport: string): CrashReport {
     skipString("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n---------------------------------------------------------------------------------------\n\n")
 
     const sections = parseSections();
-    const systemDetails = pullSystemDetailsFrom(sections);
+    // const systemDetails = pullSystemDetailsFrom(sections);
 
     return {
-        systemDetails,
+        // systemDetails,
         sections,
         description,
         time,
@@ -139,12 +138,13 @@ export function parseCrashReport(rawReport: string): CrashReport {
     }
 
     function parseSectionDetails() {
-        let details: CrashReportSectionElement[] | undefined
+        let details: StringMap | undefined
         if (nextIsString("Details:")) {
             skipString("Details:\n")
-            details = [];
+            details = {};
             while (!isEof() && current() === "\t") {
-                details.push(parseSectionElement());
+                const {name, detail} = parseSectionElement();
+                details[name] = detail;
             }
         }
         return details;
@@ -159,7 +159,7 @@ export function parseCrashReport(rawReport: string): CrashReport {
         return stacktrace;
     }
 
-    function parseSectionElement(): CrashReportSectionElement {
+    function parseSectionElement(): { detail: string, name: string } {
         // Skip leading tab
         skip();
         const name = readUntilChar(':');
@@ -252,19 +252,19 @@ export function parseCrashReport(rawReport: string): CrashReport {
         })
     }
 }
-
-function pullSystemDetailsFrom(sections: CrashReportSection[]) {
-    // The system details is parsed as a section, but the data structure we want treats system details in a special way,
-    // so we pull it out and put it in its own object.
-    const systemDetailsSectionAsNormalSection = sections.find((section) => section.title === "System Details")!
-    // Remove system details from the sections list
-    sections.splice(sections.indexOf(systemDetailsSectionAsNormalSection), 1)
-    const systemDetailsSections: StringMap = {}
-    for (const element of systemDetailsSectionAsNormalSection.details!) {
-        systemDetailsSections[element.name] = element.detail
-    }
-    const systemDetails: SystemDetails = {
-        sections: systemDetailsSections
-    }
-    return systemDetails;
-}
+//
+// function pullSystemDetailsFrom(sections: CrashReportSection[]) {
+//     // The system details is parsed as a section, but the data structure we want treats system details in a special way,
+//     // so we pull it out and put it in its own object.
+//     const systemDetailsSectionAsNormalSection = sections.find((section) => section.title === "System Details")!
+//     // Remove system details from the sections list
+//     sections.splice(sections.indexOf(systemDetailsSectionAsNormalSection), 1)
+//     const systemDetailsSections: StringMap = {}
+//     for (const element of systemDetailsSectionAsNormalSection.details!) {
+//         systemDetailsSections[element.name] = element.detail
+//     }
+//     const systemDetails: SystemDetails = {
+//         sections: systemDetailsSections
+//     }
+//     return systemDetails;
+// }

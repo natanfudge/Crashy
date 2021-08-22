@@ -38,42 +38,18 @@ test('First Crash Report is parsed correctly', () => {
         "cpw.mods.modlauncher.Launcher.run(Launcher.java:82) [modlauncher-8.0.9.jar:?] {re:classloading}",
         "cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.0.9.jar:?] {re:classloading}",
     ])
-    expect(report.sections.length).toEqual(1)
+    expect(report.sections.length).toEqual(2)
     const section = report.sections[0]
     expect(section.title).toEqual("Affected level")
-    expect(section.details).toEqual(
-        [
-            {
-                name: "All players",
-                detail: "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]"
-            },
-            {
-                name: "Chunk stats",
-                detail: "Client Chunk Cache: 361, 225"
-            },
-            {
-                name: "Level dimension",
-                detail: "minecraft:overworld"
-            },
-            {
-                name: "Level spawn location",
-                detail: "World: (-245,64,-292), Chunk: (at 11,4,12 in -16,-19; contains blocks -256,0,-304 to -241,255,-289), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)"
-            },
-            {
-                name: "Level time",
-                detail: "29891 game time, 126559960 day time"
-            },
-            {
-                name: "Server brand",
-                detail: "Waterfall <- Airplane"
-            },
-            {
-                name: "Server type",
-                detail: "Non-integrated multiplayer server"
-            },
+    const sectionDetails =section.details!
+    expect(sectionDetails["All players"]).toEqual("1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]")
+    expect(sectionDetails["Chunk stats"]).toEqual("Client Chunk Cache: 361, 225")
+    expect(sectionDetails["Level dimension"]).toEqual("minecraft:overworld")
+    expect(sectionDetails["Level spawn location"]).toEqual("World: (-245,64,-292), Chunk: (at 11,4,12 in -16,-19; contains blocks -256,0,-304 to -241,255,-289), Region: (-1,-1; contains chunks -32,-32 to -1,-1, blocks -512,0,-512 to -1,255,-1)")
+    expect(sectionDetails["Level time"]).toEqual("29891 game time, 126559960 day time")
+    expect(sectionDetails["Server brand"]).toEqual("Waterfall <- Airplane")
+    expect(sectionDetails["Server type"]).toEqual("Non-integrated multiplayer server")
 
-        ]
-    )
     expect(section.stacktrace).toEqual([
             "net.minecraft.client.world.ClientWorld.func_72914_a(ClientWorld.java:617) ~[?:?] {re:classloading,xf:OptiFine:default}",
             "net.minecraft.client.Minecraft.func_71396_d(Minecraft.java:2029) [?:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:A,pl:runtimedistcleaner:A}",
@@ -97,7 +73,7 @@ test('First Crash Report is parsed correctly', () => {
         ]
     )
 
-    const systemDetails = report.systemDetails.sections;
+    const systemDetails = report.sections[1].details!
 
     expect(systemDetails["Minecraft Version"]).toEqual("1.16.5");
     expect(systemDetails["Minecraft Version ID"]).toEqual("1.16.5");
@@ -206,7 +182,7 @@ test("Optifine crash report is parsed correctly", () => {
         "26 more",
     ])
 
-    expect(report.sections.length).toEqual(4)
+    expect(report.sections.length).toEqual(5)
     const head = report.sections[0]
     expect(head.title).toEqual("Head")
     expect(head.thread).toEqual("Render thread")
@@ -224,24 +200,25 @@ test("Optifine crash report is parsed correctly", () => {
     expect(lastReload.title).toEqual("Last reload")
     expect(lastReload.thread).toEqual(undefined)
     expect(lastReload.stacktrace).toEqual(undefined)
-    expect(lastReload.details).toEqual([
-        {name: "Reload number", detail :"1"},
-        {name: "Reload reason", detail :"initial"},
-        {name: "Finished", detail :"Yes"},
-        {name: "Packs", detail :"Default, Fabric Mods"},
-    ])
+    const reloadDetails = lastReload.details!;
+    expect(reloadDetails["Reload number"]).toEqual("1")
+    expect(reloadDetails["Reload reason"]).toEqual("initial")
+    expect(reloadDetails["Finished"]).toEqual("Yes")
+    expect(reloadDetails["Packs"]).toEqual("Default, Fabric Mods")
 
-    expect(report.systemDetails.sections["Memory"]).toEqual("875362304 bytes (834 MiB) / 2059403264 bytes (1964 MiB) up to 6291456000 bytes (6000 MiB)")
-    expect(report.systemDetails.sections["CpuCount"]).toEqual("16")
+    const systemDetails = report.sections[3].details!
 
-    const optifabric = report.sections[3]
+    expect(systemDetails["Memory"]).toEqual("875362304 bytes (834 MiB) / 2059403264 bytes (1964 MiB) up to 6291456000 bytes (6000 MiB)")
+    expect(systemDetails["CpuCount"]).toEqual("16")
+
+    const optifabric = report.sections[4]
     expect(optifabric.title).toEqual("OptiFabric")
-    expect(optifabric.details).toEqual([
-        {name: "OptiFine jar designed for", detail: "1.17"},
-        {name: "OptiFine jar version", detail: "OptiFine_1.17_HD_U_G9_pre21"},
-        {name: "OptiFine jar status", detail: "Valid OptiFine installer"},
-        {name: "OptiFine remapped jar", detail: "C:/Users/natan/Desktop/MultiMC/instances/1.17 NEC error identifying test/.minecraft/.optifine/OptiFine_1.17_HD_U_G9_pre21/Optifine-mapped.jar"},
-        {name: "OptiFabric error", detail: "<None>"},
-    ])
+
+    const optifabricDetails = optifabric.details!
+    expect(optifabricDetails["OptiFine jar designed for"]).toEqual("1.17")
+    expect(optifabricDetails["OptiFine jar version"]).toEqual("OptiFine_1.17_HD_U_G9_pre21")
+    expect(optifabricDetails["OptiFine jar status"]).toEqual("Valid OptiFine installer")
+    expect(optifabricDetails["OptiFine remapped jar"]).toEqual("C:/Users/natan/Desktop/MultiMC/instances/1.17 NEC error identifying test/.minecraft/.optifine/OptiFine_1.17_HD_U_G9_pre21/Optifine-mapped.jar")
+    expect(optifabricDetails["OptiFabric error"]).toEqual("<None>")
 
 })
