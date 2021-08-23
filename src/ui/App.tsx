@@ -4,10 +4,10 @@ import {AppBar, createTheme, CssBaseline, MuiThemeProvider} from "@material-ui/c
 import {grey, red} from "@material-ui/core/colors";
 import {CrashReport, StackTrace, StackTraceElement} from "../model/CrashReport";
 import {CrashReportUi} from "./CrashReportUi";
-import {Text} from "./ImprovedApi";
 import {parseCrashReport} from "../model/CrashReportParser";
 import {crashWithOptifine} from "../model/TestCrashes";
 import {LoaderType, Mod, OperatingSystemType, RichCrashReport} from "../model/RichCrashReport";
+import {Text} from "./improvedapi/Text";
 
 
 const testStackTrace: StackTrace = {
@@ -138,7 +138,7 @@ const testRichStackTrace: RichCrashReport = {
         causedBy: {
             message: {
                 message: "causer of hell",
-                class: {packageName: "java.lang", simpleName: "uber crasher"}
+                class: {packageName: "java.lang", simpleName: "UberCrasher"}
             },
             elements: [
                 {
@@ -162,6 +162,34 @@ const testRichStackTrace: RichCrashReport = {
                     }
                 }
             ],
+            causedBy: {
+                message: {
+                    message: "actual causer of hell",
+                    class: {packageName: "java.lang", simpleName: "UberSuperCrasher"}
+                },
+                elements: [
+                    {
+                        forgeMetadata: {
+                            additionalTransformerData: ["Optifine:default", "fml:twilightforest:render"],
+                            classloadingReasons: ["mixin", "classloading"],
+                            jarFile: "1.16.5-Forge%2036.1.0-OptiFine_G8.jar",
+                            pluginTransformerReasons: ["accesstransformer:B", "runtimedistcleaner:A"],
+                            version: "1.8.0_5169420"
+                        },
+                        line: {
+                            file: "CrashFile.java",
+                            number: 34422222222
+                        },
+                        method: {
+                            name: "kill",
+                            class: {
+                                packageName: "java.util.stream",
+                                simpleName: "ForgeStuff"
+                            }
+                        }
+                    }
+                ],
+            }
         }
     },
     context: {
@@ -218,8 +246,8 @@ const testRichStackTrace: RichCrashReport = {
                 }
             }],
             details: {
-                "All players":"1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
-                "Chunk stats":"Client Chunk Cache: 361, 225"
+                "All players": "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
+                "Chunk stats": "Client Chunk Cache: 361, 225"
             },
             thread: "amar thread"
         }
@@ -251,7 +279,7 @@ function App() {
             <CssBaseline/>
             {/*<h1 className="glow">GLOWING TEXT</h1>*/}
 
-                <AppBar color="inherit">
+            <AppBar color="inherit">
                 <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>
             </AppBar>
 

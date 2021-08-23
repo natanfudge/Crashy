@@ -36,6 +36,19 @@ export interface RichStackTrace {
     elements: RichStackTraceElement[]
 }
 
+/**
+ * Converts the recursive structure of the 'causedBy' of RichStackTraces into a list that is easily accessible by index.
+ */
+export function unfoldRichStackTrace(trace: RichStackTrace): RichStackTrace[] {
+    const causeList = [];
+    let currentCauser: RichStackTrace | undefined = trace;
+    while (currentCauser !== undefined) {
+        causeList.push(currentCauser);
+        currentCauser = currentCauser.causedBy;
+    }
+    return causeList;
+}
+
 export interface StackTraceMessage {
     class: JavaClass
     message: string

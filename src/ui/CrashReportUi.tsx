@@ -1,6 +1,6 @@
 import {StringMap} from "../model/CrashReport";
-import {Divider, Grid, Paper, Popper} from "@material-ui/core";
-import React, {CSSProperties} from "react";
+import {Divider, Grow, Popper} from "@material-ui/core";
+import React from "react";
 import JavaLogo from "../media/java-icon.svg"
 import MinecraftLogo from "../media/minecraft_cube.svg"
 import FabricLogo from "../media/fabric_logo.svg"
@@ -11,7 +11,6 @@ import MacosLogo from "../media/macos_logo.svg"
 import QuestionMarkIcon from "../media/questionmark_icon_white.svg"
 import ClockIcon from "../media/clock_white.svg"
 import {Column, Row, Stack} from "./improvedapi/Flex";
-import {CButton, Text} from "./ImprovedApi";
 import {Surface} from "./improvedapi/Material";
 import {Image} from "./improvedapi/Core";
 import {
@@ -22,11 +21,12 @@ import {
     LoaderType,
     OperatingSystemType,
     RichCrashReport,
-    RichCrashReportSection,
     RichStackTrace,
-    RichStackTraceElement
+    RichStackTraceElement,
+    unfoldRichStackTrace
 } from "../model/RichCrashReport";
 import {KeyboardArrowDown} from "@material-ui/icons";
+import {Text} from "./improvedapi/Text";
 // import AccessTimeIcon from "@material-ui/icons/AccessTo"
 
 //TODO: make sure we display information in the most efficient way possible:
@@ -91,17 +91,6 @@ function formatTime(time: Date) {
 }
 
 export function CrashReportUi(report: RichCrashReport) {
-    // const loader: Loader = {
-    //     type: LoaderType.Fabric,
-    //     version: "0.7.4"
-    // }
-    //
-    //
-    // const operatingSystem: OperatingSystem = {
-    //     type: OperatingSystemType.Windows,
-    //     name: "Windows 11"
-    // }
-
     const context = report.context;
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
@@ -157,24 +146,36 @@ function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
             <KeyboardArrowDown innerRef={anchorEl}/>
 
         </Row>
-        <Popper open={open} anchorEl={anchorEl.current}>
-            <Surface>
-                <Column padding={10}>
-                    <Text text={"Forge Metadata"} variant={"h6"}/>
-                    {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
-                    {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
-                </Column>
-                {/*<Text text={metadata.}/>*/}
-            </Surface>
+        <Popper open={open} anchorEl={anchorEl.current} transition>
+            {({TransitionProps}) => (
+                <Grow {...TransitionProps}>
+                    <Surface>
+                        <Column padding={10}>
+                            <Text text={"Forge Metadata"} variant={"h6"}/>
+                            {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
+                            {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
+                            {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map(reason =>
+                                <Text text={`Plugin Transformer Reason: ${reason}`}/>)}
+                            {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map(reason => <Text
+                                text={`Class Loading Reason: ${reason}`}/>)}
+                            {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map(reason =>
+                                <Text text={`Additional Transformer Data: ${reason}`}/>)}
+                        </Column>
+                        {/*<Text text={metadata.}/>*/}
+                    </Surface>
+                </Grow>
+            )
+            }
+
         </Popper>
     </div>
 }
 
-function StackTraceElementUi(traceElement: RichStackTraceElement) {
+function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
     const [open, setOpen] = React.useState(false)
     const style = open ? {} : {/*cursor: "pointer",*/ color: "rgb(0 173 239)"}
     const text = open ?
-        javaMethodFullNameName(traceElement.method) + `${traceElement.line.file}:${traceElement.line.number}`
+        javaMethodFullNameName(traceElement.method) + ` (${traceElement.line.file}:${traceElement.line.number})`
         : javaMethodSimpleName(traceElement.method) + ` (Line ${traceElement.line.number})`;
 
     return <Row margin={{left: 30}}>
@@ -189,83 +190,73 @@ function StackTraceElementUi(traceElement: RichStackTraceElement) {
     </Row>;
 }
 
-//todo: rich stack trace
-function StackTraceUi({stackTrace, depth = 0}: { stackTrace: RichStackTrace, depth?: number }) {
-    const [open, setOpen] = React.useState(false);
-    const textStyle: CSSProperties = {whiteSpace: "pre-wrap", wordBreak: "break-word", minWidth: 500}
+function CausationButton(props: { text: string, onClick: () => void }) {
+    return <Surface margin={{right: 20}} padding={{horizontal: 7, vertical: 2}}
+                    className={"hoverable"}
+                    backgroundColor={"#353535"}
+                    width={"max-content"}
+                    onClick={props.onClick}>
+        <Text style={{color: "rgb(0, 173, 239)"}} text={props.text} variant={"caption"}/>
+    </Surface>
+}
+
+function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace}) {
+    const causerList = unfoldRichStackTrace(stackTrace);
+    const [currentCauserIndex, setCauserIndex] = React.useState(0)
+    const currentTrace = causerList[currentCauserIndex];
+
     return <Column padding={{right: 50, left: 300}} alignSelf={"start"}>
         <Row>
-            {StackTraceMessageUi(stackTrace)}
-            <Text text={": " + stackTrace.message.message} variant={"h5"}/>
+            <span style = {{paddingLeft: 5}}/>
+            {currentCauserIndex > 0 && <CausationButton
+                text={`Caused: ${causerList[currentCauserIndex - 1].message.class.simpleName}`}
+                onClick={() => setCauserIndex(currentCauserIndex - 1)}
+            />}
+            {currentCauserIndex > 0 && <span style = {{paddingLeft: 20}}/>}
+            {currentCauserIndex < causerList.length - 1 && <CausationButton
+                text={`Caused By: ${causerList[currentCauserIndex + 1].message.class.simpleName}`}
+                onClick={() => setCauserIndex(currentCauserIndex + 1)}
+            />}
+        </Row>
+
+
+        <Row>
+            {StackTraceMessageUi(currentTrace)}
+            <Text text={": " + currentTrace.message.message} variant={"h5"}/>
         </Row>
 
         <Divider/>
-        {stackTrace.elements.map((traceElement) => {
-            return StackTraceElementUi(traceElement)
-
-        })}
+        {currentTrace.elements.map((traceElement, i) => <StackTraceElementUi key={i} traceElement={traceElement}/>)}
     </Column>
-    // <Column>
-    //     <Column style={{
-    //         marginLeft: depth * 30,
-    //         marginTop: 5,
-    //         marginBottom: 5,
-    //         marginRight: 5
-    //     }}>
-    //         <CButton onClick={() => setOpen(!open)} style={{border: "2px solid green"}}>
-    //             <Text text={stackTrace.message}
-    //                   style={textStyle}/>
-    //         </CButton>
-    //
-    //         {open && stackTrace.trace.map((element, index) => {
-    //             return <CButton onClick={() => 0} style={{
-    //                 marginLeft: 30,
-    //                 marginTop: 5,
-    //                 marginBottom: 5,
-    //                 marginRight: 5
-    //             }}>
-    //                 <Text key={index} text={element} style={textStyle}/>
-    //             </CButton>;
-    //         })}
-    //     </Column>
-    //
-    //
-    //     {/*When opened, display the child dropdowns*/}
-    //     {
-    //         open && stackTrace.causedBy &&
-    //         <StackTraceUi depth={depth + 1} stackTrace={stackTrace.causedBy}/>
-    //     }
-    // </Column>
-
 }
 
-function Sections(sections: RichCrashReportSection[]) {
-    return sections.map((section, index) => <Section key={index} section={section}/>)
-}
-
-function Section(props: { section: RichCrashReportSection }) {
-    const [open, setOpen] = React.useState(false);
-
-
-    return (
-        <Column style={{paddingTop: 10, width: "100%"}}>
-            {/*<Center>*/}
-            <CButton onClick={() => setOpen(!open)}
-                     style={{width: 'max-content', padding: 20}}>
-
-                <Text text={props.section.name}/>
-            </CButton>
-            {/*</Center>*/}
-
-            {open && <Column>
-                {props.section.stackTrace && SectionStackTrace(props.section.stackTrace)}
-                {props.section.details && SectionDetails(props.section.details)}
-            </Column>
-            }
-
-        </Column>
-    )
-}
+// function Sections(sections: RichCrashReportSection[]) {
+//     return sections.map((section, index) => <Section key={index} section={section}/>)
+// }
+//
+// function Section(props: { section: RichCrashReportSection }) {
+//     const [open, setOpen] = React.useState(false);
+//
+//
+//     return (
+//         <Column style={{paddingTop: 10, width: "100%"}}>
+//             {/*<Center>*/}
+//             <CButton onClick={() => setOpen(!open)}
+//                      style={{width: 'max-content', padding: 20}}>
+//
+//                 <Text text={props.section.name}/>
+//             </CButton>
+//             {/*</Center>*/}
+//
+//             {open && <Column>
+//                 {props.section.stackTrace && SectionStackTrace(props.section.stackTrace)}
+//                 {props.section.details && SectionDetails(props.section.details)}
+//             </Column>
+//             }
+//
+//         </Column>
+//     )
+// }
 
 function SectionStackTrace(stackTrace: RichStackTraceElement[]) {
     const asTrace: RichStackTrace = {
@@ -285,11 +276,11 @@ function SectionStackTrace(stackTrace: RichStackTraceElement[]) {
     return <StackTraceUi stackTrace={asTrace}/>
 }
 
-function SectionDetails(sectionElements: StringMap) {
-    return objectMap(sectionElements, (key, value, index) => {
-        return <SectionElement key={index} element={{name: key, detail: value}}/>
-    })
-}
+// function SectionDetails(sectionElements: StringMap) {
+//     return objectMap(sectionElements, (key, value, index) => {
+//         return <SectionElement key={index} element={{name: key, detail: value}}/>
+//     })
+// }
 
 function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {
     return Object.keys(object).map(function (key, index) {
@@ -309,27 +300,27 @@ function objectMap(object: StringMap, mapFn: (key: string, value: string, index:
 //     return <Section section={asSection}/>
 // }
 
-function SectionElement(props: { element: { name: string, detail: string } }) {
-    const [open, setOpen] = React.useState(false)
-    return <Grid container direction={"row"} style={{margin: 5}}>
-        <Grid item xs={2}>
-
-        </Grid>
-        <Grid item>
-            <CButton onClick={() => setOpen(!open)}
-                     style={{
-                         padding: 10,
-                         marginRight: 5 /*width: "max-content", /!*left: "40%",*!/ position: "relative"*/
-                     }}>
-                <Text text={props.element.name}/>
-            </CButton>
-        </Grid>
-        {open && <Grid item>
-            <Paper style={{padding: 10}}>
-                <Text text={props.element.detail}/>
-            </Paper>
-
-        </Grid>}
-
-    </Grid>
-}
+// function SectionElement(props: { element: { name: string, detail: string } }) {
+//     const [open, setOpen] = React.useState(false)
+//     return <Grid container direction={"row"} style={{margin: 5}}>
+//         <Grid item xs={2}>
+//
+//         </Grid>
+//         <Grid item>
+//             <CButton onClick={() => setOpen(!open)}
+//                      style={{
+//                          padding: 10,
+//                          marginRight: 5 /*width: "max-content", /!*left: "40%",*!/ position: "relative"*/
+//                      }}>
+//                 <Text text={props.element.name}/>
+//             </CButton>
+//         </Grid>
+//         {open && <Grid item>
+//             <Paper style={{padding: 10}}>
+//                 <Text text={props.element.detail}/>
+//             </Paper>
+//
+//         </Grid>}
+//
+//     </Grid>
+// }

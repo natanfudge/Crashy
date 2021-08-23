@@ -15,7 +15,7 @@ interface StyleProps extends FlexChildProps {
     margin?: number | Margin | MarginAxes;
     height?: Size;
     width?: Size;
-
+    backgroundColor?: CSS.Property.BackgroundColor
 }
 
 type Size = "auto"
@@ -106,7 +106,7 @@ export interface ParentProps extends ElementProps {
 }
 
 export function deflattenStyle<T extends ElementProps>(props: T) {
-    const {padding, margin, height, width, flexBasis, flexGrow, flexShrink, order, alignSelf, style, ...otherProps} = props;
+    const {backgroundColor, padding, margin, height, width, flexBasis, flexGrow, flexShrink, order, alignSelf, style, ...otherProps} = props;
     const expandedPadding = expandPaddingOrMargin(padding);
     const expandedMargin = expandPaddingOrMargin(margin);
 
@@ -134,6 +134,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
             order,
             alignSelf,
             cursor: props.onClick? "pointer" : undefined,
+            backgroundColor,
             ...style
         },
         ...otherProps
