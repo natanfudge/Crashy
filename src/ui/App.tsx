@@ -85,7 +85,7 @@ const cameraOverhaul: Mod = {
 }
 const testRichStackTrace: RichCrashReport = {
     title: "charTyped event handler",
-    wittyComment: "Why did you do that",
+    wittyComment: "Why did you do that?",
     stackTrace: {
         message: {
             message: "charTyped event handler",
@@ -112,6 +112,25 @@ const testRichStackTrace: RichCrashReport = {
                     class: {
                         packageName: "java.util.stream",
                         simpleName: "AbstractPipeline"
+                    }
+                }
+            },
+            {
+                forgeMetadata: {
+                    additionalTransformerData: [],
+                    classloadingReasons: ["mixin", "classloading"],
+                    pluginTransformerReasons: [],
+                    version: "1.8.0_51"
+                },
+                line: {
+                    file: "GameRenderer.java",
+                    number: 69420
+                },
+                method: {
+                    name: "doStuff",
+                    class: {
+                        packageName: "io.natanfudge.github.greatshit",
+                        simpleName: "MiencraftFixer"
                     }
                 }
             }
@@ -230,8 +249,9 @@ function App() {
         <MuiThemeProvider theme={outerTheme}>
 
             <CssBaseline/>
+            {/*<h1 className="glow">GLOWING TEXT</h1>*/}
 
-            <AppBar color="inherit">
+                <AppBar color="inherit">
                 <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>
             </AppBar>
 

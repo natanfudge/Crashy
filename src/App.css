@@ -5,3 +5,25 @@
 div.stack > * {
     position: absolute;
 }
+
+body {
+    background-color: black;
+    font-family: cursive;
+}
+
+.glow {
+    font-size: 80px;
+    color: #fff;
+    text-align: center;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0px 0px #090973;
+    }
+
+    to {
+        text-shadow: 0px -0px 20px #090973;
+    }
+}

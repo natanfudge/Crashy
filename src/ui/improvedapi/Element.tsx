@@ -15,10 +15,7 @@ interface StyleProps extends FlexChildProps {
     margin?: number | Margin | MarginAxes;
     height?: Size;
     width?: Size;
-    /**
-     * @deprecated
-     */
-    style?: CSSProperties;
+
 }
 
 type Size = "auto"
@@ -38,6 +35,10 @@ interface Percent {
 export interface ElementProps extends StyleProps {
     onClick?: () => void
     className?: string
+    /**
+     * @deprecated
+     */
+    style?: CSSProperties;
 
     // popper?: React.ReactElement<any, any>
     // reference?: React.Ref<HTMLDivElement>
@@ -104,7 +105,7 @@ export interface ParentProps extends ElementProps {
     children: React.ReactNode
 }
 
-export function deflattenStyle<T extends StyleProps>(props: T) {
+export function deflattenStyle<T extends ElementProps>(props: T) {
     const {padding, margin, height, width, flexBasis, flexGrow, flexShrink, order, alignSelf, style, ...otherProps} = props;
     const expandedPadding = expandPaddingOrMargin(padding);
     const expandedMargin = expandPaddingOrMargin(margin);
@@ -122,9 +123,6 @@ export function deflattenStyle<T extends StyleProps>(props: T) {
         marginBottom: expandedMargin.bottom
     }
 
-    // @ts-ignore
-    const {children,...otherPropsTest} = props
-
     const deflattened = {
         style: {
             ...paddingObjPart, ...marginObjPart,
@@ -135,13 +133,14 @@ export function deflattenStyle<T extends StyleProps>(props: T) {
             flexShrink,
             order,
             alignSelf,
+            cursor: props.onClick? "pointer" : undefined,
             ...style
         },
         ...otherProps
     }
 
-    console.log("Flattened style = " + JSON.stringify(otherPropsTest))
-    console.log("Deflattened style = " + JSON.stringify(deflattened.style));
+    // console.log("Flattened style = " + JSON.stringify(otherPropsTest))
+    // console.log("Deflattened style = " + JSON.stringify(deflattened.style));
     return deflattened;
 }
 

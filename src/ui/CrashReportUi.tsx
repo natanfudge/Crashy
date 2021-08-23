@@ -1,5 +1,5 @@
 import {StringMap} from "../model/CrashReport";
-import {Divider, Grid, Paper} from "@material-ui/core";
+import {Divider, Grid, Paper, Popper} from "@material-ui/core";
 import React, {CSSProperties} from "react";
 import JavaLogo from "../media/java-icon.svg"
 import MinecraftLogo from "../media/minecraft_cube.svg"
@@ -15,7 +15,10 @@ import {CButton, Text} from "./ImprovedApi";
 import {Surface} from "./improvedapi/Material";
 import {Image} from "./improvedapi/Core";
 import {
-    CrashContext,
+    ForgeTraceMetadata,
+    javaClassFullName,
+    javaMethodFullNameName,
+    javaMethodSimpleName,
     LoaderType,
     OperatingSystemType,
     RichCrashReport,
@@ -23,6 +26,7 @@ import {
     RichStackTrace,
     RichStackTraceElement
 } from "../model/RichCrashReport";
+import {KeyboardArrowDown} from "@material-ui/icons";
 // import AccessTimeIcon from "@material-ui/icons/AccessTo"
 
 //TODO: make sure we display information in the most efficient way possible:
@@ -53,6 +57,7 @@ import {
 //TODO: add option to create an issue in the mod author's github page instantly, and link to that issue in the crash log page
 //TODO: index crashes in google and allow some way to communicate to solve crashes together, then maybe show an official 'solve with:' solution
 //TODO: add many 'click to copy' buttons
+//TODO: configurable UI that is retained
 
 export function SideInfo(props: { image: string, text: string }) {
     return <Surface margin={{top: 10}}>
@@ -131,23 +136,74 @@ export function CrashReportUi(report: RichCrashReport) {
 
 }
 
+function StackTraceMessageUi(stackTrace: RichStackTrace) {
+    const [open, setOpen] = React.useState(false)
+    // const className = open ? undefined : "glow"
+    const style = open ? {} : {/*cursor: "pointer",*/ color: "rgb(0 173 239)"}
+
+    const text = open ? javaClassFullName(stackTrace.message.class) : stackTrace.message.class.simpleName;
+
+    return <Row>
+        <Text style={style} text={text}
+              onClick={() => setOpen(!open)} variant={"h5"}/>
+    </Row>
+}
+
+function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
+    const [open, setOpen] = React.useState(false);
+    const anchorEl = React.useRef()
+    return <div>
+        <Row onClick={() => setOpen(!open)}>
+            <KeyboardArrowDown innerRef={anchorEl}/>
+
+        </Row>
+        <Popper open={open} anchorEl={anchorEl.current}>
+            <Surface>
+                <Column padding={10}>
+                    <Text text={"Forge Metadata"} variant={"h6"}/>
+                    {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
+                    {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
+                </Column>
+                {/*<Text text={metadata.}/>*/}
+            </Surface>
+        </Popper>
+    </div>
+}
+
+function StackTraceElementUi(traceElement: RichStackTraceElement) {
+    const [open, setOpen] = React.useState(false)
+    const style = open ? {} : {/*cursor: "pointer",*/ color: "rgb(0 173 239)"}
+    const text = open ?
+        javaMethodFullNameName(traceElement.method) + `${traceElement.line.file}:${traceElement.line.number}`
+        : javaMethodSimpleName(traceElement.method) + ` (Line ${traceElement.line.number})`;
+
+    return <Row margin={{left: 30}}>
+        <Text text={"at"} color={"textSecondary"} margin={{right: 10}}/>
+        <Text text={text} style={{
+            whiteSpace: "pre-wrap",
+            wordBreak: "break-word",
+            ...style
+        }} onClick={() => setOpen(!open)}/>
+        {traceElement.forgeMetadata && ForgeTraceMetadataUi(traceElement.forgeMetadata)}
+
+    </Row>;
+}
+
 //todo: rich stack trace
 function StackTraceUi({stackTrace, depth = 0}: { stackTrace: RichStackTrace, depth?: number }) {
     const [open, setOpen] = React.useState(false);
     const textStyle: CSSProperties = {whiteSpace: "pre-wrap", wordBreak: "break-word", minWidth: 500}
-    return <Column padding={{left: 300, right: 50}}>
-        {/*<Text text={stackTrace.message} variant={"h5"}/>*/}
-        {/*<Divider/>*/}
-        {/*{stackTrace.trace.map((traceElement) => {*/}
-        {/*    return <Row margin={{left: 30}}>*/}
-        {/*        <Text text={"at"} color={"textSecondary"} margin={{right: 10}}/>*/}
-        {/*        <Text text={traceElement} style={{*/}
-        {/*            whiteSpace: "pre-wrap",*/}
-        {/*            wordBreak: "break-word",*/}
-        {/*        }}/>*/}
-        {/*    </Row>*/}
+    return <Column padding={{right: 50, left: 300}} alignSelf={"start"}>
+        <Row>
+            {StackTraceMessageUi(stackTrace)}
+            <Text text={": " + stackTrace.message.message} variant={"h5"}/>
+        </Row>
 
-        {/*})}*/}
+        <Divider/>
+        {stackTrace.elements.map((traceElement) => {
+            return StackTraceElementUi(traceElement)
+
+        })}
     </Column>
     // <Column>
     //     <Column style={{

@@ -40,6 +40,7 @@ export interface StackTraceMessage {
     class: JavaClass
     message: string
 }
+
 export interface RichStackTraceElement {
     method: JavaMethod
     line: TraceLine
@@ -67,6 +68,18 @@ export interface JavaMethod {
 export interface JavaClass {
     packageName: string
     simpleName: string
+}
+
+export function javaClassFullName(javaClass: JavaClass) {
+    return javaClass.packageName + "." + javaClass.simpleName;
+}
+
+export function javaMethodSimpleName(javaMethod: JavaMethod) {
+    return javaMethod.class.simpleName + "." + javaMethod.name;
+}
+
+export function javaMethodFullNameName(javaMethod: JavaMethod) {
+    return javaClassFullName(javaMethod.class) + "." + javaMethod.name;
 }
 
 
