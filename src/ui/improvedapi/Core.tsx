@@ -22,3 +22,7 @@ export function CButton(props: Require<ParentProps, 'onClick'>) {
         </MenuItem>
     </Paper>
 }
+
+export function Spacer(props: ElementProps) {
+    return <div {...deflattenStyle(props)}/>
+}

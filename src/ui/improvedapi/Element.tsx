@@ -106,7 +106,20 @@ export interface ParentProps extends ElementProps {
 }
 
 export function deflattenStyle<T extends ElementProps>(props: T) {
-    const {backgroundColor, padding, margin, height, width, flexBasis, flexGrow, flexShrink, order, alignSelf, style, ...otherProps} = props;
+    const {
+        backgroundColor,
+        padding,
+        margin,
+        height,
+        width,
+        flexBasis,
+        flexGrow,
+        flexShrink,
+        order,
+        alignSelf,
+        style,
+        ...otherProps
+    } = props;
     const expandedPadding = expandPaddingOrMargin(padding);
     const expandedMargin = expandPaddingOrMargin(margin);
 
@@ -123,8 +136,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         marginBottom: expandedMargin.bottom
     }
 
-    const deflattened = {
-        style: {
+    const newStyle: CSSProperties = {
             ...paddingObjPart, ...marginObjPart,
             height: expandSize(height),
             width: expandSize(width),
@@ -133,10 +145,13 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
             flexShrink,
             order,
             alignSelf,
-            cursor: props.onClick? "pointer" : undefined,
+            cursor: props.onClick ? "pointer" : undefined,
             backgroundColor,
             ...style
-        },
+        }
+
+    const deflattened = {
+        style: newStyle,
         ...otherProps
     }
 
@@ -151,6 +166,6 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
 //     return {...props, style: {...deflattenedStyle(props), ...props.style}}
 // }
 
-export function Parent(props: ParentProps) {
-    return <div {...deflattenStyle(props)}/>
-}
+// export function Parent(props: ParentProps) {
+//     return <div {...deflattenStyle(props)}/>
+// }

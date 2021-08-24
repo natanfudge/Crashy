@@ -110,7 +110,7 @@ const testRichStackTrace: RichCrashReport = {
                 method: {
                     name: "wrapSink",
                     class: {
-                        packageName: "java.util.stream",
+                        packageName: "java.util.streamffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                         simpleName: "AbstractPipeline"
                     }
                 }

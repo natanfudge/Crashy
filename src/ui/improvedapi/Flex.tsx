@@ -1,6 +1,6 @@
-import React from "react";
+import React, {CSSProperties} from "react";
 import * as CSS from "csstype";
-import {deflattenStyle, Parent, ParentProps} from "./Element";
+import {deflattenStyle,  ParentProps} from "./Element";
 
 
 /**
@@ -40,8 +40,9 @@ function deflattenFlex(props: FlexProps) {
     return {
         style: {
             display: "flex",
-            flexWrap,
+            // flexFlow must be first to not override flexWrap and flexDirection...
             flexFlow,
+            flexWrap,
             justifyContent,
             alignItems,
             alignContent,

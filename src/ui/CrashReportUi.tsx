@@ -12,7 +12,7 @@ import QuestionMarkIcon from "../media/questionmark_icon_white.svg"
 import ClockIcon from "../media/clock_white.svg"
 import {Column, Row, Stack} from "./improvedapi/Flex";
 import {Surface} from "./improvedapi/Material";
-import {Image} from "./improvedapi/Core";
+import {Image, Spacer} from "./improvedapi/Core";
 import {
     ForgeTraceMetadata,
     javaClassFullName,
@@ -95,8 +95,11 @@ export function CrashReportUi(report: RichCrashReport) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
 
-    return <Stack margin={{top: 70}}>
-        <Column margin={{left: 10}}>
+    return <Row margin={{top: 70}} >
+        <Text text = "Right Stuff"/>
+        <Spacer flexGrow={1}/>
+
+        <Column margin={{right: 10}}>
             <SideInfo image={MinecraftLogo} text="1.17.1"/>
             <SideInfo image={context.loader.type === LoaderType.Forge ? ForgeLogo : FabricLogo}
                       text={loaderName + context.loader.version}/>
@@ -110,7 +113,7 @@ export function CrashReportUi(report: RichCrashReport) {
         {/*TODO: make the sections use a sidebar on mobile*/}
 
 
-        <Column width={"max"} alignItems={"center"}>
+        <Column width={"max"} alignItems={"center"} style = {{position :"absolute"}} padding={{right: 300, left: 300}}>
             <Column alignSelf="center" margin={{bottom: 10}}>
                 <Text text={report.title} variant="h4" color={"error"} margin={{horizontal: 100}}/>
                 <Divider style={{width: "100%"}}/>
@@ -120,7 +123,7 @@ export function CrashReportUi(report: RichCrashReport) {
             <StackTraceUi stackTrace={report.stackTrace}/>
         </Column>
 
-    </Stack>
+    </Row>
 
 
 }
@@ -132,10 +135,8 @@ function StackTraceMessageUi(stackTrace: RichStackTrace) {
 
     const text = open ? javaClassFullName(stackTrace.message.class) : stackTrace.message.class.simpleName;
 
-    return <Row>
-        <Text style={style} text={text}
+    return <Text style={style} text={text}
               onClick={() => setOpen(!open)} variant={"h5"}/>
-    </Row>
 }
 
 function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
@@ -205,7 +206,7 @@ function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace}) {
     const [currentCauserIndex, setCauserIndex] = React.useState(0)
     const currentTrace = causerList[currentCauserIndex];
 
-    return <Column padding={{right: 50, left: 300}} alignSelf={"start"}>
+    return <Column  alignSelf={"start"}>
         <Row>
             <span style = {{paddingLeft: 5}}/>
             {currentCauserIndex > 0 && <CausationButton
@@ -220,7 +221,7 @@ function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace}) {
         </Row>
 
 
-        <Row>
+        <Row flexWrap={"wrap"}>
             {StackTraceMessageUi(currentTrace)}
             <Text text={": " + currentTrace.message.message} variant={"h5"}/>
         </Row>
