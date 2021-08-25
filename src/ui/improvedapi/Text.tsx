@@ -1,11 +1,11 @@
 import {Variant as ThemeVariant} from "@material-ui/core/styles/createTypography";
-import {deflattenStyle, ParentProps} from "./Element";
+import {deflattenStyle, ManyChildParentProps} from "./Element";
 import {PropTypes, Typography} from "@material-ui/core";
 import React from "react";
 
 type Variant = ThemeVariant | 'srOnly';
 
-export interface TextThemeProps extends ParentProps {
+export interface TextThemeProps extends ManyChildParentProps {
     align?: PropTypes.Alignment;
     color?: string
     gutterBottom?: boolean;

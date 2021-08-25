@@ -1,12 +1,12 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype";
-import {deflattenStyle, ParentProps} from "./Element";
+import {deflattenStyle, ManyChildParentProps} from "./Element";
 
 
 /**
  * {@link https://css-tricks.com/snippets/css/a-guide-to-flexbox/#flexbox-properties Flexbox Guide}
  */
-export interface RowProps extends ParentProps {
+export interface RowProps extends ManyChildParentProps {
     flexWrap?: CSS.Property.FlexWrap
     flexFlow?: CSS.Property.FlexFlow
     justifyContent?: CSS.Property.JustifyContent
@@ -73,7 +73,7 @@ function Flex(props: FlexProps) {
     return <div{...deflattenFlex(props)}/>
 }
 
-export function Stack(props: ParentProps) {
+export function Stack(props: ManyChildParentProps) {
     return <div className={"stack"} {...deflattenStyle(props)}/>
 }
 

@@ -106,9 +106,16 @@ function expandSize(size?: Size): CSS.Property.Width | undefined | number {
     else return size
 }
 
-export interface ParentProps extends ElementProps {
+export type WithChildren = {
     children: React.ReactNode
 }
+
+export type WithChild  = {
+    children: JSX.Element
+}
+
+export type ManyChildParentProps = ElementProps & WithChildren
+export type SingleChildParentProps = ElementProps & WithChild
 
 export function deflattenStyle<T extends ElementProps>(props: T) {
     const {

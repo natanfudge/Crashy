@@ -15,6 +15,7 @@ import {Divider, Grow, Popper} from "@material-ui/core";
 import {Surface} from "./improvedapi/Material";
 import {KeyboardArrowDown} from "@material-ui/icons";
 import {StackTraceElement} from "../model/CrashReport";
+import {WithChild, WithChildren} from "./improvedapi/Element";
 
 
 
@@ -94,34 +95,37 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
 }
 
 function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
+    return <MoreInfoButton>
+
+            <Column padding={10}>
+                <Text text={"Forge Metadata"} variant={"h6"}/>
+                {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
+                {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
+                {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map(reason =>
+                    <Text text={`Plugin Transformer Reason: ${reason}`}/>)}
+                {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map(reason => <Text
+                    text={`Class Loading Reason: ${reason}`}/>)}
+                {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map(reason =>
+                    <Text text={`Additional Transformer Data: ${reason}`}/>)}
+            </Column>
+    </MoreInfoButton>
+}
+
+export function MoreInfoButton(props: WithChild) {
     const [open, setOpen] = React.useState(false);
     const anchorEl = React.useRef()
     return <div>
         <Row onClick={() => setOpen(!open)}>
             <KeyboardArrowDown innerRef={anchorEl}/>
-
         </Row>
         <Popper open={open} anchorEl={anchorEl.current} transition>
             {({TransitionProps}) => (
                 <Grow {...TransitionProps}>
                     <Surface>
-                        <Column padding={10}>
-                            <Text text={"Forge Metadata"} variant={"h6"}/>
-                            {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
-                            {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
-                            {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map(reason =>
-                                <Text text={`Plugin Transformer Reason: ${reason}`}/>)}
-                            {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map(reason => <Text
-                                text={`Class Loading Reason: ${reason}`}/>)}
-                            {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map(reason =>
-                                <Text text={`Additional Transformer Data: ${reason}`}/>)}
-                        </Column>
-                        {/*<Text text={metadata.}/>*/}
+                        {props.children}
                     </Surface>
                 </Grow>
-            )
-            }
-
+            )}
         </Popper>
     </div>
 }

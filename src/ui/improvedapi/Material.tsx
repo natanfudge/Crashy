@@ -1,6 +1,6 @@
-import {deflattenStyle, ParentProps} from "./Element";
+import {deflattenStyle, ManyChildParentProps, SingleChildParentProps} from "./Element";
 import {Paper} from "@material-ui/core";
 
-export function Surface(props: ParentProps) {
+export function Surface(props: SingleChildParentProps) {
     return <Paper {...deflattenStyle(props)}/>
 }

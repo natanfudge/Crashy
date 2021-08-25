@@ -1,35 +1,36 @@
 import React from "react";
 import {Column, Row} from "./improvedapi/Flex";
-import {CDivider, Parent, Spacer} from "./improvedapi/Core";
-import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "../model/RichCrashReport";
+import {CDivider, Wrap, Spacer} from "./improvedapi/Core";
+import {Mod, RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "../model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
 import {errorColor} from "./App";
 import {CrashContextUi} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
-import {StackTraceElementsUi, StackTraceUi} from "./StackTraceUi";
+import {MoreInfoButton, StackTraceElementsUi, StackTraceUi} from "./StackTraceUi";
 import {StackTraceElement, StringMap} from "../model/CrashReport";
+import {CrashReportSectionUi} from "./CrashReportSectionUi";
 
 export function CrashReportUi(report: RichCrashReport) {
     const context = report.context;
 
     const [activeSectionIndex, setActiveSectionIndex] = React.useState(0)
 
-    const sectionsIncludingMainTrace = ["Stack Trace"]
+    const sectionNames = ["Stack Trace", "Mods"]
     //TODO: make "mods" the second option
-    report.sections.forEach((section) => sectionsIncludingMainTrace.push(section.name));
+    report.sections.forEach((section) => sectionNames.push(section.name));
 
     return <Row margin={{top: 70}}>
 
-        <Parent width={250} style={{minWidth: 250}}>
+        <Wrap width={250} style={{minWidth: 250}}>
             {CrashContextUi(context)}
-        </Parent>
+        </Wrap>
 
         {CenterView(report, activeSectionIndex)}
 
-        <Parent width={250} style={{minWidth: 250}}>
-            <SectionNavigation sections={sectionsIncludingMainTrace}
+        <Wrap width={250} style={{minWidth: 250}}>
+            <SectionNavigation sections={sectionNames}
                                activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
-        </Parent>
+        </Wrap>
     </Row>
 }
 
@@ -44,60 +45,44 @@ function CenterView(report: RichCrashReport, activeSectionIndex: number) {
         {
             activeSectionIndex === 0 ?
                 <StackTraceUi stackTrace={report.stackTrace}/>
-                // We already use up the 0 index for the main stack trace, so we need to reduce the index by 1.
-                : CrashReportSectionUi(report.sections[activeSectionIndex - 1])
+                : activeSectionIndex === 1 ?
+                    ModListUi(report.mods)
+                    // We already use up the 0 and 1 index for the main stack trace and mods, so we need to reduce the index by 2.
+                    : CrashReportSectionUi(report.sections[activeSectionIndex - 2])
         }
     </Column>;
 }
 
-function CrashReportSectionUi(section: RichCrashReportSection) {
-    return <Column margin={{top: 10}} width={"max"}>
+function ModListUi(mods: Mod[]) {
+    return <Column margin={{top: 20}} width={"max"}>
         <Column width={300} alignSelf={"center"}>
-            <Text text={section.name} variant={"h4"} alignSelf={"center"}/>
+            <Text text={"Mods"} variant={"h4"} alignSelf={"center"}/>
             <CDivider width={"max"}/>
         </Column>
-
-        {CrashReportSectionDetails(section.details)}
-
-        <Column alignSelf={"start"}>
-            {
-                section.stackTrace && CrashReportSectionTrace(section.stackTrace)
-            }
-        </Column>
+        {mods.map(mod => ModUi(mod))}
     </Column>
 }
 
-function CrashReportSectionTrace(trace: RichStackTraceElement[]) {
-    return [
-        <Spacer height={20}/>,
-        <Text text={"Stack Trace"} variant={"h5"}/>,
-        <CDivider width={"max"}/>,
-        StackTraceElementsUi(trace)
-    ]
-}
-
-function CrashReportSectionDetails(details: StringMap) {
+function ModUi(mod: Mod) {
+    // if(mod.forgeMetadata?.file) moreInfoText += " " + mod.forgeMetadata.file
+    // if(mod.forgeMetadata?.signature) moreInfoText += " " + mod.forgeMetadata.file
+    const metadata = mod.forgeMetadata
     return <Row>
-        <Column>
-            {objectMap(details, (name, _) =>
-                <Text text={name} color={"#cbebe9"} style={{fontWeight: "bold"}}/>
-            )}
-        </Column>
-        <Spacer width = {5}/>
-        <CDivider height={"max"} width={1}/>
-        <Spacer width = {10}/>
-        <Column>
-            {objectMap(details, (_, detail) =>
-                <Text text={detail}/>
-            )}
-        </Column>
-    </Row>
-}
+        <Text text={mod.name + " " + mod.version} variant={"h6"} alignSelf={"start"}/>
+        <Wrap alignSelf={"center"}>
+            <MoreInfoButton>
+                <Column  padding={10}>
+                    <Text text={mod.id} alignSelf={"center"}/>
+                    <Spacer height={5}/>
+                    {metadata?.file && <Text text={"File: " + metadata.file}/>}
+                    {metadata?.signature && <Text text={"Signature: " + metadata.signature}/>}
+                    {metadata?.completeness && <Text text={metadata.completeness}/>}
+                </Column>
 
-function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {
-    return Object.keys(object).map(function (key, index) {
-        return mapFn(key, object[key], index);
-    }, {})
+            </MoreInfoButton>
+        </Wrap>
+
+    </Row>;
 }
 
 //TODO: make sure we display information in the most efficient way possible:
