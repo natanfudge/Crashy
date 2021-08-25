@@ -73,16 +73,6 @@ const testCrashReport: CrashReport = {
 }
 
 
-const cameraOverhaul: Mod = {
-    name: "Camera Overhaul",
-    id: "cameraoverhaul",
-    version: "1.0.0",
-    forgeMetadata: {
-        file: "cameraoverhaul-1_0-1_16_4.jar",
-        completeness: "DONE",
-        signature: "22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90"
-    }
-}
 const testRichStackTrace: RichCrashReport = {
     title: "charTyped event handler",
     wittyComment: "Why did you do that?",
@@ -215,12 +205,20 @@ const testRichStackTrace: RichCrashReport = {
                 file: "notenoughcrashes-3.2.0-forge.jar",
                 completeness: "DONE",
                 signature: "NOSIGNATURE"
-            }
+            },
+            isSuspected: false
         },
-        cameraOverhaul
-    ],
-    suspectedMods: [
-        cameraOverhaul
+        {
+            name: "Camera Overhaul",
+            id: "cameraoverhaul",
+            version: "1.0.0",
+            forgeMetadata: {
+                file: "cameraoverhaul-1_0-1_16_4.jar",
+                completeness: "DONE",
+                signature: "22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90"
+            },
+            isSuspected: true
+        }
     ],
     sections: [
         {
@@ -314,6 +312,7 @@ const testRichStackTrace: RichCrashReport = {
 // 		forge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90
 const parsed = parseCrashReport(crashWithOptifine);
 
+//TODO: track when the app crashes for users
 export const clickableColor = "rgb(0, 173, 239)"
 export const errorColor = "rgb(234,8,8)"
 export const fadedOutColor = grey[600]

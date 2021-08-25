@@ -9,6 +9,7 @@ import {SectionNavigation} from "./SectionNavigation";
 import {MoreInfoButton, StackTraceElementsUi, StackTraceUi} from "./StackTraceUi";
 import {StackTraceElement, StringMap} from "../model/CrashReport";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
+import {ModListUi} from "./ModListUi";
 
 export function CrashReportUi(report: RichCrashReport) {
     const context = report.context;
@@ -53,37 +54,7 @@ function CenterView(report: RichCrashReport, activeSectionIndex: number) {
     </Column>;
 }
 
-function ModListUi(mods: Mod[]) {
-    return <Column margin={{top: 20}} width={"max"}>
-        <Column width={300} alignSelf={"center"}>
-            <Text text={"Mods"} variant={"h4"} alignSelf={"center"}/>
-            <CDivider width={"max"}/>
-        </Column>
-        {mods.map(mod => ModUi(mod))}
-    </Column>
-}
 
-function ModUi(mod: Mod) {
-    // if(mod.forgeMetadata?.file) moreInfoText += " " + mod.forgeMetadata.file
-    // if(mod.forgeMetadata?.signature) moreInfoText += " " + mod.forgeMetadata.file
-    const metadata = mod.forgeMetadata
-    return <Row>
-        <Text text={mod.name + " " + mod.version} variant={"h6"} alignSelf={"start"}/>
-        <Wrap alignSelf={"center"}>
-            <MoreInfoButton>
-                <Column  padding={10}>
-                    <Text text={mod.id} alignSelf={"center"}/>
-                    <Spacer height={5}/>
-                    {metadata?.file && <Text text={"File: " + metadata.file}/>}
-                    {metadata?.signature && <Text text={"Signature: " + metadata.signature}/>}
-                    {metadata?.completeness && <Text text={metadata.completeness}/>}
-                </Column>
-
-            </MoreInfoButton>
-        </Wrap>
-
-    </Row>;
-}
 
 //TODO: make sure we display information in the most efficient way possible:
 // - 0-clicks:

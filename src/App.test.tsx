@@ -3,6 +3,7 @@ import {render, screen} from '@testing-library/react';
 import App from './ui/App';
 import {parseCrashReport} from "./model/CrashReportParser";
 import {crashWithOptifine, testLog} from "./model/TestCrashes";
+import {enrichCrashReport} from "./model/CrashReportEnricher";
 
 test('renders learn react link', () => {
     render(<App/>);
@@ -221,4 +222,35 @@ test("Optifine crash report is parsed correctly", () => {
     expect(optifabricDetails["OptiFine remapped jar"]).toEqual("C:/Users/natan/Desktop/MultiMC/instances/1.17 NEC error identifying test/.minecraft/.optifine/OptiFine_1.17_HD_U_G9_pre21/Optifine-mapped.jar")
     expect(optifabricDetails["OptiFabric error"]).toEqual("<None>")
 
+})
+
+test("First crash report is enriched properly", () => {
+    const enriched = enrichCrashReport(parseCrashReport(testLog));
+    //    id: string
+    //     name: string
+    //     version: string
+    //     isSuspected: boolean
+    //     forgeMetadata?: ForgeModMetadata
+    expect(enriched.mods.length).toEqual(116)
+    expect(enriched.mods[0]).toEqual(
+        {id: "architectury", name :"Architectury", version: "2.0.7", isSuspected: false}
+    );
+    expect(enriched.mods[1]).toEqual(
+        {id: "audiooutput", name :"AudioOutput", version: "0.0.4", isSuspected: false}
+    );
+    //start: 141
+    expect(enriched.mods[76]).toEqual(
+        {id: "fabrishot", name :"Fabrishot", version: "1.5.0", isSuspected: false}
+    );
+    expect(enriched.mods[108]).toEqual(
+        {id: "seamless_loading_screen", name :"Seamless Loading Screen", version: "1.3.5+1.17", isSuspected: true}
+    );
+    expect(enriched.mods[109]).toEqual(
+        {id: "smoothboot", name :"Smooth Boot", version: "1.16.5-1.6.0", isSuspected: false}
+    );
+    expect(enriched.mods[115]).toEqual(
+        {id: "transliterationlib", name :"TRansliterationLib", version: "1.1.0", isSuspected: true}
+    );
+
+    //TODO: don't display 'mods' in UI.
 })

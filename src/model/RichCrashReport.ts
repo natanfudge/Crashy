@@ -6,7 +6,6 @@ export interface RichCrashReport {
     context: CrashContext
     stackTrace: RichStackTrace
     mods: Mod[]
-    suspectedMods: Mod[]
     sections: RichCrashReportSection[]
 }
 
@@ -21,6 +20,7 @@ export interface Mod {
     id: string
     name: string
     version: string
+    isSuspected: boolean
     forgeMetadata?: ForgeModMetadata
 }
 

@@ -21,6 +21,7 @@ interface StyleProps extends FlexChildProps {
     height?: Size;
     width?: Size;
     backgroundColor?: CSS.Property.BackgroundColor
+    isBold?: boolean
 }
 
 type Size = "auto"
@@ -110,7 +111,7 @@ export type WithChildren = {
     children: React.ReactNode
 }
 
-export type WithChild  = {
+export type WithChild = {
     children: JSX.Element
 }
 
@@ -130,6 +131,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         order,
         alignSelf,
         style,
+        isBold,
         ...otherProps
     } = props;
     const expandedPadding = expandPaddingOrMargin(padding);
@@ -149,18 +151,19 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
     }
 
     const newStyle: CSSProperties = {
-            ...paddingObjPart, ...marginObjPart,
-            height: expandSize(height),
-            width: expandSize(width),
-            flexBasis,
-            flexGrow,
-            flexShrink,
-            order,
-            alignSelf: fixAlignment(alignSelf),
-            cursor: props.onClick ? "pointer" : undefined,
-            backgroundColor,
-            ...style
-        }
+        ...paddingObjPart, ...marginObjPart,
+        height: expandSize(height),
+        width: expandSize(width),
+        flexBasis,
+        flexGrow,
+        flexShrink,
+        order,
+        fontWeight: isBold ? "bold" : undefined,
+        alignSelf: fixAlignment(alignSelf),
+        cursor: props.onClick ? "pointer" : undefined,
+        backgroundColor,
+        ...style
+    }
 
     const deflattened = {
         style: newStyle,

@@ -274,6 +274,7 @@ Details:
 \tOptiFine Version: OptiFine_1.17_HD_U_G9_pre21
 \tOptiFine Build: 20210612-020007
 \tRender Distance Chunks: 8
+\tSuspected Mods: Seamless Loading Screen (seamless_loading_screen), TRansliterationLib (transliterationlib)
 \tMipmaps: 4
 \tAnisotropic Filtering: 1
 \tAntialiasing: 0
