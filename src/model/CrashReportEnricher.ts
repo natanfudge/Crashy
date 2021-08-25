@@ -1,5 +1,14 @@
-import {CrashReport, StringMap} from "./CrashReport";
-import {LoaderType, Mod, OperatingSystemType, RichCrashReport} from "./RichCrashReport";
+import {CrashReport, StackTrace, StackTraceElement, StringMap} from "./CrashReport";
+import {
+    ForgeModMetadata, ForgeTraceMetadata,
+    JavaClass, JavaMethod,
+    LoaderType,
+    Mod,
+    OperatingSystemType,
+    RichCrashReport,
+    RichStackTrace, RichStackTraceElement,
+    StackTraceMessage, TraceLine
+} from "./RichCrashReport";
 
 export function enrichCrashReport(report: CrashReport): RichCrashReport {
 
@@ -7,21 +16,11 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
         wittyComment: report.wittyComment,
         title: report.description,
         mods: getMods(report),
-        stackTrace: {
-            elements: [],
-            message: {
-                message: "",
-                class: {
-                    packageName : "",
-                    simpleName: ""
-                }
-            },
-            causedBy: undefined
-        },
+        stackTrace: enrichStackTrace(report.stacktrace),
         sections: [],
         context: {
             time: new Date(),
-            javaVersion :"",
+            javaVersion: "",
             minecraftVersion: "",
             loader: {
                 type: LoaderType.Fabric,
@@ -33,6 +32,127 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
             }
         }
     }
+}
+
+function enrichStackTrace(trace: StackTrace): RichStackTrace {
+    return {
+        causedBy: trace.causedBy ? enrichStackTrace(trace.causedBy) : undefined,
+        message: enrichStackTraceMessage(trace.message),
+        elements: enrichStackTraceElements(trace.trace)
+    }
+}
+
+function enrichStackTraceMessage(rawMessage: string): StackTraceMessage {
+    //Example: java.lang.NullPointerException: Unexpected error
+    const [exception, message] = rawMessage.split(": ")
+    return {
+        message: message,
+        class: parseJavaClass(exception)
+    }
+}
+
+function enrichStackTraceElements(elements: StackTraceElement[]): RichStackTraceElement[] {
+    //	at net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344) ~[?:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,xf:OptiFine:default,pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}
+    return elements.map(element => {
+        // Ignore NEC's silly "Not Enough Crashes deobfuscated stack trace" thing
+        if (element.startsWith("Not Enough")) return undefined;
+        const hasForgeMetadata = element.includes("[")
+        const [call, metadata] = hasForgeMetadata ? splitForgeMetadata(element) : [element, undefined]
+        const {line, method} = parseTraceCall(call)
+        return {
+            line,
+            method,
+            forgeMetadata: metadata? parseForgeTraceMetadata(metadata): undefined
+        }
+    }).filter(element => element !== undefined).map(element => element!)
+}
+
+function parseForgeTraceMetadata(metadata: string): ForgeTraceMetadata {
+//    ?:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,xf:OptiFine:default,pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}
+
+    const [jarFileAndVersion, transformerData] = metadata.split("] {")
+    const [jarFile, version] = jarFileAndVersion.split(":")
+
+    // Remove trailing '}'
+    const transformerDataList = removeLastChar(transformerData).split(",")
+    // When using split on an empty string it returns [""] instead of [].
+    const actualTransformerDataList = transformerDataList[0] === "" ? [] : transformerDataList
+    const additionalTransformerData = [];
+    const classloadingReasons = [];
+    const pluginTransformerReasons = [];
+    for (const transformerDataItem of actualTransformerDataList) {
+        const suffix = transformerDataItem.substring(0, 2)
+        // Indices 0,1,2 are used by the 're:' / 'pl:' / 'xf:'
+        const data = transformerDataItem.substring(3)
+        switch (suffix) {
+            case "re":
+                classloadingReasons.push(data)
+                break;
+            case "pl":
+                pluginTransformerReasons.push(data)
+                break;
+            case "xf":
+                additionalTransformerData.push(data)
+                break;
+            default:
+                throw new Error("Unexpected metadata suffix: " + suffix)
+        }
+    }
+
+    return {
+        jarFile: jarFile === "?" ? undefined : jarFile,
+        version: version === "?" ? undefined : version,
+        additionalTransformerData,
+        classloadingReasons,
+        pluginTransformerReasons
+    }
+}
+
+function parseTraceCall(call: string): { line: TraceLine, method: JavaMethod } {
+//    net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344)
+    const [method, line] = call.split("(")
+    return {
+        method: parseJavaMethod(method),
+        line: parseTraceLine(line)
+    }
+}
+
+function parseTraceLine(line: string): TraceLine {
+    const [file, lineNumber] = line.split(":")
+    return {
+        // If there is no line number the file will have a trailing ')' that we need to remove
+        file: lineNumber? file: removeLastChar(file),
+        number: lineNumber? parseInt(removeLastChar(lineNumber)) : undefined
+    }
+}
+
+function splitForgeMetadata(traceElement: string): [string, string] {
+    const [call, metadata] = traceElement.split("[")
+    return [
+        removeSuffix(call, "~").trimEnd(), //dknow what this squiggle means
+        metadata
+    ]
+}
+
+function removeSuffix(str: string, suffix: string): string {
+    return str.endsWith(suffix) ? str.substring(0, str.length - suffix.length) : str;
+}
+
+function parseJavaMethod(methodString: string): JavaMethod {
+    const parts = methodString.split(".")
+    const javaClass = withoutLast(parts).join(".")
+    const methodName = last(parts)
+    return {
+        name: methodName,
+        class: parseJavaClass(javaClass)
+    }
+}
+
+function parseJavaClass(classString: string): JavaClass {
+    const parts = classString.split(".")
+    const packageName = withoutLast(parts).join(".")
+    const simpleName = last(parts)
+    return {simpleName, packageName}
 }
 
 const SystemDetailsTitle = "System Details"
@@ -70,7 +190,7 @@ function parseFabricMods(systemDetails: StringMap): Mod[] {
     // Remove leading newline
     const noLeadingNewline = raw.substring(1)
     const suspectedMods = getSuspectedModIds(systemDetails);
-    const mods = noLeadingNewline.split("\n")
+    return noLeadingNewline.split("\n")
         .map(modLine => {
             // Remove leading tab
             const noLeadingTab = modLine.substring(1)
@@ -85,19 +205,19 @@ function parseFabricMods(systemDetails: StringMap): Mod[] {
             const version = last(words)
 
             return {
-                id: id,
-                name: name,
-                version: version,
+                id, name, version,
                 forgeMetadata: undefined,
                 isSuspected: suspectedMods.includes(id)
             }
-        })
-
-    return mods;
+        });
 }
 
 function removeLastChar(str: string): string {
     return str.substring(0, str.length - 1)
+}
+
+function withoutLast<T>(arr: T[]): T[] {
+    return arr.slice(0, arr.length - 1)
 }
 
 function last<T>(arr: T[]): T {
@@ -105,5 +225,21 @@ function last<T>(arr: T[]): T {
 }
 
 function parseForgeMods(systemDetails: StringMap): Mod[] {
-    return [] //TODO
+    const raw = systemDetails[ForgeModsTitle]
+    // Remove leading newline
+    const noLeadingNewline = raw.substring(1)
+    const suspectedMods = getSuspectedModIds(systemDetails);
+
+    return noLeadingNewline.split("\n")
+        .map(modLine => {
+            // Remove leading tab
+            const noLeadingTab = modLine.substring(1)
+            const [file, name, id, version, completeness, signature] = noLeadingTab.split("|")
+                .map(part => part.trimEnd());
+            return {
+                id, name, version,
+                isSuspected: suspectedMods.includes(id),
+                forgeMetadata: {file, completeness, signature}
+            }
+        })
 }

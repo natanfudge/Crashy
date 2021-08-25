@@ -54,7 +54,9 @@ export interface StackTraceMessage {
     message: string
 }
 
-export interface RichStackTraceElement {
+//TODO: implement parsing and testing of this.
+// May be number in the case of "X more..."
+export type RichStackTraceElement = number | {
     method: JavaMethod
     line: TraceLine
     forgeMetadata?: ForgeTraceMetadata
@@ -70,7 +72,8 @@ export interface ForgeTraceMetadata {
 
 export interface TraceLine {
     file: string
-    number: number
+    // Can be null in native methods
+    number?: number
 }
 
 export interface JavaMethod {

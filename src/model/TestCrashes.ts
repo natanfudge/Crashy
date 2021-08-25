@@ -393,7 +393,7 @@ Details:
 \t\tshulkertooltip-1.9.9-1.jar                        |Shulker Tooltip               |shulkertooltip                |1.9.9               |DONE      |NOSIGNATURE
 \t\tjei-1.16.5-7.7.1.118.jar                          |Just Enough Items             |jei                           |7.7.1.118           |DONE      |NOSIGNATURE
 \tCrash Report UUID: 1d842d1d-3c83-4466-94e4-e704392c8255
-\tSuspected Mods: Unknown
+\tSuspected Mods: ToolSwap (toolswap), Advanced XRay (xray)
 \tLaunched Version: 1.16.5-forge-36.1.16
 \tBackend library: LWJGL version 3.2.2 build 10
 \tBackend API: GeForce GT 240M/PCIe/SSE2 GL version 3.3.0, NVIDIA Corporation
