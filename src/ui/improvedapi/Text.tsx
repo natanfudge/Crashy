@@ -7,15 +7,7 @@ type Variant = ThemeVariant | 'srOnly';
 
 export interface TextThemeProps extends ParentProps {
     align?: PropTypes.Alignment;
-    color?:
-        | 'initial'
-        | 'inherit'
-        | 'primary'
-        | 'secondary'
-        | 'textPrimary'
-        | 'textSecondary'
-        | 'error';
-    display?: 'initial' | 'block' | 'inline';
+    color?: string
     gutterBottom?: boolean;
     noWrap?: boolean;
     paragraph?: boolean;
@@ -23,8 +15,30 @@ export interface TextThemeProps extends ParentProps {
     variantMapping?: Partial<Record<Variant, string>>;
 }
 
+// interface Color {
+//     value: string
+// }
+//
+// // const x = rgb(5,5,5);
+// // function rgb(r: number, g : number, b: number){
+// //     return `rgb(${r},${g},${b})`
+// // }
+//
+// const x = color("rgb(0,0,0)")
+//
+// function color(c: string){
+//     return c;
+// }
+
 export function TextTheme(props: TextThemeProps) {
-    return <Typography {...deflattenStyle(props)}/>
+    const {color, style, ...otherProps} = deflattenStyle(props);
+
+    return <Typography
+        style={{
+            color: color,
+            ...style
+        }}
+        {...otherProps}/>
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {

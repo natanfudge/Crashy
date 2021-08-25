@@ -1,5 +1,5 @@
 import {deflattenStyle, ElementProps, ParentProps} from "./Element";
-import {MenuItem, Paper} from "@material-ui/core";
+import {Divider, MenuItem, Paper} from "@material-ui/core";
 import React from "react";
 
 export interface ImageProps extends ElementProps {
@@ -25,4 +25,11 @@ export function CButton(props: Require<ParentProps, 'onClick'>) {
 
 export function Spacer(props: ElementProps) {
     return <div {...deflattenStyle(props)}/>
+}
+export function Parent(props: ParentProps) {
+    return <div {...deflattenStyle(props)}/>
+}
+
+export function CDivider(props: ElementProps) {
+    return <Divider {...deflattenStyle(props)}/>
 }

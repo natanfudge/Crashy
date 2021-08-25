@@ -224,7 +224,7 @@ const testRichStackTrace: RichCrashReport = {
     ],
     sections: [
         {
-            name: "Head",
+            name: "Head 1",
             stackTrace: [{
                 forgeMetadata: {
                     additionalTransformerData: ["Optifine:default", "fml:twilightforest:render"],
@@ -246,10 +246,66 @@ const testRichStackTrace: RichCrashReport = {
                 }
             }],
             details: {
+                "Thread":"amar thread",
                 "All players": "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
                 "Chunk stats": "Client Chunk Cache: 361, 225"
             },
-            thread: "amar thread"
+        },
+        {
+            name: "Head 2",
+            stackTrace: [{
+                forgeMetadata: {
+                    additionalTransformerData: ["Optifine:default", "fml:twilightforest:render"],
+                    classloadingReasons: ["mixin", "classloading"],
+                    jarFile: "1.16.5-Forge%2036.1.0-OptiFine_G8.jar",
+                    pluginTransformerReasons: ["accesstransformer:B", "runtimedistcleaner:A"],
+                    version: "1.8.0_51"
+                },
+                line: {
+                    file: "GameRenderer.java",
+                    number: 344
+                },
+                method: {
+                    name: "wrapSink",
+                    class: {
+                        packageName: "java.util.stream",
+                        simpleName: "AbstractPipeline"
+                    }
+                }
+            }],
+            details: {
+                "Thread":"amar thread",
+                "All players": "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
+                "Chunk stats": "Client Chunk Cache: 361, 225"
+            },
+        },
+        {
+            name: "Head 3",
+            stackTrace: [{
+                forgeMetadata: {
+                    additionalTransformerData: ["Optifine:default", "fml:twilightforest:render"],
+                    classloadingReasons: ["mixin", "classloading"],
+                    jarFile: "1.16.5-Forge%2036.1.0-OptiFine_G8.jar",
+                    pluginTransformerReasons: ["accesstransformer:B", "runtimedistcleaner:A"],
+                    version: "1.8.0_51"
+                },
+                line: {
+                    file: "GameRenderer.java",
+                    number: 344
+                },
+                method: {
+                    name: "wrapSink",
+                    class: {
+                        packageName: "java.util.stream",
+                        simpleName: "AbstractPipeline"
+                    }
+                }
+            }],
+            details: {
+                "Thread":"amar thread",
+                "All players": "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
+                "Chunk stats": "Client Chunk Cache: 361, 225"
+            },
         }
     ]
 }
@@ -257,6 +313,12 @@ const testRichStackTrace: RichCrashReport = {
 // 		cameraoverhaul-1_0-1_16_4.jar                     |Camera Overhaul               |cameraoverhaul                |1.0.0               |DONE      |NOSIGNATURE
 // 		forge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90
 const parsed = parseCrashReport(crashWithOptifine);
+
+export const clickableColor = "rgb(0, 173, 239)"
+export const errorColor = "rgb(234,8,8)"
+export const fadedOutColor = grey[600]
+export const slightlyPronouncedColor = "#4242421f"
+// export const
 
 //TODO: note that developers generally prefer their crashlog to be in simple texts, so try to get rid of the elevation stuff.
 function App() {
@@ -279,7 +341,7 @@ function App() {
             <CssBaseline/>
             {/*<h1 className="glow">GLOWING TEXT</h1>*/}
 
-            <AppBar color="inherit">
+            <AppBar style = {{backgroundColor : slightlyPronouncedColor}}>
                 <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>
             </AppBar>
 

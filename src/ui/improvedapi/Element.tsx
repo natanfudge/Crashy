@@ -1,13 +1,18 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype"
+import {PropTypes} from "@material-ui/core";
+import {Alignment, fixAlignment} from "./Flex";
 
 
 interface FlexChildProps {
     order?: CSS.Property.Order
     flexGrow?: CSS.Property.FlexGrow
     flexShrink?: CSS.Property.FlexShrink
+    /**
+     * sets the initial main size
+     */
     flexBasis?: CSS.Property.FlexBasis
-    alignSelf?: CSS.Property.AlignSelf
+    alignSelf?: Alignment
 }
 
 interface StyleProps extends FlexChildProps {
@@ -144,7 +149,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
             flexGrow,
             flexShrink,
             order,
-            alignSelf,
+            alignSelf: fixAlignment(alignSelf),
             cursor: props.onClick ? "pointer" : undefined,
             backgroundColor,
             ...style
