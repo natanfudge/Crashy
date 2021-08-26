@@ -5,9 +5,10 @@ import {grey, red} from "@material-ui/core/colors";
 import {CrashReport, StackTrace, StackTraceElement} from "../model/CrashReport";
 import {CrashReportUi} from "./CrashReportUi";
 import {parseCrashReport} from "../model/CrashReportParser";
-import {crashWithOptifine} from "../model/TestCrashes";
+import {testFabricCrashReport, testForgeCrashReport} from "../model/TestCrashes";
 import {LoaderType, Mod, OperatingSystemType, RichCrashReport} from "../model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
+import {parseCrashReportRich} from "../model/CrashReportEnricher";
 
 
 const testStackTrace: StackTrace = {
@@ -310,13 +311,13 @@ const testRichStackTrace: RichCrashReport = {
 //		notenoughcrashes-3.2.0-forge.jar                  |Not Enough Crashes            |notenoughcrashes              |3.2.0               |DONE      |NOSIGNATURE
 // 		cameraoverhaul-1_0-1_16_4.jar                     |Camera Overhaul               |cameraoverhaul                |1.0.0               |DONE      |NOSIGNATURE
 // 		forge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90
-const parsed = parseCrashReport(crashWithOptifine);
+const parsed = parseCrashReport(testFabricCrashReport);
 
 //TODO: track when the app crashes for users
 export const clickableColor = "rgb(0, 173, 239)"
 export const errorColor = "rgb(234,8,8)"
 export const fadedOutColor = grey[600]
-export const slightlyPronouncedColor = "#4242421f"
+export const slightlyPronouncedColor = "#323232"
 // export const
 
 //TODO: note that developers generally prefer their crashlog to be in simple texts, so try to get rid of the elevation stuff.
@@ -345,7 +346,7 @@ function App() {
             </AppBar>
 
             <div style={{marginTop: 70}}>
-                {CrashReportUi(testRichStackTrace)}
+                {CrashReportUi(parseCrashReportRich(testFabricCrashReport))}
                 {/*<Grid container direction="row" style = {{marginTop: 70}}>*/}
                 {/*    /!*<Text text = "  asdf"/>*!/*/}
                 {/*    /!*<Text text = "   addddloha"/>*!/*/}

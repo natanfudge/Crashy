@@ -2,8 +2,9 @@ import React from 'react';
 import {render, screen} from '@testing-library/react';
 import App from './ui/App';
 import {parseCrashReport} from "./model/CrashReportParser";
-import {crashWithOptifine, testLog} from "./model/TestCrashes";
+import {testFabricCrashReport, testForgeCrashReport} from "./model/TestCrashes";
 import {enrichCrashReport} from "./model/CrashReportEnricher";
+import {LoaderType, OperatingSystemType} from "./model/RichCrashReport";
 
 test('renders learn react link', () => {
     render(<App/>);
@@ -13,7 +14,7 @@ test('renders learn react link', () => {
 
 
 test('Forge Crash Report is parsed correctly', () => {
-    const report = parseCrashReport(testLog);
+    const report = parseCrashReport(testForgeCrashReport);
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
     expect(report.time).toEqual("15.08.21 17:36")
     expect(report.description).toEqual("Unexpected error")
@@ -120,7 +121,7 @@ test('Forge Crash Report is parsed correctly', () => {
 });
 
 test("Fabric crash report is parsed correctly", () => {
-    const report = parseCrashReport(crashWithOptifine)
+    const report = parseCrashReport(testFabricCrashReport)
     expect(report.wittyComment).toBe("Hi. I'm Minecraft, and I'm a crashaholic.")
     expect(report.stacktrace.trace).toEqual([
             "Not Enough Crashes deobfuscated stack trace.(1.17+build.13)",
@@ -225,7 +226,7 @@ test("Fabric crash report is parsed correctly", () => {
 })
 
 test("Fabric crash report is enriched properly", () => {
-    const enriched = enrichCrashReport(parseCrashReport(crashWithOptifine));
+    const enriched = enrichCrashReport(parseCrashReport(testFabricCrashReport));
     expect(enriched.mods.length).toEqual(116)
     expect(enriched.mods[0]).toEqual(
         {id: "architectury", name: "Architectury", version: "2.0.7", isSuspected: false}
@@ -297,11 +298,23 @@ test("Fabric crash report is enriched properly", () => {
         new Date(2021,8,20,7,41)
     )
 
+    expect(enriched.context.loader).toEqual({
+        type: LoaderType.Fabric,
+        version: "0.11.6"
+    })
+
+    expect(enriched.context.javaVersion).toEqual("16.0.2")
+    expect(enriched.context.minecraftVersion).toEqual("1.17")
+    expect(enriched.context.operatingSystem).toEqual({
+        type: OperatingSystemType.Windows,
+        name: "Windows 10 (64 bit)"
+    })
+
 })
 //TODO: don't display 'mods' in UI.
 
 test("Forge crash report is enriched properly", () => {
-    const enriched = enrichCrashReport(parseCrashReport(testLog));
+    const enriched = enrichCrashReport(parseCrashReport(testForgeCrashReport));
 
     expect(enriched.mods).toEqual([
         {
@@ -454,4 +467,16 @@ test("Forge crash report is enriched properly", () => {
     expect(time).toEqual(
         new Date(2021,8,15,17,36)
     )
+
+    expect(enriched.context.loader).toEqual({
+        type: LoaderType.Forge,
+        version: "36.1.16"
+    })
+
+    expect(enriched.context.javaVersion).toEqual("1.8.0_51")
+    expect(enriched.context.minecraftVersion).toEqual("1.16.5")
+    expect(enriched.context.operatingSystem).toEqual({
+        type: OperatingSystemType.Windows,
+        name: "Windows 7 (32 bit)"
+    })
 })

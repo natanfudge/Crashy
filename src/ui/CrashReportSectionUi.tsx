@@ -33,21 +33,31 @@ function CrashReportSectionTrace(trace: RichStackTraceElement[]) {
 }
 
 function CrashReportSectionDetails(details: StringMap) {
-    return <Row>
-        <Column>
-            {objectMap(details, (name, _) =>
-                <Text text={name} color={"#cbebe9"} style={{fontWeight: "bold"}}/>
-            )}
-        </Column>
-        <Spacer width = {5}/>
-        <CDivider height={"max"} width={1}/>
-        <Spacer width = {10}/>
-        <Column>
-            {objectMap(details, (_, detail) =>
-                <Text text={detail}/>
-            )}
-        </Column>
-    </Row>
+    return <Column>
+        {objectMap(details, (name, detail) => {
+            // Mods are displayed separately
+                if (name !== "Mod List" && name !== "Fabric Mods")
+                    return <Row>
+                        <Text text={name} color={"#cbebe9"} isBold={true} style={{whiteSpace:"nowrap"}}/>
+                        <Spacer width={5}/>
+                        <CDivider height={"max"} width={1}/>
+                        <Spacer width={10}/>
+                        <Text text={detail}/>
+                    </Row>
+            }
+        )}
+    </Column>
+    // return <Row>
+    //     <Column>
+    //
+    //     </Column>
+    //
+    //     <Column>
+    //         {objectMap(details, (_, detail) =>
+    //
+    //         )}
+    //     </Column>
+    // </Row>
 }
 
 function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {

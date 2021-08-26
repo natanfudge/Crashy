@@ -150,10 +150,15 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         marginBottom: expandedMargin.bottom
     }
 
+    const expandedHeight=  expandSize(height)
+    const expandedWidth = expandSize(width)
+
     const newStyle: CSSProperties = {
         ...paddingObjPart, ...marginObjPart,
-        height: expandSize(height),
-        width: expandSize(width),
+        height:expandedHeight,
+        width: expandedWidth,
+        minHeight: expandedHeight,
+        minWidth: expandedWidth,
         flexBasis,
         flexGrow,
         flexShrink,

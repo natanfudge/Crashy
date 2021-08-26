@@ -4,8 +4,10 @@ import {
     ForgeTraceMetadata,
     JavaClass,
     JavaMethod,
+    Loader,
     LoaderType,
     Mod,
+    OperatingSystem,
     OperatingSystemType,
     RichCrashReport,
     RichCrashReportSection,
@@ -14,37 +16,83 @@ import {
     StackTraceMessage,
     TraceLine
 } from "./RichCrashReport";
+import {parseCrashReport} from "./CrashReportParser";
+
+export function parseCrashReportRich(rawReport: string) : RichCrashReport {
+    return enrichCrashReport(parseCrashReport(rawReport))
+}
 
 export function enrichCrashReport(report: CrashReport): RichCrashReport {
+    const mods = getMods(report)
     return {
         wittyComment: report.wittyComment,
         title: report.description,
-        mods: getMods(report),
+        mods: mods,
         stackTrace: enrichStackTrace(report.stacktrace),
         sections: report.sections.map(section => enrichCrashReportSection(section)),
-        context: getCrashContext(report)
+        context: getCrashContext(report, mods)
     }
 }
 
-// function enrichCrashReportSections(thread: string | undefined, sections: CrashReportSection[]) : RichCrashReportSection[] {
-//     const richSections = thread? {Thread: thread} : {};
-//     for(const section of sections){
-//         richSections.push(enrichCrashReportSection(sections));
-//     }
-// }
+const JavaVersionTitle = "Java Version"
+const MinecraftVersionTitle = "Minecraft Version"
+const ForgeLoaderTitle = "Forge"
+const FabricLoaderId = "fabricloader"
+const OperatingSystemTitle = "Operating System"
 
-function getCrashContext(report: CrashReport): CrashContext {
+function getCrashContext(report: CrashReport, mods: Mod[]): CrashContext {
+    const systemDetails = getSystemDetails(report).details!;
+    //16.0.2, Oracle Corporation
+    // Brand ignored
+    const [javaVersion] = systemDetails[JavaVersionTitle].split(",")
+
+
     return {
         time: parseCrashDate(report.time),
-        javaVersion: "",
-        minecraftVersion: "",
-        loader: {
-            type: LoaderType.Fabric,
-            version: ""
-        },
-        operatingSystem: {
-            name: "",
+        javaVersion: javaVersion,
+        minecraftVersion: systemDetails[MinecraftVersionTitle],
+        loader: getLoader(report, systemDetails, mods),
+        operatingSystem: parseOperatingSystem(systemDetails[OperatingSystemTitle])
+    }
+}
+
+function parseOperatingSystem(osString: string): OperatingSystem {
+    if (osString.startsWith("Windows ")) {
+        //Windows 7 (x86) version 6.1
+        const [majorVersion, architectureAndMinor] = osString.split("(")
+        // Minor version ignored.
+        const [architecture] = architectureAndMinor.split(") version ")
+        const bits = architecture === "x86" ? "32" : "64"
+        return {
+            name: `${majorVersion}(${bits} bit)`,
             type: OperatingSystemType.Windows
+        }
+    } else {
+        //TODO: better parsing once we can get a hold of non-windows examples
+        return {
+            name: osString,
+            type: OperatingSystemType.Linux
+        }
+    }
+}
+
+function getLoader(report: CrashReport, systemDetails: StringMap, mods: Mod[]): Loader {
+    const forgeEntry = systemDetails[ForgeLoaderTitle]
+    if (forgeEntry !== undefined) {
+        // Forge
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [forgeName, version] = forgeEntry.split(":")
+        return {
+            type: LoaderType.Forge,
+            version: version
+        }
+    } else {
+        // Fabric
+        const fabricLoaderMod = mods.find(mod => mod.id === FabricLoaderId)!;
+        return {
+            type: LoaderType.Fabric,
+            version: fabricLoaderMod.version
         }
     }
 }
@@ -61,7 +109,7 @@ function parseCrashDate(dateStr: string): Date {
     const fullHour = parseInt(fullHourStr) + (minutesStr.endsWith(" PM") ? 12 : 0);
 
     return new Date(
-        parseInt(year)  + (isFabricFormat ? 0 : 2000), // Forge uses '21' instead of '2021'
+        parseInt(year) + (isFabricFormat ? 0 : 2000), // Forge uses '21' instead of '2021'
         parseInt(month),
         parseInt(day),
         fullHour,
@@ -210,8 +258,12 @@ const FabricModsTitle = "Fabric Mods"
 const ForgeModsTitle = "Mod List"
 const SuspectedModsTitle = "Suspected Mods"
 
+function getSystemDetails(report: CrashReport): CrashReportSection {
+    return report.sections.find(section => section.title === SystemDetailsTitle)!;
+}
+
 function getMods(report: CrashReport): Mod[] {
-    const systemDetails = report.sections.find(section => section.title === SystemDetailsTitle)!
+    const systemDetails = getSystemDetails(report);
     const details = systemDetails.details!
     // Fabric uses "Fabric Mods" and Forge uses "Mod List"
     const isFabric = FabricModsTitle in details

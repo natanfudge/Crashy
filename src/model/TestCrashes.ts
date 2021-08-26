@@ -1,5 +1,5 @@
 //TODO: test this. note that there is another section at the bottom.
-export const crashWithOptifine = `---- Minecraft Crash Report ----
+export const testFabricCrashReport = `---- Minecraft Crash Report ----
 // Hi. I'm Minecraft, and I'm a crashaholic.
 
 Time: 20/08/2021, 7:41
@@ -293,7 +293,7 @@ Details:
 \tOptiFine remapped jar: C:/Users/natan/Desktop/MultiMC/instances/1.17 NEC error identifying test/.minecraft/.optifine/OptiFine_1.17_HD_U_G9_pre21/Optifine-mapped.jar
 \tOptiFabric error: <None>`
 
-export const testLog = `---- Minecraft Crash Report ----
+export const testForgeCrashReport = `---- Minecraft Crash Report ----
 // Don't be sad, have a hug! <3
 
 Time: 15.08.21 17:36

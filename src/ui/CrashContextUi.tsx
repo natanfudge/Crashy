@@ -44,11 +44,11 @@ function CrashContextElement(props: { image: string, text: string }) {
 }
 
 function formatTime(time: Date) {
-    const isPm = time.getHours() > 12
-    const hour = isPm ? (time.getHours() - 12) : time.getHours();
-    const suffix = isPm ? "PM" : "AM"
+    // const isPm = time.getHours() > 12
+    const hour = /*isPm ? (time.getHours() - 12) :*/ time.getHours();
+    // const suffix = isPm ? "PM" : "AM"
     const minutes = time.getMinutes() > 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
-    return `${time.getDate()}/${time.getMonth()}/${time.getFullYear() - 2000} ${hour}:${minutes} ${suffix}`;
+    return `${time.getDate()}/${time.getMonth()}/${time.getFullYear() - 2000} ${hour}:${minutes}`;
 }
 
 function getOperatingSystemIcon(operatingSystem: OperatingSystemType): string {

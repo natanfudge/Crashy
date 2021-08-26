@@ -1,23 +1,21 @@
 import {
     ForgeTraceMetadata,
-    javaClassFullName, javaMethodFullNameName, javaMethodSimpleName,
-    RichCrashReport,
+    javaClassFullName,
+    javaMethodFullNameName,
+    javaMethodSimpleName,
     RichStackTrace,
-    RichStackTraceElement, StackTraceMessage,
+    RichStackTraceElement,
+    StackTraceMessage,
     unfoldRichStackTrace
 } from "../model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
-import {clickableColor, errorColor, fadedOutColor} from "./App";
-import {CDivider} from "./improvedapi/Core";
-import React from "react";
+import {clickableColor, fadedOutColor} from "./App";
+import React, {useEffect} from "react";
 import {Divider, Grow, Popper} from "@material-ui/core";
 import {Surface} from "./improvedapi/Material";
 import {KeyboardArrowDown} from "@material-ui/icons";
-import {StackTraceElement} from "../model/CrashReport";
-import {WithChild, WithChildren} from "./improvedapi/Element";
-
-
+import {WithChild} from "./improvedapi/Element";
 
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
@@ -30,7 +28,8 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
 
         <Row flexWrap={"wrap"}>
             {StackTraceMessageUi(currentTrace.message)}
-            <Text text={": " + currentTrace.message.message} variant={"h5"}/>
+            <Text text={": "} variant = "h5"/>
+            <Text style ={{lineBreak: "anywhere"}} text={currentTrace.message.message} variant={currentTrace.message.message.length > 200? "body1" : "h5"}/>
         </Row>
 
         <Divider/>
@@ -56,13 +55,14 @@ function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace
         />}
     </Row>;
 }
+
 function CausationButton(props: { text: string, onClick: () => void }) {
     return <Surface margin={{right: 20}} padding={{horizontal: 7, vertical: 2}}
                     className={"hoverable"}
                     backgroundColor={"#353535"}
                     width={"max-content"}
                     onClick={props.onClick}>
-        <Text color = {clickableColor} text={props.text} variant={"caption"}/>
+        <Text color={clickableColor} text={props.text} variant={"caption"}/>
     </Surface>
 }
 
@@ -79,55 +79,95 @@ function StackTraceMessageUi(message: StackTraceMessage) {
 
 function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
     const [open, setOpen] = React.useState(false)
-    const text = typeof traceElement === "number"? traceElement + " more..." : open ?
-        javaMethodFullNameName(traceElement.method) + ` (${traceElement.line.file}:${traceElement.line.number})`
-        : javaMethodSimpleName(traceElement.method) + ` (Line ${traceElement.line.number})`;
+    const text = getTraceElementText(traceElement, open)
+    const isXMore = typeof traceElement === "number"
 
     return <Row margin={{left: 30}}>
         <Text text={"at"} color={fadedOutColor} margin={{right: 10}}/>
-        <Text color = {open? undefined: clickableColor} text={text} style={{
+        <Text color={open || isXMore ? undefined : clickableColor} text={text} style={{
             whiteSpace: "pre-wrap",
             wordBreak: "break-word"
-        }} onClick={() => {
-          if(typeof traceElement !== "number")  setOpen(!open);
+        }} onClick={isXMore? undefined : () => {
+            setOpen(!open);
         }}/>
-        {typeof traceElement !== "number"&& traceElement.forgeMetadata && ForgeTraceMetadataUi(traceElement.forgeMetadata)}
+        {typeof traceElement !== "number" && traceElement.forgeMetadata && ForgeTraceMetadataUi(traceElement.forgeMetadata)}
 
     </Row>;
+}
+
+function getTraceElementText(traceElement: RichStackTraceElement, open: boolean): string {
+    if (typeof traceElement === "number") return `${traceElement} more...`
+    const isNativeMethod = traceElement.line.number === undefined;
+    if (open) {
+        const inBracketText = isNativeMethod ? "Native Method" : `${traceElement.line.file}:${traceElement.line.number}`
+        return javaMethodFullNameName(traceElement.method) + ` (${inBracketText})`
+    } else {
+        const inBracketText = isNativeMethod ? "Native Method" : `Line ${traceElement.line.number}`
+        return javaMethodSimpleName(traceElement.method) + ` (${inBracketText})`
+    }
 }
 
 function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
     return <MoreInfoButton>
 
-            <Column padding={10}>
-                <Text text={"Forge Metadata"} variant={"h6"}/>
-                {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
-                {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
-                {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map(reason =>
-                    <Text text={`Plugin Transformer Reason: ${reason}`}/>)}
-                {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map(reason => <Text
-                    text={`Class Loading Reason: ${reason}`}/>)}
-                {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map(reason =>
-                    <Text text={`Additional Transformer Data: ${reason}`}/>)}
-            </Column>
+        <Column padding={10}>
+            <Text text={"Forge Metadata"} variant={"h6"}/>
+            {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
+            {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
+            {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map(reason =>
+                <Text text={`Plugin Transformer Reason: ${reason}`}/>)}
+            {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map(reason => <Text
+                text={`Class Loading Reason: ${reason}`}/>)}
+            {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map(reason =>
+                <Text text={`Additional Transformer Data: ${reason}`}/>)}
+        </Column>
     </MoreInfoButton>
 }
 
 export function MoreInfoButton(props: WithChild) {
     const [open, setOpen] = React.useState(false);
     const anchorEl = React.useRef()
+
+
     return <div>
         <Row onClick={() => setOpen(!open)}>
-            <KeyboardArrowDown innerRef={anchorEl}/>
+            <KeyboardArrowDown innerRef={anchorEl} style = {{filter:"brightness(0.5)"}}/>
         </Row>
         <Popper open={open} anchorEl={anchorEl.current} transition>
             {({TransitionProps}) => (
                 <Grow {...TransitionProps}>
-                    <Surface>
+                    <MoreInfoButtonSurface setOpen={setOpen}>
                         {props.children}
-                    </Surface>
+                    </MoreInfoButtonSurface>
                 </Grow>
             )}
         </Popper>
     </div>
+}
+
+function MoreInfoButtonSurface({setOpen, children}: {setOpen: (open: boolean) => void} & WithChild){
+    const ref = React.useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        /**
+         * Alert if clicked on outside of element
+         */
+        function handleClickOutside(event: { target: any; }) {
+            if (ref.current && !ref.current!.contains(event.target)) {
+                setOpen(false)
+            }
+        }
+
+        // Bind the event listener
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            // Unbind the event listener on clean up
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    },[ref,setOpen]);
+
+
+    return <Surface ref = {ref}>
+        {children}
+    </Surface>
+
 }

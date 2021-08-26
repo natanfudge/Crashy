@@ -22,13 +22,13 @@ export function CrashReportUi(report: RichCrashReport) {
 
     return <Row margin={{top: 70}}>
 
-        <Wrap width={250} style={{minWidth: 250}}>
+        <Wrap width={260} >
             {CrashContextUi(context)}
         </Wrap>
 
         {CenterView(report, activeSectionIndex)}
 
-        <Wrap width={250} style={{minWidth: 250}}>
+        <Wrap width={250} >
             <SectionNavigation sections={sectionNames}
                                activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
         </Wrap>
