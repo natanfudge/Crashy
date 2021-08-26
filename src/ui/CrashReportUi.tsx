@@ -38,7 +38,7 @@ export function CrashReportUi(report: RichCrashReport) {
 function CenterView(report: RichCrashReport, activeSectionIndex: number) {
     return <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}}>
         <Column alignSelf="center" margin={{bottom: 10}}>
-            <Text text={report.title} variant="h4" color={errorColor} margin={{horizontal: 100}}/>
+            <Text text={report.title} variant="h4" color={errorColor} margin={{horizontal: 150}}/>
             <CDivider width={"max"}/>
         </Column>
 

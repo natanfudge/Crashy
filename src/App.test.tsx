@@ -290,6 +290,13 @@ test("Fabric crash report is enriched properly", () => {
 
     const level = enriched.sections[1]
     expect(level.details!["All players"]).toEqual("1 total; [class_746['FudgeDestroyer'/456, l='ClientLevel', x=-37.50, y=69.00, z=232.50]]")
+
+    const time = enriched.context.time;
+    //20/08/2021, 7:41
+    expect(time).toEqual(
+        new Date(2021,8,20,7,41)
+    )
+
 })
 //TODO: don't display 'mods' in UI.
 
@@ -442,4 +449,9 @@ test("Forge crash report is enriched properly", () => {
         }
     )
 
+    const time = enriched.context.time;
+    //15.08.21 17:36
+    expect(time).toEqual(
+        new Date(2021,8,15,17,36)
+    )
 })

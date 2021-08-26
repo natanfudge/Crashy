@@ -79,7 +79,7 @@ function StackTraceMessageUi(message: StackTraceMessage) {
 
 function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
     const [open, setOpen] = React.useState(false)
-    const text = open ?
+    const text = typeof traceElement === "number"? traceElement + " more..." : open ?
         javaMethodFullNameName(traceElement.method) + ` (${traceElement.line.file}:${traceElement.line.number})`
         : javaMethodSimpleName(traceElement.method) + ` (Line ${traceElement.line.number})`;
 
@@ -88,8 +88,10 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
         <Text color = {open? undefined: clickableColor} text={text} style={{
             whiteSpace: "pre-wrap",
             wordBreak: "break-word"
-        }} onClick={() => setOpen(!open)}/>
-        {traceElement.forgeMetadata && ForgeTraceMetadataUi(traceElement.forgeMetadata)}
+        }} onClick={() => {
+          if(typeof traceElement !== "number")  setOpen(!open);
+        }}/>
+        {typeof traceElement !== "number"&& traceElement.forgeMetadata && ForgeTraceMetadataUi(traceElement.forgeMetadata)}
 
     </Row>;
 }

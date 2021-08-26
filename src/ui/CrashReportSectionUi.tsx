@@ -13,7 +13,7 @@ export function CrashReportSectionUi(section: RichCrashReportSection) {
             <CDivider width={"max"}/>
         </Column>
 
-        {CrashReportSectionDetails(section.details)}
+        {section.details && CrashReportSectionDetails(section.details)}
 
         <Column alignSelf={"start"}>
             {

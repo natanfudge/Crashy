@@ -33,9 +33,9 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
 //     }
 // }
 
-function getCrashContext(report: CrashReport) : CrashContext {
+function getCrashContext(report: CrashReport): CrashContext {
     return {
-        time: new Date(),
+        time: parseCrashDate(report.time),
         javaVersion: "",
         minecraftVersion: "",
         loader: {
@@ -49,6 +49,26 @@ function getCrashContext(report: CrashReport) : CrashContext {
     }
 }
 
+function parseCrashDate(dateStr: string): Date {
+    // Fabric format: 20/08/2021, 7:41 OR 20/08/2021, 7:41 PM
+    // Forge format: 15.08.21 17:36
+    const isFabricFormat = dateStr.includes(",")
+    const [date, hourStr] = dateStr.split(isFabricFormat ? ", " : " ")
+    const [day, month, year] = date.split(isFabricFormat ? "/" : ".")
+
+    const [fullHourStr, minutesStr] = hourStr.split(":")
+    // Convert PM format to 24 hour format
+    const fullHour = parseInt(fullHourStr) + (minutesStr.endsWith(" PM") ? 12 : 0);
+
+    return new Date(
+        parseInt(year)  + (isFabricFormat ? 0 : 2000), // Forge uses '21' instead of '2021'
+        parseInt(month),
+        parseInt(day),
+        fullHour,
+        parseInt(removeSuffix(minutesStr, " PM")) // minutes
+    )
+}
+
 function enrichCrashReportSection(section: CrashReportSection): RichCrashReportSection {
     const enrichedDetails: StringMap = section.thread ? {Thread: section.thread} : {}
     for (const prop in section.details) {
@@ -57,7 +77,7 @@ function enrichCrashReportSection(section: CrashReportSection): RichCrashReportS
     return {
         name: section.title,
         details: enrichedDetails,
-        stackTrace: section.stacktrace? enrichStackTraceElements(section.stacktrace): undefined
+        stackTrace: section.stacktrace ? enrichStackTraceElements(section.stacktrace) : undefined
     }
 }
 

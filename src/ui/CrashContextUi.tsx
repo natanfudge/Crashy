@@ -12,31 +12,35 @@ import MacosLogo from "../media/macos_logo.svg";
 import QuestionMarkIcon from "../media/questionmark_icon_white.svg";
 import {Surface} from "./improvedapi/Material";
 import {slightlyPronouncedColor} from "./App";
-import {Image} from "./improvedapi/Core";
+import {CDivider, Image} from "./improvedapi/Core";
 import {Text} from "./improvedapi/Text";
+import {Divider} from "@material-ui/core";
 
 export function CrashContextUi(context: CrashContext) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
 
-    return <Column margin={{left: 10}}>
-        <CrashContextElement image={MinecraftLogo} text={context.minecraftVersion}/>
-        <CrashContextElement image={context.loader.type === LoaderType.Forge ? ForgeLogo : FabricLogo}
+    return <Row>
+        <Column margin={{left: 10}}>
+            <CrashContextElement image={MinecraftLogo} text={context.minecraftVersion}/>
+            <CrashContextElement image={context.loader.type === LoaderType.Forge ? ForgeLogo : FabricLogo}
                                  text={loaderName + context.loader.version}/>
-        <CrashContextElement image={JavaLogo} text={context.javaVersion}/>
-        <CrashContextElement image={getOperatingSystemIcon(context.operatingSystem.type)}
+            <CrashContextElement image={JavaLogo} text={context.javaVersion}/>
+            <CrashContextElement image={getOperatingSystemIcon(context.operatingSystem.type)}
                                  text={context.operatingSystem.name}/>
-        <CrashContextElement image={ClockIcon} text={displayedTime}/>
-    </Column>;
+            <CrashContextElement image={ClockIcon} text={displayedTime}/>
+        </Column>
+        <CDivider width = {1} height = "auto"/>
+    </Row>
 }
 
 function CrashContextElement(props: { image: string, text: string }) {
-    return <Surface margin={{top: 10}} backgroundColor={slightlyPronouncedColor}>
-        <Row padding={{vertical: 5, horizontal: 10}}>
+     /*<Surface margin={{top: 10}} backgroundColor={slightlyPronouncedColor}>*/
+    return <Row padding={{vertical: 5, horizontal: 10}} margin= {{top: 10}}>
             <Image src={props.image} margin={{right: 10}} height={30} alt="Icon"/>
             <Text text={props.text} variant="h6"/>
         </Row>
-    </Surface>
+    // </Surface>
 }
 
 function formatTime(time: Date) {

@@ -30,6 +30,6 @@ function SectionButton(props: { name: string, active: boolean, onClick: () => vo
     return <Row className={"hoverable"} flexBasis={0} flexGrow={1} flexShrink={1} onClick={props.onClick}
                 padding={{top: 5, bottom: 5, right: 5, left: props.active ? 5 : 8}}>
         {props.active && <CDivider height={"auto"} width={3}/>}
-        <Text text={props.name} padding={5} color={clickableColor}/>
+        <Text text={props.name} variant={"h5"} padding={5} color={clickableColor}/>
     </Row>
 }
