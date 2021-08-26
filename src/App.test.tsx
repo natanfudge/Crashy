@@ -4,7 +4,6 @@ import App from './ui/App';
 import {parseCrashReport} from "./model/CrashReportParser";
 import {crashWithOptifine, testLog} from "./model/TestCrashes";
 import {enrichCrashReport} from "./model/CrashReportEnricher";
-import {ForgeTraceMetadata, JavaMethod, TraceLine} from "./model/RichCrashReport";
 
 test('renders learn react link', () => {
     render(<App/>);
@@ -13,7 +12,7 @@ test('renders learn react link', () => {
 });
 
 
-test('First Crash Report is parsed correctly', () => {
+test('Forge Crash Report is parsed correctly', () => {
     const report = parseCrashReport(testLog);
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
     expect(report.time).toEqual("15.08.21 17:36")
@@ -120,7 +119,7 @@ test('First Crash Report is parsed correctly', () => {
     expect(Object.keys(systemDetails).length).toEqual(43)
 });
 
-test("Optifine crash report is parsed correctly", () => {
+test("Fabric crash report is parsed correctly", () => {
     const report = parseCrashReport(crashWithOptifine)
     expect(report.wittyComment).toBe("Hi. I'm Minecraft, and I'm a crashaholic.")
     expect(report.stacktrace.trace).toEqual([
@@ -225,7 +224,7 @@ test("Optifine crash report is parsed correctly", () => {
 
 })
 
-test("Optifine crash report is enriched properly", () => {
+test("Fabric crash report is enriched properly", () => {
     const enriched = enrichCrashReport(parseCrashReport(crashWithOptifine));
     expect(enriched.mods.length).toEqual(116)
     expect(enriched.mods[0]).toEqual(
@@ -248,19 +247,49 @@ test("Optifine crash report is enriched properly", () => {
         {id: "transliterationlib", name: "TRansliterationLib", version: "1.1.0", isSuspected: true}
     );
 
-    console.log(JSON.stringify(enriched.stackTrace.elements[0]) )
+    //	at org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:363)
+    expect(enriched.stackTrace.elements[0]).toEqual({
+        method: {
+            class: {packageName: "org.spongepowered.asm.mixin.transformer", simpleName: "MixinProcessor",},
+            name: "applyMixins"
+        },
+        line: {file: "MixinProcessor.java", number: 363},
+        forgeMetadata: undefined
+    })
 
-    // expect(enriched.stackTrace.elements[0]).toEqual({
-    //     method: {class: {packageName: "net.minecraft.client.renderer", simpleName: "GameRenderer",}, name: "func_78473_a"},
-    //     line: {file: "GameRenderer.java", number: 344},
-    //     forgeMetadata: {
-    //         jarFile: undefined, version: undefined,
-    //         classloadingReasons: ["mixin","classloading"],
-    //         pluginTransformerReasons: ["accesstransformer:B","accesstransformer:B", "mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin", "mixin:A"],
-    //         additionalTransformerData: ["OptiFine:default"]
-    //     }
-    // })
+    //Caused by: org.spongepowered.asm.mixin.throwables.MixinApplyError: Mixin [screenshotclipboard.mixins.json:ScreenshotMixin] from phase [DEFAULT] in config [screenshotclipboard.mixins.json] FAILED during APPLY
+    const cause = enriched.stackTrace.causedBy!;
+    expect(cause.message).toEqual({
+        message: "Mixin [screenshotclipboard.mixins.json:ScreenshotMixin] from phase [DEFAULT] in config [screenshotclipboard.mixins.json] FAILED during APPLY",
+        class: {
+            packageName: "org.spongepowered.asm.mixin.throwables",
+            simpleName: "MixinApplyError",
+        }
+    })
+    // 	at org.spongepowered.asm.mixin.transformer.MixinProcessor.handleMixinError(MixinProcessor.java:642)
 
+    expect(cause.elements[0]).toEqual({
+            method: {
+                class: {packageName: "org.spongepowered.asm.mixin.transformer", simpleName: "MixinProcessor",},
+                name: "handleMixinError"
+            },
+            line: {file: "MixinProcessor.java", number: 642},
+            forgeMetadata: undefined
+        }
+    )
+
+    expect(cause.elements[3]).toEqual(26)
+
+
+    const causeCause = cause.causedBy!;
+    expect(causeCause.causedBy).toEqual(undefined)
+    expect(causeCause.elements[11]).toEqual(26)
+
+    const head = enriched.sections[0]
+    expect(head.details!["Thread"]).toEqual("Render thread")
+
+    const level = enriched.sections[1]
+    expect(level.details!["All players"]).toEqual("1 total; [class_746['FudgeDestroyer'/456, l='ClientLevel', x=-37.50, y=69.00, z=232.50]]")
 })
 //TODO: don't display 'mods' in UI.
 
@@ -282,7 +311,11 @@ test("Forge crash report is enriched properly", () => {
         },
         {
             id: "forge", name: "Forge", version: "36.1.16", isSuspected: false,
-            forgeMetadata: {file: "forge-1.16.5-36.1.16-universal.jar", completeness: "DONE", signature: "22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90"}
+            forgeMetadata: {
+                file: "forge-1.16.5-36.1.16-universal.jar",
+                completeness: "DONE",
+                signature: "22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90"
+            }
         },
         {
             id: "toolswap", name: "ToolSwap", version: "1.3.2", isSuspected: true,
@@ -294,7 +327,11 @@ test("Forge crash report is enriched properly", () => {
         },
         {
             id: "xray", name: "Advanced XRay", version: "2.7.0", isSuspected: true,
-            forgeMetadata: {file: "advanced-xray-forge-1.16.5-2.7.0.jar", completeness: "DONE", signature: "NOSIGNATURE"}
+            forgeMetadata: {
+                file: "advanced-xray-forge-1.16.5-2.7.0.jar",
+                completeness: "DONE",
+                signature: "NOSIGNATURE"
+            }
         },
         {
             id: "shulkertooltip", name: "Shulker Tooltip", version: "1.9.9", isSuspected: false,
@@ -320,12 +357,15 @@ test("Forge crash report is enriched properly", () => {
     //	pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}
     expect(enriched.stackTrace.elements[0]).toEqual(
         {
-            method: {class: {packageName: "net.minecraft.client.renderer", simpleName: "GameRenderer",}, name: "func_78473_a"},
+            method: {
+                class: {packageName: "net.minecraft.client.renderer", simpleName: "GameRenderer",},
+                name: "func_78473_a"
+            },
             line: {file: "GameRenderer.java", number: 344},
             forgeMetadata: {
                 jarFile: undefined, version: undefined,
-                classloadingReasons: ["mixin","classloading"],
-                pluginTransformerReasons: ["accesstransformer:B","accesstransformer:B", "mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin", "mixin:A"],
+                classloadingReasons: ["mixin", "classloading"],
+                pluginTransformerReasons: ["accesstransformer:B", "accesstransformer:B", "mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin", "mixin:A"],
                 additionalTransformerData: ["OptiFine:default"]
             }
         }
@@ -337,12 +377,12 @@ test("Forge crash report is enriched properly", () => {
     expect(enriched.stackTrace.elements[1]).toEqual(
         {
             method: {class: {packageName: "net.minecraft.client", simpleName: "Minecraft",}, name: "func_71407_l"},
-            line: {file: "Minecraft.java", number:1422},
+            line: {file: "Minecraft.java", number: 1422},
             forgeMetadata: {
                 jarFile: undefined, version: undefined,
-                classloadingReasons: ["mixin","classloading"],
-                pluginTransformerReasons: ["accesstransformer:B","runtimedistcleaner:A","accesstransformer:B",
-                    "mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient", "mixin:A","runtimedistcleaner:A"],
+                classloadingReasons: ["mixin", "classloading"],
+                pluginTransformerReasons: ["accesstransformer:B", "runtimedistcleaner:A", "accesstransformer:B",
+                    "mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient", "mixin:A", "runtimedistcleaner:A"],
                 additionalTransformerData: []
             }
         }
@@ -352,11 +392,11 @@ test("Forge crash report is enriched properly", () => {
     expect(enriched.stackTrace.elements[6]).toEqual(
         {
             method: {class: {packageName: "net.minecraft.client.main", simpleName: "Main",}, name: "main"},
-            line: {file: "Main.java", number:184},
+            line: {file: "Main.java", number: 184},
             forgeMetadata: {
                 jarFile: undefined, version: undefined,
-                classloadingReasons: ["classloading","mixin"],
-                pluginTransformerReasons: ["runtimedistcleaner:A","mixin:A","runtimedistcleaner:A"],
+                classloadingReasons: ["classloading", "mixin"],
+                pluginTransformerReasons: ["runtimedistcleaner:A", "mixin:A", "runtimedistcleaner:A"],
                 additionalTransformerData: []
             }
         }
@@ -366,7 +406,7 @@ test("Forge crash report is enriched properly", () => {
     expect(enriched.stackTrace.elements[7]).toEqual(
         {
             method: {class: {packageName: "sun.reflect", simpleName: "NativeMethodAccessorImpl",}, name: "invoke0"},
-            line: {file: "Native Method", number:undefined},
+            line: {file: "Native Method", number: undefined},
             forgeMetadata: {
                 jarFile: undefined, version: "1.8.0_51",
                 classloadingReasons: [], pluginTransformerReasons: [], additionalTransformerData: []
@@ -378,8 +418,11 @@ test("Forge crash report is enriched properly", () => {
     // 	[forge-1.16.5-36.1.16.jar:36.1] {}
     expect(enriched.stackTrace.elements[11]).toEqual(
         {
-            method: {class: {packageName: "net.minecraftforge.fml.loading", simpleName: "FMLClientLaunchProvider",}, name: "lambda$launchService$0"},
-            line: {file: "FMLClientLaunchProvider.java", number:51},
+            method: {
+                class: {packageName: "net.minecraftforge.fml.loading", simpleName: "FMLClientLaunchProvider",},
+                name: "lambda$launchService$0"
+            },
+            line: {file: "FMLClientLaunchProvider.java", number: 51},
             forgeMetadata: {
                 jarFile: "forge-1.16.5-36.1.16.jar", version: "36.1",
                 classloadingReasons: [], pluginTransformerReasons: [], additionalTransformerData: []
@@ -391,7 +434,7 @@ test("Forge crash report is enriched properly", () => {
     expect(enriched.stackTrace.elements[17]).toEqual(
         {
             method: {class: {packageName: "cpw.mods.modlauncher", simpleName: "Launcher",}, name: "main"},
-            line: {file: "Launcher.java", number:66},
+            line: {file: "Launcher.java", number: 66},
             forgeMetadata: {
                 jarFile: "modlauncher-8.0.9.jar", version: undefined,
                 classloadingReasons: ["classloading"], pluginTransformerReasons: [], additionalTransformerData: []

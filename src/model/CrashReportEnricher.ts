@@ -1,36 +1,63 @@
-import {CrashReport, StackTrace, StackTraceElement, StringMap} from "./CrashReport";
+import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "./CrashReport";
 import {
-    ForgeModMetadata, ForgeTraceMetadata,
-    JavaClass, JavaMethod,
+    CrashContext,
+    ForgeTraceMetadata,
+    JavaClass,
+    JavaMethod,
     LoaderType,
     Mod,
     OperatingSystemType,
     RichCrashReport,
-    RichStackTrace, RichStackTraceElement,
-    StackTraceMessage, TraceLine
+    RichCrashReportSection,
+    RichStackTrace,
+    RichStackTraceElement,
+    StackTraceMessage,
+    TraceLine
 } from "./RichCrashReport";
 
 export function enrichCrashReport(report: CrashReport): RichCrashReport {
-
     return {
         wittyComment: report.wittyComment,
         title: report.description,
         mods: getMods(report),
         stackTrace: enrichStackTrace(report.stacktrace),
-        sections: [],
-        context: {
-            time: new Date(),
-            javaVersion: "",
-            minecraftVersion: "",
-            loader: {
-                type: LoaderType.Fabric,
-                version: ""
-            },
-            operatingSystem: {
-                name: "",
-                type: OperatingSystemType.Windows
-            }
+        sections: report.sections.map(section => enrichCrashReportSection(section)),
+        context: getCrashContext(report)
+    }
+}
+
+// function enrichCrashReportSections(thread: string | undefined, sections: CrashReportSection[]) : RichCrashReportSection[] {
+//     const richSections = thread? {Thread: thread} : {};
+//     for(const section of sections){
+//         richSections.push(enrichCrashReportSection(sections));
+//     }
+// }
+
+function getCrashContext(report: CrashReport) : CrashContext {
+    return {
+        time: new Date(),
+        javaVersion: "",
+        minecraftVersion: "",
+        loader: {
+            type: LoaderType.Fabric,
+            version: ""
+        },
+        operatingSystem: {
+            name: "",
+            type: OperatingSystemType.Windows
         }
+    }
+}
+
+function enrichCrashReportSection(section: CrashReportSection): RichCrashReportSection {
+    const enrichedDetails: StringMap = section.thread ? {Thread: section.thread} : {}
+    for (const prop in section.details) {
+        enrichedDetails[prop] = section.details[prop]
+    }
+    return {
+        name: section.title,
+        details: enrichedDetails,
+        stackTrace: section.stacktrace? enrichStackTraceElements(section.stacktrace): undefined
     }
 }
 
@@ -56,13 +83,16 @@ function enrichStackTraceElements(elements: StackTraceElement[]): RichStackTrace
     return elements.map(element => {
         // Ignore NEC's silly "Not Enough Crashes deobfuscated stack trace" thing
         if (element.startsWith("Not Enough")) return undefined;
+        // Some elements are just 'X more...'. In that case the relevant information is the number.
+        if (element.endsWith(" more")) return parseInt(removeSuffix(element, " more"));
+
         const hasForgeMetadata = element.includes("[")
         const [call, metadata] = hasForgeMetadata ? splitForgeMetadata(element) : [element, undefined]
         const {line, method} = parseTraceCall(call)
         return {
             line,
             method,
-            forgeMetadata: metadata? parseForgeTraceMetadata(metadata): undefined
+            forgeMetadata: metadata ? parseForgeTraceMetadata(metadata) : undefined
         }
     }).filter(element => element !== undefined).map(element => element!)
 }
@@ -121,8 +151,8 @@ function parseTraceLine(line: string): TraceLine {
     const [file, lineNumber] = line.split(":")
     return {
         // If there is no line number the file will have a trailing ')' that we need to remove
-        file: lineNumber? file: removeLastChar(file),
-        number: lineNumber? parseInt(removeLastChar(lineNumber)) : undefined
+        file: lineNumber ? file : removeLastChar(file),
+        number: lineNumber ? parseInt(removeLastChar(lineNumber)) : undefined
     }
 }
 

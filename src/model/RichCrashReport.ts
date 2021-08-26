@@ -12,7 +12,7 @@ export interface RichCrashReport {
 export interface RichCrashReportSection {
     name: string,
     //TODO: just make thread the first detail
-    details: StringMap
+    details?: StringMap
     stackTrace?: RichStackTraceElement[]
 }
 
