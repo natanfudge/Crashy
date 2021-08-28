@@ -53,8 +53,6 @@ export interface StackTraceMessage {
     message: string
 }
 
-//TODO: implement parsing and testing of this.
-// May be number in the case of "X more..."
 export type RichStackTraceElement = number | {
     method: JavaMethod
     line: TraceLine

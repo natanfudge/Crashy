@@ -1,5 +1,3 @@
-export function Foo() {
-}
 
 export interface CrashReport {
     description: string
@@ -11,8 +9,8 @@ export interface CrashReport {
 }
 
 export type StringMap = { [key: string]: string }
+
 export interface SystemDetails {
-    //TODO: pull out the modlist, make it handle multiline a bit better
     sections: StringMap;
 }
 

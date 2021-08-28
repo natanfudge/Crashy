@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import '../App.css';
 import {AppBar, createTheme, CssBaseline, MuiThemeProvider} from "@material-ui/core";
 import {grey, red} from "@material-ui/core/colors";
 import {CrashReport, StackTrace, StackTraceElement} from "../model/CrashReport";
 import {CrashReportUi} from "./CrashReportUi";
 import {parseCrashReport} from "../model/CrashReportParser";
-import {testFabricCrashReport, testForgeCrashReport} from "../model/TestCrashes";
-import {LoaderType, Mod, OperatingSystemType, RichCrashReport} from "../model/RichCrashReport";
+import {testFabricCrashReport} from "../model/TestCrashes";
+import {LoaderType, OperatingSystemType, RichCrashReport} from "../model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
 import {parseCrashReportRich} from "../model/CrashReportEnricher";
 
@@ -245,7 +245,7 @@ const testRichStackTrace: RichCrashReport = {
                 }
             }],
             details: {
-                "Thread":"amar thread",
+                "Thread": "amar thread",
                 "All players": "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
                 "Chunk stats": "Client Chunk Cache: 361, 225"
             },
@@ -273,7 +273,7 @@ const testRichStackTrace: RichCrashReport = {
                 }
             }],
             details: {
-                "Thread":"amar thread",
+                "Thread": "amar thread",
                 "All players": "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
                 "Chunk stats": "Client Chunk Cache: 361, 225"
             },
@@ -301,7 +301,7 @@ const testRichStackTrace: RichCrashReport = {
                 }
             }],
             details: {
-                "Thread":"amar thread",
+                "Thread": "amar thread",
                 "All players": "1 total; [ClientPlayerEntity['Kyartyi1337'/804445, l='ClientLevel', x=-712.19, y=64.00, z=-228.79]]",
                 "Chunk stats": "Client Chunk Cache: 361, 225"
             },
@@ -318,10 +318,79 @@ export const clickableColor = "rgb(0, 173, 239)"
 export const errorColor = "rgb(234,8,8)"
 export const fadedOutColor = grey[600]
 export const slightlyPronouncedColor = "#323232"
-// export const
 
-//TODO: note that developers generally prefer their crashlog to be in simple texts, so try to get rid of the elevation stuff.
+// export const
+let x = 0
+
+interface GetResponse {
+    body: string
+    code: number
+}
+
+function httpGetCallback(url: string, onDone: (response: GetResponse) => void) {
+    const xmlHttp = new XMLHttpRequest();
+    console.log("Called: " + x);
+    xmlHttp.onreadystatechange = function (event) {
+        if (xmlHttp.readyState === 4) {
+            onDone({body: xmlHttp.responseText, code: xmlHttp.status});
+            console.log("Done: " + x);
+            x++;
+        }
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous
+    xmlHttp.send(null);
+}
+
+async function httpGet(url: string): Promise<GetResponse> {
+    return new Promise(resolve => httpGetCallback(url, (response) => resolve(response)));
+}
+
+type CrashLogResponse = string | GetCrashError
+
+enum GetCrashError {
+    NoSuchCrashId
+}
+
+const localTesting = false;
+async function getCrash(id: string): Promise<CrashLogResponse> {
+    const domain = localTesting? "localhost:5001/crashy-9dd87/europe-west1" : "europe-west1-crashy-9dd87.cloudfunctions.net";
+    const response = await httpGet(`https://${domain}/getCrash/${id}`);
+    if (response.code === 200) {
+        return response.body;
+    } else if (response.code === 404) {
+        return GetCrashError.NoSuchCrashId
+    } else {
+        throw new Error("Unexpected status code: " + response.code)
+    }
+}
+
+function CrashyUi() {
+    if (window.location.pathname === "/") {
+        return <Text text={"No Crash ID specified"}/>
+    } else {
+        return CrashyCrashUi();
+    }
+}
+
+function CrashyCrashUi() {
+    const [crash, setCrash] = useState<CrashLogResponse | undefined>(undefined)
+    useEffect(() => {
+        getCrash(window.location.pathname.slice(1)).then(res => setCrash(res));
+    })
+    if (crash === undefined) {
+        return <Text text={"Loading..."}/>
+    } else if (crash) {
+        return <CrashReportUi report={parseCrashReportRich(crash)}/>
+    } else {
+        return <Text text={"No such crash ID"}/>
+    }
+
+}
+
+//todo: add nice error messages when there is a failure parsing
 function App() {
+
+
     const outerTheme = createTheme({
         palette: {
             type: 'dark',
@@ -341,12 +410,12 @@ function App() {
             <CssBaseline/>
             {/*<h1 className="glow">GLOWING TEXT</h1>*/}
 
-            <AppBar style = {{backgroundColor : slightlyPronouncedColor}}>
+            <AppBar style={{backgroundColor: slightlyPronouncedColor}}>
                 <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>
             </AppBar>
 
             <div style={{marginTop: 70}}>
-                {CrashReportUi(parseCrashReportRich(testFabricCrashReport))}
+                {CrashyUi()}
                 {/*<Grid container direction="row" style = {{marginTop: 70}}>*/}
                 {/*    /!*<Text text = "  asdf"/>*!/*/}
                 {/*    /!*<Text text = "   addddloha"/>*!/*/}

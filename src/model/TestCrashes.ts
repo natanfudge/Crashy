@@ -1,4 +1,3 @@
-//TODO: test this. note that there is another section at the bottom.
 export const testFabricCrashReport = `---- Minecraft Crash Report ----
 // Hi. I'm Minecraft, and I'm a crashaholic.
 
@@ -430,3 +429,8 @@ Details:
 \tResource Packs: vanilla, mod_resources, file/VanillaTweaks_r586244.zip
 \tCurrent Language: ??????? (??????)
 \tCPU: 2x Intel(R) Core(TM)2 Duo CPU T6600 @ 2.20GHz`
+
+
+export const testFabricCrashReportUsingWindowsLines = testFabricCrashReport.replace(/\n/g,"\r\n");
+
+//

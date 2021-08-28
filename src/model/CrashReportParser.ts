@@ -1,11 +1,4 @@
-import {
-    CrashReport,
-    CrashReportSection,
-    StackTrace,
-    StackTraceElement,
-    StringMap,
-    SystemDetails
-} from "./CrashReport";
+import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "./CrashReport";
 
 class StringBuilder {
     str: string
@@ -15,30 +8,40 @@ class StringBuilder {
     }
 
     append(str: string) {
-        this.str += str
+        this.str += str;
     }
 }
 
+// TODO: it's parsing twice for some reason
 //TODO: since we support mappings in the site, we should shut down support for deobfuscating mappings in NEC itself.
 export function parseCrashReport(rawReport: string): CrashReport {
     let cursor = 0;
 
-    skipString("---- Minecraft Crash Report ----\n")
+    // Skip '---- Minecraft Crash Report ----'
+   skipLine();
 
     const wittyComment = parseWittyComment();
 
     // Skip empty line
-    skip();
+    skipLine();
 
     const time = parseTime();
     const description = parseDescription();
 
     // Skip empty line
-    skip();
+    skipLine();
 
     const stacktrace = parseStackTrace();
 
-    skipString("\n\nA detailed walkthrough of the error, its code path and all known details is as follows:\n---------------------------------------------------------------------------------------\n\n")
+    // Skip two blank lines before 'A detailed walkthrough...'
+    skipLine();
+    skipLine();
+    // Skip 'A detailed walkthrough of the error, its code path and all known details is as follows'.
+    skipLine();
+    // Skip '---------------------------------------------------------------------------------------'
+    skipLine();
+    // Skip blank line afterwards
+    skipLine();
 
     const sections = parseSections();
     // const systemDetails = pullSystemDetailsFrom(sections);
@@ -50,20 +53,20 @@ export function parseCrashReport(rawReport: string): CrashReport {
         time,
         wittyComment,
         stacktrace
-    }
+    };
 
     function parseWittyComment(): string {
-        skipChars(['/', ' ']);
+        skipChars(["/", " "]);
         return readLine();
     }
 
     function parseTime(): string {
-        skipString("Time: ")
+        skipString("Time: ");
         return readLine();
     }
 
     function parseDescription(): string {
-        skipString("Description: ")
+        skipString("Description: ");
         return readLine();
     }
 
@@ -74,21 +77,21 @@ export function parseCrashReport(rawReport: string): CrashReport {
         let causedBy: StackTrace | undefined = undefined;
         if (nextIsString("Caused by: ")) {
             skipString("Caused by: ");
-            causedBy = parseStackTrace()
+            causedBy = parseStackTrace();
         }
         return {
             causedBy: causedBy,
             message: message,
             trace: trace
-        }
+        };
     }
 
     function parseStackTraceElements(): StackTraceElement[] {
         const trace = [];
-        while (current() === '\t' && !isEof()) {
+        while (current() === "\t" && !isEof()) {
             trace.push(parseStackTraceElement());
         }
-        return trace
+        return trace;
     }
 
     function parseStackTraceElement(): StackTraceElement {
@@ -97,9 +100,9 @@ export function parseCrashReport(rawReport: string): CrashReport {
 
         // Most trace lines start with 'at ', but sometimes the last line says '... X more'. In that case we save the 'X more'.
         if (nextIsString("at ")) {
-            skipString("at ")
+            skipString("at ");
         } else {
-            skipString("... ")
+            skipString("... ");
         }
         return readLine();
     }
@@ -108,39 +111,41 @@ export function parseCrashReport(rawReport: string): CrashReport {
     function parseSections(): CrashReportSection[] {
         const sections = [];
         while (!isEof()) {
-            sections.push(parseSection())
+            sections.push(parseSection());
         }
         return sections;
     }
 
     function parseSection(): CrashReportSection {
-        skipChars(['-', ' ']);
-        const title = readUntilNextChar('-');
-        skipString(" --\n")
+        skipChars(["-", " "]);
+        const title = readUntilNextChar("-");
+        // Skip ' --'
+        skipLine();
 
-        let thread = parseSectionThread();
-        let details = parseSectionDetails();
-        let stacktrace = parseSectionStacktrace();
+        const thread = parseSectionThread();
+        const details = parseSectionDetails();
+        const stacktrace = parseSectionStacktrace();
 
         // Skip empty line
-        skip();
+        skipLine();
 
-        return {thread, title, details, stacktrace}
+        return {thread, title, details, stacktrace};
     }
 
     function parseSectionThread() {
         let thread: string | undefined = undefined;
         if (nextIsString("Thread: ")) {
-            skipString("Thread: ")
+            skipString("Thread: ");
             thread = readLine();
         }
         return thread;
     }
 
     function parseSectionDetails() {
-        let details: StringMap | undefined
+        let details: StringMap | undefined;
         if (nextIsString("Details:")) {
-            skipString("Details:\n")
+            // Skip 'Details:'
+            skipLine();
             details = {};
             while (!isEof() && current() === "\t") {
                 const {name, detail} = parseSectionElement();
@@ -151,9 +156,10 @@ export function parseCrashReport(rawReport: string): CrashReport {
     }
 
     function parseSectionStacktrace() {
-        let stacktrace: StackTraceElement[] | undefined
+        let stacktrace: StackTraceElement[] | undefined;
         if (nextIsString("Stacktrace:")) {
-            skipString("Stacktrace:\n");
+            // Skip 'Stacktrace:'
+            skipLine();
             stacktrace = parseStackTraceElements();
         }
         return stacktrace;
@@ -162,8 +168,8 @@ export function parseCrashReport(rawReport: string): CrashReport {
     function parseSectionElement(): { detail: string, name: string } {
         // Skip leading tab
         skip();
-        const name = readUntilChar(':');
-        skipString(": ")
+        const name = readUntilChar(":");
+        skipString(": ");
         let detail = readLine();
         // Read multiline details
         while (!isEof() && currentAndNext() === "\t\t") {
@@ -171,9 +177,8 @@ export function parseCrashReport(rawReport: string): CrashReport {
             skip();
             detail += ("\n" + readLine());
         }
-        return {detail, name}
+        return {detail, name};
     }
-
 
 
     function skipChars(chars: string[]) {
@@ -187,8 +192,8 @@ export function parseCrashReport(rawReport: string): CrashReport {
     }
 
     function readLine(): string {
-        const value = readUntilChar('\n');
-        skip();
+        const value = readUntilEither(["\r", "\n"]);
+        skipLine();
         return value;
     }
 
@@ -196,10 +201,20 @@ export function parseCrashReport(rawReport: string): CrashReport {
         cursor++;
     }
 
+    // function skipLineWith(string: string) {
+    //     skipString(string);
+    //     skipLine();
+    // }
+
+    function skipLine() {
+        skipUntilAfterChar("\n");
+    }
+
     //TODO: see if this can be optimized by calculating length AOT
     function skipString(string: string) {
         skipNumber(string.length);
     }
+
 
     function skipNumber(number: number) {
         cursor += number;
@@ -213,15 +228,15 @@ export function parseCrashReport(rawReport: string): CrashReport {
     }
 
     function readUntilNextChar(char: string): string {
-        return buildString(str => {
+        return buildString((str) => {
             while (next() !== char && !isEof()) {
                 str.append(readCurrent());
             }
-        })
+        });
     }
 
     function buildString(builder: (str: StringBuilder) => void): string {
-        let str = new StringBuilder('');
+        const str = new StringBuilder("");
         builder(str);
         return str.str;
     }
@@ -244,14 +259,32 @@ export function parseCrashReport(rawReport: string): CrashReport {
         return current() + next();
     }
 
+    function skipUntilAfterChar(char: string) {
+        while (current() !== char && !isEof()) {
+            skip();
+        }
+        // Skip the char itself
+        skip();
+    }
+
     function readUntilChar(char: string): string {
-        return buildString(str => {
+        return buildString((str) => {
             while (current() !== char && !isEof()) {
                 str.append(readCurrent());
             }
-        })
+        });
     }
+
+    function readUntilEither(chars: string[]): string {
+        return buildString((str) => {
+            while (!(chars.includes(current())) && !isEof()) {
+                str.append(readCurrent());
+            }
+        });
+    }
+
 }
+
 //
 // function pullSystemDetailsFrom(sections: CrashReportSection[]) {
 //     // The system details is parsed as a section, but the data structure we want treats system details in a special way,

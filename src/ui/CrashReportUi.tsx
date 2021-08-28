@@ -11,13 +11,13 @@ import {StackTraceElement, StringMap} from "../model/CrashReport";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ModListUi} from "./ModListUi";
 
-export function CrashReportUi(report: RichCrashReport) {
+export function CrashReportUi({report}: {report: RichCrashReport}) {
     const context = report.context;
 
     const [activeSectionIndex, setActiveSectionIndex] = React.useState(0)
 
     const sectionNames = ["Stack Trace", "Mods"]
-    //TODO: make "mods" the second option
+
     report.sections.forEach((section) => sectionNames.push(section.name));
 
     return <Row margin={{top: 70}}>
@@ -56,29 +56,8 @@ function CenterView(report: RichCrashReport, activeSectionIndex: number) {
 
 
 
-//TODO: make sure we display information in the most efficient way possible:
-// - 0-clicks:
-//  - Java Version
-//  - Minecraft Version
-//  - Forge/Fabric
-//  - Time
-//  - Main Crash Message
-//  - Main Stack Trace (but in a simplified format, click to expand)
-//  - Operating System
-//  - Witty message
-// - 1-clicks:
-//  - Mod List
-//  - System Details names
-//  - Section List
-// - 2-clicks:
-//  - System Detail details
-//  - Section Detail Stack Trace
-//  - Section Detail names + details
 
-//TODO: i think i want a server sided parser
 //TODO: add 'Copy Link/Share (mobile)/Modify Visibility/Delete' buttons to the banner
-//TODO: cleanup the way stacktrace lines are displayed...
-//TODO: add a 'raw' button
 //TODO: add a mappings dropdown
 
 //TODO: add option to create an issue in the mod author's github page instantly, and link to that issue in the crash log page
