@@ -1,17 +1,16 @@
 import React from "react";
 import {Column, Row} from "./improvedapi/Flex";
-import {CDivider, Wrap, Spacer} from "./improvedapi/Core";
-import {Mod, RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "../model/RichCrashReport";
+import {CDivider, Wrap} from "./improvedapi/Core";
+import {RichCrashReport} from "../model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
 import {errorColor} from "./App";
 import {CrashContextUi} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
-import {MoreInfoButton, StackTraceElementsUi, StackTraceUi} from "./StackTraceUi";
-import {StackTraceElement, StringMap} from "../model/CrashReport";
+import {StackTraceUi} from "./StackTraceUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ModListUi} from "./ModListUi";
 
-export function CrashReportUi({report}: {report: RichCrashReport}) {
+export function CrashReportUi({report}: { report: RichCrashReport }) {
     const context = report.context;
 
     const [activeSectionIndex, setActiveSectionIndex] = React.useState(0)
@@ -22,13 +21,13 @@ export function CrashReportUi({report}: {report: RichCrashReport}) {
 
     return <Row margin={{top: 70}}>
 
-        <Wrap width={260} >
+        <Wrap width={260}>
             {CrashContextUi(context)}
         </Wrap>
 
         {CenterView(report, activeSectionIndex)}
 
-        <Wrap width={250} >
+        <Wrap width={250}>
             <SectionNavigation sections={sectionNames}
                                activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
         </Wrap>
@@ -53,8 +52,6 @@ function CenterView(report: RichCrashReport, activeSectionIndex: number) {
         }
     </Column>;
 }
-
-
 
 
 //TODO: add 'Copy Link/Share (mobile)/Modify Visibility/Delete' buttons to the banner

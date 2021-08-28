@@ -374,9 +374,10 @@ function CrashyUi() {
 
 function CrashyCrashUi() {
     const [crash, setCrash] = useState<CrashLogResponse | undefined>(undefined)
+    const id = window.location.pathname.slice(1)
     useEffect(() => {
-        getCrash(window.location.pathname.slice(1)).then(res => setCrash(res));
-    })
+        getCrash(id).then(res => setCrash(res));
+    },[id])
     if (crash === undefined) {
         return <Text text={"Loading..."}/>
     } else if (crash) {
@@ -389,8 +390,6 @@ function CrashyCrashUi() {
 
 //todo: add nice error messages when there is a failure parsing
 function App() {
-
-
     const outerTheme = createTheme({
         palette: {
             type: 'dark',
