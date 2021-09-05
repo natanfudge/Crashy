@@ -3,12 +3,13 @@ import {Column, Row} from "./improvedapi/Flex";
 import {CDivider, Wrap} from "./improvedapi/Core";
 import {RichCrashReport} from "../model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
-import {errorColor} from "./App";
+import {errorColor, slightlyPronouncedColor} from "./App";
 import {CrashContextUi} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
 import {StackTraceUi} from "./StackTraceUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ModListUi} from "./ModListUi";
+import {AppBar} from "@material-ui/core";
 
 export function CrashReportUi({report}: { report: RichCrashReport }) {
     const context = report.context;
@@ -19,19 +20,24 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
 
     report.sections.forEach((section) => sectionNames.push(section.name));
 
-    return <Row margin={{top: 70}}>
+    return <div>
+        <AppBar style={{backgroundColor: slightlyPronouncedColor}}>
+            <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>
+        </AppBar>
+        <Row margin={{top: 70}}>
 
-        <Wrap width={260}>
-            {CrashContextUi(context)}
-        </Wrap>
+            <Wrap width={260}>
+                {CrashContextUi(context)}
+            </Wrap>
 
-        {CenterView(report, activeSectionIndex)}
+            {CenterView(report, activeSectionIndex)}
 
-        <Wrap width={250}>
-            <SectionNavigation sections={sectionNames}
-                               activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
-        </Wrap>
-    </Row>
+            <Wrap width={250}>
+                <SectionNavigation sections={sectionNames}
+                                   activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
+            </Wrap>
+        </Row>
+    </div>
 }
 
 function CenterView(report: RichCrashReport, activeSectionIndex: number) {
