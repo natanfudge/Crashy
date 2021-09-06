@@ -19,6 +19,9 @@ div.stack > * {
 .MuiFilledInput-multiline {
     height: 100%;
 }
+.MuiFilledInput-root {
+    height: 100% !important;
+}
 
 
 html,body, #root {

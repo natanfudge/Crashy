@@ -5,6 +5,7 @@ import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {MoreInfoButton} from "./StackTraceUi";
+import {Typography} from "@mui/material";
 
 export function ModListUi(mods: Mod[]) {
     const modsPrioritizingSuspectedMods = mods.sort((modA, modB) => {
@@ -55,10 +56,13 @@ function LazyColumn<T>({data, childProvider}: { data: T[], childProvider: (item:
 function ModUi({mod}: { mod: Mod }) {
     const metadata = mod.forgeMetadata
     return <Row>
-        <Text color={mod.isSuspected ? "red" : undefined}
-              text={mod.name + " " + mod.version + (mod.isSuspected ? " - may have caused crash" : "")} variant={"h6"}
-              isBold={mod.isSuspected}
-              alignSelf={"start"}/>
+        <Typography variant={"h6"} alignSelf={"start"}  fontWeight={"bold"} color={mod.isSuspected ? "red" : undefined}>
+            {mod.name + " " + mod.version + (mod.isSuspected ? " - may have caused crash" : "")}
+        </Typography>
+        {/*<Text  color={}*/}
+        {/*      text= */}
+        {/*      isBold={mod.isSuspected}*/}
+        {/*      alignSelf={}/>*/}
         <Wrap alignSelf={"center"}>
             <MoreInfoButton>
                 <Column padding={10}>

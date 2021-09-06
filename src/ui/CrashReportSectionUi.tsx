@@ -38,7 +38,9 @@ function CrashReportSectionDetails(details: StringMap) {
             // Mods are displayed separately
                 if (name !== "Mod List" && name !== "Fabric Mods")
                     return <Row>
-                        <Text text={name} color={"#cbebe9"} isBold={true} style={{whiteSpace:"nowrap"}}/>
+                        {/*TODO: look at this*/}
+                        {/* color={"#cbebe9"}*/}
+                        <Text text={name} isBold={true} style={{whiteSpace:"nowrap"}}/>
                         <Spacer width={5}/>
                         <CDivider height={"max"} width={1}/>
                         <Spacer width={10}/>
@@ -47,17 +49,6 @@ function CrashReportSectionDetails(details: StringMap) {
             }
         )}
     </Column>
-    // return <Row>
-    //     <Column>
-    //
-    //     </Column>
-    //
-    //     <Column>
-    //         {objectMap(details, (_, detail) =>
-    //
-    //         )}
-    //     </Column>
-    // </Row>
 }
 
 function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {

@@ -1,14 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import '../App.css';
-import {Button, createTheme, CssBaseline, MuiThemeProvider, TextField} from "@material-ui/core";
-import {grey, red} from "@material-ui/core/colors";
+
 import {CrashReportUi} from "./CrashReportUi";
 import {Text} from "./improvedapi/Text";
 import {parseCrashReportRich} from "../model/CrashReportEnricher";
 import {Column} from "./improvedapi/Flex";
 import {Wrap} from "./improvedapi/Core";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import {CloudUpload} from "@material-ui/icons";
+import {grey, red} from "@mui/material/colors";
+import {
+    AppBar,
+    Button,
+    createTheme,
+    CssBaseline,
+    IconButton,
+    Paper,
+    TextField,
+    Toolbar,
+    Typography
+} from "@mui/material";
+import {CloudUpload, Menu} from "@mui/icons-material";
+import { ThemeProvider } from '@mui/material/styles';
+import {Surface} from "./improvedapi/Material";
 
 
 //TODO: track when the app crashes for users
@@ -59,26 +71,26 @@ async function getCrash(id: string): Promise<CrashLogResponse> {
 
 function CrashyHome() {
     const [log, setLog] = React.useState("");
-    return <Column padding = {{bottom: 20}} alignItems={"center"} height={"max"} style = {{}}>
-        <Text text={"Crashy"} variant={"h1"}/>
+    return <Surface height={"max"}>
+        <Column padding = {{bottom: 20}} alignItems={"center"} height={"max"} style = {{}}>
+            <Text text={"Crashy"} variant={"h1"}/>
 
-        <Wrap padding={10} width={"max"} flexGrow={1}>
-            <TextField  InputLabelProps={{
-                color: "secondary"
-            }} value={log} onChange={value => setLog(value.target.value)} multiline
-                       label={"Paste a crash log"} variant={"filled"}
-                       style={{width: "100%", height: "100%", }}
-            />
-        </Wrap>
+            <Wrap padding={10} width={"max"} flexGrow={1}>
+                <TextField   value={log} onChange={value => setLog(value.target.value)} multiline
+                            label={"Paste a crash log"} variant={"filled"}
+                            style={{width: "100%", height: "100%", }}
+                />
+            </Wrap>
 
 
-        <Button disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
-            <CloudUpload style = {{ height:"60px", width:"auto"}}/>
-        }>
-            <Text text={"Upload Crash"} variant={"h4"}/>
-        </Button>
+            <Button disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
+                <CloudUpload style = {{ height:"60px", width:"auto"}}/>
+            }>
+                <Text text={"Upload Crash"} variant={"h4"}/>
+            </Button>
 
-    </Column>
+        </Column>
+    </Surface>
 
 }
 
@@ -107,26 +119,47 @@ function CrashyCrashUi() {
 
 }
 
+export const primaryColor  ="#90caf9"
 //todo: add nice error messages when there is a failure parsing
 function App() {
     const outerTheme = createTheme({
         palette: {
-            type: 'dark',
+            mode: "dark",
+            primary: {
+              main: primaryColor
+            },
+            // type: 'dark',
             secondary: {
                 main: red[500],
             },
             text: {
                 secondary: grey[600]
+            },
+            background: {
+                // default: "#1d1515"
             }
         },
     });
 
     return (
         // @ts-ignore
-        <MuiThemeProvider theme={outerTheme}>
+        <ThemeProvider theme={outerTheme}>
             <CssBaseline/>
+            {/*<AppBar color={"primary"} position = "static">*/}
+            {/*    <Toolbar variant = "dense">*/}
+            {/*        <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>*/}
+            {/*    </Toolbar>*/}
+
+            {/*</AppBar>*/}
+            {/*<AppBar position="static" >*/}
+            {/*    <Toolbar>*/}
+            {/*        <Typography variant="h6" color="inherit" component="div">*/}
+            {/*            Minecraft Crash Report*/}
+            {/*        </Typography>*/}
+            {/*    </Toolbar>*/}
+            {/*</AppBar>*/}
             {CrashyUi()}
-        </MuiThemeProvider>
+        </ThemeProvider>
     )
 }
 

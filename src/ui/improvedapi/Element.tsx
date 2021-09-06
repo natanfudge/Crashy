@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype"
-import {PropTypes} from "@material-ui/core";
+import {PropTypes} from "@mui/material";
 import {Alignment, fixAlignment} from "./Flex";
 
 
@@ -39,7 +39,7 @@ interface Percent {
 }
 
 export interface ElementProps extends StyleProps {
-    onClick?: () => void
+    onClick?: (htmlElement: Element) => void
     className?: string
     /**
      * @deprecated
@@ -75,7 +75,7 @@ export type PaddingAxes = Axes
 export type MarginAxes = Axes
 
 function isAxes(obj: any): obj is Axes {
-    return obj.horizontal !== undefined
+    return obj.horizontal !== undefined || obj.vertical !== undefined
 }
 
 
@@ -132,6 +132,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         alignSelf,
         style,
         isBold,
+        onClick,
         ...otherProps
     } = props;
     const expandedPadding = expandPaddingOrMargin(padding);
@@ -170,8 +171,11 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         ...style
     }
 
+    const reactOnClick: React.MouseEventHandler | undefined = onClick? (event => onClick(event.currentTarget)) : undefined
+
     const deflattened = {
         style: newStyle,
+        onClick: reactOnClick,
         ...otherProps
     }
 

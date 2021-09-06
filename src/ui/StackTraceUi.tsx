@@ -12,9 +12,9 @@ import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import {clickableColor, fadedOutColor} from "./App";
 import React, {useEffect} from "react";
-import {Divider, Grow, Popper} from "@material-ui/core";
+import {Button, ClickAwayListener, Divider, Grow, Popper} from "@mui/material";
 import {Surface} from "./improvedapi/Material";
-import {KeyboardArrowDown} from "@material-ui/icons";
+import {KeyboardArrowDown} from "@mui/icons-material";
 import {WithChild} from "./improvedapi/Element";
 
 
@@ -56,13 +56,15 @@ function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace
     </Row>;
 }
 
+//todo: LOOK AT THIs
+//color={clickableColor}
 function CausationButton(props: { text: string, onClick: () => void }) {
     return <Surface margin={{right: 20}} padding={{horizontal: 7, vertical: 2}}
                     className={"hoverable"}
                     backgroundColor={"#353535"}
                     width={"max-content"}
                     onClick={props.onClick}>
-        <Text color={clickableColor} text={props.text} variant={"caption"}/>
+        <Text  text={props.text} variant={"button"}/>
     </Surface>
 }
 
@@ -83,8 +85,11 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
     const isXMore = typeof traceElement === "number"
 
     return <Row margin={{left: 30}}>
-        <Text text={"at"} color={fadedOutColor} margin={{right: 10}}/>
-        <Text color={open || isXMore ? undefined : clickableColor} text={text} style={{
+        {/*TODO: look at colors here*/}
+        {/*color={fadedOutColor}*/}
+        {/* color={ undefined : clickableColor}*/}
+        <Text text={"at"} variant={"caption"}  margin={{right: 10}}/>
+        <Text variant={open || isXMore ? "body1": "button"} text={text} style={{
             whiteSpace: "pre-wrap",
             wordBreak: "break-word"
         }} onClick={isXMore? undefined : () => {
@@ -126,14 +131,18 @@ function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
 
 export function MoreInfoButton(props: WithChild) {
     const [open, setOpen] = React.useState(false);
-    const anchorEl = React.useRef()
+    let [anchorEl,setAnchorEl] = React.useState<Element | null>(null)
 
 
     return <div>
-        <Row onClick={() => setOpen(!open)}>
-            <KeyboardArrowDown innerRef={anchorEl} style = {{filter:"brightness(0.5)"}}/>
+        {/*<Button ref={}/>*/}
+        <Row onClick={(htmlElement) =>{
+           setAnchorEl(htmlElement)
+            setOpen(!open)
+        }}>
+            <KeyboardArrowDown  style = {{filter:"brightness(0.5)"}}/>
         </Row>
-        <Popper open={open} anchorEl={anchorEl.current} transition>
+        <Popper open={open} anchorEl={anchorEl} transition>
             {({TransitionProps}) => (
                 <Grow {...TransitionProps}>
                     <MoreInfoButtonSurface setOpen={setOpen}>
@@ -146,28 +155,30 @@ export function MoreInfoButton(props: WithChild) {
 }
 
 function MoreInfoButtonSurface({setOpen, children}: {setOpen: (open: boolean) => void} & WithChild){
-    const ref = React.useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        /**
-         * Alert if clicked on outside of element
-         */
-        function handleClickOutside(event: { target: any; }) {
-            if (ref.current && !ref.current!.contains(event.target)) {
-                setOpen(false)
-            }
-        }
+    // const ref = React.useRef<HTMLDivElement>(null);
+    // useEffect(() => {
+    //     /**
+    //      * Alert if clicked on outside of element
+    //      */
+    //     function handleClickOutside(event: { target: any; }) {
+    //         if (ref.current && !ref.current!.contains(event.target)) {
+    //             setOpen(false)
+    //         }
+    //     }
+    //
+    //     // Bind the event listener
+    //     document.addEventListener("mousedown", handleClickOutside);
+    //     return () => {
+    //         // Unbind the event listener on clean up
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // },[ref,setOpen]);
 
-        // Bind the event listener
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            // Unbind the event listener on clean up
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    },[ref,setOpen]);
 
-
-    return <Surface ref = {ref}>
-        {children}
+    return <Surface>
+        <ClickAwayListener onClickAway = {() => setOpen(false)}>
+            {children}
+        </ClickAwayListener>
     </Surface>
 
 }

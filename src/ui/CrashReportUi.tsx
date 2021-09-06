@@ -9,7 +9,8 @@ import {SectionNavigation} from "./SectionNavigation";
 import {StackTraceUi} from "./StackTraceUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ModListUi} from "./ModListUi";
-import {AppBar} from "@material-ui/core";
+import {AppBar, Typography} from "@mui/material";
+import {Surface} from "./improvedapi/Material";
 
 export function CrashReportUi({report}: { report: RichCrashReport }) {
     const context = report.context;
@@ -21,29 +22,38 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
     report.sections.forEach((section) => sectionNames.push(section.name));
 
     return <div>
-        <AppBar style={{backgroundColor: slightlyPronouncedColor}}>
-            <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>
-        </AppBar>
-        <Row margin={{top: 70}}>
+            <AppBar >
+                <Wrap padding={10}>
+                    <Typography  variant={"h4"}>
+                        Crashy
+                    </Typography>
+                </Wrap>
 
-            <Wrap width={260}>
-                {CrashContextUi(context)}
-            </Wrap>
+            </AppBar>
+            <Row  padding={{top: 64}} justifyContent={"space-between"}>
 
-            {CenterView(report, activeSectionIndex)}
+                {/*<Wrap /!*width={260}*!/>*/}
+                    {CrashContextUi(context)}
+                {/*</Wrap>*/}
 
-            <Wrap width={250}>
-                <SectionNavigation sections={sectionNames}
-                                   activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
-            </Wrap>
-        </Row>
-    </div>
+                {/*{CenterView(report, activeSectionIndex)}*/}
+
+                {/*<Wrap width={250}>*/}
+                    <SectionNavigation sections={sectionNames}
+                                       activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
+                {/*</Wrap>*/}
+            </Row>
+        </div>
+
+
 }
 
 function CenterView(report: RichCrashReport, activeSectionIndex: number) {
     return <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}}>
         <Column alignSelf="center" margin={{bottom: 10}}>
-            <Text text={report.title} variant="h4" color={errorColor} margin={{horizontal: 150}}/>
+            {/*TODO: look at this*/}
+            {/*color={errorColor}*/}
+            <Text text={report.title} variant="h4"  margin={{horizontal: 150}}/>
             <CDivider width={"max"}/>
         </Column>
 

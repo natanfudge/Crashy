@@ -1,5 +1,5 @@
 import {deflattenStyle, ElementProps, ManyChildParentProps, SingleChildParentProps} from "./Element";
-import {Divider, MenuItem, Paper} from "@material-ui/core";
+import {Divider, MenuItem, Paper} from "@mui/material";
 import React from "react";
 
 export interface ImageProps extends ElementProps {
@@ -31,5 +31,5 @@ export function Wrap(props: SingleChildParentProps) {
 }
 
 export function CDivider(props: ElementProps) {
-    return <Divider {...deflattenStyle(props)}/>
+    return <Divider  {...deflattenStyle(props)}/>
 }
