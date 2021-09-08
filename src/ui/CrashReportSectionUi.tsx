@@ -5,6 +5,7 @@ import {CDivider, Spacer} from "./improvedapi/Core";
 import {StringMap} from "../model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
+import {primaryColor} from "./App";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>
@@ -35,9 +36,9 @@ function CrashReportSectionDetails({details}: { details: StringMap }) {
                     return <Row key = {name}>
                         {/*TODO: look at this*/}
                         {/* color={"#cbebe9"}*/}
-                        <Text text={name} isBold={true} style={{whiteSpace: "nowrap"}}/>
+                        <Text  className={"things"} text={name} isBold={true} style={{width: "30%", minWidth: "30%"}}/>
                         <Spacer width={5}/>
-                        <CDivider height={"max"} width={1}/>
+                        <CDivider backgroundColor={primaryColor} height={"auto"} width={1}/>
                         <Spacer width={10}/>
                         <Text style={{lineBreak: "anywhere"}} text={detail}/>
                     </Row>
