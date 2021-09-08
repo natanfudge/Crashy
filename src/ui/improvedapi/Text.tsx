@@ -1,5 +1,5 @@
 import {deflattenStyle, ManyChildParentProps} from "./Element";
-import {PropTypes, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import React from "react";
 import {OverridableStringUnion} from "@mui/types";
 import {TypographyPropsVariantOverrides} from "@mui/material/Typography/Typography";
@@ -8,8 +8,8 @@ import {TypographyClasses} from "@mui/material/Typography/typographyClasses";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
 
-type MuiVariant = OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>
-type Alignment = 'inherit' | 'left' | 'center' | 'right' | 'justify'
+// type MuiVariant = OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>
+// type Alignment = 'inherit' | 'left' | 'center' | 'right' | 'justify'
 
 // export interface TextThemeProps extends ManyChildParentProps {
 //     align?: Alignment;
@@ -21,7 +21,7 @@ type Alignment = 'inherit' | 'left' | 'center' | 'right' | 'justify'
 //     variantMapping?: Partial<Record<Variant, string>>;
 // }
 
-export interface TextThemeProps  extends ManyChildParentProps {
+export interface TextThemeProps extends ManyChildParentProps {
     /**
      * Set the text-align on the component.
      * @default 'inherit'
@@ -78,9 +78,8 @@ export interface TextThemeProps  extends ManyChildParentProps {
      *   inherit: 'p',
      * }
      */
-    variantMapping?: Partial<
-        Record<OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>, string>
-        >;
+    variantMapping?: Partial<Record<OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>, string>>;
+    color?: string
 }
 
 // interface Color {
@@ -99,18 +98,17 @@ export interface TextThemeProps  extends ManyChildParentProps {
 // }
 
 export function TextTheme(props: TextThemeProps) {
-    // const {/*color,*/ style, ...otherProps} = deflattenStyle(props);
-
+    const {color, ...otherProps} = deflattenStyle(props);
 
 
     return <Typography
-        color={"Afds"}
-        {...deflattenStyle(props)}
+        color={color}
+        {...otherProps}
         // style={style}
         // sx = {otherProps.sx}
         // align={otherProps.align}
         // onClick={otherProps.onClick}
-        />
+    />
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {

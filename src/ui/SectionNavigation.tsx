@@ -1,14 +1,8 @@
-import {Column, Row} from "./improvedapi/Flex";
+import {Row} from "./improvedapi/Flex";
 import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
 import React from "react";
-import {Text} from "./improvedapi/Text";
-import {clickableColor, primaryColor} from "./App";
-import {RichCrashReportSection} from "../model/RichCrashReport";
 import {Button, ButtonGroup, Typography} from "@mui/material";
 import {Surface} from "./improvedapi/Material";
-
-
-
 
 
 export function SectionNavigation(props: {
@@ -17,14 +11,14 @@ export function SectionNavigation(props: {
 }) {
     // const sections = ["Section 1", "SS", "Very Long Section", "Section 4"]
 
-    return <Surface width={"fit-content"} margin={{right: 10}}>
+    return <Surface width={"fit-content"} margin={{right: 10}} height={"fit-content"}>
         <ButtonGroup orientation={"vertical"} variant={"contained"}>
             {/*<Button variant={"text"} color={"primary"} key="one">One</Button>,*/}
             {/*<Button  variant={"text"} key="two">Two</Button>,*/}
             {/*<Button  variant={"text"} key="three">Three</Button>*/}
             {props.sections.map((section, index) => SectionButton({
-                name:section, active:props.activeSection === index,
-                onClick: () => props.onActiveSectionChanged(index)
+                    name: section, active: props.activeSection === index,
+                    onClick: () => props.onActiveSectionChanged(index)
                 })
             )}
 
@@ -80,25 +74,21 @@ export function SectionNavigation(props: {
 
 }
 
-function BS(props: { name: string, active: boolean, onClick: () => void }) {
-    return <Button variant={"text"} onClick={props.onClick} color={"primary"}>
-        asdf
-        {/*<Row padding={{left: props.active? 0: 12, right: 12}}>*/}
-        {/*    {props.active && <CDivider backgroundColor={"#ff4545"} height={"auto"} width={2} margin={{vertical: 3, horizontal: 5}}/>}*/}
-        {/*    <Typography padding = "5px">*/}
-        {/*        {props.name}*/}
-        {/*    </Typography>*/}
-        {/*</Row>*/}
-    </Button>;
-}
+
 
 function SectionButton(props: { name: string, active: boolean, onClick: () => void }) {
-    return <Button variant={"text"} onClick={props.onClick}  color={"primary"}>
-        <Row padding={{left: props.active? 0: 12, right: 12}} width={"max"}>
-            {props.active && <CDivider backgroundColor={"#1409ff"} height={"auto"} width={2} margin={{vertical: 3, horizontal: 5}}/>}
+    return <Button key={props.name} variant={"text"} onClick={props.onClick} color={"primary"}>
+        <Row padding={{ right: 12}} width={"max"}>
+
+            {/*When There is no divider, we put a spacer to keep the layout the same.*/}
+            {props.active &&
+            <CDivider backgroundColor={"#1409ff"} height={"auto"} width={2} margin={{vertical: 3, horizontal: 5}}/>}
+            {!props.active && <Spacer width={2} margin={{vertical: 3, horizontal: 5}}/>}
+
+
             <Spacer flexGrow={1}/>
             <Wrap flexGrow={1}>
-                <Typography variant = "h6" color={"white"} padding = "5px">
+                <Typography variant="h6" color={"white"} padding="5px">
                     {props.name}
                 </Typography>
             </Wrap>

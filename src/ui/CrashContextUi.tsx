@@ -12,21 +12,22 @@ import MacosLogo from "../media/macos_logo.svg";
 import QuestionMarkIcon from "../media/questionmark_icon_white.svg";
 import {CDivider, Image} from "./improvedapi/Core";
 import {Text} from "./improvedapi/Text";
-import {Card, CardContent, Divider} from "@mui/material";
-import {blue, lightBlue, red, yellow} from "@mui/material/colors";
+import {Card, CardContent} from "@mui/material";
+import {lightBlue} from "@mui/material/colors";
 
 export function CrashContextUi(context: CrashContext) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
 
-    return <Card sx = {{height: "fit-content"}}>
+    return <Card sx={{height: "fit-content", minWidth: "fit-content"}}>
         <CardContent>
             <Column>
-                <CrashContextElement color = {"#1cc11e"} image={MinecraftLogo} text={context.minecraftVersion}/>
-                <CrashContextElement color = {"#ffe500"} image={context.loader.type === LoaderType.Forge ? ForgeLogo : FabricLogo}
+                <CrashContextElement color={"#1cc11e"} image={MinecraftLogo} text={context.minecraftVersion}/>
+                <CrashContextElement color={"#ffe500"}
+                                     image={context.loader.type === LoaderType.Forge ? ForgeLogo : FabricLogo}
                                      text={loaderName + context.loader.version}/>
-                <CrashContextElement color = {"#ef8928"} image={JavaLogo} text={context.javaVersion}/>
-                <CrashContextElement color = {lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
+                <CrashContextElement color={"#ef8928"} image={JavaLogo} text={context.javaVersion}/>
+                <CrashContextElement color={lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
                                      text={context.operatingSystem.name}/>
                 <CrashContextElement color={"#CC9966"} image={ClockIcon} text={displayedTime}/>
             </Column>

@@ -1,6 +1,5 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype"
-import {PropTypes} from "@mui/material";
 import {Alignment, fixAlignment} from "./Flex";
 
 
@@ -151,12 +150,12 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         marginBottom: expandedMargin.bottom
     }
 
-    const expandedHeight=  expandSize(height)
+    const expandedHeight = expandSize(height)
     const expandedWidth = expandSize(width)
 
     const newStyle: CSSProperties = {
         ...paddingObjPart, ...marginObjPart,
-        height:expandedHeight,
+        height: expandedHeight,
         width: expandedWidth,
         minHeight: expandedHeight,
         minWidth: expandedWidth,
@@ -171,7 +170,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         ...style
     }
 
-    const reactOnClick: React.MouseEventHandler | undefined = onClick? (event => onClick(event.currentTarget)) : undefined
+    const reactOnClick: React.MouseEventHandler | undefined = onClick ? (event => onClick(event.currentTarget)) : undefined
 
     const deflattened = {
         style: newStyle,

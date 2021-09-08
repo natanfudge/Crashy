@@ -1,5 +1,5 @@
-import {deflattenStyle, ElementProps, ManyChildParentProps, SingleChildParentProps} from "./Element";
-import {Divider, MenuItem, Paper} from "@mui/material";
+import {deflattenStyle, ElementProps, SingleChildParentProps} from "./Element";
+import {Divider} from "@mui/material";
 import React from "react";
 
 export interface ImageProps extends ElementProps {
@@ -12,7 +12,7 @@ export function Image(props: ImageProps) {
     return <img {...deflattenStyle(props)}/>
 }
 
-type Require<T, K extends keyof T> = T & Required<Pick<T, K>>;
+// type Require<T, K extends keyof T> = T & Required<Pick<T, K>>;
 // export function CButton(props: Require<ManyChildParentProps, 'onClick'>) {
 //     const {children, style: {padding, ...paperStyles} = {}, ...paperProps} = props
 //
@@ -26,6 +26,7 @@ type Require<T, K extends keyof T> = T & Required<Pick<T, K>>;
 export function Spacer(props: ElementProps) {
     return <div {...deflattenStyle(props)}/>
 }
+
 export function Wrap(props: SingleChildParentProps) {
     return <div {...deflattenStyle(props)}/>
 }

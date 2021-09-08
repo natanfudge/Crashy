@@ -66,7 +66,7 @@ function ModUi({mod}: { mod: Mod }) {
         <Wrap alignSelf={"center"}>
             <MoreInfoButton>
                 <Column padding={10}>
-                    <Text text={mod.id}
+                    <Text text={"ID: " + mod.id}
                           alignSelf={"center"}/>
                     <Spacer height={5}/>
                     {metadata?.file && <Text text={"File: " + metadata.file}/>}
