@@ -7,7 +7,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {MoreInfoButton} from "./StackTraceUi";
 import {Typography} from "@mui/material";
 
-export function ModListUi(mods: Mod[]) {
+export function ModListUi({mods}: { mods: Mod[] }) {
     const modsPrioritizingSuspectedMods = mods.sort((modA, modB) => {
             if ((modA.isSuspected && modB.isSuspected) || (!modA.isSuspected && !modB.isSuspected)) {
                 // If both suspected / neither suspected, sort alphabetically.

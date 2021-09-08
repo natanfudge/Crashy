@@ -12,7 +12,7 @@ import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import {clickableColor, fadedOutColor, primaryColor} from "./App";
 import React from "react";
-import {Box, Button, ClickAwayListener, Divider, Grow, Popper, Typography} from "@mui/material";
+import {Box, Button, ClickAwayListener, Divider, Fade, Grow, Popper, Typography} from "@mui/material";
 import {Surface} from "./improvedapi/Material";
 import {KeyboardArrowDown} from "@mui/icons-material";
 import {WithChild} from "./improvedapi/Element";
@@ -36,12 +36,14 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
         </Row>
 
         <Divider/>
-        {StackTraceElementsUi(currentTrace.elements)}
+        <StackTraceElementsUi elements={currentTrace.elements}/>
     </Column>
 }
 
-export function StackTraceElementsUi(elements: RichStackTraceElement[]) {
-    return elements.map((traceElement, i) => <StackTraceElementUi key={i} traceElement={traceElement}/>)
+export function StackTraceElementsUi({elements}:{elements: RichStackTraceElement[]}) {
+    return <div>
+        {elements.map((traceElement, i) => <StackTraceElementUi key={i} traceElement={traceElement}/>)}
+    </div>
 }
 
 function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace[], onCauserIndexChanged: (index: number) => void) {
@@ -149,17 +151,29 @@ export function MoreInfoButton(props: WithChild) {
     };
 
     const open = Boolean(anchorEl);
-    const id = open ? 'simple-popper' : undefined;
 
     return (
         <div>
             <Row onClick={handleClick}>
                 <KeyboardArrowDown style={{filter: "brightness(0.5)"}}/>
             </Row>
-            <Popper id={id} open={open} anchorEl={anchorEl}>
-                <MoreInfoButtonSurface setOpen={() => setAnchorEl(null)}>
-                    {props.children}
-                </MoreInfoButtonSurface>
+            <Popper  open={open} anchorEl={anchorEl}>
+
+                        <Box>
+                            <MoreInfoButtonSurface setOpen={() => {}}>
+                                {props.children}
+                            </MoreInfoButtonSurface>
+                        </Box>
+                {/*{({TransitionProps}) => <Grow {...TransitionProps}>*/}
+                    {/*<div>*/}
+                    {/*    <MoreInfoButtonSurface setOpen={() => setAnchorEl(null)}>*/}
+                    {/*        {props.children}*/}
+                    {/*    </MoreInfoButtonSurface>*/}
+                    {/*</div>*/}
+
+                {/*</Grow>*/}
+                   {/* }*/}
+
             </Popper>
         </div>
     );

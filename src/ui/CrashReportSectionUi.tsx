@@ -2,49 +2,44 @@ import {RichCrashReportSection, RichStackTraceElement} from "../model/RichCrashR
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import {CDivider, Spacer} from "./improvedapi/Core";
-import {StackTraceElementsUi} from "./StackTraceUi";
 import {StringMap} from "../model/CrashReport";
 import React from "react";
+import {StackTraceElementsUi} from "./StackTraceUi";
 
-export function CrashReportSectionUi(section: RichCrashReportSection) {
+export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>
         <Column width={300} alignSelf={"center"}>
             <Text text={section.name} variant={"h4"} alignSelf={"center"}/>
             <CDivider width={"max"}/>
         </Column>
 
-        {section.details && CrashReportSectionDetails(section.details)}
-
-        <Column alignSelf={"start"}>
-            {
-                section.stackTrace && CrashReportSectionTrace(section.stackTrace)
-            }
-        </Column>
+        {section.details && <CrashReportSectionDetails details={section.details}/>}
+        {section.stackTrace && <CrashReportSectionTrace trace={section.stackTrace}/>}
     </Column>
 }
 
-function CrashReportSectionTrace(trace: RichStackTraceElement[]) {
-    return [
-        <Spacer height={20}/>,
-        <Text text={"Stack Trace"} variant={"h5"}/>,
-        <CDivider width={"max"}/>,
-        StackTraceElementsUi(trace)
-    ]
+function CrashReportSectionTrace({trace}: { trace: RichStackTraceElement[] }) {
+    return <Column alignSelf={"start"}>
+        <Spacer height={20}/>
+        <Text text={"Stack Trace"} variant={"h5"}/>
+        <CDivider width={"max"}/>
+        <StackTraceElementsUi elements={trace}/>
+    </Column>
 }
 
-function CrashReportSectionDetails(details: StringMap) {
+function CrashReportSectionDetails({details}: { details: StringMap }) {
     return <Column>
         {objectMap(details, (name, detail) => {
-            // Mods are displayed separately
+                // Mods are displayed separately
                 if (name !== "Mod List" && name !== "Fabric Mods")
-                    return <Row>
+                    return <Row key = {name}>
                         {/*TODO: look at this*/}
                         {/* color={"#cbebe9"}*/}
-                        <Text text={name} isBold={true} style={{whiteSpace:"nowrap"}}/>
+                        <Text text={name} isBold={true} style={{whiteSpace: "nowrap"}}/>
                         <Spacer width={5}/>
                         <CDivider height={"max"} width={1}/>
                         <Spacer width={10}/>
-                        <Text text={detail}/>
+                        <Text style={{lineBreak: "anywhere"}} text={detail}/>
                     </Row>
             }
         )}

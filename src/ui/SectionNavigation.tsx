@@ -77,13 +77,13 @@ export function SectionNavigation(props: {
 
 
 function SectionButton(props: { name: string, active: boolean, onClick: () => void }) {
-    return <Button key={props.name} variant={"text"} onClick={props.onClick} color={"primary"}>
-        <Row padding={{ right: 12}} width={"max"}>
+    return <Button sx = {{backgroundColor: props.active? "#374550" : undefined}} key={props.name} variant={"text"} onClick={props.onClick} color={"primary"}>
+        <Row padding={{ horizontal: 5}} width={"max"}>
 
             {/*When There is no divider, we put a spacer to keep the layout the same.*/}
-            {props.active &&
-            <CDivider backgroundColor={"#1409ff"} height={"auto"} width={2} margin={{vertical: 3, horizontal: 5}}/>}
-            {!props.active && <Spacer width={2} margin={{vertical: 3, horizontal: 5}}/>}
+            {/*{props.active &&*/}
+            {/*<CDivider backgroundColor={"#1409ff"} height={"auto"} width={2} margin={{vertical: 3, horizontal: 5}}/>}*/}
+            {/*{!props.active && <Spacer width={2} margin={{vertical: 3, horizontal: 5}}/>}*/}
 
 
             <Spacer flexGrow={1}/>

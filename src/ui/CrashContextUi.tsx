@@ -15,7 +15,7 @@ import {Text} from "./improvedapi/Text";
 import {Card, CardContent} from "@mui/material";
 import {lightBlue} from "@mui/material/colors";
 
-export function CrashContextUi(context: CrashContext) {
+export function CrashContextUi({context}: {context: CrashContext }) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
 

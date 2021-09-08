@@ -27,7 +27,9 @@ div.stack > * {
 html,body, #root {
     height:100%;
 }
-
+div[role=tooltip]{
+   max-height: 100px;
+}
 /*body {*/
 /*    background-color: black;*/
 /*    font-family: cursive;*/
@@ -52,4 +54,21 @@ html,body, #root {
 
 .hoverable:hover {
     background-color: rgb(70 70 70) !important;
+}
+
+.wrapper > div {
+    border: 1px solid;
+}
+
+.child {
+    display: flex;
+}
+
+.child div {
+    flex-grow: 1;
+    width: 0;
+}
+
+.wrapper {
+    display: inline-block;
 }

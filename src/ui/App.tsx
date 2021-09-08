@@ -4,8 +4,8 @@ import '../App.css';
 import {CrashReportUi} from "./CrashReportUi";
 import {Text} from "./improvedapi/Text";
 import {parseCrashReportRich} from "../model/CrashReportEnricher";
-import {Column} from "./improvedapi/Flex";
-import {Wrap} from "./improvedapi/Core";
+import {Column, Row} from "./improvedapi/Flex";
+import {CDivider, Wrap} from "./improvedapi/Core";
 import {grey, red} from "@mui/material/colors";
 import {Button, createTheme, CssBaseline, TextField, Typography} from "@mui/material";
 import {CloudUpload} from "@mui/icons-material";
@@ -140,6 +140,27 @@ function App() {
         // @ts-ignore
         <ThemeProvider theme={outerTheme}>
             <CssBaseline/>
+            {/*<div style={{display: "flex", flexDirection: "column"}}>*/}
+            {/*<div style = {{display:"flex", flexDirection: "column"}}>*/}
+            {/*    <div style = {{display: "flex", flexDirection: "row"}}>*/}
+            {/*        <div style={{width: "150px"}}/>*/}
+            {/*            This can be any lengthsdfasdfasdfawsdfasdfasfawefawefawefwelengthsdfasdfasdfawsdfasdfasfawefawefawefwe*/}
+            {/*        <div style={{width: "150px"}}/>*/}
+            {/*    </div>*/}
+            {/*    <div style = {{backgroundColor: "red", height: "10px", width: "500px"}}/>*/}
+            {/*</div>*/}
+        {/*<div>*/}
+
+        {/*    <div style = {{display : "flex", flexDirection : "row", width: "max-content"}}>*/}
+        {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
+        {/*        asdfasdfasdf*/}
+        {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
+        {/*    </div>*/}
+        {/*    <div style = {{backgroundColor: "red", height: "10px"}}/>*/}
+        {/*</div>*/}
+            {/*</div>*/}
+            {/*    <CDivider width={"max"}/>*/}
+            {/*</div>*/}
             {/*<AppBar color={"primary"} position = "static">*/}
             {/*    <Toolbar variant = "dense">*/}
             {/*        <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>*/}

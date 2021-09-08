@@ -1,6 +1,6 @@
 import React from "react";
 import {Column, Row} from "./improvedapi/Flex";
-import {CDivider, Wrap} from "./improvedapi/Core";
+import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
 import {RichCrashReport} from "../model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
 import {CrashContextUi} from "./CrashContextUi";
@@ -32,12 +32,12 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
         <Row padding={{top: 64}} justifyContent={"space-between"}>
 
             {/*<Wrap /!*width={260}*!/>*/}
-            {CrashContextUi(context)}
+            <CrashContextUi context={context}/>
+            {/*{CrashContextUi(context)}*/}
             {/*</Wrap>*/}
 
 
-            {CenterView(report, activeSectionIndex)}
-
+            <CenterView report={report} activeSectionIndex={activeSectionIndex}/>
 
             {/*<Wrap width={250}>*/}
             <SectionNavigation sections={sectionNames}
@@ -49,28 +49,35 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
 
 }
 
-function CenterView(report: RichCrashReport, activeSectionIndex: number) {
-    return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
+function CenterView({report, activeSectionIndex}: { report: RichCrashReport, activeSectionIndex: number }) {
+    return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"} >
         <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
         <Column alignSelf="center" margin={{bottom: 10}}>
-            {/*TODO: look at this*/}
-            {/*color={errorColor}*/}
-            <Typography variant={"h4"} fontStyle={"italic"} marginLeft={"150px"} marginRight={"150px"}>
-                {report.title}
-            </Typography>
+            <Row>
+                {/*<Row style = {{width: "100%"}}>*/}
+                    <div style = {{width: "150px"}}/>
+                    {/*<div style={{width:10000}}/>*/}
+                    <Typography variant={"h4"} fontStyle={"italic"} >
+                        {report.title}
+                    </Typography>
+                <div style = {{width: "150px"}}/>
+
+                {/*</Row>*/}
+            </Row>
+
+
             {/*<Text text= variant="h4"  margin={{horizontal: 150}}/>*/}
             {/*<Divider color={"primary"}></Divider>*/}
-            <CDivider backgroundColor={"#9c1a1a"} width={"max"}/>
+            <CDivider backgroundColor={"#9c1a1a"}/>
         </Column>
 
         <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
         {
             activeSectionIndex === 0 ?
                 <StackTraceUi stackTrace={report.stackTrace}/>
-                : activeSectionIndex === 1 ?
-                    ModListUi(report.mods)
+                : activeSectionIndex === 1 ? <ModListUi mods={report.mods}/>
                     // We already use up the 0 and 1 index for the main stack trace and mods, so we need to reduce the index by 2.
-                    : CrashReportSectionUi(report.sections[activeSectionIndex - 2])
+                    : <CrashReportSectionUi section = {report.sections[activeSectionIndex - 2]}/>
         }
     </Column>
     </Surface>
