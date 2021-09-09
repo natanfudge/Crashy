@@ -84,11 +84,5 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
 }
 
 
-//TODO: add 'Copy Link/Share (mobile)/Modify Visibility/Delete' buttons to the banner
-//TODO: add a mappings dropdown
 
-//TODO: add option to create an issue in the mod author's github page instantly, and link to that issue in the crash log page
-//TODO: index crashes in google and allow some way to communicate to solve crashes together, then maybe show an official 'solve with:' solution
-//TODO: add many 'click to copy' buttons
-//TODO: configurable UI that is retained
 

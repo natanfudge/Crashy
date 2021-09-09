@@ -68,13 +68,13 @@ function parseOperatingSystem(osString: string): OperatingSystem {
             type: OperatingSystemType.Windows
         };
     } else {
-        //TODO: better parsing once we can get a hold of non-windows examples
         return {
             name: osString,
             type: OperatingSystemType.Linux
         };
     }
 }
+//TODO: unify backend and frontend javascript
 
 function getLoader(report: CrashReport, systemDetails: StringMap, mods: Mod[]): Loader {
     const forgeEntry = systemDetails[ForgeLoaderTitle];

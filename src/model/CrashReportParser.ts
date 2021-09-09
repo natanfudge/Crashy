@@ -12,8 +12,6 @@ class StringBuilder {
     }
 }
 
-// TODO: it's parsing twice for some reason
-//TODO: since we support mappings in the site, we should shut down support for deobfuscating mappings in NEC itself.
 export function parseCrashReport(rawReport: string): CrashReport {
     let cursor = 0;
 

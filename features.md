@@ -1,0 +1,33 @@
+- Mappings selection
+  - Remove deobfuscation from NEC
+- Crashalytics?
+- Provide nice error messages when the crash log is invalid
+- 'Copy Link' button
+  - Link expiry date
+- Mobile support: 
+  - Layout
+  - Share button
+- Light mode support
+- Authentication solution
+  - Allow crash log expiry
+  - Allow deleting crash log
+- Improve 'Mods' panel
+  - Click each mod to reach their website
+  - Button to create new issue if github issues is available
+  - Improve visibility of 'causing mod' to increase the chance an issue will be made
+- Crash discussion
+  - Make sure crashes are easily searchable in Google
+  - Add a system for a 'solution' to be posted on the crash (e.g. update to version X, remove mod Y).
+- 'Click to copy'
+  - Crash context
+  - Crash title
+  - Entire stack trace (copying will give you the raw trace)
+  - Trace line
+  - Trace title
+  - Mod
+  - Entire section
+  - Section detail
+- Configurable UI
+- Button to show raw log
+- Upload new crash button
+- Explore crashes

@@ -4,8 +4,8 @@ import '../App.css';
 import {CrashReportUi} from "./CrashReportUi";
 import {Text} from "./improvedapi/Text";
 import {parseCrashReportRich} from "../model/CrashReportEnricher";
-import {Column, Row} from "./improvedapi/Flex";
-import {CDivider, Wrap} from "./improvedapi/Core";
+import {Column} from "./improvedapi/Flex";
+import {Wrap} from "./improvedapi/Core";
 import {grey, red} from "@mui/material/colors";
 import {Button, createTheme, CssBaseline, TextField, Typography} from "@mui/material";
 import {CloudUpload} from "@mui/icons-material";
@@ -94,7 +94,8 @@ function CrashyUi() {
         return CrashyCrashUi();
     }
 }
-//TODO: fix up section dividers and color.
+
+//TODO: change functions domain
 
 //5r4hREoRA4GO5CdOVfhP
 function CrashyCrashUi() {
@@ -115,7 +116,6 @@ function CrashyCrashUi() {
 
 export const primaryColor = "#90caf9"
 
-//todo: add nice error messages when there is a failure parsing
 function App() {
     const outerTheme = createTheme({
         palette: {
@@ -149,15 +149,15 @@ function App() {
             {/*    </div>*/}
             {/*    <div style = {{backgroundColor: "red", height: "10px", width: "500px"}}/>*/}
             {/*</div>*/}
-        {/*<div>*/}
+            {/*<div>*/}
 
-        {/*    <div style = {{display : "flex", flexDirection : "row", width: "max-content"}}>*/}
-        {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
-        {/*        asdfasdfasdf*/}
-        {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
-        {/*    </div>*/}
-        {/*    <div style = {{backgroundColor: "red", height: "10px"}}/>*/}
-        {/*</div>*/}
+            {/*    <div style = {{display : "flex", flexDirection : "row", width: "max-content"}}>*/}
+            {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
+            {/*        asdfasdfasdf*/}
+            {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
+            {/*    </div>*/}
+            {/*    <div style = {{backgroundColor: "red", height: "10px"}}/>*/}
+            {/*</div>*/}
             {/*</div>*/}
             {/*    <CDivider width={"max"}/>*/}
             {/*</div>*/}

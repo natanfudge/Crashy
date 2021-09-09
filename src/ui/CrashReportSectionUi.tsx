@@ -34,8 +34,6 @@ function CrashReportSectionDetails({details}: { details: StringMap }) {
                 // Mods are displayed separately
                 if (name !== "Mod List" && name !== "Fabric Mods")
                     return <Row key = {name}>
-                        {/*TODO: look at this*/}
-                        {/* color={"#cbebe9"}*/}
                         <Text  className={"things"} text={name} isBold={true} style={{width: "30%", minWidth: "30%"}}/>
                         <Spacer width={5}/>
                         <CDivider backgroundColor={primaryColor} height={"auto"} width={1}/>
