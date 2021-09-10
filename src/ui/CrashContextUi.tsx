@@ -25,7 +25,7 @@ export function CrashContextUi({context}: { context: CrashContext }) {
             <Column>
                 <CrashContextElement color={"#1cc11e"} image={MinecraftLogo} text={context.minecraftVersion}/>
                 <CrashContextElement color={"#ffe500"}
-                                     filter={isForge? "invert(89%) sepia(0%) saturate(0%) hue-rotate(86deg) brightness(103%) contrast(101%)" : undefined}
+                                     filter={isForge? "invert(79%) sepia(6%) saturate(187%) hue-rotate(335deg) brightness(83%) contrast(93%)" : undefined}
                                      image={isForge ? ForgeLogo : FabricLogo}
                                      text={loaderName + context.loader.version}/>
                 <CrashContextElement color={"#ef8928"} image={JavaLogo} text={context.javaVersion}/>
