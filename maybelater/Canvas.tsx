@@ -44,10 +44,3 @@ export function CanvasElement(props: {draw: (canvas: Canvas) => void}) {
 
     return <canvas ref={canvasRef} height={window.innerHeight} width={window.innerWidth}/>;
 }
-
-
-//            <CanvasElement draw={(canvas) => {
-//                 canvas.drawLine({x: 0, y: 0}, {x: 50, y: 50})
-//                 canvas.drawLine({x: 100, y: 0}, {x: 100, y: 100})
-//                 canvas.drawLine({x: 0, y: 150}, {x: 100, y: 150})
-//             }}/>

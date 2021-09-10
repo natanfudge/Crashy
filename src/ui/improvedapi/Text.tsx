@@ -8,19 +8,6 @@ import {TypographyClasses} from "@mui/material/Typography/typographyClasses";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
 
-// type MuiVariant = OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>
-// type Alignment = 'inherit' | 'left' | 'center' | 'right' | 'justify'
-
-// export interface TextThemeProps extends ManyChildParentProps {
-//     align?: Alignment;
-//     color?: string
-//     gutterBottom?: boolean;
-//     noWrap?: boolean;
-//     paragraph?: boolean;
-//     variant?: MuiVariant;
-//     variantMapping?: Partial<Record<Variant, string>>;
-// }
-
 export interface TextThemeProps extends ManyChildParentProps {
     /**
      * Set the text-align on the component.
@@ -82,33 +69,11 @@ export interface TextThemeProps extends ManyChildParentProps {
     color?: string
 }
 
-// interface Color {
-//     value: string
-// }
-//
-// // const x = rgb(5,5,5);
-// // function rgb(r: number, g : number, b: number){
-// //     return `rgb(${r},${g},${b})`
-// // }
-//
-// const x = color("rgb(0,0,0)")
-//
-// function color(c: string){
-//     return c;
-// }
-
 export function TextTheme(props: TextThemeProps) {
     const {color, ...otherProps} = deflattenStyle(props);
 
 
-    return <Typography
-        color={color}
-        {...otherProps}
-        // style={style}
-        // sx = {otherProps.sx}
-        // align={otherProps.align}
-        // onClick={otherProps.onClick}
-    />
+    return <Typography color={color}{...otherProps}/>
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {

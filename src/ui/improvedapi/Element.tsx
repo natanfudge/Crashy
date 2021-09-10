@@ -44,9 +44,6 @@ export interface ElementProps extends StyleProps {
      * @deprecated
      */
     style?: CSSProperties;
-
-    // popper?: React.ReactElement<any, any>
-    // reference?: React.Ref<HTMLDivElement>
 }
 
 export interface Directions {
@@ -172,23 +169,9 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
 
     const reactOnClick: React.MouseEventHandler | undefined = onClick ? (event => onClick(event.currentTarget)) : undefined
 
-    const deflattened = {
+    return {
         style: newStyle,
         onClick: reactOnClick,
         ...otherProps
-    }
-
-    // console.log("Flattened style = " + JSON.stringify(otherPropsTest))
-    // console.log("Deflattened style = " + JSON.stringify(deflattened.style));
-    return deflattened;
+    };
 }
-
-// export function deflattenStyle<T extends ElementProps>(props: T) {
-//     // console.log("Provided style = " + JSON.stringify(props.style))
-//     // console.log("Deflattened style = " + JSON.stringify(deflattenedStyle(props)))
-//     return {...props, style: {...deflattenedStyle(props), ...props.style}}
-// }
-
-// export function Parent(props: ParentProps) {
-//     return <div {...deflattenStyle(props)}/>
-// }

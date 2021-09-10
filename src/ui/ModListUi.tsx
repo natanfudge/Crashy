@@ -26,12 +26,6 @@ export function ModListUi({mods}: { mods: Mod[] }) {
         </Column>
         <LazyColumn data={modsPrioritizingSuspectedMods}
                     childProvider={(mod) => <ModUi mod={mod} key={mod.id}/>}/>
-        {/*<InfiniteScroll dataLength={current.length}*/}
-        {/*                next={getMoreData}*/}
-        {/*                hasMore={hasMore}*/}
-        {/*                loader={<h4>Loading...</h4>}>*/}
-        {/*    {modsPrioritizingSuspectedMods.map(mod => ModUi(mod))}*/}
-        {/*</InfiniteScroll>*/}
 
     </Column>
 }
@@ -45,24 +39,21 @@ function LazyColumn<T>({data, childProvider}: { data: T[], childProvider: (item:
     const active = data.slice(0, activeAmount);
 
     return <InfiniteScroll dataLength={activeAmount}
-                        next={() => setActiveAmount(Math.min(activeAmount + batchSize, data.length))}
-                        hasMore={hasMore}
-                        loader={<h4>Loading...</h4>}
-        >
-            {active.map((item, index) => (childProvider(item, index)))}
-        </InfiniteScroll>
+                           next={() => setActiveAmount(Math.min(activeAmount + batchSize, data.length))}
+                           hasMore={hasMore}
+                           loader={<h4>Loading...</h4>}
+    >
+        {active.map((item, index) => (childProvider(item, index)))}
+    </InfiniteScroll>
 }
 
 function ModUi({mod}: { mod: Mod }) {
     const metadata = mod.forgeMetadata
     return <Row>
-        <Typography variant={"h6"} alignSelf={"start"}  fontWeight={"bold"} color={mod.isSuspected ? "red" : undefined}>
+        <Typography variant={"h6"} alignSelf={"start"} fontWeight={"bold"} color={mod.isSuspected ? "red" : undefined}>
             {mod.name + " " + mod.version + (mod.isSuspected ? " - may have caused crash" : "")}
         </Typography>
-        {/*<Text  color={}*/}
-        {/*      text= */}
-        {/*      isBold={mod.isSuspected}*/}
-        {/*      alignSelf={}/>*/}
+
         <Wrap alignSelf={"center"}>
             <MoreInfoButton>
                 <Column padding={10}>

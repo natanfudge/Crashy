@@ -15,16 +15,18 @@ import {Text} from "./improvedapi/Text";
 import {Card, CardContent} from "@mui/material";
 import {lightBlue} from "@mui/material/colors";
 
-export function CrashContextUi({context}: {context: CrashContext }) {
+export function CrashContextUi({context}: { context: CrashContext }) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
+    const isForge = context.loader.type === LoaderType.Forge
 
     return <Card sx={{height: "fit-content", minWidth: "fit-content"}}>
         <CardContent>
             <Column>
                 <CrashContextElement color={"#1cc11e"} image={MinecraftLogo} text={context.minecraftVersion}/>
                 <CrashContextElement color={"#ffe500"}
-                                     image={context.loader.type === LoaderType.Forge ? ForgeLogo : FabricLogo}
+                                     filter={isForge? "invert(89%) sepia(0%) saturate(0%) hue-rotate(86deg) brightness(103%) contrast(101%)" : undefined}
+                                     image={isForge ? ForgeLogo : FabricLogo}
                                      text={loaderName + context.loader.version}/>
                 <CrashContextElement color={"#ef8928"} image={JavaLogo} text={context.javaVersion}/>
                 <CrashContextElement color={lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
@@ -33,17 +35,12 @@ export function CrashContextUi({context}: {context: CrashContext }) {
             </Column>
         </CardContent>
     </Card>
-    // <Row>
-    //
-    //     <CDivider width={1} height="auto"/>
-    // </Row>
 }
 
-function CrashContextElement(props: { image: string, text: string, color: string }) {
+function CrashContextElement(props: { image: string, text: string, color: string, filter?: string }) {
     return <Row padding={{vertical: 5}} margin={{top: 10}}>
-        {/*<Divider color={}*/}
         <CDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
-        <Image src={props.image} margin={{right: 10}} height={30} alt="Icon"/>
+        <Image src={props.image} margin={{right: 10}} height={30} alt="Icon" style={{filter: props.filter}}/>
         <Text text={props.text} variant="h6"/>
     </Row>
 

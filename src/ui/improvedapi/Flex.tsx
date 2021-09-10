@@ -28,8 +28,9 @@ export type ColumnProps = RowProps
 export interface FlexProps extends RowProps {
     flexDirection: CSS.Property.FlexDirection
 }
-export function fixAlignment<T extends FlexAlignment >(alignment: T | undefined):
-    Exclude<T,"end" | "start"> | "flex-end" | "flex-start" | undefined {
+
+export function fixAlignment<T extends FlexAlignment>(alignment: T | undefined):
+    Exclude<T, "end" | "start"> | "flex-end" | "flex-start" | undefined {
     switch (alignment) {
         case "end":
             return "flex-end"

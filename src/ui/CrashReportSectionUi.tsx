@@ -29,19 +29,24 @@ function CrashReportSectionTrace({trace}: { trace: RichStackTraceElement[] }) {
 }
 
 function CrashReportSectionDetails({details}: { details: StringMap }) {
-    return <Column>
-        {objectMap(details, (name, detail) => {
-                // Mods are displayed separately
-                if (name !== "Mod List" && name !== "Fabric Mods")
-                    return <Row key = {name}>
-                        <Text  className={"things"} text={name} isBold={true} style={{width: "30%", minWidth: "30%"}}/>
-                        <Spacer width={5}/>
+    return <Column margin={{top: 5}}>
+        <CDivider backgroundColor={"#6d6c6c"}/>
+        {objectMap(details, (name, detail, index) => {
+            // Mods are displayed separately
+            if (name !== "Mod List" && name !== "Fabric Mods") {
+                return <Column>
+                    <Row key={name}>
+                        <Text text={name} isBold={true} padding={5} style={{width: "30%", minWidth: "30%"}}/>
                         <CDivider backgroundColor={primaryColor} height={"auto"} width={1}/>
-                        <Spacer width={10}/>
-                        <Text style={{lineBreak: "anywhere"}} text={detail}/>
+                        <Text  text={detail} padding={{horizontal: 10, vertical: 5}}/>
+
                     </Row>
+                    <CDivider backgroundColor={index % 2 === 1 ? "#6d6c6c" : undefined}/>
+                </Column>
             }
-        )}
+
+        })}
+
     </Column>
 }
 

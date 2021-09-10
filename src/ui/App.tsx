@@ -13,7 +13,6 @@ import {ThemeProvider} from '@mui/material/styles';
 import {Surface} from "./improvedapi/Material";
 
 
-//TODO: track when the app crashes for users
 export const clickableColor = "rgb(0, 173, 239)"
 export const errorColor = "rgb(234,8,8)"
 export const fadedOutColor = grey[600]
@@ -24,6 +23,7 @@ interface GetResponse {
     code: number
 }
 
+//TODO: test forge trace
 function httpGetCallback(url: string, onDone: (response: GetResponse) => void) {
     const xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
@@ -97,7 +97,8 @@ function CrashyUi() {
 
 //TODO: change functions domain
 
-//5r4hREoRA4GO5CdOVfhP
+//Fabric: 5r4hREoRA4GO5CdOVfhP
+//Forge: QB2IckABRxmlovsVw683
 function CrashyCrashUi() {
     const [crash, setCrash] = useState<CrashLogResponse | undefined>(undefined)
     const id = window.location.pathname.slice(1)
@@ -116,6 +117,7 @@ function CrashyCrashUi() {
 
 export const primaryColor = "#90caf9"
 
+//TODO: proper loading indicator when downloading crash
 function App() {
     const outerTheme = createTheme({
         palette: {
@@ -140,40 +142,6 @@ function App() {
         // @ts-ignore
         <ThemeProvider theme={outerTheme}>
             <CssBaseline/>
-            {/*<div style={{display: "flex", flexDirection: "column"}}>*/}
-            {/*<div style = {{display:"flex", flexDirection: "column"}}>*/}
-            {/*    <div style = {{display: "flex", flexDirection: "row"}}>*/}
-            {/*        <div style={{width: "150px"}}/>*/}
-            {/*            This can be any lengthsdfasdfasdfawsdfasdfasfawefawefawefwelengthsdfasdfasdfawsdfasdfasfawefawefawefwe*/}
-            {/*        <div style={{width: "150px"}}/>*/}
-            {/*    </div>*/}
-            {/*    <div style = {{backgroundColor: "red", height: "10px", width: "500px"}}/>*/}
-            {/*</div>*/}
-            {/*<div>*/}
-
-            {/*    <div style = {{display : "flex", flexDirection : "row", width: "max-content"}}>*/}
-            {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
-            {/*        asdfasdfasdf*/}
-            {/*        <div style = {{maxWidth: "150px", minWidth: "100%"}}/>*/}
-            {/*    </div>*/}
-            {/*    <div style = {{backgroundColor: "red", height: "10px"}}/>*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*    <CDivider width={"max"}/>*/}
-            {/*</div>*/}
-            {/*<AppBar color={"primary"} position = "static">*/}
-            {/*    <Toolbar variant = "dense">*/}
-            {/*        <Text align={"center"} variant="h3" text={"Minecraft Crash Report"}/>*/}
-            {/*    </Toolbar>*/}
-
-            {/*</AppBar>*/}
-            {/*<AppBar position="static" >*/}
-            {/*    <Toolbar>*/}
-            {/*        <Typography variant="h6" color="inherit" component="div">*/}
-            {/*            Minecraft Crash Report*/}
-            {/*        </Typography>*/}
-            {/*    </Toolbar>*/}
-            {/*</AppBar>*/}
             {CrashyUi()}
         </ThemeProvider>
     )
