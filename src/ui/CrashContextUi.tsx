@@ -40,7 +40,7 @@ export function CrashContextUi({context}: { context: CrashContext }) {
 function CrashContextElement(props: { image: string, text: string, color: string, filter?: string }) {
     return <Row padding={{vertical: 5}} margin={{top: 10}}>
         <CDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
-        <Image src={props.image} margin={{right: 10}} height={30} alt="Icon" style={{filter: props.filter}}/>
+        <Image src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon" style={{filter: props.filter}}/>
         <Text text={props.text} variant="h6"/>
     </Row>
 

@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="320.97473"
+   width="350.83356"
    height="350.83356"
    id="svg1968"
    sodipodi:version="0.32"
    inkscape:version="1.1 (c68e22c387, 2021-05-23)"
    version="1.0"
-   sodipodi:docname="MacOS-Logo.svg"
+   sodipodi:docname="macos_logo.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,8 @@
       <metadata
          id="CorelCorpID_0Corel-Layer" />
       <g
-         id="_228026664">
+         id="_228026664"
+         transform="translate(6.144017)">
         <g
            id="g4158">
           <path
@@ -80,11 +81,11 @@
              id="_137919136"
              style="fill:#c9d3ec;fill-rule:nonzero" />
           <polygon
-             points="150.603,35.6656 150.603,51.0252 143.691,51.0252 143.691,35.6656 "
+             points="143.691,35.6656 150.603,35.6656 150.603,51.0252 143.691,51.0252 "
              id="_226601952"
              style="fill:#000000;fill-rule:nonzero" />
           <polygon
-             points="93.7721,35.6656 93.7721,51.0252 86.8602,51.0252 86.8602,35.6656 "
+             points="86.8602,35.6656 93.7721,35.6656 93.7721,51.0252 86.8602,51.0252 "
              id="_22274024"
              style="fill:#32438f;fill-rule:nonzero" />
           <path

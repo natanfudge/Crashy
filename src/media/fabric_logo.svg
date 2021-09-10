@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="331.4259"
+   width="362.74481"
    height="362.74481"
-   viewBox="0 0 87.689766 95.976227"
+   viewBox="0 0 95.976227 95.976227"
    version="1.1"
    id="svg8"
    sodipodi:docname="fabric_logo.svg"
@@ -70,7 +70,8 @@
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0">
+     fit-margin-bottom="0"
+     height="362.74481px">
     <inkscape:grid
        type="xygrid"
        id="grid6349"
@@ -101,7 +102,7 @@
      transform="translate(-17.803015,-6.7700824)">
     <g
        id="g25900"
-       transform="translate(197.11456,257.96875)"
+       transform="translate(201.25779,257.96875)"
        style="fill:#000000;fill-opacity:1">
       <path
          id="rect13361"

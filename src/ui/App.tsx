@@ -1,4 +1,4 @@
-import React, {lazy, useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import '../App.css';
 
 import {CrashReportUi} from "./CrashReportUi";
@@ -7,8 +7,8 @@ import {parseCrashReportRich} from "../model/CrashReportEnricher";
 import {grey, red} from "@mui/material/colors";
 import {createTheme, CssBaseline} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
-import { Suspense } from 'react';
 
+const CrashyHome = React.lazy(() => import("./CrashyHome"))
 
 export const clickableColor = "rgb(0, 173, 239)"
 export const errorColor = "rgb(234,8,8)"
@@ -57,7 +57,7 @@ async function getCrash(id: string): Promise<CrashLogResponse> {
 }
 
 
-const CrashyHome = lazy(() => import("./CrashyHome"))
+// const CrashyHome = /*lazy(() =>*/ import("./CrashyHome")/*)*/
 
 function CrashyUi() {
     if (window.location.pathname === "/") {
