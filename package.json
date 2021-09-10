@@ -8,28 +8,21 @@
     "@mui/icons-material": "^5.0.0-rc.0",
     "@mui/lab": "^5.0.0-alpha.45",
     "@mui/material": "^5.0.0-rc.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "gh-pages": "^3.2.3",
-    "kotlin": "^1.5.21",
     "react": "^17.0.2",
-    "react-canvas-draw": "^1.1.1",
     "react-dom": "^17.0.2",
     "react-infinite-scroll-component": "^6.1.0",
     "react-scripts": "4.0.3",
-    "react-virtualized": "^9.22.3",
-    "react-window": "^1.8.6",
+    "source-map-explorer": "^2.5.2",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
+  "deploysite": "npm run build && firebase deploy --only hosting",
     "start": "react-scripts start --inspect",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -54,6 +47,11 @@
     ]
   },
   "devDependencies": {
-    "@types/react-window": "^1.8.5"
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/react-window": "^1.8.5",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.8.0"
   }
 }

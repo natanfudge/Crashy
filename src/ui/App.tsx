@@ -95,7 +95,7 @@ function CrashyUi() {
     }
 }
 
-//TODO: change functions domain
+//TODO: optimize size
 
 //Fabric: 5r4hREoRA4GO5CdOVfhP
 //Forge: QB2IckABRxmlovsVw683
