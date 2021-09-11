@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Column, Row} from "./improvedapi/Flex";
 import {CDivider, Wrap} from "./improvedapi/Core";
 import {RichCrashReport} from "../model/RichCrashReport";
@@ -8,10 +8,43 @@ import {SectionNavigation} from "./SectionNavigation";
 import {StackTraceUi} from "./StackTraceUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ModListUi} from "./ModListUi";
-import {AppBar, Typography} from "@mui/material";
+import {AppBar, LinearProgress, Typography} from "@mui/material";
 import {Surface} from "./improvedapi/Material";
 import {crashyTitleColor} from "./Colors";
 import {CrashyLogo} from "./Utils";
+import {CrashLogResponse, getCrash} from "./Server";
+import {parseCrashReportRich} from "../model/CrashReportEnricher";
+
+export function CrashyCrashReportPage({crashId} : {crashId: string}){
+    return <div>
+        <AppBar>
+            <Row padding={10}>
+                <CrashyLogo size={30 } margin={{top: 5, right: 10}}/>
+                <Text text={"Crashy"} variant={"h4"} color={crashyTitleColor}/>
+            </Row>
+        </AppBar>
+        <CrashReportPageContent crashId={crashId}/>
+    </div>
+}
+
+function CrashReportPageContent({crashId} : {crashId: string}) {
+    const [crash, setCrash] = useState<CrashLogResponse | undefined>(undefined)
+    useEffect(() => {
+        getCrash(crashId).then(res => setCrash(res));
+    }, [crashId])
+    if (crash === undefined) {
+        return <Wrap margin={{top: 60}}>
+            <LinearProgress/>
+        </Wrap>
+    } else if (crash) {
+        const parsed = parseCrashReportRich(crash)
+        document.title = parsed.title
+        return <CrashReportUi report={parsed}/>
+    } else {
+        return <Text text={"No such crash ID"}/>
+    }
+
+}
 
 export function CrashReportUi({report}: { report: RichCrashReport }) {
     const context = report.context;
@@ -22,22 +55,13 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
 
     report.sections.forEach((section) => sectionNames.push(section.name));
 
-    return <div>
-        <AppBar>
-            <Row padding={10}>
-                <CrashyLogo size={30 } margin={{top: 5, right: 10}}/>
-                <Text text={"Crashy"} variant={"h4"} color={crashyTitleColor}/>
-            </Row>
-
-        </AppBar>
-        <Row padding={{top: 64}} justifyContent={"space-between"}>
+    return <Row padding={{top: 64}} justifyContent={"space-between"}>
             <CrashContextUi context={context}/>
             <CenterView report={report} activeSectionIndex={activeSectionIndex}/>
 
             <SectionNavigation sections={sectionNames}
                                activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
         </Row>
-    </div>
 
 
 }
