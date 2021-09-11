@@ -10,6 +10,8 @@ import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ModListUi} from "./ModListUi";
 import {AppBar, Typography} from "@mui/material";
 import {Surface} from "./improvedapi/Material";
+import {crashyTitleColor} from "./Colors";
+import {CrashyLogo} from "./Utils";
 
 export function CrashReportUi({report}: { report: RichCrashReport }) {
     const context = report.context;
@@ -22,18 +24,14 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
 
     return <div>
         <AppBar>
-            <Wrap padding={10}>
-                <Typography variant={"h4"}>
-                    Crashy
-                </Typography>
-            </Wrap>
+            <Row padding={10}>
+                <CrashyLogo size={30 } margin={{top: 5, right: 10}}/>
+                <Text text={"Crashy"} variant={"h4"} color={crashyTitleColor}/>
+            </Row>
 
         </AppBar>
         <Row padding={{top: 64}} justifyContent={"space-between"}>
-
             <CrashContextUi context={context}/>
-
-
             <CenterView report={report} activeSectionIndex={activeSectionIndex}/>
 
             <SectionNavigation sections={sectionNames}

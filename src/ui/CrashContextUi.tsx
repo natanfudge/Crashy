@@ -10,7 +10,7 @@ import WindowsLogo from "../media/windows_logo.svg";
 import LinuxLogo from "../media/linux_logo.svg";
 import MacosLogo from "../media/macos_logo.svg";
 import QuestionMarkIcon from "../media/questionmark_icon_white.svg";
-import {CDivider, Image} from "./improvedapi/Core";
+import {CDivider, CImage} from "./improvedapi/Core";
 import {Text} from "./improvedapi/Text";
 import {Card, CardContent} from "@mui/material";
 import {lightBlue} from "@mui/material/colors";
@@ -40,7 +40,7 @@ export function CrashContextUi({context}: { context: CrashContext }) {
 function CrashContextElement(props: { image: string, text: string, color: string, filter?: string }) {
     return <Row padding={{vertical: 5}} margin={{top: 10}}>
         <CDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
-        <Image src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon" style={{filter: props.filter}}/>
+        <CImage src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon" style={{filter: props.filter}}/>
         <Text text={props.text} variant="h6"/>
     </Row>
 

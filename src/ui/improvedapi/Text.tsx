@@ -1,6 +1,6 @@
 import {deflattenStyle, ManyChildParentProps} from "./Element";
 import {Typography} from "@mui/material";
-import React from "react";
+import React, {CSSProperties} from "react";
 import {OverridableStringUnion} from "@mui/types";
 import {TypographyPropsVariantOverrides} from "@mui/material/Typography/Typography";
 import {Variant} from "@mui/material/styles/createTypography";
@@ -66,14 +66,55 @@ export interface TextThemeProps extends ManyChildParentProps {
      * }
      */
     variantMapping?: Partial<Record<OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>, string>>;
-    color?: string
+    color?: string | Gradient
+}
+//
+export interface Gradient {
+    direction: GradientDirection
+    firstColor: GradientColor
+    midpointPercent?: number
+    secondColor: GradientColor
+
+}
+
+export type GradientColor = string | {
+    color: string
+    endPercent: number
+}
+
+export type GradientDirection = "to bottom" | "to top" | "to right" | "to left"
+
+export function isGradient(obj?: any) : obj is Gradient {
+    return obj?.firstColor !== undefined;
+}
+
+function gradientColorString(color: GradientColor) : string {
+    return typeof color === "string"? color: `${color.color} ${color.endPercent}%`
+}
+
+function cssFunction(name: string, ...args: (any | undefined)[]): string{
+    return `${name}(${args.filter(arg => arg !== undefined).join(",")})`
 }
 
 export function TextTheme(props: TextThemeProps) {
-    const {color, ...otherProps} = deflattenStyle(props);
+    const {color,style, ...otherProps} = deflattenStyle(props);
+
+    const actualColor = isGradient(color) ? undefined : color;
+
+    const gradientStyle : CSSProperties = isGradient(color) ? {
+        background:cssFunction("linear-gradient",
+            color.direction,
+            gradientColorString(color.firstColor),
+            color.midpointPercent !== undefined? `${color.midpointPercent}%` : undefined,
+            gradientColorString(color.secondColor)
+        ),
+        backgroundClip: "text",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent"
+    } : {}
 
 
-    return <Typography color={color}{...otherProps}/>
+    return <Typography style={{...gradientStyle, ...style}} color={actualColor}{...otherProps}/>
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {

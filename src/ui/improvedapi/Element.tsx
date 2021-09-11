@@ -15,8 +15,8 @@ interface FlexChildProps {
 }
 
 interface StyleProps extends FlexChildProps {
-    padding?: number | Padding | PaddingAxes;
-    margin?: number | Margin | MarginAxes;
+    padding?: Padding;
+    margin?:  Margin;
     height?: Size;
     width?: Size;
     backgroundColor?: CSS.Property.BackgroundColor
@@ -65,8 +65,8 @@ export interface Axes {
 }
 
 
-export type Margin = Directions
-export type Padding = Directions
+export type Margin = number | Directions | MarginAxes
+export type Padding =  number | Directions | PaddingAxes
 export type PaddingAxes = Axes
 export type MarginAxes = Axes
 

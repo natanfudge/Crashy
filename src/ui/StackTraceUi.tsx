@@ -10,13 +10,14 @@ import {
 } from "../model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
-import {clickableColor, fadedOutColor, primaryColor} from "./App";
 import React from "react";
 import {Box, Button, ClickAwayListener, Divider, Popper, Typography} from "@mui/material";
 import {Surface} from "./improvedapi/Material";
 import {KeyboardArrowDown} from "@mui/icons-material";
 import {WithChild} from "./improvedapi/Element";
 import {Spacer} from "./improvedapi/Core";
+import {MoreInfoButton} from "./Utils";
+import {clickableColor, fadedOutColor} from "./Colors";
 
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
@@ -128,38 +129,3 @@ function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
     </MoreInfoButton>
 }
 
-export function MoreInfoButton(props: WithChild) {
-    const [anchorEl, setAnchorEl] = React.useState<null | Element>(null);
-
-    const handleClick = (event: Element) => {
-        setAnchorEl(anchorEl ? null : event);
-    };
-
-    const open = Boolean(anchorEl);
-
-    return (
-        <div>
-            <Row onClick={handleClick}>
-                <KeyboardArrowDown style={{filter: "brightness(0.5)"}}/>
-            </Row>
-            <Popper open={open} anchorEl={anchorEl}>
-                <Box>
-                    <MoreInfoButtonSurface closePopup={() => setAnchorEl(null)}>
-                        {props.children}
-                    </MoreInfoButtonSurface>
-                </Box>
-            </Popper>
-        </div>
-    );
-}
-
-function MoreInfoButtonSurface({closePopup, children}: { closePopup: () => void } & WithChild) {
-    return <Surface style={{border: `solid ${primaryColor} 1px`}}>
-        <ClickAwayListener onClickAway={() => closePopup()}>
-            <div>
-                {children}
-            </div>
-        </ClickAwayListener>
-    </Surface>
-
-}

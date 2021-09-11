@@ -7,7 +7,7 @@ export interface ImageProps extends ElementProps {
     src: string | undefined;
 }
 
-export function Image(props: ImageProps) {
+export function CImage(props: ImageProps) {
     // eslint-disable-next-line jsx-a11y/alt-text
     return <img {...deflattenStyle(props)}/>
 }

@@ -1,21 +1,22 @@
 import React from "react";
 import {Surface} from "./improvedapi/Material";
-import {Column} from "./improvedapi/Flex";
-import {Button, TextField, Typography} from "@mui/material";
+import {Column, Row} from "./improvedapi/Flex";
+import {Button, TextField} from "@mui/material";
 import {Wrap} from "./improvedapi/Core";
 import {CloudUpload} from "@mui/icons-material";
 import {Text} from "./improvedapi/Text";
-
+import {CrashyLogo} from "./Utils";
+import {crashyTitleColor} from "./Colors";
 export default function CrashyHome() {
     const [log, setLog] = React.useState("");
     return <Surface height={"max"}>
         <Column padding={{bottom: 20}} alignItems={"center"} height={"max"} style={{}}>
-            <Typography fontFamily={"serif"} variant={"h1"}>
-                Crashy
-            </Typography>
-            {/*<Text text={""} variant={"h1"}/>*/}
+            <Row>
+                <CrashyLogo size={100} margin={10}/>
+                <Text text="Crashy" style={{fontFamily: "serif"}} variant={"h1"} color={crashyTitleColor}/>
+            </Row>
 
-            <Wrap padding={10} width={"max"} flexGrow={1}>
+            <Wrap padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
                 <TextField value={log} onChange={value => setLog(value.target.value)} multiline
                            label={"Paste a crash log"} variant={"filled"}
                            style={{width: "100%", height: "100%",}}

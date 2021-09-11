@@ -4,8 +4,8 @@ import {Text} from "./improvedapi/Text";
 import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {MoreInfoButton} from "./StackTraceUi";
 import {Typography} from "@mui/material";
+import {MoreInfoButton} from "./Utils";
 
 export function ModListUi({mods}: { mods: Mod[] }) {
     const modsPrioritizingSuspectedMods = mods.sort((modA, modB) => {

@@ -5,7 +5,7 @@ import {CDivider, Spacer} from "./improvedapi/Core";
 import {StringMap} from "../model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
-import {primaryColor} from "./App";
+import {primaryColor} from "./Colors";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>
