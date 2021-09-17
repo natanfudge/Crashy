@@ -38,5 +38,4 @@ export namespace HttpStatusCode {
     export const NotFound = 404;
     export const PayloadTooLarge = 413;
     export const UnsupportedMediaType = 415;
-
 }

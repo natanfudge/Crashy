@@ -9,7 +9,7 @@ import DocumentData = firestore.DocumentData;
 
 const maxSize = 100_000;
 
-export async function uploadCrash(req: functions.Request, res: functions.Response) {
+export async function uploadCrash(req: functions.Request, res: functions.Response) : Promise<void> {
     if (req.headers["content-encoding"] === "gzip") {
         res.status(HttpStatusCode.UnsupportedMediaType).send("Don't specify gzip as the content-encoding. This trips up the server.");
         return;
@@ -60,7 +60,7 @@ export async function getCrashFromDb(document: DocumentReference<DocumentData>):
     return (await document.get()).data() as Promise<Crash | undefined>;
 }
 
-export async function getCrash(req: functions.Request & GetCrashRequest, res: functions.Response) {
+export async function getCrash(req: functions.Request & GetCrashRequest, res: functions.Response) : Promise<void> {
     const url = req.url;
     if (!url || url === "" || url === "/") {
         res.status(HttpStatusCode.BadRequest).send("No crashlog ID specified");
@@ -94,7 +94,7 @@ export async function getCrash(req: functions.Request & GetCrashRequest, res: fu
     await crashDocument.set(newCrash);
 }
 
-export async function deleteCrash(req: functions.Request, res: functions.Response) {
+export async function deleteCrash(req: functions.Request, res: functions.Response) : Promise<void> {
     const query: DeleteCrashRequest = req.query as unknown as DeleteCrashRequest;
     const {crashId, key} = query;
 
