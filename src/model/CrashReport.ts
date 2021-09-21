@@ -5,14 +5,9 @@ export interface CrashReport {
     time: string,
     sections: CrashReportSection[]
     stacktrace: StackTrace
-    // systemDetails: SystemDetails
 }
 
 export type StringMap = { [key: string]: string }
-
-export interface SystemDetails {
-    sections: StringMap;
-}
 
 export type StackTraceElement = string
 
@@ -28,9 +23,4 @@ export interface CrashReportSection {
     stacktrace?: StackTraceElement[]
     thread?: string
 }
-
-// export interface CrashReportSectionElement {
-//     name: string
-//     detail: string
-// }
 

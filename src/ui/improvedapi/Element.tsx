@@ -37,8 +37,9 @@ interface Percent {
     percent: number
 }
 
+export type ClickCallback = (htmlElement: Element) => void
 export interface ElementProps extends StyleProps {
-    onClick?: (htmlElement: Element) => void
+    onClick?: ClickCallback
     className?: string
     /**
      * @deprecated
@@ -76,13 +77,15 @@ function isAxes(obj: any): obj is Axes {
 
 
 function expandPaddingOrMargin(paddingOrMargin?: number | Directions | Axes): Directions {
-    if (!paddingOrMargin) return {}
-    else if (typeof paddingOrMargin == "number") return {
-        top: paddingOrMargin,
-        bottom: paddingOrMargin,
-        left: paddingOrMargin,
-        right: paddingOrMargin
-    };
+    if (paddingOrMargin === undefined) return {}
+    else if (typeof paddingOrMargin === "number"){
+        return {
+            top: paddingOrMargin,
+            bottom: paddingOrMargin,
+            left: paddingOrMargin,
+            right: paddingOrMargin
+        };
+    }
     else if (isAxes(paddingOrMargin)) return {
         top: paddingOrMargin.vertical,
         bottom: paddingOrMargin.vertical,
@@ -132,6 +135,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         ...otherProps
     } = props;
     const expandedPadding = expandPaddingOrMargin(padding);
+
     const expandedMargin = expandPaddingOrMargin(margin);
 
     const paddingObjPart = {
