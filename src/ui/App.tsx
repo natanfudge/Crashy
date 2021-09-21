@@ -21,13 +21,17 @@ function App() {
     )
 }
 
+export function getCurrentCrashId() {
+    return window.location.pathname.slice(1);
+}
+
 function CrashyUi() {
     if (window.location.pathname === "/") {
         return <Suspense fallback={<LinearProgress/>}>
             <CrashyHome/>
         </Suspense>
     } else {
-        return <CrashyCrashReportPage crashId={window.location.pathname.slice(1)}/>;
+        return <CrashyCrashReportPage crashId={getCurrentCrashId()}/>;
     }
 }
 

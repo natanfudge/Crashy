@@ -11,19 +11,34 @@ export interface GetResponse {
     code: number
 }
 
-function httpGetCallback(url: string, onDone: (response: GetResponse) => void) {
+function httpCallCallback(url: string,method: string, body: string | null, onDone: (response: GetResponse) => void) {
     const xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState === 4) {
             onDone({body: xmlHttp.responseText, code: xmlHttp.status});
         }
     }
-    xmlHttp.open("GET", url, true); // true for asynchronous
-    xmlHttp.send(null);
+    xmlHttp.open(method, url, true); // true for asynchronous
+    xmlHttp.send(body);
 }
 
+// function httpGetCallback(url: string, onDone: (response: GetResponse) => void) {
+//     const xmlHttp = new XMLHttpRequest();
+//     xmlHttp.onreadystatechange = function () {
+//         if (xmlHttp.readyState === 4) {
+//             onDone({body: xmlHttp.responseText, code: xmlHttp.status});
+//         }
+//     }
+//     xmlHttp.open("GET", url, true); // true for asynchronous
+//     xmlHttp.send(null);
+// }
+
 export async function httpGet(url: string): Promise<GetResponse> {
-    return new Promise(resolve => httpGetCallback(url, (response) => resolve(response)));
+    return new Promise(resolve => httpCallCallback(url, "GET",null,(response) => resolve(response)));
+}
+
+export async function httpDelete(url: string): Promise<GetResponse> {
+    return new Promise(resolve => httpCallCallback(url, "DELETE",null,(response) => resolve(response)));
 }
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {

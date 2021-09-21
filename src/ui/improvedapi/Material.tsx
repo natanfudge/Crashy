@@ -19,6 +19,8 @@ export function CIconButton(props: CIconButtonProps) {
 export interface CTextFieldProps extends ElementProps {
     value: string
     onValueChanged: (value: string) => void
+    error?: boolean
+    label?: React.ReactNode
 }
 export function CTextField(props: CTextFieldProps){
     const {onValueChanged,...otherProps} = props;
