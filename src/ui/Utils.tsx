@@ -5,40 +5,58 @@ import {KeyboardArrowDown} from "@mui/icons-material";
 import {Box, ClickAwayListener, Popper} from "@mui/material";
 import {CIconButton, Surface} from "./improvedapi/Material";
 import {primaryColor} from "./Colors";
+import {StringMap} from "../model/CrashReport";
 
-export interface GetResponse {
+export interface HttpResponse {
     body: string
     code: number
 }
 
-function httpCallCallback(url: string,method: string, body: string | null, onDone: (response: GetResponse) => void) {
-    const xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState === 4) {
-            onDone({body: xmlHttp.responseText, code: xmlHttp.status});
-        }
+
+export function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {
+    return Object.keys(object).map(function (key, index) {
+        return mapFn(key, object[key], index);
+    }, {})
+}
+
+function parseParameters(parameters: StringMap): string {
+    if (Object.values(parameters).length === 0) return "";
+    else {
+        return "?" + objectMap(parameters, (key, value) => `${key}=${value}`).join("&")
     }
-    xmlHttp.open(method, url, true); // true for asynchronous
-    xmlHttp.send(body);
+}
+//TODO:nocache is broken...
+async function httpCall(url: string, parameters: StringMap, method: string, body: string | null, noCache: boolean): Promise<HttpResponse> {
+    // Add useless parameter to bust cache if needed
+    // const actualParameters = noCache ? {noCache: "", ...parameters} : parameters;
+    const actualUrl = url + parseParameters(parameters);
+    const response = await fetch(actualUrl, {
+        method: method,
+        body: body,
+        headers: noCache ? {
+            "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+            Pragma: "no-cache",
+            Expires: "0"
+        } : undefined
+    })
+
+    return {
+        code: response.status,
+        body: await response.text(),
+    }
 }
 
-// function httpGetCallback(url: string, onDone: (response: GetResponse) => void) {
-//     const xmlHttp = new XMLHttpRequest();
-//     xmlHttp.onreadystatechange = function () {
-//         if (xmlHttp.readyState === 4) {
-//             onDone({body: xmlHttp.responseText, code: xmlHttp.status});
-//         }
-//     }
-//     xmlHttp.open("GET", url, true); // true for asynchronous
-//     xmlHttp.send(null);
-// }
 
-export async function httpGet(url: string): Promise<GetResponse> {
-    return new Promise(resolve => httpCallCallback(url, "GET",null,(response) => resolve(response)));
+export async function httpGet(url: string, noCache: boolean, parameters: StringMap = {}): Promise<HttpResponse> {
+    return httpCall(url, parameters, "GET", null, noCache);
 }
 
-export async function httpDelete(url: string): Promise<GetResponse> {
-    return new Promise(resolve => httpCallCallback(url, "DELETE",null,(response) => resolve(response)));
+export async function httpDelete(url: string, parameters: StringMap, noCache: boolean = false): Promise<HttpResponse> {
+    return httpCall(url, parameters, "DELETE", null, noCache);
+}
+
+export async function httpPost(url: string, body: string, noCache: boolean = false, parameters: StringMap = {}): Promise<HttpResponse> {
+    return httpCall(url, parameters, "POST", body, noCache);
 }
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
@@ -51,20 +69,6 @@ export function MoreInfoButton(props: WithChild) {
     return <ExpandingButton buttonPadding={0} icon={<KeyboardArrowDown style={{filter: "brightness(0.5)"}}/>}>
         {props.children}
     </ExpandingButton>
-    // const [anchorEl, setAnchorEl] = React.useState<Element | undefined>(undefined);
-    //
-    // const handleClick: ClickCallback = (event: Element) => {
-    //     setAnchorEl(anchorEl ? undefined : event);
-    // };
-    //
-    // return <div>
-    //     <Row onClick={handleClick}>
-    //         <KeyboardArrowDown/>
-    //     </Row>
-    //     <Expansion anchorEl = {anchorEl} setAnchorEl = {setAnchorEl}>
-    //         {props.children}
-    //     </Expansion>
-    // </div>
 }
 
 

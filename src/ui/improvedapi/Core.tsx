@@ -16,6 +16,7 @@ export function Spacer(props: ElementProps) {
     return <div {...deflattenStyle(props)}/>
 }
 
+// Use Row/Col for wrapping because the layout is not obvious otherwise
 export function Wrap(props: SingleChildParentProps) {
     return <div {...deflattenStyle(props)}/>
 }

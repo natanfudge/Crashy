@@ -1,36 +1,137 @@
 import React from "react";
 import {Surface} from "./improvedapi/Material";
 import {Column, Row} from "./improvedapi/Flex";
-import {Button, TextField} from "@mui/material";
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogContent,
+    DialogContentText,
+    DialogTitle, Link,
+    TextField
+} from "@mui/material";
 import {Wrap} from "./improvedapi/Core";
 import {CloudUpload} from "@mui/icons-material";
-import {Text} from "./improvedapi/Text";
+import {Text, TextTheme} from "./improvedapi/Text";
 import {CrashyLogo} from "./Utils";
-import {crashyTitleColor} from "./Colors";
+import {crashyTitleColor, dialogBodyColor} from "./Colors";
+import {UploadCrashError, UploadCrashResponse} from "./CrashyServer";
+import {useTheme} from "@emotion/react";
+import {Theme} from "@mui/material/styles";
+
+enum InitialUploadState {
+    Start,
+    Loading,
+}
+
+type UploadState = InitialUploadState | UploadCrashResponse
+
+function isUploadCrashError(obj: UploadState): obj is UploadCrashError {
+    return typeof obj === "string"
+}
+
+function CrashTextField(props: { error: boolean, log: string, setLog: (value: (string)) => void }) {
+    return <Wrap padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
+        <TextField error={props.error} value={props.log} onChange={value => props.setLog(value.target.value)} multiline
+                   label={"Paste a crash log"} variant={"filled"}
+                   style={{width: "100%", height: "100%",}}
+        />
+    </Wrap>;
+}
+
+function HomeTitle() {
+    return <Row>
+        <CrashyLogo size={100} margin={10}/>
+        <Text text="Crashy" style={{fontFamily: "serif"}} variant={"h1"} color={crashyTitleColor}/>
+    </Row>;
+}
+
+function UploadFailedDialog(props: { dialogOpen: boolean, setDialogOpen: (dialogOpen: boolean) => void, uploadError: UploadCrashError }) {
+    // const color = theme.;
+    return <Dialog
+        open={props.dialogOpen}
+        onClose={() => props.setDialogOpen(false)}
+    >
+        <DialogTitle id="responsive-dialog-title">
+            {props.uploadError === "Too Large" ? "Log Too Large" : "Invalid Log"}
+        </DialogTitle>
+        <DialogContent>
+
+            <TextTheme color={ dialogBodyColor}>
+                <UploadFailedBody error={props.uploadError}/>
+            </TextTheme>
+            {/*<DialogContentText>*/}
+
+            {/*</DialogContentText>*/}
+        </DialogContent>
+    </Dialog>;
+}
+
+//rgba(255, 255, 255, 0.7)
+
+//TODO: add a more user friendly way of deleting by using cookies.
+// - open the site with ?code=xxxxxx and delete it from the url to prevent misuse, and store it in a cookie.
+// - When a code can be found, have a 'are you sure button', but after that, instantly delete with no panel.
+// - If the code is incorrect, open up the panel normally and inform the user the thing hey have stored is wrong.
+function UploadFailedBody({error}: { error: UploadCrashError }) {
+    switch (error) {
+        case "Too Large":
+            return <p>
+                Crashy only supports uploading crashes of up to 1MB in size.<br/>
+                We're interested in making more crashes fit in, so if you see this, please
+                <Link href={"https://github.com/natanfudge/Crashy/issues/new"}> Open an issue</Link> describing what you tried
+                to upload!
+            </p>
+        case "Invalid Crash":
+            return <p>
+                There's something wrong with your crash log. <br/><br/>
+                Think it should be supported by Crashy? <Link href={"https://github.com/natanfudge/Crashy/issues/new"}> Open an issue</Link> describing your exotic log!
+            </p>
+
+    }
+    // return <Column>
+    //
+    // </Column>
+}
+
 export default function CrashyHome() {
     const [log, setLog] = React.useState("");
-    return <Surface height={"max"}>
-        <Column padding={{bottom: 20}} alignItems={"center"} height={"max"} style={{}}>
-            <Row>
-                <CrashyLogo size={100} margin={10}/>
-                <Text text="Crashy" style={{fontFamily: "serif"}} variant={"h1"} color={crashyTitleColor}/>
-            </Row>
-
-            <Wrap padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
-                <TextField value={log} onChange={value => setLog(value.target.value)} multiline
-                           label={"Paste a crash log"} variant={"filled"}
-                           style={{width: "100%", height: "100%",}}
-                />
-            </Wrap>
+    const [uploadState, setUploadState] = React.useState<UploadState>(InitialUploadState.Start)
+    const [dialogOpen, setDialogOpen] = React.useState(false)
+    const isLoading = uploadState === InitialUploadState.Loading
 
 
-            <Button disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
-                <CloudUpload style={{height: "60px", width: "auto"}}/>
-            }>
-                <Text text={"Upload Crash"} variant={"h4"}/>
-            </Button>
+    // const theme = useTheme();
+    // const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-        </Column>
-    </Surface>
+    return <div style={{height: "100%"}}>
+        <Surface height={"max"}>
+            <Column padding={{bottom: 20}} alignItems={"center"} height={"max"} style={{}}>
+                <HomeTitle/>
+
+                <CrashTextField error={isUploadCrashError(uploadState)} log={log} setLog={setLog}/>
+
+                <Button onClick={async () => {
+                    setUploadState(InitialUploadState.Loading)
+                    // const response = await CrashyServer.uploadCrash(log);
+                    setTimeout(() => {
+                        setUploadState("Invalid Crash");
+                        setDialogOpen(true);
+                    }, 2000);
+                }}
+                        disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
+                    isLoading ? undefined : <CloudUpload style={{height: "60px", width: "auto"}}/>
+                }>
+                    {isLoading && <CircularProgress size={60} color={"secondary"}/>}
+                    {!isLoading && <Text text={"Upload Crash"} variant={"h4"}/>}
+
+                </Button>
+
+            </Column>
+        </Surface>
+        <UploadFailedDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}
+                            uploadError={uploadState as UploadCrashError}/>
+    </div>
+
 
 }

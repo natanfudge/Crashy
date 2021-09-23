@@ -6,6 +6,7 @@ import {StringMap} from "../model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
 import {primaryColor} from "./Colors";
+import {objectMap} from "./Utils";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>
@@ -48,10 +49,4 @@ function CrashReportSectionDetails({details}: { details: StringMap }) {
         })}
 
     </Column>
-}
-
-function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {
-    return Object.keys(object).map(function (key, index) {
-        return mapFn(key, object[key], index);
-    }, {})
 }

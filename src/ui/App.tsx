@@ -21,8 +21,21 @@ function App() {
     )
 }
 
-export function getCurrentCrashId() {
-    return window.location.pathname.slice(1);
+export interface CrashId {
+    value: string
+    noCache: boolean
+}
+
+export const NO_CACHE_PAGE_PARAMETER = "nocache"
+export const PAGE_PARAMETER = "?"
+
+export function getCurrentCrashId() : CrashId{
+    const id = window.location.pathname.slice(1);
+    const noCache = window.location.search.slice(1);
+    return {
+        value: id,
+        noCache: noCache === NO_CACHE_PAGE_PARAMETER
+    };
 }
 
 function CrashyUi() {

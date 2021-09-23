@@ -1,10 +1,6 @@
-import {httpDelete, httpGet} from "./Utils";
+import {httpDelete, httpGet, httpPost} from "./Utils";
 
-export type CrashLogResponse = string | GetCrashError
 
-export enum GetCrashError {
-    NoSuchCrashId
-}
 
  namespace HttpStatusCode {
     export const OK = 200;
@@ -15,18 +11,39 @@ export enum GetCrashError {
     export const UnsupportedMediaType = 415;
 }
 
-export enum DeleteResult {
+export type GetCrashResponse = string | GetCrashError
+
+export enum GetCrashError {
+    NoSuchCrashId
+}
+
+export enum DeleteCrashResponse {
     IncorrectKey,
     Success,
     NoSuchCrashId
 }
 
+export type UploadCrashResponse = UploadCrashError | UploadCrashSuccess
+
+export interface UploadCrashSuccess {
+    crashId: string
+    key: string
+    crashUrl: string
+}
+
+export type UploadCrashError = "Too Large" | "Invalid Crash"
+
+// export function isUploadCrashError(obj: UploadCrashResponse) : obj is UploadCrashError {
+//     return typeof obj === "string"
+// }
+
 export namespace CrashyServer {
     const localTesting = false;
     const domain = localTesting ? "localhost:5001/crashy-9dd87/europe-west1" : "europe-west1-crashy-9dd87.cloudfunctions.net";
+    const urlPrefix = `https://${domain}`
 
-    export async function getCrash(id: string): Promise<CrashLogResponse> {
-        const response = await httpGet(`https://${domain}/getCrash/${id}`);
+    export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
+        const response = await httpGet(`${urlPrefix}/getCrash/${id}`, noCache);
         switch (response.code){
             case HttpStatusCode.OK:
                 return response.body;
@@ -40,15 +57,29 @@ export namespace CrashyServer {
     /**
      * Returns true if code is correct and deletion is successful
      */
-    export async function deleteCrash(id: string, code: string): Promise<DeleteResult> {
-        const response = await httpDelete(`https://${domain}/deleteCrash/?crashId=${id}&key=${code}`,);
+    export async function deleteCrash(id: string, code: string): Promise<DeleteCrashResponse> {
+        const response = await httpDelete(`${urlPrefix}/deleteCrash`,{crashId: id, key: code})
         switch (response.code) {
             case HttpStatusCode.OK:
-                return DeleteResult.Success;
+                return DeleteCrashResponse.Success;
             case HttpStatusCode.Unauthorized:
-                return DeleteResult.IncorrectKey;
+                return DeleteCrashResponse.IncorrectKey;
             case HttpStatusCode.NotFound:
-                return DeleteResult.NoSuchCrashId
+                return DeleteCrashResponse.NoSuchCrashId
+            default:
+                throw new Error("Unexpected status code: " + response.code)
+        }
+    }
+
+    export async function uploadCrash(crash: string): Promise<UploadCrashResponse>{
+        const response = await httpPost(`${urlPrefix}/uploadCrash`,crash)
+        switch (response.code) {
+            case HttpStatusCode.OK:
+                return JSON.parse(response.body);
+            case HttpStatusCode.BadRequest:
+                return "Invalid Crash";
+            case HttpStatusCode.PayloadTooLarge:
+                return "Too Large"
             default:
                 throw new Error("Unexpected status code: " + response.code)
         }

@@ -3,9 +3,10 @@ import {ThemeOptions} from "@mui/material";
 import {grey, red} from "@mui/material/colors";
 
 export const primaryColor = "#90caf9"
+export const secondaryColor = "#65ff00"
 export const crashyTitleColor : Gradient = {
     direction: "to bottom",
-    firstColor: "#65ff00",
+    firstColor: secondaryColor,
     midpointPercent: 60,
     secondColor: {color: "#463323", endPercent: 70}
 }
@@ -14,6 +15,7 @@ export const clickableColor = "rgb(0, 173, 239)"
 export const errorColor = "rgb(234,8,8)"
 export const fadedOutColor = grey[600]
 export const slightlyPronouncedColor = "#323232"
+export const dialogBodyColor = "rgba(255, 255, 255, 0.7)"
 
 export const CrashyTheme : ThemeOptions = {
     palette: {
@@ -23,7 +25,7 @@ export const CrashyTheme : ThemeOptions = {
         },
         // type: 'dark',
         secondary: {
-            main: red[500],
+            main: secondaryColor,
         },
         text: {
             secondary: grey[600]

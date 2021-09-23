@@ -21,6 +21,7 @@ export interface CTextFieldProps extends ElementProps {
     onValueChanged: (value: string) => void
     error?: boolean
     label?: React.ReactNode
+    disabled? :boolean
 }
 export function CTextField(props: CTextFieldProps){
     const {onValueChanged,...otherProps} = props;
@@ -31,6 +32,8 @@ export function CTextField(props: CTextFieldProps){
 export interface CButtonProps extends SingleChildParentProps {
     onClick: ClickCallback
     variant?: 'text' | 'outlined' | 'contained'
+    disabled? :boolean
+
 }
 export function CButton(props: CButtonProps){
     return <Button {...deflattenStyle(props)}/>
