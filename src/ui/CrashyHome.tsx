@@ -8,6 +8,7 @@ import {Text, TextTheme} from "./improvedapi/Text";
 import {CrashyLogo} from "./Utils";
 import {crashyTitleColor, dialogBodyColor} from "./Colors";
 import {CrashyServer, UploadCrashError, UploadCrashResponse} from "./CrashyServer";
+import pako from "pako";
 
 enum InitialUploadState {
     Start,
@@ -94,7 +95,7 @@ export default function CrashyHome() {
 
                 <Button onClick={async () => {
                     setUploadState(InitialUploadState.Loading)
-                    const response = await CrashyServer.uploadCrash(log);
+                    const response = await CrashyServer.uploadCrash(pako.gzip(log));
                     if (isUploadCrashError(response)) {
                         setUploadState(response);
                         setDialogOpen(true);

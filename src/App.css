@@ -58,6 +58,11 @@ div[role=dialog]{
     margin-bottom: 150px;
 }
 
+div[role=presentation]{
+    z-index: unset !important;
+    /*position: unset !important;*/
+}
+
 .link-spanner {
     position:absolute;
     width:100%;

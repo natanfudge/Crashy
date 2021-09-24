@@ -2,7 +2,7 @@ import {CImage} from "./improvedapi/Core";
 import React from "react";
 import {ClickCallback, Margin, Padding, SingleChildParentProps, WithChild} from "./improvedapi/Element";
 import {KeyboardArrowDown} from "@mui/icons-material";
-import {Box, ClickAwayListener, Popper} from "@mui/material";
+import {Box, ClickAwayListener, Popover} from "@mui/material";
 import {CIconButton, Surface} from "./improvedapi/Material";
 import {primaryColor} from "./Colors";
 import {StringMap} from "../model/CrashReport";
@@ -133,17 +133,23 @@ export function ExpandingButton({buttonPadding, icon, ...expansionProps}:
     </div>
 }
 
+//TODO: Popup disables actions outside.
+//TODO: garbage button needs to be fixed to work with popover.
+//TODO: can't scroll, disabling it makes the popup stick in the screen
+// I think we want a custom implementation
 export function Expansion({anchorEl, setAnchorEl, ...surfaceProps}: {
     anchorEl: Element | undefined, setAnchorEl: (el: Element | undefined) => void
 } & SingleChildParentProps): JSX.Element {
     const open = Boolean(anchorEl);
 
     // noinspection RequiredAttributes
-    return <Popper open={open} anchorEl={anchorEl}>
+    return <Popover disableEnforceFocus /*disableScrollLock*/ hideBackdrop /*style = {{ position: 'static'}}*/
+                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                    transformOrigin={{vertical: "top", horizontal: "center"}} open={open} anchorEl={anchorEl}>
         <Box>
             <ExpansionSurface {...surfaceProps} closePopup={() => setAnchorEl(undefined)}/>
         </Box>
-    </Popper>
+    </Popover>
 }
 
 function ExpansionSurface({closePopup, children, ...otherProps}: { closePopup: () => void } & SingleChildParentProps) {

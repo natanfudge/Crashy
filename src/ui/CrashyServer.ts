@@ -1,6 +1,5 @@
 import {httpDelete, httpGet, httpPost} from "./Utils";
 // import {deflate, inflate} from "zlib";
-import pako from 'pako';
 
 namespace HttpStatusCode {
     export const OK = 200;
@@ -40,7 +39,7 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 export namespace CrashyServer {
     const localTesting = true;
     const domain = localTesting ? "localhost:5001/crashy-9dd87/europe-west1" : "europe-west1-crashy-9dd87.cloudfunctions.net";
-    const http = localTesting? "http" : "https"
+    const http = localTesting ? "http" : "https"
     const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
@@ -74,12 +73,11 @@ export namespace CrashyServer {
         }
     }
 
-    export async function uploadCrash(crash: string): Promise<UploadCrashResponse> {
-        const compressed = pako.gzip(crash);
+    export async function uploadCrash(compressedCrash: Uint8Array): Promise<UploadCrashResponse> {
 
         const response = await httpPost({
                 url: `${urlPrefix}/uploadCrash`,
-                body: compressed,
+                body: compressedCrash,
                 headers: {"content-type": "application/gzip"}
             }
         )
