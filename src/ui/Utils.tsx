@@ -19,25 +19,50 @@ export function objectMap(object: StringMap, mapFn: (key: string, value: string,
     }, {})
 }
 
-function parseParameters(parameters: StringMap): string {
+function parseParameters(parameters?: StringMap): string {
+    if (parameters === undefined) return "";
     if (Object.values(parameters).length === 0) return "";
     else {
         return "?" + objectMap(parameters, (key, value) => `${key}=${value}`).join("&")
     }
 }
-//TODO:nocache is broken...
-async function httpCall(url: string, parameters: StringMap, method: string, body: string | null, noCache: boolean): Promise<HttpResponse> {
+
+
+// interface GetResponse {
+//     body: string
+//     code: number
+// }
+//
+// function oldFetch(url: string,request: {method: string, body: BodyInit, headers: StringMap}){
+//     return new Promise(((resolve, reject) => {
+//         const xmlHttp = new XMLHttpRequest();
+//         xmlHttp.onreadystatechange = function () {
+//             if (xmlHttp.readyState === 4) {
+//                 resolve({body: xmlHttp.responseText, code: xmlHttp.status});
+//             }
+//         }
+//         xmlHttp.open("GET", url, true); // true for asynchronous
+//         xmlHttp.send(null);
+//         xmlHttp.open(method, url, true); // true for asynchronous
+//         xmlHttp.send(body);
+//     }));
+// }
+
+async function httpCall(request: HttpRequest): Promise<HttpResponse> {
     // Add useless parameter to bust cache if needed
     // const actualParameters = noCache ? {noCache: "", ...parameters} : parameters;
-    const actualUrl = url + parseParameters(parameters);
+    const actualUrl = request.url + parseParameters(request.parameters);
+    const noCacheHeaders: StringMap = request.noCache ? {
+        "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0"
+    } : {}
     const response = await fetch(actualUrl, {
-        method: method,
-        body: body,
-        headers: noCache ? {
-            "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
-            Pragma: "no-cache",
-            Expires: "0"
-        } : undefined
+        method: request.method,
+        body: request.body,
+        headers: {...noCacheHeaders, ...request.headers},
+        cache: request.noCache ? "no-cache" : undefined,
+        mode: "cors"
     })
 
     return {
@@ -46,17 +71,36 @@ async function httpCall(url: string, parameters: StringMap, method: string, body
     }
 }
 
-
-export async function httpGet(url: string, noCache: boolean, parameters: StringMap = {}): Promise<HttpResponse> {
-    return httpCall(url, parameters, "GET", null, noCache);
+interface HttpRequest {
+    url: string
+    method: string
+    parameters?: StringMap
+    headers?: StringMap
+    noCache?: boolean
+    body?: BodyInit
 }
 
-export async function httpDelete(url: string, parameters: StringMap, noCache: boolean = false): Promise<HttpResponse> {
-    return httpCall(url, parameters, "DELETE", null, noCache);
+
+export type Require<T, K extends keyof T> = Omit<T, K> & {
+    [RequiredProperty in K]-?: T[RequiredProperty]
 }
 
-export async function httpPost(url: string, body: string, noCache: boolean = false, parameters: StringMap = {}): Promise<HttpResponse> {
-    return httpCall(url, parameters, "POST", body, noCache);
+type SpecificHttpRequest = Omit<HttpRequest, "method">
+type HttpGetRequest = Omit<SpecificHttpRequest, "body">
+type HttpDeleteRequest = Omit<SpecificHttpRequest, "body">
+type HttpPostRequest = Require<SpecificHttpRequest, "body">
+
+
+export async function httpGet(request: HttpGetRequest): Promise<HttpResponse> {
+    return httpCall({...request, method: "GET"});
+}
+
+export async function httpDelete(request: HttpDeleteRequest): Promise<HttpResponse> {
+    return httpCall({...request, method: "DELETE"});
+}
+
+export async function httpPost(request: HttpPostRequest): Promise<HttpResponse> {
+    return httpCall({...request, method: "POST"});
 }
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {

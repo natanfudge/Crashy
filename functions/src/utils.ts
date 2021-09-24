@@ -3,7 +3,7 @@ import * as Zlib from "zlib";
 
 export async function getCrashValidationErrors(crash: Buffer): Promise<Error | undefined> {
     return new Promise((resolve) => {
-        Zlib.unzip(crash, (err, unzipped) => {
+        Zlib.gunzip(crash, (err, unzipped) => {
             if (err !== null) {
                 resolve(err);
                 return;

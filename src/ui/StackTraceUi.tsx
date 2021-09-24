@@ -11,10 +11,7 @@ import {
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import React from "react";
-import {Box, Button, ClickAwayListener, Divider, Popper, Typography} from "@mui/material";
-import {Surface} from "./improvedapi/Material";
-import {KeyboardArrowDown} from "@mui/icons-material";
-import {WithChild} from "./improvedapi/Element";
+import {Button, Divider, Typography} from "@mui/material";
 import {Spacer} from "./improvedapi/Core";
 import {MoreInfoButton} from "./Utils";
 import {clickableColor, fadedOutColor} from "./Colors";
@@ -32,7 +29,7 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
             {StackTraceMessageUi(currentTrace.message)}
             <Text text={":"} variant="h5"/>
             <Spacer width={5}/>
-            <Text  text={currentTrace.message.message}
+            <Text text={currentTrace.message.message}
                   variant={currentTrace.message.message.length > 200 ? "body1" : "h5"}/>
         </Row>
 
@@ -95,7 +92,8 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
         }} onClick={isXMore ? undefined : () => {
             setOpen(!open);
         }}/>
-        {typeof traceElement !== "number" && traceElement.forgeMetadata && ForgeTraceMetadataUi(traceElement.forgeMetadata)}
+        {typeof traceElement !== "number" && traceElement.forgeMetadata &&
+        <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}
 
     </Row>;
 }
@@ -112,19 +110,19 @@ function getTraceElementText(traceElement: RichStackTraceElement, open: boolean)
     }
 }
 
-function ForgeTraceMetadataUi(metadata: ForgeTraceMetadata) {
+function ForgeTraceMetadataUi({metadata}: { metadata: ForgeTraceMetadata }) {
     return <MoreInfoButton>
 
         <Column padding={10}>
             <Text text={"Forge Metadata"} variant={"h6"}/>
             {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
             {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
-            {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map(reason =>
-                <Text text={`Plugin Transformer Reason: ${reason}`}/>)}
-            {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map(reason => <Text
-                text={`Class Loading Reason: ${reason}`}/>)}
-            {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map(reason =>
-                <Text text={`Additional Transformer Data: ${reason}`}/>)}
+            {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map((reason, i) =>
+                <Text key={i} text={`Plugin Transformer Reason: ${reason}`}/>)}
+            {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map((reason, i) =>
+                <Text key={i} text={`Class Loading Reason: ${reason}`}/>)}
+            {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map((reason, i) =>
+                <Text key={i} text={`Additional Transformer Data: ${reason}`}/>)}
         </Column>
     </MoreInfoButton>
 }

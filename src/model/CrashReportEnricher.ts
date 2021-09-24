@@ -23,7 +23,6 @@ export function parseCrashReportRich(rawReport: string): RichCrashReport {
 }
 
 export function enrichCrashReport(report: CrashReport): RichCrashReport {
-    console.log("Enriching")
     const mods = getMods(report);
     return {
         wittyComment: report.wittyComment,

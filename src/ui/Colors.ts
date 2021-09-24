@@ -1,10 +1,10 @@
 import {Gradient} from "./improvedapi/Text";
 import {ThemeOptions} from "@mui/material";
-import {grey, red} from "@mui/material/colors";
+import {grey} from "@mui/material/colors";
 
 export const primaryColor = "#90caf9"
 export const secondaryColor = "#65ff00"
-export const crashyTitleColor : Gradient = {
+export const crashyTitleColor: Gradient = {
     direction: "to bottom",
     firstColor: secondaryColor,
     midpointPercent: 60,
@@ -17,7 +17,7 @@ export const fadedOutColor = grey[600]
 export const slightlyPronouncedColor = "#323232"
 export const dialogBodyColor = "rgba(255, 255, 255, 0.7)"
 
-export const CrashyTheme : ThemeOptions = {
+export const CrashyTheme: ThemeOptions = {
     palette: {
         mode: "dark",
         primary: {

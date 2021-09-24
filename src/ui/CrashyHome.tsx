@@ -1,23 +1,13 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {Surface} from "./improvedapi/Material";
 import {Column, Row} from "./improvedapi/Flex";
-import {
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle, Link,
-    TextField
-} from "@mui/material";
+import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, TextField} from "@mui/material";
 import {Wrap} from "./improvedapi/Core";
 import {CloudUpload} from "@mui/icons-material";
 import {Text, TextTheme} from "./improvedapi/Text";
 import {CrashyLogo} from "./Utils";
 import {crashyTitleColor, dialogBodyColor} from "./Colors";
-import {UploadCrashError, UploadCrashResponse} from "./CrashyServer";
-import {useTheme} from "@emotion/react";
-import {Theme} from "@mui/material/styles";
+import {CrashyServer, UploadCrashError, UploadCrashResponse} from "./CrashyServer";
 
 enum InitialUploadState {
     Start,
@@ -47,7 +37,6 @@ function HomeTitle() {
 }
 
 function UploadFailedDialog(props: { dialogOpen: boolean, setDialogOpen: (dialogOpen: boolean) => void, uploadError: UploadCrashError }) {
-    // const color = theme.;
     return <Dialog
         open={props.dialogOpen}
         onClose={() => props.setDialogOpen(false)}
@@ -57,12 +46,9 @@ function UploadFailedDialog(props: { dialogOpen: boolean, setDialogOpen: (dialog
         </DialogTitle>
         <DialogContent>
 
-            <TextTheme color={ dialogBodyColor}>
+            <TextTheme color={dialogBodyColor}>
                 <UploadFailedBody error={props.uploadError}/>
             </TextTheme>
-            {/*<DialogContentText>*/}
-
-            {/*</DialogContentText>*/}
         </DialogContent>
     </Dialog>;
 }
@@ -76,22 +62,21 @@ function UploadFailedDialog(props: { dialogOpen: boolean, setDialogOpen: (dialog
 function UploadFailedBody({error}: { error: UploadCrashError }) {
     switch (error) {
         case "Too Large":
-            return <p>
+            return <Fragment>
                 Crashy only supports uploading crashes of up to 1MB in size.<br/>
                 We're interested in making more crashes fit in, so if you see this, please
-                <Link href={"https://github.com/natanfudge/Crashy/issues/new"}> Open an issue</Link> describing what you tried
+                <Link href={"https://github.com/natanfudge/Crashy/issues/new"}> Open an issue</Link> describing what you
+                tried
                 to upload!
-            </p>
+            </Fragment>
         case "Invalid Crash":
-            return <p>
+            return <Fragment>
                 There's something wrong with your crash log. <br/><br/>
-                Think it should be supported by Crashy? <Link href={"https://github.com/natanfudge/Crashy/issues/new"}> Open an issue</Link> describing your exotic log!
-            </p>
-
+                Think it should be supported by Crashy? <Link
+                href={"https://github.com/natanfudge/Crashy/issues/new"}> Open an issue</Link> describing your exotic
+                log!
+            </Fragment>
     }
-    // return <Column>
-    //
-    // </Column>
 }
 
 export default function CrashyHome() {
@@ -99,10 +84,6 @@ export default function CrashyHome() {
     const [uploadState, setUploadState] = React.useState<UploadState>(InitialUploadState.Start)
     const [dialogOpen, setDialogOpen] = React.useState(false)
     const isLoading = uploadState === InitialUploadState.Loading
-
-
-    // const theme = useTheme();
-    // const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     return <div style={{height: "100%"}}>
         <Surface height={"max"}>
@@ -113,11 +94,13 @@ export default function CrashyHome() {
 
                 <Button onClick={async () => {
                     setUploadState(InitialUploadState.Loading)
-                    // const response = await CrashyServer.uploadCrash(log);
-                    setTimeout(() => {
-                        setUploadState("Invalid Crash");
+                    const response = await CrashyServer.uploadCrash(log);
+                    if (isUploadCrashError(response)) {
+                        setUploadState(response);
                         setDialogOpen(true);
-                    }, 2000);
+                    } else {
+                        window.location.href =  response.crashId
+                    }
                 }}
                         disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
                     isLoading ? undefined : <CloudUpload style={{height: "60px", width: "auto"}}/>

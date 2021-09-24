@@ -1,8 +1,8 @@
 import {httpDelete, httpGet, httpPost} from "./Utils";
+// import {deflate, inflate} from "zlib";
+import pako from 'pako';
 
-
-
- namespace HttpStatusCode {
+namespace HttpStatusCode {
     export const OK = 200;
     export const BadRequest = 400;
     export const Unauthorized = 401;
@@ -38,13 +38,14 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 // }
 
 export namespace CrashyServer {
-    const localTesting = false;
+    const localTesting = true;
     const domain = localTesting ? "localhost:5001/crashy-9dd87/europe-west1" : "europe-west1-crashy-9dd87.cloudfunctions.net";
-    const urlPrefix = `https://${domain}`
+    const http = localTesting? "http" : "https"
+    const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
-        const response = await httpGet(`${urlPrefix}/getCrash/${id}`, noCache);
-        switch (response.code){
+        const response = await httpGet({url: `${urlPrefix}/getCrash/${id}`, noCache: noCache});
+        switch (response.code) {
             case HttpStatusCode.OK:
                 return response.body;
             case HttpStatusCode.NotFound:
@@ -58,7 +59,9 @@ export namespace CrashyServer {
      * Returns true if code is correct and deletion is successful
      */
     export async function deleteCrash(id: string, code: string): Promise<DeleteCrashResponse> {
-        const response = await httpDelete(`${urlPrefix}/deleteCrash`,{crashId: id, key: code})
+        const response = await httpDelete({
+            url: `${urlPrefix}/deleteCrash`, parameters: {crashId: id, key: code}
+        })
         switch (response.code) {
             case HttpStatusCode.OK:
                 return DeleteCrashResponse.Success;
@@ -71,8 +74,16 @@ export namespace CrashyServer {
         }
     }
 
-    export async function uploadCrash(crash: string): Promise<UploadCrashResponse>{
-        const response = await httpPost(`${urlPrefix}/uploadCrash`,crash)
+    export async function uploadCrash(crash: string): Promise<UploadCrashResponse> {
+        const compressed = pako.gzip(crash);
+
+        const response = await httpPost({
+                url: `${urlPrefix}/uploadCrash`,
+                body: compressed,
+                headers: {"content-type": "application/gzip"}
+            }
+        )
+
         switch (response.code) {
             case HttpStatusCode.OK:
                 return JSON.parse(response.body);
