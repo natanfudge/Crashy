@@ -1,42 +1,67 @@
-import React, {Suspense} from 'react';
+import React, { Suspense } from 'react';
 import '../App.css';
 
-import {CrashyCrashReportPage} from "./CrashyCrashReport";
 import {createTheme, CssBaseline, LinearProgress} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
+import {Row} from "./improvedapi/Flex";
+import {Text} from "./improvedapi/Text";
+import {CrashyCrashReportPage} from "./CrashyCrashReport";
+import {getCurrentCrashId} from "./PageUrl";
+import {Spacer} from "./improvedapi/Core";
+import {NewExpansion, useExpansion, WithExpansions} from "./improvedapi/Expansion";
+import {CButton} from "./improvedapi/Material";
+
 
 const CrashyHome = React.lazy(() => import("./CrashyHome"))
 
 
-function App() {
+
+
+export default function App() {
+    console.log("Apooo")
     const outerTheme = createTheme(CrashyTheme);
 
     return (
         // @ts-ignore
         <ThemeProvider theme={outerTheme}>
             <CssBaseline/>
-            {CrashyUi()}
-        </ThemeProvider>
+            {/*<Wtf/>*/}
+            <WithExpansions>
+                <ExpansionTest/>
+            </WithExpansions>
+
+            {/*<div>*/}
+
+            {/*</div>*/}
+
+            {/*{CrashyUi()}*/}
+         </ThemeProvider>
     )
 }
 
-export interface CrashId {
-    value: string
-    noCache: boolean
+
+function ExpansionTest() {
+    console.log("Foo")
+    const expansionState = useExpansion();
+    return <div /*style = {{height: "100%", width: "100%"}}*/>
+        {/*<Row he>*/}
+
+        {/*</Row>*/}
+        <Row>
+            <Spacer height={300} width={500} backgroundColor={"red"}/>
+            <CButton onClick={() => expansionState.toggle()}>
+                <Text text={"show/hide"}/>
+            </CButton>
+        </Row>
+        <NewExpansion controller={expansionState} onDismiss={() => {
+        }}>
+            <Spacer style={{zIndex: 30, position: "absolute"}} height={200} width={200} backgroundColor={"blue"}/>
+        </NewExpansion>
+    </div>
 }
 
-export const NO_CACHE_PAGE_PARAMETER = "nocache"
-export const PAGE_PARAMETER = "?"
 
-export function getCurrentCrashId() : CrashId{
-    const id = window.location.pathname.slice(1);
-    const noCache = window.location.search.slice(1);
-    return {
-        value: id,
-        noCache: noCache === NO_CACHE_PAGE_PARAMETER
-    };
-}
 
 function CrashyUi() {
     if (window.location.pathname === "/") {
@@ -48,8 +73,8 @@ function CrashyUi() {
     }
 }
 
-//Fabric: 5r4hREoRA4GO5CdOVfhP
-//Forge: QB2IckABRxmlovsVw683
+
+//Fabric:  befth2S6e4NfzIxFieDs
+//Forge: X
 
 
-export default App;

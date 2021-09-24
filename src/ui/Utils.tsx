@@ -143,7 +143,7 @@ export function Expansion({anchorEl, setAnchorEl, ...surfaceProps}: {
     const open = Boolean(anchorEl);
 
     // noinspection RequiredAttributes
-    return <Popover disableEnforceFocus /*disableScrollLock*/ hideBackdrop /*style = {{ position: 'static'}}*/
+    return <Popover  disableEnforceFocus /*disableScrollLock*/ hideBackdrop /*style = {{ position: 'static'}}*/
                     anchorOrigin={{vertical: "bottom", horizontal: "center"}}
                     transformOrigin={{vertical: "top", horizontal: "center"}} open={open} anchorEl={anchorEl}>
         <Box>

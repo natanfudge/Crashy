@@ -15,9 +15,9 @@ import {ExpandingButton} from "./Utils";
 import {CrashyServer, GetCrashResponse} from "./CrashyServer";
 import {parseCrashReportRich} from "../model/CrashReportEnricher";
 import {Delete} from "@mui/icons-material";
-import {CrashId} from "./App";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
+import {CrashId} from "./PageUrl";
 
 
 export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
@@ -34,6 +34,11 @@ export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
 
     </div>
 }
+
+// export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
+//     return <div style={{height: "50%", backgroundColor: "red"}}>
+//     </div>
+// }
 
 export function ToolbarButtons() {
     return <ExpandingButton margin={{right: 10}} icon={<Delete/>}>

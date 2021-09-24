@@ -4,8 +4,9 @@ import {Text} from "../improvedapi/Text";
 import {CButton, CTextField} from "../improvedapi/Material";
 import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../CrashyServer";
-import {getCurrentCrashId, NO_CACHE_PAGE_PARAMETER, PAGE_PARAMETER} from "../App";
 import {Wrap} from "../improvedapi/Core";
+import {NO_CACHE_PAGE_PARAMETER, PAGE_PARAMETER} from "../Constants";
+import {getCurrentCrashId} from "../PageUrl";
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"
 
