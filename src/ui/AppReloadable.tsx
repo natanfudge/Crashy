@@ -4,7 +4,7 @@ import '../App.css';
 import {createTheme, CssBaseline, LinearProgress} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
-import {NewExpansion, useExpansion} from "./improvedapi/Expansion";
+import {Expansion, useExpansion} from "./improvedapi/Expansion";
 import {Row} from "./improvedapi/Flex";
 import {Spacer} from "./improvedapi/Core";
 import {CButton} from "./improvedapi/Material";

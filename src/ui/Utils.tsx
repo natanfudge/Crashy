@@ -129,7 +129,7 @@ export function ExpandingButton({buttonPadding, icon, ...expansionProps}:
         <CIconButton padding={buttonPadding} onClick={handleClick}>
             {icon}
         </CIconButton>
-        <Expansion {...expansionProps} anchorEl={anchorEl} setAnchorEl={setAnchorEl}/>
+        <OldExpansion {...expansionProps} anchorEl={anchorEl} setAnchorEl={setAnchorEl}/>
     </div>
 }
 
@@ -137,7 +137,7 @@ export function ExpandingButton({buttonPadding, icon, ...expansionProps}:
 //TODO: garbage button needs to be fixed to work with popover.
 //TODO: can't scroll, disabling it makes the popup stick in the screen
 // I think we want a custom implementation
-export function Expansion({anchorEl, setAnchorEl, ...surfaceProps}: {
+export function OldExpansion({anchorEl, setAnchorEl, ...surfaceProps}: {
     anchorEl: Element | undefined, setAnchorEl: (el: Element | undefined) => void
 } & SingleChildParentProps): JSX.Element {
     const open = Boolean(anchorEl);

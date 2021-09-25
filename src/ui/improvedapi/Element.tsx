@@ -171,6 +171,9 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         ...style
     }
 
+    // console.log("New style: " + JSON.stringify(newStyle));
+    // console.log("Old style: " + JSON.stringify(style));
+
     const reactOnClick: React.MouseEventHandler | undefined = onClick ? (event => onClick(event.currentTarget)) : undefined
 
     return {
