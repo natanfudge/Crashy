@@ -3,38 +3,43 @@
 import {SingleChildParentProps, WithChild} from "./Element";
 import React, {Fragment, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import {Stack} from "./Flex";
-import {duration} from "@mui/material";
+import {Wrap} from "./Core";
+import {objectMap, withoutKey, withProperty} from "../Utils";
 
-type OnDismiss = () => void
-type SetExpansion = (expansionsProps: ExpansionProps) => void
+
+const animationDurationMillis = 1000;
+type ExpansionsState = Record<string, ExpansionProps>
 
 //////// API /////////
 export function WithExpansions(props: WithChild) {
     const expansions = useMemo(() => new Expansions(), []);
-    const [showingExpansions, setShowingExpansions] = useState<ExpansionProps[]>([]);
+    const [showingExpansions, setShowingExpansions] = useState<ExpansionsState>({});
+    const [exitingExpansions, setExitingExpansions] = useState<ExpansionsState>({});
 
     expansions.init(targeted => {
         const show = isShowing(targeted.state);
+        if (show) {
+            setShowingExpansions(old => withProperty(old, targeted.id, targeted));
+            setExitingExpansions(old => withoutKey(old, targeted.id));
+        } else {
+            setShowingExpansions(old => withoutKey(old, targeted.id));
+            setExitingExpansions(old => withProperty(old, targeted.id, targeted));
 
-        // Optimization: Don't re-render when setting show to false, and it wasn't shown anyway
-        if (showingExpansions.every((expansion) => expansion.id !== targeted.id) && !show) return;
+            setTimeout(() => setExitingExpansions(old => withoutKey(old, targeted.id)), animationDurationMillis);
+        }
 
-        setShowingExpansions(prevShown => {
-            // console.log("Re-render")
-            const notIncludingTargeted = prevShown.filter((prevInstance) => prevInstance.id !== targeted.id);
-            // If show, add to array, if not, don't add to array
-            //TODO: after animation delay remove from array
-            return [...notIncludingTargeted, targeted] /*: notIncludingTargeted*/;
-        })
     });
-    // console.log("Expansions: " + showingExpansions.length);
+
+    const allExpansions = {...showingExpansions, ...exitingExpansions}
     return <Expansions.Context.Provider value={expansions}>
         <Stack>
             {props.children}
-            {showingExpansions.map((expansion) => <ExpansionImpl key={expansion.id} {...expansion}/>)}
+            {objectMap(allExpansions, (id, expansion) => <ExpansionImpl key={expansion.id} {...expansion}/>)}
         </Stack>
     </Expansions.Context.Provider>
 }
+
+export type OnDismiss = () => void
 
 export interface ExpansionProps extends SingleChildParentProps {
     id: string;
@@ -45,9 +50,6 @@ export interface ExpansionProps extends SingleChildParentProps {
     position: Alignment
 }
 
-// interface InternalExpansionProps extends ExpansionProps {
-//
-// }
 
 export interface NumericAlignment {
     /**
@@ -71,10 +73,6 @@ export type EdgeAlignment =
     | "bottom-center"
     | "bottom-right"
 export type Alignment = EdgeAlignment | NumericAlignment
-
-
-// type VerticalExpansionPlacement = "top" | "center" | "bottom"
-// type HorizontalExpansionPlacement = "top" | "center" | "bottom"
 
 
 export function Expansion(props: ExpansionProps) {
@@ -127,6 +125,8 @@ export class StandaloneExpansionState {
 }
 
 ///////////// Expansions impl ///////////////
+type SetExpansion = (expansionsProps: ExpansionProps) => void
+
 class Expansions {
     static readonly Context = React.createContext(new Expansions());
     setExpansion!: SetExpansion;
@@ -164,11 +164,6 @@ function toNumericAlignment(edge: Alignment): NumericAlignment {
     }
 }
 
-enum TransformState {
-    CalculatingSize,
-    SettingTo0,
-    SettingTo1
-}
 
 //TODO: clickoutsidehandler
 function ExpansionImpl(props: ExpansionProps) {
@@ -182,68 +177,80 @@ function ExpansionImpl(props: ExpansionProps) {
     const anchorY = anchorPos.top * (1 - referenceAlign.y) + anchorPos.bottom * referenceAlign.y;
 
     // Calculate the size of the expansion so we can position it properly
-    const ref = useRef<HTMLDivElement>(null)
     const [rect, setRect] = useState<DOMRect | undefined>(undefined);
-
-    // console.log("Recompose?")
-    useLayoutEffect(() => {
-        // console.log("Recompose!")
-        // console.log("Layout effect: current = " + ref.current)
-        // setRect(ref.current!.getBoundingClientRect())
-    }, [props])
 
     const offset = rect === undefined ? {x: 0, y: 0} : {
         x: rect.width * positionAlign.x,
         y: rect.height * positionAlign.y
     }
 
-    // console.log("Width: " + rect?.width);
-
-    // console.log("Offset: " + JSON.stringify(offset));
-    // console.log("AnchorY: " + anchorY)
-
     const x = anchorX - offset.x;
     const y = anchorY - offset.y
 
-    // const [transformed, setTransformed] = useState(false);
-    //
-    // useEffect(() => {
-    //     if (rect === undefined) return;
-    //     if (!transformed) setTransformed(true);
-    // },[rect,transformed])
-    //
-    // const transform = transformed ?  undefined: "scale(0.5)";
-
-    // {/*// return (/*<Grow in = {isShowing(state)}>*/*/}
-    //     {/*//     <div>*/}
-    //     {/*//         <Wrap {...elementProps} style={{...style, position: "absolute", left: x, top: y, transform:show? "scale(1.0)" : "scale(0.0)", transition: "transform 1s" }}*/}
-    //     {/*//               divRef={ref}/>*/}
-    //     {/*//     </div>*/}
-    //     {/*//*/}
-    //     {/*//  // </Grow>*/}
-    //TODO: figure out how we measure size
-    //TODO: i think, just shove it in some random div because it's gonna get deleted later
+    const finalProps: SingleChildParentProps = {
+        ...elementProps,
+        style: {...style, position: "absolute", left: x, top: y}
+    };
 
     const show = isShowing(state);
-    // noinspection RequiredAttributes
-    // console.log("Showing: " + isShowing(state));
-    return (GrowingAnimation({
-            show, children: <div>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ab accusantium aperiam architecto cum
-                deserunt dicta
-                distinctio dolore ea eos error facere illo iure, iusto laboriosam maiores minus molestias nobis numquam
-                omnis
-                praesentium provident reiciendis repellat repellendus similique sit tenetur vel voluptas voluptate
-                voluptates!
-                Culpa ducimus explicabo facilis omnis voluptates.
-            </div>
-        })
-    )
+    return <Fragment>
+        <SizeCalculator depProps={props} finalProps={finalProps} setRect={setRect}/>
+        {GrowingAnimation({
+            show, finalProps: finalProps
+        })}
+    </Fragment>
 
 }
 
+//TODO: consider using limited positioning if this causes performance issues
+function SizeCalculator({
+                            depProps,
+                            setRect,
+                            finalProps
+                        }: { depProps: ExpansionProps, finalProps: SingleChildParentProps, setRect: (rect: DOMRect | undefined) => void }) {
+    // First run: calculate = true:
+    // - First useLayoutEffect is called, but calculate is true so it does nothing
+    // - Second useLayoutEffect is called, calculating correct size and setting calculate to false
+    // Second run: calculate = false
+    // - First useLayoutEffect is not called because dependencies have not changed
+    // - Second useLayoutEffect is called but calculate = false so it does nothing
 
-function GrowingAnimation({show, children}: { show: boolean } & WithChild) {
+    // First run: calculate = false:
+    // - First useLayoutEffect is called, setting calculate to true
+    // - Second useLayoutEffect is called but calculate = false so it does nothing
+    // Second run: calculate = true:
+    // - First useLayoutEffect is not called because dependencies have not changed
+    // - Second useLayoutEffect is called, calculating correct size and setting calculate to false
+    // Third run: calculate = false:
+    // - First useLayoutEffect is not called because dependencies have not changed
+    // - Second useLayoutEffect is called but calculate = false so it does nothing
+
+
+    const ref = useRef<HTMLDivElement>(null)
+    const [calculate, setCalculate] = React.useState(true)
+
+
+    useLayoutEffect(() => {
+        if (!calculate) setCalculate(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [depProps])
+
+
+    useLayoutEffect(() => {
+        if (calculate) {
+            setRect(ref.current!.getBoundingClientRect())
+            setCalculate(false);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [depProps, calculate])
+
+    return <Fragment>
+        {calculate && <Wrap divRef={ref} {...finalProps}/>}
+    </Fragment>
+}
+
+
+function GrowingAnimation({show, finalProps}: { show: boolean, finalProps: SingleChildParentProps }) {
     const [shrink, setShrink] = React.useState(true);
 
     // If show = false then shrink will stay as true and it will shrink
@@ -260,33 +267,8 @@ function GrowingAnimation({show, children}: { show: boolean } & WithChild) {
     }, [show])
 
     const transform = shrink ? "scale(0.0)" : "scale(1.0)";
-    return <div style={{transform: transform, transition: "transform 1s"}}>
-        {children}
-    </div>
+    const {style, ...otherProps} = finalProps;
+    return <Wrap {...otherProps} style={{...style, transform: transform, transition: `transform ${animationDurationMillis}ms`}}/>
 
 }
 
-const defaultStyle = {
-    transition: `opacity ${duration}ms ease-in-out`,
-    opacity: 0,
-}
-
-const transitionStyles = {
-    entering: {opacity: 1},
-    entered: {opacity: 1},
-    exiting: {opacity: 0},
-    exited: {opacity: 0},
-};
-
-// export functon Fade = ({ in: inProp }) => (
-//     <Transition in={inProp} timeout={duration}>
-//         {state => (
-//             <div style={{
-//                 ...defaultStyle,
-//                 ...transitionStyles[state]
-//             }}>
-//                 I'm a fade Transition!
-//             </div>
-//         )}
-//     </Transition>
-// );

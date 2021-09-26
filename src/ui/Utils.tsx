@@ -13,7 +13,7 @@ export interface HttpResponse {
 }
 
 
-export function objectMap(object: StringMap, mapFn: (key: string, value: string, index: number) => any) {
+export function objectMap<V>(object: Record<string,V>, mapFn: (key: string, value: V, index: number) => any) {
     return Object.keys(object).map(function (key, index) {
         return mapFn(key, object[key], index);
     }, {})
@@ -27,6 +27,51 @@ function parseParameters(parameters?: StringMap): string {
     }
 }
 
+export function areArraysEqualSets<T>(a1: T[], a2: T[]) {
+    const superSet: Record<string, number> = {};
+    for (const i of a1) {
+        const e = i + typeof i;
+        superSet[e] = 1;
+    }
+
+    for (const i of a2) {
+        const e = i + typeof i;
+        if (!superSet[e]) {
+            return false;
+        }
+        superSet[e] = 2;
+    }
+
+    for (let e in superSet) {
+        if (superSet[e] === 1) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export function splitFilter<T>(array: T[], condition: (element: T) => boolean): [T[], T[]] {
+    const match: T[] = [];
+    const noMatch: T[] = [];
+    for (const element of array) {
+        if (condition(element)) match.push(element)
+        else noMatch.push(element)
+    }
+    return [match, noMatch];
+}
+
+type Key = string | number | symbol
+
+export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V>, key: RK): Omit<Record<K, V>, RK> {
+    if (!(key in record)) return record;
+    const {[key]: value, ...otherProps} = record;
+    return otherProps;
+}
+export function withProperty<K extends Key, V>(record: Record<K, V>, key: K, value: V): Record<K, V> {
+    if (key in record) return record;
+    return {...record,[key]: value};
+}
 
 // interface GetResponse {
 //     body: string
@@ -143,7 +188,7 @@ export function OldExpansion({anchorEl, setAnchorEl, ...surfaceProps}: {
     const open = Boolean(anchorEl);
 
     // noinspection RequiredAttributes
-    return <Popover  disableEnforceFocus /*disableScrollLock*/ hideBackdrop /*style = {{ position: 'static'}}*/
+    return <Popover disableEnforceFocus /*disableScrollLock*/ hideBackdrop /*style = {{ position: 'static'}}*/
                     anchorOrigin={{vertical: "bottom", horizontal: "center"}}
                     transformOrigin={{vertical: "top", horizontal: "center"}} open={open} anchorEl={anchorEl}>
         <Box>
