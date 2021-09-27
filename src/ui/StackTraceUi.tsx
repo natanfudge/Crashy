@@ -7,7 +7,7 @@ import {
     RichStackTraceElement,
     StackTraceMessage,
     unfoldRichStackTrace
-} from "parser/src/model/RichCrashReport";
+} from "../../parser/src/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import React from "react";
@@ -89,9 +89,7 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
         <Text color={open || isXMore ? undefined : clickableColor} text={text} style={{
             whiteSpace: "pre-wrap",
             wordBreak: "break-word"
-        }} onClick={isXMore ? undefined : () => {
-            setOpen(!open);
-        }}/>
+        }} onClick={isXMore ? undefined : () => setOpen(!open)}/>
         {typeof traceElement !== "number" && traceElement.forgeMetadata &&
         <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}
 

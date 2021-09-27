@@ -5,7 +5,7 @@ import {KeyboardArrowDown} from "@mui/icons-material";
 import {Box, ClickAwayListener, Popover} from "@mui/material";
 import {CIconButton, Surface} from "./improvedapi/Material";
 import {primaryColor} from "./Colors";
-import {StringMap} from "parser/src/model/CrashReport";
+import {StringMap} from "../../parser/src/model/CrashReport";
 
 export interface HttpResponse {
     body: string
@@ -173,9 +173,7 @@ export function ExpandingButton({buttonPadding, icon, ...expansionProps}:
                                     { buttonPadding?: Padding, icon: JSX.Element } & SingleChildParentProps) {
     const [anchorEl, setAnchorEl] = React.useState<Element | undefined>(undefined);
 
-    const handleClick: ClickCallback = (event: Element) => {
-        setAnchorEl(anchorEl !== undefined ? undefined : event);
-    };
+    const handleClick: ClickCallback = (event: Element) => setAnchorEl(anchorEl !== undefined ? undefined : event);
 
     // noinspection RequiredAttributes
     return <div>

@@ -1,4 +1,4 @@
-import {Mod} from "parser/src/model/RichCrashReport";
+import {Mod} from "../../parser/src/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
@@ -7,14 +7,19 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import {Typography} from "@mui/material";
 import {MoreInfoButton} from "./Utils";
 
+
 export function ModListUi({mods}: { mods: Mod[] }) {
     const modsPrioritizingSuspectedMods = mods.sort((modA, modB) => {
+            // noinspection JSRemoveUnnecessaryParentheses
             if ((modA.isSuspected && modB.isSuspected) || (!modA.isSuspected && !modB.isSuspected)) {
                 // If both suspected / neither suspected, sort alphabetically.
                 return modA.name.localeCompare(modB.name);
-            } else if (modA.isSuspected && !modB.isSuspected) return -1; // Prioritize mod A
-            else if (!modA.isSuspected && modB.isSuspected) return 1;// Prioritize mod B
-            else return 0; // Neither mod is suspected
+            } else if (modA.isSuspected && !modB.isSuspected) return -1;
+            // Prioritize mod A
+            else if (!modA.isSuspected && modB.isSuspected) return 1;
+            // Prioritize mod B
+            else return 0;
+            // Neither mod is suspected
         }
     )
 
@@ -25,7 +30,7 @@ export function ModListUi({mods}: { mods: Mod[] }) {
             <CDivider width={"max"}/>
         </Column>
         <LazyColumn data={modsPrioritizingSuspectedMods}
-                    childProvider={(mod) => <ModUi mod={mod} key={mod.id}/>}/>
+                    childProvider={mod => <ModUi mod={mod} key={mod.id}/>}/>
 
     </Column>
 }
@@ -43,7 +48,7 @@ function LazyColumn<T>({data, childProvider}: { data: T[], childProvider: (item:
                            hasMore={hasMore}
                            loader={<h4>Loading...</h4>}
     >
-        {active.map((item, index) => (childProvider(item, index)))}
+        {active.map((item, index) => childProvider(item, index))}
     </InfiniteScroll>
 }
 

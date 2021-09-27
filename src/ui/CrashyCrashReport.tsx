@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Column, Row} from "./improvedapi/Flex";
 import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
-import {RichCrashReport} from "parser/src/model/RichCrashReport";
+import {RichCrashReport} from "../../parser/src/model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
 import {CrashContextUi} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
@@ -13,7 +13,7 @@ import {Surface} from "./improvedapi/Material";
 import {fadedOutColor} from "./Colors";
 import {ExpandingButton} from "./Utils";
 import {CrashyServer, GetCrashError, GetCrashResponse} from "./CrashyServer";
-import {parseCrashReportRich} from "parser/src/parser/CrashReportEnricher";
+import {parseCrashReportRich} from "../../parser/src/parser/CrashReportEnricher";
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
@@ -22,9 +22,7 @@ import {CrashId} from "./PageUrl";
 
 export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
     const [crash, setCrash] = useState<GetCrashResponse | undefined>(undefined)
-    useEffect(() => {
-        void CrashyServer.getCrash(crashId.value, crashId.noCache).then(res => setCrash(res));
-    }, [crashId])
+    useEffect(() => void CrashyServer.getCrash(crashId.value, crashId.noCache).then(res => setCrash(res)), [crashId])
 
     return <div style={{height: "100%"}}>
         <CrashyAppBar crash={crash}/>
@@ -81,7 +79,7 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
 
     const sectionNames = ["Stack Trace", "Mods"]
 
-    report.sections.forEach((section) => sectionNames.push(section.name));
+    report.sections.forEach(section => sectionNames.push(section.name));
 
     return <Row padding={{top: 4}} justifyContent={"space-between"}>
         <CrashContextUi context={context}/>
@@ -111,15 +109,20 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
             </Column>
 
             <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
-            {
-                activeSectionIndex === 0 ?
-                    <StackTraceUi stackTrace={report.stackTrace}/>
-                    : activeSectionIndex === 1 ? <ModListUi mods={report.mods}/>
-                        // We already use up the 0 and 1 index for the main stack trace and mods, so we need to reduce the index by 2.
-                        : <CrashReportSectionUi section={report.sections[activeSectionIndex - 2]}/>
-            }
+            <ActiveSection report={report} index={activeSectionIndex}/>
         </Column>
     </Surface>
+}
+
+function ActiveSection({report, index}: { report: RichCrashReport, index: number }) {
+    if (index === 0) {
+        return <StackTraceUi stackTrace={report.stackTrace}/>
+    } else if (index === 1) {
+        return <ModListUi mods={report.mods}/>
+    }// We already use up the 0 and 1 index for the main stack trace and mods, so we need to reduce the index by 2.
+    else {
+        return <CrashReportSectionUi section={report.sections[index - 2]}/>
+    }
 }
 
 

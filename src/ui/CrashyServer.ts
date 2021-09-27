@@ -43,7 +43,7 @@ export namespace CrashyServer {
     const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
-        const response = await httpGet({url: `${urlPrefix}/getCrash/${id}`, noCache: noCache});
+        const response = await httpGet({url: `${urlPrefix}/getCrash/${id}`, noCache});
         switch (response.code) {
             case HttpStatusCode.OK:
                 return response.body;

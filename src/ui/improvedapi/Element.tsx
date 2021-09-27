@@ -17,7 +17,7 @@ interface FlexChildProps {
 
 interface StyleProps extends FlexChildProps {
     padding?: Padding;
-    margin?:  Margin;
+    margin?: Margin;
     height?: Size;
     width?: Size;
     backgroundColor?: CSS.Property.BackgroundColor
@@ -39,6 +39,7 @@ interface Percent {
 }
 
 export type ClickCallback = (htmlElement: Element) => void
+
 export interface ElementProps extends StyleProps {
     onClick?: ClickCallback
     className?: string
@@ -68,7 +69,7 @@ export interface Axes {
 
 
 export type Margin = number | Directions | MarginAxes
-export type Padding =  number | Directions | PaddingAxes
+export type Padding = number | Directions | PaddingAxes
 export type PaddingAxes = Axes
 export type MarginAxes = Axes
 
@@ -78,22 +79,25 @@ function isAxes(obj: Padding): obj is Axes {
 
 
 function expandPaddingOrMargin(paddingOrMargin?: Padding): Directions {
-    if (paddingOrMargin === undefined) return {}
-    else if (typeof paddingOrMargin === "number"){
+    if (paddingOrMargin === undefined) {
+        return {}
+    } else if (typeof paddingOrMargin === "number") {
         return {
             top: paddingOrMargin,
             bottom: paddingOrMargin,
             left: paddingOrMargin,
             right: paddingOrMargin
         };
+    } else if (isAxes(paddingOrMargin)) {
+        return {
+            top: paddingOrMargin.vertical,
+            bottom: paddingOrMargin.vertical,
+            left: paddingOrMargin.horizontal,
+            right: paddingOrMargin.horizontal
+        };
+    } else {
+        return paddingOrMargin;
     }
-    else if (isAxes(paddingOrMargin)) return {
-        top: paddingOrMargin.vertical,
-        bottom: paddingOrMargin.vertical,
-        left: paddingOrMargin.horizontal,
-        right: paddingOrMargin.horizontal
-    };
-    else return paddingOrMargin;
 }
 
 function isPercent(obj: Size): obj is Percent {
@@ -101,10 +105,13 @@ function isPercent(obj: Size): obj is Percent {
 }
 
 function expandSize(size?: Size): CSS.Property.Width | undefined | number {
-    if (size === undefined) return undefined
+    if (size === undefined) return undefined;
     if (size === "max") return "100%"
-    if (isPercent(size)) return `${size.percent}%`
-    else return size
+    if (isPercent(size)) {
+        return `${size.percent}%`
+    } else {
+        return size
+    }
 }
 
 export type WithChildren = {

@@ -297,9 +297,7 @@ function GrowingAnimation({
     // If show = false then shrink will stay as true and it will shrink
     // If show = true then we want to start it off as shrink = true so the animation will work properly,
     // and then we set shrink = false in useEffect so it will grow.
-    useLayoutEffect(() => {
-        setShrink(true);
-    }, [show])
+    useLayoutEffect(() => setShrink(true), [show])
 
     useEffect(() => {
         if (show) {

@@ -1,12 +1,13 @@
-import {RichCrashReportSection, RichStackTraceElement} from "parser/src/model/RichCrashReport";
+// import {RichCrashReportSection, RichStackTraceElement} from "../../parser/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import {CDivider, Spacer} from "./improvedapi/Core";
-import {StringMap} from "parser/src/model/CrashReport";
+import {StringMap} from "../../parser/src/model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
 import {primaryColor} from "./Colors";
 import {objectMap} from "./Utils";
+import {RichCrashReportSection, RichStackTraceElement} from "../../parser/src/model/RichCrashReport";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>
@@ -39,7 +40,7 @@ function CrashReportSectionDetails({details}: { details: StringMap }) {
                     <Row key={name}>
                         <Text text={name} isBold={true} padding={5} style={{width: "30%", minWidth: "30%"}}/>
                         <CDivider backgroundColor={primaryColor} height={"auto"} width={1}/>
-                        <Text  text={detail} padding={{horizontal: 10, vertical: 5}}/>
+                        <Text text={detail} padding={{horizontal: 10, vertical: 5}}/>
 
                     </Row>
                     <CDivider backgroundColor={index % 2 === 1 ? "#6d6c6c" : undefined}/>

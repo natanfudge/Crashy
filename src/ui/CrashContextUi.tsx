@@ -1,4 +1,3 @@
-import {CrashContext, LoaderType, OperatingSystemType} from "parser/src/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import MinecraftLogo from "../media/minecraft_cube.svg";
 import ForgeLogo from "../media/forge_logo.svg";
@@ -14,6 +13,7 @@ import {CDivider, CImage} from "./improvedapi/Core";
 import {Text} from "./improvedapi/Text";
 import {Card, CardContent} from "@mui/material";
 import {lightBlue} from "@mui/material/colors";
+import {CrashContext, LoaderType, OperatingSystemType} from "../../parser/src/model/RichCrashReport";
 
 export function CrashContextUi({context}: { context: CrashContext }) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";

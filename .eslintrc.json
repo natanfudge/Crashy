@@ -18,7 +18,33 @@
   ],
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": ["error", {"allowString":  false, "allowNumber" :  false, "allowNullableObject":  false}],
-    "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn"
+    "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+    "@typescript-eslint/consistent-indexed-object-style": "warn",
+    "require-atomic-updates": "warn",
+    "array-callback-return": "warn",
+    "class-methods-use-this": "warn",
+    "curly": ["warn", "multi-line"],
+    "default-param-last": "warn",
+    "no-constructor-return": "error",
+    "no-eval": "error",
+    "no-extend-native": "error",
+    "no-extra-bind": "warn",
+    "no-extra-label": "warn",
+    "no-implicit-coercion": "error",
+    "no-implied-eval": "error",
+    "no-invalid-this": "error",
+    "no-iterator": "error",
+    "no-new": "warn",
+    "no-new-func": "warn",
+    "no-new-wrappers": "error",
+    "no-proto": "error",
+    "no-return-assign": "error",
+    "no-script-url": "error",
+    "no-self-compare": "warn",
+    "no-sequences": "error",
+    "no-throw-literal": "error",
+    "no-useless-call": "warn",
+    "no-useless-concat": "warn"
   },
   "overrides": [
     {
@@ -29,7 +55,8 @@
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-non-null-assertion" : "off",
         "@typescript-eslint/restrict-plus-operands" : "off",
-        "@typescript-eslint/no-namespace": "off"
+        "@typescript-eslint/no-namespace": "off",
+        "eqeqeq": "off"
       }
     }
   ]

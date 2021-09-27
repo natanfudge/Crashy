@@ -21,7 +21,7 @@ function isUploadCrashError(obj: UploadState): obj is UploadCrashError {
     return typeof obj === "string"
 }
 
-function CrashTextField(props: { error: boolean, log: string, setLog: (value: (string)) => void }) {
+function CrashTextField(props: { error: boolean, log: string, setLog: (value: string) => void }) {
     return <Wrap padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
         <TextField error={props.error} value={props.log} onChange={value => props.setLog(value.target.value)} multiline
                    label={"Paste a crash log"} variant={"filled"}
