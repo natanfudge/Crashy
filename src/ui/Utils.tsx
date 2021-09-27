@@ -5,18 +5,19 @@ import {KeyboardArrowDown} from "@mui/icons-material";
 import {Box, ClickAwayListener, Popover} from "@mui/material";
 import {CIconButton, Surface} from "./improvedapi/Material";
 import {primaryColor} from "./Colors";
-import {StringMap} from "../model/CrashReport";
+import {StringMap} from "parser/src/model/CrashReport";
 
 export interface HttpResponse {
     body: string
     code: number
 }
 
+export function typedKeys<K extends Key, V>(object: Record<K, V>): K[] {
+    return Object.keys(object) as K[];
+}
 
-export function objectMap<V>(object: Record<string,V>, mapFn: (key: string, value: V, index: number) => any) {
-    return Object.keys(object).map(function (key, index) {
-        return mapFn(key, object[key], index);
-    }, {})
+export function objectMap<V,R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
+    return typedKeys(object).map((key, index) => mapFn(key, object[key], index), {});
 }
 
 function parseParameters(parameters?: StringMap): string {
@@ -36,13 +37,13 @@ export function areArraysEqualSets<T>(a1: T[], a2: T[]) {
 
     for (const i of a2) {
         const e = i + typeof i;
-        if (!superSet[e]) {
+        if (superSet[e] === 0) {
             return false;
         }
         superSet[e] = 2;
     }
 
-    for (let e in superSet) {
+    for (const e in superSet) {
         if (superSet[e] === 1) {
             return false;
         }
@@ -68,9 +69,10 @@ export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V
     const {[key]: value, ...otherProps} = record;
     return otherProps;
 }
+
 export function withProperty<K extends Key, V>(record: Record<K, V>, key: K, value: V): Record<K, V> {
     if (key in record) return record;
-    return {...record,[key]: value};
+    return {...record, [key]: value};
 }
 
 // interface GetResponse {
@@ -97,7 +99,8 @@ async function httpCall(request: HttpRequest): Promise<HttpResponse> {
     // Add useless parameter to bust cache if needed
     // const actualParameters = noCache ? {noCache: "", ...parameters} : parameters;
     const actualUrl = request.url + parseParameters(request.parameters);
-    const noCacheHeaders: StringMap = request.noCache ? {
+    const noCache = request.noCache === true;
+    const noCacheHeaders: StringMap = noCache ? {
         "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
         "Pragma": "no-cache",
         "Expires": "0"
@@ -106,7 +109,7 @@ async function httpCall(request: HttpRequest): Promise<HttpResponse> {
         method: request.method,
         body: request.body,
         headers: {...noCacheHeaders, ...request.headers},
-        cache: request.noCache ? "no-cache" : undefined,
+        cache: noCache ? "no-cache" : undefined,
         mode: "cors"
     })
 
@@ -129,6 +132,7 @@ interface HttpRequest {
 export type Require<T, K extends keyof T> = Omit<T, K> & {
     [RequiredProperty in K]-?: T[RequiredProperty]
 }
+export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
 
 type SpecificHttpRequest = Omit<HttpRequest, "method">
 type HttpGetRequest = Omit<SpecificHttpRequest, "body">
@@ -166,7 +170,7 @@ export function ExpandingButton({buttonPadding, icon, ...expansionProps}:
     const [anchorEl, setAnchorEl] = React.useState<Element | undefined>(undefined);
 
     const handleClick: ClickCallback = (event: Element) => {
-        setAnchorEl(anchorEl ? undefined : event);
+        setAnchorEl(anchorEl !== undefined ? undefined : event);
     };
 
     // noinspection RequiredAttributes

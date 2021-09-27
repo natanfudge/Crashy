@@ -1,4 +1,4 @@
-import {CrashContext, LoaderType, OperatingSystemType} from "../model/RichCrashReport";
+import {CrashContext, LoaderType, OperatingSystemType} from "parser/src/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import MinecraftLogo from "../media/minecraft_cube.svg";
 import ForgeLogo from "../media/forge_logo.svg";

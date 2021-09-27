@@ -1,4 +1,4 @@
-import {Mod} from "../model/RichCrashReport";
+import {Mod} from "parser/src/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import {CDivider, Spacer, Wrap} from "./improvedapi/Core";

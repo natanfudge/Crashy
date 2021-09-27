@@ -1,4 +1,4 @@
-import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "./CrashReport";
+import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "../model/CrashReport";
 
 class StringBuilder {
     str: string

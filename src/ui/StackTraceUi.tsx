@@ -7,7 +7,7 @@ import {
     RichStackTraceElement,
     StackTraceMessage,
     unfoldRichStackTrace
-} from "../model/RichCrashReport";
+} from "parser/src/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import React from "react";

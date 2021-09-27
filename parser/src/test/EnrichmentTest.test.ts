@@ -1,10 +1,7 @@
-import React from 'react';
-import {render, screen} from '@testing-library/react';
-import App from '../ui/App';
-import {parseCrashReport} from "../model/CrashReportParser";
-import {testFabricCrashReport, testForgeCrashReport} from "../model/TestCrashes";
-import {enrichCrashReport} from "../model/CrashReportEnricher";
 import {LoaderType, OperatingSystemType, RichCrashReport} from "../model/RichCrashReport";
+import {enrichCrashReport} from "../model/CrashReportEnricher";
+import {testFabricCrashReport, testForgeCrashReport} from "../test/TestCrashes";
+import {parseCrashReport} from "../parser/CrashReportParser";
 
 
 export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
@@ -91,7 +88,6 @@ export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
         name: "Windows 10 (64 bit)"
     })
 }
-
 
 
 function testForgeCrashReportEnrich(enriched: RichCrashReport) {

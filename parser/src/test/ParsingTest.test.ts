@@ -1,6 +1,6 @@
-import {parseCrashReport} from "../model/CrashReportParser";
-import {testFabricCrashReport, testForgeCrashReport} from "../model/TestCrashes";
 import {CrashReport} from "../model/CrashReport";
+import {parseCrashReport} from "../parser/CrashReportParser";
+import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")

@@ -1,8 +1,8 @@
-import {RichCrashReportSection, RichStackTraceElement} from "../model/RichCrashReport";
+import {RichCrashReportSection, RichStackTraceElement} from "parser/src/model/RichCrashReport";
 import {Column, Row} from "./improvedapi/Flex";
 import {Text} from "./improvedapi/Text";
 import {CDivider, Spacer} from "./improvedapi/Core";
-import {StringMap} from "../model/CrashReport";
+import {StringMap} from "parser/src/model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
 import {primaryColor} from "./Colors";
@@ -15,8 +15,8 @@ export function CrashReportSectionUi({section}: { section: RichCrashReportSectio
             <CDivider width={"max"}/>
         </Column>
 
-        {section.details && <CrashReportSectionDetails details={section.details}/>}
-        {section.stackTrace && <CrashReportSectionTrace trace={section.stackTrace}/>}
+        {section.details !== undefined && <CrashReportSectionDetails details={section.details}/>}
+        {section.stackTrace !== undefined && <CrashReportSectionTrace trace={section.stackTrace}/>}
     </Column>
 }
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Column, Row} from "./improvedapi/Flex";
 import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
-import {RichCrashReport} from "../model/RichCrashReport";
+import {RichCrashReport} from "parser/src/model/RichCrashReport";
 import {Text} from "./improvedapi/Text";
 import {CrashContextUi} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
@@ -12,8 +12,8 @@ import {LinearProgress, Link, Typography} from "@mui/material";
 import {Surface} from "./improvedapi/Material";
 import {fadedOutColor} from "./Colors";
 import {ExpandingButton} from "./Utils";
-import {CrashyServer, GetCrashResponse} from "./CrashyServer";
-import {parseCrashReportRich} from "../model/CrashReportEnricher";
+import {CrashyServer, GetCrashError, GetCrashResponse} from "./CrashyServer";
+import {parseCrashReportRich} from "parser/src/model/CrashReportEnricher";
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
@@ -23,7 +23,7 @@ import {CrashId} from "./PageUrl";
 export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
     const [crash, setCrash] = useState<GetCrashResponse | undefined>(undefined)
     useEffect(() => {
-        CrashyServer.getCrash(crashId.value, crashId.noCache).then(res => setCrash(res));
+        void CrashyServer.getCrash(crashId.value, crashId.noCache).then(res => setCrash(res));
     }, [crashId])
 
     return <div style={{height: "100%"}}>
@@ -65,14 +65,13 @@ function NoSuchCrashScreen() {
 function CrashReportPageContent({crash}: { crash: GetCrashResponse | undefined }) {
     if (crash === undefined) {
         return <LinearProgress/>
-    } else if (crash) {
+    } else if (crash === GetCrashError.NoSuchCrashId) {
+        return <NoSuchCrashScreen/>
+    } else {
         const parsed = parseCrashReportRich(crash)
         document.title = parsed.title
         return <CrashReportUi report={parsed}/>
-    } else {
-        return <NoSuchCrashScreen/>
     }
-
 }
 
 export function CrashReportUi({report}: { report: RichCrashReport }) {
