@@ -32,7 +32,7 @@ export function DeleteSection() {
         <Text text={"Enter the code for this crash to delete it"}/>
 
         <Row>
-            <CTextField flexGrow={1} label={label ? <p>{label}</p> : undefined}
+            <CTextField flexGrow={1} label={label !== undefined ? <p>{label}</p> : undefined}
                         error={deleteState === DeleteState.Incorrect}
                         padding={{vertical: 10}}
                         value={code} onValueChanged={setCode}/>

@@ -1,7 +1,7 @@
 import React, {Suspense, useState} from 'react';
 import '../App.css';
 
-import {Button, createTheme, CssBaseline, LinearProgress} from "@mui/material";
+import {createTheme, CssBaseline, LinearProgress} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {Column, Row} from "./improvedapi/Flex";
@@ -20,7 +20,7 @@ const CrashyHome = React.lazy(() => import("./CrashyHome"))
 export default function App() {
     const outerTheme = createTheme(CrashyTheme);
 
-    const [change,setChange] = useState(true);
+    const [change, setChange] = useState(true);
 
     return (
         <ThemeProvider theme={outerTheme}>
@@ -37,7 +37,6 @@ export default function App() {
                 </Column>
                 {/*{CrashyUi()}*/}
                 {/*<AnimationTest/>*/}
-
 
 
             </WithExpansions>

@@ -100,12 +100,11 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
 
 function getTraceElementText(traceElement: RichStackTraceElement, open: boolean): string {
     if (typeof traceElement === "number") return `${traceElement} more...`
-    const isNativeMethod = traceElement.line.number === undefined;
     if (open) {
-        const inBracketText = isNativeMethod ? "Native Method" : `${traceElement.line.file}:${traceElement.line.number}`
+        const inBracketText = traceElement.line.number === undefined ? "Native Method" : `${traceElement.line.file}:${traceElement.line.number}`
         return javaMethodFullNameName(traceElement.method) + ` (${inBracketText})`
     } else {
-        const inBracketText = isNativeMethod ? "Native Method" : `Line ${traceElement.line.number}`
+        const inBracketText = traceElement.line.number === undefined ? "Native Method" : `Line ${traceElement.line.number}`
         return javaMethodSimpleName(traceElement.method) + ` (${inBracketText})`
     }
 }
@@ -115,8 +114,8 @@ function ForgeTraceMetadataUi({metadata}: { metadata: ForgeTraceMetadata }) {
 
         <Column padding={10}>
             <Text text={"Forge Metadata"} variant={"h6"}/>
-            {metadata.jarFile && <Text text={`File: ${metadata.jarFile}`}/>}
-            {metadata.version && <Text text={`Version: ${metadata.version}`}/>}
+            {metadata.jarFile !== undefined && <Text text={`File: ${metadata.jarFile}`}/>}
+            {metadata.version !== undefined && <Text text={`Version: ${metadata.version}`}/>}
             {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map((reason, i) =>
                 <Text key={i} text={`Plugin Transformer Reason: ${reason}`}/>)}
             {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map((reason, i) =>

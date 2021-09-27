@@ -60,9 +60,9 @@ function ModUi({mod}: { mod: Mod }) {
                     <Text text={"ID: " + mod.id}
                           alignSelf={"center"}/>
                     <Spacer height={5}/>
-                    {metadata?.file && <Text text={"File: " + metadata.file}/>}
-                    {metadata?.signature && <Text text={"Signature: " + metadata.signature}/>}
-                    {metadata?.completeness && <Text text={metadata.completeness}/>}
+                    {metadata?.file !== undefined && <Text text={"File: " + metadata.file}/>}
+                    {metadata?.signature !== undefined && <Text text={"Signature: " + metadata.signature}/>}
+                    {metadata?.completeness !== undefined && <Text text={metadata.completeness}/>}
                 </Column>
 
             </MoreInfoButton>

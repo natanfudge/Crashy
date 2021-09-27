@@ -1,6 +1,7 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype"
 import {Alignment, fixAlignment} from "./Flex";
+import {isObject} from "../Utils";
 
 
 interface FlexChildProps {
@@ -71,12 +72,12 @@ export type Padding =  number | Directions | PaddingAxes
 export type PaddingAxes = Axes
 export type MarginAxes = Axes
 
-function isAxes(obj: any): obj is Axes {
-    return obj.horizontal !== undefined || obj.vertical !== undefined
+function isAxes(obj: Padding): obj is Axes {
+    return isObject(obj) && ("horizontal" in obj || "vertical" in obj)
 }
 
 
-function expandPaddingOrMargin(paddingOrMargin?: number | Directions | Axes): Directions {
+function expandPaddingOrMargin(paddingOrMargin?: Padding): Directions {
     if (paddingOrMargin === undefined) return {}
     else if (typeof paddingOrMargin === "number"){
         return {
@@ -95,12 +96,12 @@ function expandPaddingOrMargin(paddingOrMargin?: number | Directions | Axes): Di
     else return paddingOrMargin;
 }
 
-function isPercent(obj: any): obj is Percent {
-    return obj.percent !== undefined;
+function isPercent(obj: Size): obj is Percent {
+    return isObject(obj) && obj.percent !== undefined;
 }
 
 function expandSize(size?: Size): CSS.Property.Width | undefined | number {
-    if (!size) return undefined
+    if (size === undefined) return undefined
     if (size === "max") return "100%"
     if (isPercent(size)) return `${size.percent}%`
     else return size
@@ -164,17 +165,14 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         flexGrow,
         flexShrink,
         order,
-        fontWeight: isBold ? "bold" : undefined,
+        fontWeight: isBold === true ? "bold" : undefined,
         alignSelf: fixAlignment(alignSelf),
-        cursor: props.onClick ? "pointer" : undefined,
+        cursor: props.onClick !== undefined ? "pointer" : undefined,
         backgroundColor,
         ...style
     }
 
-    // console.log("New style: " + JSON.stringify(newStyle));
-    // console.log("Old style: " + JSON.stringify(style));
-
-    const reactOnClick: React.MouseEventHandler | undefined = onClick ? (event => onClick(event.currentTarget)) : undefined
+    const reactOnClick: React.MouseEventHandler | undefined = onClick !== undefined ? (event => onClick(event.currentTarget)) : undefined
 
     return {
         style: newStyle,

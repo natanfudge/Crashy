@@ -20,6 +20,10 @@ export function objectMap<V,R>(object: Record<string, V>, mapFn: (key: string, v
     return typedKeys(object).map((key, index) => mapFn(key, object[key], index), {});
 }
 
+export function isObject(x: unknown): x is Record<string, unknown> {
+    return typeof x === 'object' && x != null;
+}
+
 function parseParameters(parameters?: StringMap): string {
     if (parameters === undefined) return "";
     if (Object.values(parameters).length === 0) return "";

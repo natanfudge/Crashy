@@ -13,7 +13,7 @@ import {Surface} from "./improvedapi/Material";
 import {fadedOutColor} from "./Colors";
 import {ExpandingButton} from "./Utils";
 import {CrashyServer, GetCrashError, GetCrashResponse} from "./CrashyServer";
-import {parseCrashReportRich} from "parser/src/model/CrashReportEnricher";
+import {parseCrashReportRich} from "parser/src/parser/CrashReportEnricher";
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";

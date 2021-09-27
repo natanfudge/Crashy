@@ -1,6 +1,6 @@
 import {LoaderType, OperatingSystemType, RichCrashReport} from "../model/RichCrashReport";
-import {enrichCrashReport} from "../model/CrashReportEnricher";
-import {testFabricCrashReport, testForgeCrashReport} from "../test/TestCrashes";
+import {enrichCrashReport} from "../parser/CrashReportEnricher";
+import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 import {parseCrashReport} from "../parser/CrashReportParser";
 
 

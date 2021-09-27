@@ -7,6 +7,7 @@ import {Variant} from "@mui/material/styles/createTypography";
 import {TypographyClasses} from "@mui/material/Typography/typographyClasses";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
+import {isObject} from "../Utils";
 
 export interface TextThemeProps extends ManyChildParentProps {
     /**
@@ -66,8 +67,10 @@ export interface TextThemeProps extends ManyChildParentProps {
      * }
      */
     variantMapping?: Partial<Record<OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>, string>>;
-    color?: string | Gradient
+    color?: Color
 }
+
+type Color = string | Gradient
 //
 export interface Gradient {
     direction: GradientDirection
@@ -84,15 +87,15 @@ export type GradientColor = string | {
 
 export type GradientDirection = "to bottom" | "to top" | "to right" | "to left"
 
-export function isGradient(obj?: any) : obj is Gradient {
-    return obj?.firstColor !== undefined;
+export function isGradient(obj?: Color) : obj is Gradient {
+    return isObject(obj) && obj?.firstColor !== undefined;
 }
 
 function gradientColorString(color: GradientColor) : string {
     return typeof color === "string"? color: `${color.color} ${color.endPercent}%`
 }
 
-function cssFunction(name: string, ...args: (any | undefined)[]): string{
+function cssFunction(name: string, ...args: (unknown | undefined)[]): string{
     return `${name}(${args.filter(arg => arg !== undefined).join(",")})`
 }
 

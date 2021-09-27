@@ -1,4 +1,4 @@
-import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "./CrashReport";
+import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "../model/CrashReport";
 import {
     CrashContext,
     ForgeTraceMetadata,
@@ -15,7 +15,7 @@ import {
     RichStackTraceElement,
     StackTraceMessage,
     TraceLine
-} from "./RichCrashReport";
+} from "../model/RichCrashReport";
 import {parseCrashReport} from "./CrashReportParser";
 
 export function parseCrashReportRich(rawReport: string): RichCrashReport {
@@ -68,13 +68,13 @@ function parseOperatingSystem(osString: string): OperatingSystem {
             type: OperatingSystemType.Windows
         };
     } else {
+        //TODO: better parsing once we can get a hold of non-windows examples
         return {
             name: osString,
             type: OperatingSystemType.Linux
         };
     }
 }
-//TODO: unify backend and frontend javascript
 
 function getLoader(report: CrashReport, systemDetails: StringMap, mods: Mod[]): Loader {
     const forgeEntry = systemDetails[ForgeLoaderTitle];
@@ -117,7 +117,7 @@ function parseCrashDate(dateStr: string): Date {
 }
 
 function enrichCrashReportSection(section: CrashReportSection): RichCrashReportSection {
-    const enrichedDetails: StringMap = section.thread ? {Thread: section.thread} : {};
+    const enrichedDetails: StringMap = section.thread !== undefined ? {Thread: section.thread} : {};
     // eslint-disable-next-line guard-for-in
     for (const prop in section.details) {
         enrichedDetails[prop] = section.details[prop];
@@ -125,13 +125,13 @@ function enrichCrashReportSection(section: CrashReportSection): RichCrashReportS
     return {
         name: section.title,
         details: enrichedDetails,
-        stackTrace: section.stacktrace ? enrichStackTraceElements(section.stacktrace) : undefined
+        stackTrace: section.stacktrace !== undefined ? enrichStackTraceElements(section.stacktrace) : undefined
     };
 }
 
 function enrichStackTrace(trace: StackTrace): RichStackTrace {
     return {
-        causedBy: trace.causedBy ? enrichStackTrace(trace.causedBy) : undefined,
+        causedBy: trace.causedBy !== undefined ? enrichStackTrace(trace.causedBy) : undefined,
         message: enrichStackTraceMessage(trace.message),
         elements: enrichStackTraceElements(trace.trace)
     };
@@ -160,7 +160,7 @@ function enrichStackTraceElements(elements: StackTraceElement[]): RichStackTrace
         return {
             line,
             method,
-            forgeMetadata: metadata ? parseForgeTraceMetadata(metadata) : undefined
+            forgeMetadata: metadata !== undefined ? parseForgeTraceMetadata(metadata) : undefined
         };
     }).filter((element) => element !== undefined).map((element) => element!);
 }

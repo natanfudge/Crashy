@@ -84,6 +84,7 @@ export namespace CrashyServer {
 
         switch (response.code) {
             case HttpStatusCode.OK:
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return JSON.parse(response.body);
             case HttpStatusCode.BadRequest:
                 return "Invalid Crash";

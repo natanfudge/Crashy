@@ -1,5 +1,5 @@
-import {parseCrashReportRich} from "./validation/CrashReportEnricher";
 import * as Zlib from "zlib";
+import {parseCrashReportRich} from "parser/src/parser/CrashReportEnricher";
 
 export async function getCrashValidationErrors(crash: Buffer): Promise<Error | undefined> {
     return new Promise((resolve) => {
