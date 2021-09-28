@@ -30,6 +30,7 @@ function serializePageArgs(args: Record<string, string | boolean>): string {
 }
 
 //TODO: right at the start, perform a 'fixUrl' that quickly fetches the code, removes it, and resets the entire url if nonsense was passed.
+//TODO: in the fixup remove args that don't do anything
 function parsePageArgs(): Record<string, string> | undefined {
     const raw = window.location.search;
     if (raw.length === 0) return {};
