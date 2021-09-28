@@ -40,7 +40,7 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
 
 export function StackTraceElementsUi({elements}: { elements: RichStackTraceElement[] }) {
     return <div>
-        {elements.map((traceElement, i) => <StackTraceElementUi key={i} traceElement={traceElement}/>)}
+        {elements.map((traceElement, i) => <StackTraceElementUi i ={i} key={i} traceElement={traceElement}/>)}
     </div>
 }
 
@@ -77,7 +77,7 @@ function StackTraceMessageUi(message: StackTraceMessage) {
                  onClick={() => setOpen(!open)} variant={"h5"}/>
 }
 
-function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
+function StackTraceElementUi({i, traceElement}: {i:number, traceElement: RichStackTraceElement }) {
     const [open, setOpen] = React.useState(false)
     const text = getTraceElementText(traceElement, open)
     const isXMore = typeof traceElement === "number"
@@ -91,7 +91,7 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
             wordBreak: "break-word"
         }} onClick={isXMore ? undefined : () => setOpen(!open)}/>
         {typeof traceElement !== "number" && traceElement.forgeMetadata &&
-        <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}
+        <ForgeTraceMetadataUi id={i.toString()} metadata={traceElement.forgeMetadata}/>}
 
     </Row>;
 }
@@ -107,8 +107,8 @@ function getTraceElementText(traceElement: RichStackTraceElement, open: boolean)
     }
 }
 
-function ForgeTraceMetadataUi({metadata}: { metadata: ForgeTraceMetadata }) {
-    return <MoreInfoButton>
+function ForgeTraceMetadataUi({id,metadata}: {id:string, metadata: ForgeTraceMetadata }) {
+    return <MoreInfoButton id={id}>
 
         <Column padding={10}>
             <Text text={"Forge Metadata"} variant={"h6"}/>

@@ -2,10 +2,10 @@ import {CImage} from "./improvedapi/Core";
 import React from "react";
 import {ClickCallback, Margin, Padding, SingleChildParentProps, WithChild} from "./improvedapi/Element";
 import {KeyboardArrowDown} from "@mui/icons-material";
-import {Box, ClickAwayListener, Popover} from "@mui/material";
 import {CIconButton, Surface} from "./improvedapi/Material";
 import {primaryColor} from "./Colors";
 import {StringMap} from "../../parser/src/model/CrashReport";
+import {Expansion, useExpansion} from "./improvedapi/Expansion";
 
 export interface HttpResponse {
     body: string
@@ -16,7 +16,7 @@ export function typedKeys<K extends Key, V>(object: Record<K, V>): K[] {
     return Object.keys(object) as K[];
 }
 
-export function objectMap<V,R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
+export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
     return typedKeys(object).map((key, index) => mapFn(key, object[key], index), {});
 }
 
@@ -77,6 +77,12 @@ export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V
 export function withProperty<K extends Key, V>(record: Record<K, V>, key: K, value: V): Record<K, V> {
     if (key in record) return record;
     return {...record, [key]: value};
+}
+
+export function coerce(num: number, bounds: { min: number, max: number }): number {
+    if (num < bounds.min) return bounds.min;
+    else if (num > bounds.max) return bounds.max
+    else return num;
 }
 
 // interface GetResponse {
@@ -161,55 +167,39 @@ export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
                    margin={margin}/>
 }
 
+export interface ExpandingButtonProps {
+    id: string;
+    sticky: boolean;
+}
 
-export function MoreInfoButton(props: WithChild) {
-    return <ExpandingButton buttonPadding={0} icon={<KeyboardArrowDown style={{filter: "brightness(0.5)"}}/>}>
+export function MoreInfoButton(props: WithChild & { id: string }) {
+    return <ExpandingButton sticky={false} id={props.id} buttonPadding={0}
+                            icon={<KeyboardArrowDown style={{filter: "brightness(0.5)"}}/>}>
         {props.children}
     </ExpandingButton>
 }
 
 
-export function ExpandingButton({buttonPadding, icon, ...expansionProps}:
-                                    { buttonPadding?: Padding, icon: JSX.Element } & SingleChildParentProps) {
-    const [anchorEl, setAnchorEl] = React.useState<Element | undefined>(undefined);
+export function ExpandingButton({buttonPadding, icon, id, children, sticky, ...expansionProps}:
+                                    { buttonPadding?: Padding, icon: JSX.Element } & ExpandingButtonProps & SingleChildParentProps) {
+    const expansion = useExpansion();
 
-    const handleClick: ClickCallback = (event: Element) => setAnchorEl(anchorEl !== undefined ? undefined : event);
+    const handleClick: ClickCallback = (element: Element) => expansion.toggle(element)
 
-    // noinspection RequiredAttributes
     return <div>
         <CIconButton padding={buttonPadding} onClick={handleClick}>
             {icon}
         </CIconButton>
-        <OldExpansion {...expansionProps} anchorEl={anchorEl} setAnchorEl={setAnchorEl}/>
+        <Expansion {...expansionProps} anchorReference={"bottom-center"} position={"top-center"} state={expansion}
+                   onDismiss={() => expansion.hide()} id={id} sticky={sticky}>
+            <ExpansionSurface>
+                {children}
+            </ExpansionSurface>
+        </Expansion>
     </div>
 }
 
-//TODO: Popup disables actions outside.
-//TODO: garbage button needs to be fixed to work with popover.
-//TODO: can't scroll, disabling it makes the popup stick in the screen
-// I think we want a custom implementation
-export function OldExpansion({anchorEl, setAnchorEl, ...surfaceProps}: {
-    anchorEl: Element | undefined, setAnchorEl: (el: Element | undefined) => void
-} & SingleChildParentProps): JSX.Element {
-    const open = Boolean(anchorEl);
 
-    // noinspection RequiredAttributes
-    return <Popover disableEnforceFocus /*disableScrollLock*/ hideBackdrop /*style = {{ position: 'static'}}*/
-                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-                    transformOrigin={{vertical: "top", horizontal: "center"}} open={open} anchorEl={anchorEl}>
-        <Box>
-            <ExpansionSurface {...surfaceProps} closePopup={() => setAnchorEl(undefined)}/>
-        </Box>
-    </Popover>
-}
-
-function ExpansionSurface({closePopup, children, ...otherProps}: { closePopup: () => void } & SingleChildParentProps) {
-    return <Surface style={{border: `solid ${primaryColor} 1px`}} {...otherProps}>
-        <ClickAwayListener onClickAway={() => closePopup()}>
-            <div>
-                {children}
-            </div>
-        </ClickAwayListener>
-    </Surface>
-
+function ExpansionSurface(props: SingleChildParentProps) {
+    return <Surface width={"max-content"} style={{border: `solid ${primaryColor} 1px`}} {...props}/>
 }

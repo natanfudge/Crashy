@@ -125,6 +125,7 @@ export type WithChild = {
 export type ManyChildParentProps = ElementProps & WithChildren
 export type SingleChildParentProps = ElementProps & WithChild
 
+// let totalTime = 0;
 export function deflattenStyle<T extends ElementProps>(props: T) {
     const {
         backgroundColor,
@@ -142,17 +143,18 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         onClick,
         ...otherProps
     } = props;
+
     const expandedPadding = expandPaddingOrMargin(padding);
 
     const expandedMargin = expandPaddingOrMargin(margin);
 
-    const paddingObjPart = {
+    const paddingObjPart = expandedPadding === undefined? undefined: {
         paddingTop: expandedPadding.top,
         paddingRight: expandedPadding.right,
         paddingLeft: expandedPadding.left,
         paddingBottom: expandedPadding.bottom
     }
-    const marginObjPart = {
+    const marginObjPart = expandedMargin === undefined? undefined: {
         marginTop: expandedMargin.top,
         marginRight: expandedMargin.right,
         marginLeft: expandedMargin.left,

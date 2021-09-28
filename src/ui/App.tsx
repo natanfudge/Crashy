@@ -4,14 +4,14 @@ import '../App.css';
 import {createTheme, CssBaseline, LinearProgress} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
-import {Column, Row} from "./improvedapi/Flex";
-import {Text} from "./improvedapi/Text";
 import {CrashyCrashReportPage} from "./CrashyCrashReport";
 import {getCurrentCrashId} from "./PageUrl";
-import {Spacer} from "./improvedapi/Core";
 import {Expansion, useExpansion, WithExpansions} from "./improvedapi/Expansion";
+import {Column, Row} from "./improvedapi/Flex";
 import {CButton} from "./improvedapi/Material";
 import {ClickCallback} from "./improvedapi/Element";
+import {Spacer} from "./improvedapi/Core";
+import {Text} from "./improvedapi/Text";
 
 
 const CrashyHome = React.lazy(() => import("./CrashyHome"))
@@ -21,39 +21,30 @@ export default function App() {
     const outerTheme = createTheme(CrashyTheme);
 
     const [change, setChange] = useState(true);
+    return <ThemeProvider theme={outerTheme}>
+        <CssBaseline/>
+        <WithExpansions>
+            <Column>
+                <CButton onClick={() => setChange(prev => !prev)}>
+                    <Text text={"asdfasf"}/>
+                </CButton>
+                {change ? <Row>
+                    <ExpansionTest id="1"/>
+                    <ExpansionTest id="2"/>
+                </Row> : <Text text={"asdfasd"}/>}
+            </Column>
+            {/*{CrashyUi()}*/}
+        </WithExpansions>
+    </ThemeProvider>
 
-    return (
-        <ThemeProvider theme={outerTheme}>
-            <CssBaseline/>
-            <WithExpansions>
-                <Column>
-                    <CButton onClick={() => setChange(prev => !prev)}>
-                        <Text text={"asdfasf"}/>
-                    </CButton>
-                    {change ? <Row>
-                        <ExpansionTest id="1"/>
-                        <ExpansionTest id="2"/>
-                    </Row> : <Text text={"asdfasd"}/>}
-                </Column>
-                {/*{CrashyUi()}*/}
-                {/*<AnimationTest/>*/}
-
-
-            </WithExpansions>
-
-
-        </ThemeProvider>
-    )
 }
 
 
 function ExpansionTest(props: { id: string }) {
-    const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
     const expansion = useExpansion();
 
     const handleClick: ClickCallback = (htmlElement) => {
-        setAnchorEl(htmlElement);
-        expansion.toggle();
+        expansion.toggle(htmlElement);
     };
 
     return <div>
@@ -64,7 +55,7 @@ function ExpansionTest(props: { id: string }) {
             </CButton>
         </Row>
         <Expansion anchorReference="bottom-center" position={"top-center"} style={{border: "solid 2px red"}}
-                   id={props.id} state={expansion} onDismiss={() => expansion.hide()} anchor={anchorEl}>
+                   id={props.id} state={expansion} onDismiss={() => expansion.hide()}>
             <Spacer style={{zIndex: 30, position: "relative"}} height={200} width={200} backgroundColor={"blue"}/>
         </Expansion>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet cupiditate delectus doloribus eum

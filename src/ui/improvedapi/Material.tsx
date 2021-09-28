@@ -26,7 +26,7 @@ export interface CTextFieldProps extends ElementProps {
 export function CTextField(props: CTextFieldProps){
     const {onValueChanged,...otherProps} = props;
     return <TextField
-                      onChange = {(e) => onValueChanged(e.target.value)}
+                      onChange = {e => onValueChanged(e.target.value)}
                       {...deflattenStyle(otherProps)}/>
 }
 export interface CButtonProps extends SingleChildParentProps {

@@ -1,11 +1,10 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import {SingleChildParentProps, WithChild} from "./Element";
 import React, {Fragment, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import {Stack} from "./Flex";
 import {Wrap} from "./Core";
-import {objectMap, Require, withoutKey, withProperty} from "../Utils";
+import {coerce, objectMap, Require, withoutKey, withProperty} from "../Utils";
 import {ClickAwayListener} from "@mui/material";
+import ReactDOM from "react-dom";
 
 
 type ExpansionsState = Record<string, ExpansionProps>
@@ -18,8 +17,7 @@ export function WithExpansions(props: WithChild) {
     const [exitingExpansions, setExitingExpansions] = useState<ExpansionsState>({});
 
     expansions.init(targeted => {
-        const show = showState(targeted.state);
-        switch (show) {
+        switch (targeted.show) {
             case "show":
                 setShowingExpansions(old => withProperty(old, targeted.id, targeted));
                 setExitingExpansions(old => withoutKey(old, targeted.id));
@@ -47,17 +45,33 @@ export function WithExpansions(props: WithChild) {
 
 export type OnDismiss = () => void
 
-export interface ExpansionPropsApi extends SingleChildParentProps {
-    id: string;
-    state: ExpansionState;
+export type ExpansionPropsApi = ManualExpansionProps | ManagedExpansionProps
+
+function isManualApi(props: ExpansionPropsApi): props is ManualExpansionProps {
+    return "show" in props;
+}
+
+export interface ManualExpansionProps extends BaseExpansionPropsApi {
+    show: ShowState;
     anchor: Element | null;
+}
+
+export interface ManagedExpansionProps extends BaseExpansionPropsApi {
+    state: ExpansionState
+}
+
+export interface BaseExpansionPropsApi extends SingleChildParentProps {
+    id: string;
     onDismiss: OnDismiss
     anchorReference: Alignment
     position: Alignment;
+    sticky?: boolean
     animationDurationMillis?: number
 }
 
-type ExpansionProps = Require<ExpansionPropsApi, "animationDurationMillis">
+type NewShowState = "show" | "animate-close" | "close"
+
+type ExpansionProps = Require<ManualExpansionProps, "animationDurationMillis" | "sticky">
 
 // type ExpansionProps = Require<ExpansionPropsApi, "animationDurationMillis">
 
@@ -85,49 +99,110 @@ export type EdgeAlignment =
     | "bottom-right"
 export type Alignment = EdgeAlignment | NumericAlignment
 
+export interface TimeoutWrapper {
+    timeout?: ReturnType<typeof setTimeout>
+}
+
+function stop(timeout: TimeoutWrapper) {
+    if (timeout.timeout === undefined) return;
+    else {
+        clearTimeout(timeout.timeout);
+        timeout.timeout = undefined;
+    }
+}
+
+function ExpansionNode(props: ExpansionProps) {
+    const expansionHandler = useContext(Expansions.Context);
+    console.log("Show: " + props.show);
+    const [completelyClosed, setCompletelyClosed] = useState(false);
+    const show = props.show === "show"
+    const timeoutHandle = useMemo<TimeoutWrapper>(() => ({timeout: undefined}), [show]);
+
+    useEffect(() => {
+        if (show) {
+            // Showing, no need to completely close
+            stop(timeoutHandle);
+            setCompletelyClosed(false);
+        } else if (!completelyClosed && timeoutHandle.timeout === undefined) {
+            // Checked undefined to make sure we only do this once each time its needed.
+            timeoutHandle.timeout = setTimeout(() => setCompletelyClosed(true), props.animationDurationMillis)
+        }
+        return () => {
+            // Existing composition, no need to completely close
+            stop(timeoutHandle);
+        };
+    }, [props.animationDurationMillis, show, completelyClosed])
+
+    // const
+    return ReactDOM.createPortal(
+        (show || !completelyClosed) && <ExpansionImpl {...props} />,
+        document.getElementById('root')!);
+    // useEffect(() => {
+    //     expansionHandler.set(props)
+    //     return () => expansionHandler.set({...props, show: "snap-close"});
+    // }, [expansionHandler, props])
+
+    // return <Fragment/>
+}
 
 export function Expansion(props: ExpansionPropsApi) {
-    const expansionHandler = useContext(Expansions.Context);
-    useEffect(() => {
-        const implProps = {...props, animationDurationMillis: props.animationDurationMillis ?? 100}
-        expansionHandler.set(implProps)
-        return () => expansionHandler.set({...implProps, state: "snap-close"});
-    }, [expansionHandler, props])
-
-    return <Fragment/>
-}
-
-
-export function useExpansion(): StandaloneExpansionState {
-    const [show, setShow] = React.useState<ShowState>("closed");
-    useEffect(() => {
-        // Cleanup
+    const manualProps: ManualExpansionProps = isManualApi(props) ? props : {
+        ...props,
+        anchor: props.state.anchor,
+        show: props.state.showState
+    }
+    return ExpansionNode({
+        ...manualProps,
+        sticky: manualProps.sticky ?? false,
+        animationDurationMillis: manualProps.animationDurationMillis ?? 100
     });
-    return new StandaloneExpansionState(show, setShow);
 }
+
+interface AnchorWrapper {
+    anchor: Anchor
+}
+
+export function useExpansion(): ExpansionState {
+    const anchorElement = React.useMemo<AnchorWrapper>(() => ({anchor: null}), []);
+    const [show, setShow] = React.useState<ShowState>("closed");
+    return new ExpansionState(show, setShow, anchorElement.anchor, anchor => {
+            anchorElement.anchor = anchor
+        }
+    );
+}
+
+//TODO: try to replace with portals
 
 type ShowState = "show" | "snap-close" | "closed"
-export type ExpansionState = StandaloneExpansionState | ShowState;
 
-function showState(expansionState: ExpansionState) : ShowState {
-    return expansionState instanceof StandaloneExpansionState ? expansionState.isShowing : expansionState;
-}
+type Anchor = Element | null
 
-export class StandaloneExpansionState {
+export class ExpansionState {
 
-    readonly isShowing: ShowState;
+    readonly showState: ShowState;
+    readonly anchor: Anchor
+
+    private readonly setAnchor: (anchor: Anchor) => void
     private readonly setShow: (show: ShowState) => void
 
-    constructor(show: ShowState, setShow: (show: ShowState) => void) {
-        this.isShowing = show;
+    constructor(show: ShowState, setShow: (show: ShowState) => void, anchor: Anchor, setAnchor: (anchor: Anchor) => void) {
+        this.showState = show;
         this.setShow = setShow;
+        this.anchor = anchor;
+        this.setAnchor = setAnchor;
     }
+
+    toString() {
+        return `{state: ${this.showState}, anchor: ${JSON.stringify(this.anchor?.getBoundingClientRect()) ?? "null"}}`
+    }
+
 
     /**
      * Make sure you call these via lambdas. Don't pass these methods as-is or it will crash.
      */
 
-    show() {
+    show(anchor: Anchor) {
+        this.setAnchor(anchor);
         this.setShow("show");
     }
 
@@ -135,8 +210,8 @@ export class StandaloneExpansionState {
         this.setShow("closed");
     }
 
-    toggle() {
-        this.setShow(this.isShowing === "show" ? "closed" : "show");
+    toggle(anchor: Anchor) {
+        this.showState === "show" ? this.hide() : this.show(anchor);
     }
 }
 
@@ -185,56 +260,75 @@ function toNumericAlignment(edge: Alignment): NumericAlignment {
 function ExpansionImpl(props: ExpansionProps) {
     const {
         id,
-        state,
+        show,
         anchor,
         onDismiss,
         anchorReference,
         position,
         style,
         animationDurationMillis,
+        sticky,
         ...elementProps
     } = props
-    if (anchor === null) return <Fragment/>
-
-    const referenceAlign = toNumericAlignment(anchorReference);
-    const positionAlign = toNumericAlignment(position);
-    const anchorPos = anchor.getBoundingClientRect();
-    const anchorX = anchorPos.left * (1 - referenceAlign.x) + anchorPos.right * referenceAlign.x;
-    const anchorY = anchorPos.top * (1 - referenceAlign.y) + anchorPos.bottom * referenceAlign.y;
-
     // Calculate the size of the expansion so we can position it properly
     const [rect, setRect] = useState<DOMRect | undefined>(undefined);
+    console.log("Anchor: " + anchor);
+    if (anchor === null) return <Fragment/>
 
-    const offset = rect === undefined ? {x: 0, y: 0} : {
-        x: rect.width * positionAlign.x,
-        y: rect.height * positionAlign.y
-    }
 
-    const x = anchorX - offset.x;
-    const y = anchorY - offset.y
+    const {x, y} = positionExpansion({
+        anchorRect: anchor.getBoundingClientRect(),
+        anchorAlignment: toNumericAlignment(anchorReference),
+        expansionRect: rect ?? {height: 0, width: 0, top: 0, left: 0},
+        expansionAlignment: toNumericAlignment(position)
+    })
 
     const finalProps: SingleChildParentProps = {
         ...elementProps,
-        style: {...style, position: "absolute", left: x, top: y}
+        style: {...style, position: sticky ? "fixed" : "absolute", left: x, top: y}
     };
 
-    const show = showState(state);
+    console.log("Show in impl: " + show);
     return <Fragment>
         <SizeCalculator depProps={props} finalProps={finalProps} setRect={setRect}/>
-        <ClickAwayListener onClickAway={() => {
-            console.log("Outside")
-            props.onDismiss();
-        }}>
-            <div>
-                {GrowingAnimation({
-                    //TODO: fix
-                    duration: props.animationDurationMillis, show: show === "show", finalProps: finalProps
-                })}
+        <ClickAwayListener onClickAway={() => props.onDismiss()}>
+            <div style={{zIndex: 2000}}>
+                <GrowingAnimation duration={props.animationDurationMillis} show={show === "show"}
+                                  finalProps={finalProps}/>
+                {/*{GrowingAnimation({*/}
+                {/*    duration: props.animationDurationMillis, show: show === "show", finalProps*/}
+                {/*})}*/}
             </div>
 
         </ClickAwayListener>
     </Fragment>
+}
 
+
+interface Rect {
+    top: number;
+    left: number;
+    height: number;
+    width: number;
+}
+
+
+function positionExpansion({anchorRect, expansionRect, anchorAlignment, expansionAlignment}:
+                               { anchorRect: DOMRect, expansionRect: Rect, anchorAlignment: NumericAlignment, expansionAlignment: NumericAlignment })
+    : { x: number, y: number } {
+    const anchorX = anchorRect.left * (1 - anchorAlignment.x) + anchorRect.right * anchorAlignment.x;
+    const anchorY = anchorRect.top * (1 - anchorAlignment.y) + anchorRect.bottom * anchorAlignment.y;
+    const offsetX = expansionRect.width * expansionAlignment.x
+    const offsetY = expansionRect.height * expansionAlignment.y
+
+    const x = anchorX - offsetX;
+    const y = anchorY - offsetY;
+
+    // Don't let the expansion overflow out of the screen
+    const maxX = document.body.clientWidth - expansionRect.width;
+    const maxY = document.body.scrollWidth - expansionRect.height;
+
+    return {x: coerce(x, {min: 0, max: maxX}), y: coerce(y, {min: 0, max: maxY})}
 }
 
 //TODO: benchmark with and without duplicated divs, with and without inline styles
@@ -286,6 +380,13 @@ function SizeCalculator({
     </Fragment>
 }
 
+function GrowingAnimationTest({
+                                  show,
+                                  finalProps,
+                                  duration
+                              }: { duration: number, show: boolean, finalProps: SingleChildParentProps }) {
+
+}
 
 function GrowingAnimation({
                               show,
@@ -307,7 +408,7 @@ function GrowingAnimation({
 
     const transform = shrink ? "scale(0.0)" : "scale(1.0)";
     const {style, ...otherProps} = finalProps;
-    return <Wrap {...otherProps} style={{...style, transform: transform, transition: `transform ${duration}ms`}}/>
+    return <Wrap {...otherProps} style={{...style, transform, transition: `transform ${duration}ms`}}/>
 
 }
 

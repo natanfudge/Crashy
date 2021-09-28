@@ -27,7 +27,8 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "startprod": "npm run build && serve -s build"
+    "startprod": "npm run build && serve -s build",
+    "profileprod": "npm run build -- --profile && serve -s build"
   },
   "eslintConfig": ".eslintrc.json",
   "browserslist": {

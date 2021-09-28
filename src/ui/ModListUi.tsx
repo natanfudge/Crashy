@@ -60,7 +60,7 @@ function ModUi({mod}: { mod: Mod }) {
         </Typography>
 
         <Wrap alignSelf={"center"}>
-            <MoreInfoButton>
+            <MoreInfoButton id={mod.id}>
                 <Column padding={10}>
                     <Text text={"ID: " + mod.id}
                           alignSelf={"center"}/>

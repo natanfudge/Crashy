@@ -36,12 +36,11 @@ function CrashReportSectionDetails({details}: { details: StringMap }) {
         {objectMap(details, (name, detail, index) => {
             // Mods are displayed separately
             if (name !== "Mod List" && name !== "Fabric Mods") {
-                return <Column>
+                return <Column key = {index}>
                     <Row key={name}>
                         <Text text={name} isBold={true} padding={5} style={{width: "30%", minWidth: "30%"}}/>
                         <CDivider backgroundColor={primaryColor} height={"auto"} width={1}/>
                         <Text text={detail} padding={{horizontal: 10, vertical: 5}}/>
-
                     </Row>
                     <CDivider backgroundColor={index % 2 === 1 ? "#6d6c6c" : undefined}/>
                 </Column>

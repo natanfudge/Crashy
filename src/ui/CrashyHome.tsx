@@ -15,6 +15,48 @@ enum InitialUploadState {
     Loading,
 }
 
+export default function CrashyHome() {
+    const [log, setLog] = React.useState("");
+    const [uploadState, setUploadState] = React.useState<UploadState>(InitialUploadState.Start)
+    const [dialogOpen, setDialogOpen] = React.useState(false)
+    const isLoading = uploadState === InitialUploadState.Loading
+
+    return <div style={{height: "100%", width: "100%"}}>
+        <Surface height={"max"}>
+            <Column padding={{bottom: 20}} alignItems={"center"} height={"max"} style={{}}>
+                <HomeTitle/>
+
+                <CrashTextField error={isUploadCrashError(uploadState)} log={log} setLog={setLog}/>
+
+                <Button onClick={async () => {
+                    setUploadState(InitialUploadState.Loading)
+                    const response = await CrashyServer.uploadCrash(pako.gzip(log));
+                    if (isUploadCrashError(response)) {
+                        setUploadState(response);
+                        setDialogOpen(true);
+                    } else {
+                        window.location.href =  response.crashId
+                    }
+                }}
+                        disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
+                    isLoading ? undefined : <CloudUpload style={{height: "60px", width: "auto"}}/>
+                }>
+                    {isLoading && <CircularProgress size={60} color={"secondary"}/>}
+                    {!isLoading && <Text text={"Upload Crash"} variant={"h4"}/>}
+
+                </Button>
+
+            </Column>
+        </Surface>
+        <UploadFailedDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}
+                            uploadError={uploadState as UploadCrashError}/>
+    </div>
+
+
+}
+
+
+
 type UploadState = InitialUploadState | UploadCrashResponse
 
 function isUploadCrashError(obj: UploadState): obj is UploadCrashError {
@@ -80,42 +122,3 @@ function UploadFailedBody({error}: { error: UploadCrashError }) {
     }
 }
 
-export default function CrashyHome() {
-    const [log, setLog] = React.useState("");
-    const [uploadState, setUploadState] = React.useState<UploadState>(InitialUploadState.Start)
-    const [dialogOpen, setDialogOpen] = React.useState(false)
-    const isLoading = uploadState === InitialUploadState.Loading
-
-    return <div style={{height: "100%"}}>
-        <Surface height={"max"}>
-            <Column padding={{bottom: 20}} alignItems={"center"} height={"max"} style={{}}>
-                <HomeTitle/>
-
-                <CrashTextField error={isUploadCrashError(uploadState)} log={log} setLog={setLog}/>
-
-                <Button onClick={async () => {
-                    setUploadState(InitialUploadState.Loading)
-                    const response = await CrashyServer.uploadCrash(pako.gzip(log));
-                    if (isUploadCrashError(response)) {
-                        setUploadState(response);
-                        setDialogOpen(true);
-                    } else {
-                        window.location.href =  response.crashId
-                    }
-                }}
-                        disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
-                    isLoading ? undefined : <CloudUpload style={{height: "60px", width: "auto"}}/>
-                }>
-                    {isLoading && <CircularProgress size={60} color={"secondary"}/>}
-                    {!isLoading && <Text text={"Upload Crash"} variant={"h4"}/>}
-
-                </Button>
-
-            </Column>
-        </Surface>
-        <UploadFailedDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}
-                            uploadError={uploadState as UploadCrashError}/>
-    </div>
-
-
-}

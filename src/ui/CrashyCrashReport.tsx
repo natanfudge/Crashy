@@ -24,7 +24,7 @@ export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
     const [crash, setCrash] = useState<GetCrashResponse | undefined>(undefined)
     useEffect(() => void CrashyServer.getCrash(crashId.value, crashId.noCache).then(res => setCrash(res)), [crashId])
 
-    return <div style={{height: "100%"}}>
+    return <div style={{height: "100%", width: "100%"}}>
         <CrashyAppBar crash={crash}/>
         <Wrap height={"max"} padding={{top: 60}}>
             <CrashReportPageContent crash={crash}/>
@@ -33,13 +33,9 @@ export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
     </div>
 }
 
-// export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
-//     return <div style={{height: "50%", backgroundColor: "red"}}>
-//     </div>
-// }
 
 export function ToolbarButtons() {
-    return <ExpandingButton margin={{right: 10}} icon={<Delete/>}>
+    return <ExpandingButton id = "garbage-button" padding={{right: 10}} icon={<Delete/>} sticky>
         <DeleteSection/>
     </ExpandingButton>
 }

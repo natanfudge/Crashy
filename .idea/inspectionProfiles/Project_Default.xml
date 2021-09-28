@@ -30,7 +30,7 @@
     <inspection_tool class="JSEqualityComparisonWithCoercion.TS" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="JSIgnoredPromiseFromCall" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JSNonStrictModeUsed" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="JSRemoveUnnecessaryParentheses" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSRemoveUnnecessaryParentheses" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="NegatedConditionalExpressionJS" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="NegatedIfStatementJS" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="NestedAssignmentJS" enabled="true" level="ERROR" enabled_by_default="true" />
@@ -46,6 +46,5 @@
     <inspection_tool class="UnterminatedStatementJS" enabled="true" level="INFORMATION" enabled_by_default="true">
       <option name="ignoreSemicolonAtEndOfBlock" value="true" />
     </inspection_tool>
-    <inspection_tool class="XHTMLIncompatabilitiesJS" enabled="true" level="WARNING" enabled_by_default="true" />
   </profile>
 </component>
