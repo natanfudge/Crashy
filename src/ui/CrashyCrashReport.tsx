@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Column, Row} from "./utils/improvedapi/Flex";
 import {CDivider, Spacer, Wrap} from "./utils/improvedapi/Core";
 import {RichCrashReport} from "../../parser/src/model/RichCrashReport";
@@ -16,21 +16,22 @@ import {parseCrashReportRich} from "../../parser/src/parser/CrashReportEnricher"
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
-import {CrashId} from "./PageUrl";
+import {getCurrentCrashId, getUrlNoCache} from "./PageUrl";
 import {ExpandingButton} from "./utils/Crashy";
 
 
-export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {
+export function CrashyCrashReportPage() {
     const [crash, setCrash] = useState<GetCrashResponse | undefined>(undefined)
-    useEffect(() => void CrashyServer.getCrash(crashId.value, crashId.noCache).then(res => setCrash(res)), [crashId])
+    //TODO: ok, plan D. store in cookies and intentionally hide it from the user. we have no choice.
+    useEffect(() => void CrashyServer.getCrash(getCurrentCrashId(), getUrlNoCache()).then(res => setCrash(res)))
 
-    return <div style={{height: "100%", width: "100%"}}>
+    return <Fragment>
         <CrashyAppBar crash={crash}/>
         <Wrap height={"max"} padding={{top: 60}}>
             <CrashReportPageContent crash={crash}/>
         </Wrap>
 
-    </div>
+    </Fragment>
 }
 
 

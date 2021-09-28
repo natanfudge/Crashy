@@ -58,7 +58,9 @@ export function withProperty<K extends Key, V>(record: Record<K, V>, key: K, val
     return {...record, [key]: value};
 }
 
-export function coerce(num: number, bounds: { min: number, max: number }): number {
+export function coercePreferMin(num: number, bounds: { min: number, max: number }): number {
+    // Opinionated referral of min over max
+    if (bounds.min > bounds.max) return bounds.min;
     if (num < bounds.min) return bounds.min;
     else if (num > bounds.max) return bounds.max
     else return num;

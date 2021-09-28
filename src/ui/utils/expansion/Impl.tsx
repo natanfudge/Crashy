@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import {SingleChildParentProps} from "../improvedapi/Element";
 import {ClickAwayListener} from "@mui/material";
 import {Wrap} from "../improvedapi/Core";
-import {coerce, NumericAlignment, Rect, Require, toNumericAlignment} from "../Generic";
+import {coercePreferMin, NumericAlignment, Rect, Require, toNumericAlignment} from "../Generic";
 
 export function _implExpansion(props: ExpansionPropsApi) {
     const manualProps: ManualExpansionProps = isManualApi(props) ? props : toManual(props)
@@ -83,15 +83,14 @@ function DynamicallyAttachedNode(props: ExpansionProps) {
     } = props
     // Calculate the size of the expansion so we can position it properly
     const [rect, setRect] = useState<DOMRect | undefined>(undefined);
-    if (anchor === null) return <Fragment/>
-
-
-    const {x, y} = positionExpansion({
-        anchorRect: anchor.getBoundingClientRect(),
+    const {x, y} = useExpansionPositioning({
+        anchorRect: anchor?.getBoundingClientRect() ?? {height: 0, width: 0, top: 0, left: 0},
         anchorAlignment: toNumericAlignment(anchorReference),
         expansionRect: rect ?? {height: 0, width: 0, top: 0, left: 0},
         expansionAlignment: toNumericAlignment(position)
     })
+
+    if (anchor === null) return <Fragment/>
 
     const finalProps: SingleChildParentProps = {
         ...elementProps,
@@ -109,22 +108,45 @@ function DynamicallyAttachedNode(props: ExpansionProps) {
     </Fragment>
 }
 
-function positionExpansion({anchorRect, expansionRect, anchorAlignment, expansionAlignment}:
-                               { anchorRect: DOMRect, expansionRect: Rect, anchorAlignment: NumericAlignment, expansionAlignment: NumericAlignment })
+function useExpansionPositioning({anchorRect, expansionRect, anchorAlignment, expansionAlignment}:
+                                     { anchorRect: Rect, expansionRect: Rect, anchorAlignment: NumericAlignment, expansionAlignment: NumericAlignment })
     : { x: number, y: number } {
-    const anchorX = anchorRect.left * (1 - anchorAlignment.x) + anchorRect.right * anchorAlignment.x;
-    const anchorY = anchorRect.top * (1 - anchorAlignment.y) + anchorRect.bottom * anchorAlignment.y;
+    //TODO: tbh, the min shouldn't be 0, see what happens if you open up mod info and you ensmalden the screen too much.
+
+    const anchorX = anchorRect.left * (1 - anchorAlignment.x) + (anchorRect.left + anchorRect.width) * anchorAlignment.x;
+    const anchorY = anchorRect.top * (1 - anchorAlignment.y) + (anchorRect.top + anchorRect.height) * anchorAlignment.y;
     const offsetX = expansionRect.width * expansionAlignment.x
     const offsetY = expansionRect.height * expansionAlignment.y
 
     const x = anchorX - offsetX;
     const y = anchorY - offsetY;
 
-    // Don't let the expansion overflow out of the screen
-    const maxX = document.body.clientWidth - expansionRect.width;
-    const maxY = document.body.scrollWidth - expansionRect.height;
+    const [screenSize, setScreenSize] = useState({width: document.body.clientWidth, height: document.body.clientHeight})
 
-    return {x: coerce(x, {min: 0, max: maxX}), y: coerce(y, {min: 0, max: maxY})}
+    useEffect(() => {
+        function handleResize() {
+            setScreenSize({
+                height: document.body.clientHeight,
+                width: document.body.clientWidth
+            })
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    })
+
+    // Don't let the expansion overflow out of the screen
+    const maxX = screenSize.width - expansionRect.width;
+    const maxY = screenSize.height - expansionRect.height;
+
+    // Make sure the expansion doesn't stick too much
+    const minX = anchorRect.left - expansionRect.width;
+    const minY = anchorRect.top - expansionRect.height;
+
+    return {x: coercePreferMin(x, {min: minX, max: maxX}), y: coercePreferMin(y, {min: minY, max: maxY})}
 }
 
 //TODO: benchmark with and without duplicated divs, with and without inline styles

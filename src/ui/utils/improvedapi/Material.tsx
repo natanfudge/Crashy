@@ -1,5 +1,5 @@
-import {ClickCallback, deflattenStyle, ElementProps, SingleChildParentProps} from "./Element";
-import {Button, IconButton, Paper, TextField} from "@mui/material";
+import {ClickCallback, deflattenStyle, ElementProps, ManyChildParentProps, SingleChildParentProps} from "./Element";
+import {AppBar, Button, IconButton, Paper, TextField} from "@mui/material";
 import React from "react";
 
 export function Surface(props: SingleChildParentProps) {
@@ -21,20 +21,28 @@ export interface CTextFieldProps extends ElementProps {
     onValueChanged: (value: string) => void
     error?: boolean
     label?: React.ReactNode
-    disabled? :boolean
+    disabled?: boolean
 }
-export function CTextField(props: CTextFieldProps){
-    const {onValueChanged,...otherProps} = props;
+
+export function CTextField(props: CTextFieldProps) {
+    const {onValueChanged, ...otherProps} = props;
     return <TextField
-                      onChange = {e => onValueChanged(e.target.value)}
-                      {...deflattenStyle(otherProps)}/>
+        onChange={e => onValueChanged(e.target.value)}
+        {...deflattenStyle(otherProps)}/>
 }
+
 export interface CButtonProps extends SingleChildParentProps {
     onClick: ClickCallback
     variant?: 'text' | 'outlined' | 'contained'
-    disabled? :boolean
+    disabled?: boolean
 
 }
-export function CButton(props: CButtonProps){
+
+export function CButton(props: CButtonProps) {
     return <Button {...deflattenStyle(props)}/>
+}
+
+export function CAppBar(props: ManyChildParentProps) {
+    const {style, ...otherProps} = deflattenStyle(props);
+    return <AppBar {...otherProps} style={{display: "flex", flexDirection: "row", ...style}}/>
 }

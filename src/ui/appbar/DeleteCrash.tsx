@@ -5,8 +5,7 @@ import {CButton, CTextField} from "../utils/improvedapi/Material";
 import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../CrashyServer";
 import {Wrap} from "../utils/improvedapi/Core";
-import {NO_CACHE_PAGE_PARAMETER, PAGE_PARAMETER} from "../Constants";
-import {getCurrentCrashId} from "../PageUrl";
+import {getCurrentCrashId, setUrlNoCache} from "../PageUrl";
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"
 
@@ -51,7 +50,7 @@ export function DeleteSection() {
                      setDeleteState(newState);
                      if (newState === DeleteState.Deleted) {
                          setCode("")
-                         if (!window.location.href.endsWith(NO_CACHE_PAGE_PARAMETER)) window.location.href += (PAGE_PARAMETER + NO_CACHE_PAGE_PARAMETER)
+                         setUrlNoCache(true);
                      }
                  }}>
             <Text text={"DELETE"}/>
@@ -79,7 +78,7 @@ function determineLabel(deleteState: DeleteState): string | undefined {
 
 
 async function deleteCrash(code: string): Promise<DeleteState.Incorrect | DeleteState.Deleted | DeleteState.AlreadyDeleted> {
-    const result = await CrashyServer.deleteCrash(getCurrentCrashId().value, code);
+    const result = await CrashyServer.deleteCrash(getCurrentCrashId(), code);
     switch (result) {
         case DeleteCrashResponse.IncorrectKey:
             return DeleteState.Incorrect

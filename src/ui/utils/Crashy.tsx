@@ -4,7 +4,7 @@ import {KeyboardArrowDown} from "@mui/icons-material";
 import {Expansion, useExpansion} from "./expansion/Api";
 import {CIconButton, Surface} from "./improvedapi/Material";
 import {primaryColor} from "../Colors";
-import React from "react";
+import React, {Fragment} from "react";
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
     return <CImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}
@@ -34,7 +34,7 @@ export function ExpandingButton({buttonPadding, icon, id, children, sticky, ...e
 
     const handleClick: ClickCallback = (element: Element) => expansion.toggle(element)
 
-    return <div>
+    return <Fragment>
         <CIconButton padding={buttonPadding} onClick={handleClick}>
             {icon}
         </CIconButton>
@@ -44,7 +44,7 @@ export function ExpandingButton({buttonPadding, icon, id, children, sticky, ...e
                 {children}
             </ExpansionSurface>
         </Expansion>
-    </div>
+    </Fragment>
 }
 
 
