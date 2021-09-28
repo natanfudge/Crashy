@@ -6,12 +6,12 @@ import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage} from "./CrashyCrashReport";
 import {getCurrentCrashId} from "./PageUrl";
-import {Expansion, useExpansion, WithExpansions} from "./improvedapi/Expansion";
-import {Column, Row} from "./improvedapi/Flex";
-import {CButton} from "./improvedapi/Material";
-import {ClickCallback} from "./improvedapi/Element";
-import {Spacer} from "./improvedapi/Core";
-import {Text} from "./improvedapi/Text";
+import {Column, Row} from "./utils/improvedapi/Flex";
+import {CButton} from "./utils/improvedapi/Material";
+import {ClickCallback} from "./utils/improvedapi/Element";
+import {Spacer} from "./utils/improvedapi/Core";
+import {Text} from "./utils/improvedapi/Text";
+import {Expansion, useExpansion} from "./utils/expansion/Api";
 
 
 const CrashyHome = React.lazy(() => import("./CrashyHome"))
@@ -23,18 +23,7 @@ export default function App() {
     const [change, setChange] = useState(true);
     return <ThemeProvider theme={outerTheme}>
         <CssBaseline/>
-        <WithExpansions>
-            <Column>
-                <CButton onClick={() => setChange(prev => !prev)}>
-                    <Text text={"asdfasf"}/>
-                </CButton>
-                {change ? <Row>
-                    <ExpansionTest id="1"/>
-                    <ExpansionTest id="2"/>
-                </Row> : <Text text={"asdfasd"}/>}
-            </Column>
-            {/*{CrashyUi()}*/}
-        </WithExpansions>
+        {CrashyUi()}
     </ThemeProvider>
 
 }
@@ -55,7 +44,8 @@ function ExpansionTest(props: { id: string }) {
             </CButton>
         </Row>
         <Expansion anchorReference="bottom-center" position={"top-center"} style={{border: "solid 2px red"}}
-                   id={props.id} state={expansion} onDismiss={() => expansion.hide()}>
+                   id={props.id} state={expansion} onDismiss={() => {
+        }} /*expansion.hide()*/>
             <Spacer style={{zIndex: 30, position: "relative"}} height={200} width={200} backgroundColor={"blue"}/>
         </Expansion>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet cupiditate delectus doloribus eum

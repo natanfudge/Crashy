@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from "react";
-import {Column, Row} from "./improvedapi/Flex";
-import {CDivider, Spacer, Wrap} from "./improvedapi/Core";
+import {Column, Row} from "./utils/improvedapi/Flex";
+import {CDivider, Spacer, Wrap} from "./utils/improvedapi/Core";
 import {RichCrashReport} from "../../parser/src/model/RichCrashReport";
-import {Text} from "./improvedapi/Text";
+import {Text} from "./utils/improvedapi/Text";
 import {CrashContextUi} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
 import {StackTraceUi} from "./StackTraceUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ModListUi} from "./ModListUi";
 import {LinearProgress, Link, Typography} from "@mui/material";
-import {Surface} from "./improvedapi/Material";
+import {Surface} from "./utils/improvedapi/Material";
 import {fadedOutColor} from "./Colors";
-import {ExpandingButton} from "./Utils";
 import {CrashyServer, GetCrashError, GetCrashResponse} from "./CrashyServer";
 import {parseCrashReportRich} from "../../parser/src/parser/CrashReportEnricher";
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {CrashId} from "./PageUrl";
+import {ExpandingButton} from "./utils/Crashy";
 
 
 export function CrashyCrashReportPage({crashId}: { crashId: CrashId }) {

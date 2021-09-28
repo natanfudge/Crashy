@@ -1,4 +1,4 @@
-import {Column, Row} from "./improvedapi/Flex";
+import {Column, Row} from "./utils/improvedapi/Flex";
 import MinecraftLogo from "../media/minecraft_cube.svg";
 import ForgeLogo from "../media/forge_logo.svg";
 import FabricLogo from "../media/fabric_logo.svg";
@@ -9,8 +9,8 @@ import WindowsLogo from "../media/windows_logo.svg";
 import LinuxLogo from "../media/linux_logo.svg";
 import MacosLogo from "../media/macos_logo.svg";
 import QuestionMarkIcon from "../media/questionmark_icon_white.svg";
-import {CDivider, CImage} from "./improvedapi/Core";
-import {Text} from "./improvedapi/Text";
+import {CDivider, CImage} from "./utils/improvedapi/Core";
+import {Text} from "./utils/improvedapi/Text";
 import {Card, CardContent} from "@mui/material";
 import {lightBlue} from "@mui/material/colors";
 import {CrashContext, LoaderType, OperatingSystemType} from "../../parser/src/model/RichCrashReport";

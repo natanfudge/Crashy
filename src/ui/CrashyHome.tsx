@@ -1,14 +1,14 @@
 import React, {Fragment} from "react";
-import {Surface} from "./improvedapi/Material";
-import {Column, Row} from "./improvedapi/Flex";
+import {Surface} from "./utils/improvedapi/Material";
+import {Column, Row} from "./utils/improvedapi/Flex";
 import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, TextField} from "@mui/material";
-import {Wrap} from "./improvedapi/Core";
+import {Wrap} from "./utils/improvedapi/Core";
 import {CloudUpload} from "@mui/icons-material";
-import {Text, TextTheme} from "./improvedapi/Text";
-import {CrashyLogo} from "./Utils";
+import {Text, TextTheme} from "./utils/improvedapi/Text";
 import {crashyTitleColor, dialogBodyColor} from "./Colors";
 import {CrashyServer, UploadCrashError, UploadCrashResponse} from "./CrashyServer";
 import pako from "pako";
+import {CrashyLogo} from "./utils/Crashy";
 
 enum InitialUploadState {
     Start,

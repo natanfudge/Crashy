@@ -8,13 +8,13 @@ import {
     StackTraceMessage,
     unfoldRichStackTrace
 } from "../../parser/src/model/RichCrashReport";
-import {Column, Row} from "./improvedapi/Flex";
-import {Text} from "./improvedapi/Text";
+import {Column, Row} from "./utils/improvedapi/Flex";
+import {Text} from "./utils/improvedapi/Text";
 import React from "react";
 import {Button, Divider, Typography} from "@mui/material";
-import {Spacer} from "./improvedapi/Core";
-import {MoreInfoButton} from "./Utils";
+import {Spacer} from "./utils/improvedapi/Core";
 import {clickableColor, fadedOutColor} from "./Colors";
+import {MoreInfoButton} from "./utils/Crashy";
 
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {

@@ -1,10 +1,10 @@
 import React from "react";
-import {Column, Row} from "../improvedapi/Flex";
-import {Text} from "../improvedapi/Text";
-import {CButton, CTextField} from "../improvedapi/Material";
+import {Column, Row} from "../utils/improvedapi/Flex";
+import {Text} from "../utils/improvedapi/Text";
+import {CButton, CTextField} from "../utils/improvedapi/Material";
 import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../CrashyServer";
-import {Wrap} from "../improvedapi/Core";
+import {Wrap} from "../utils/improvedapi/Core";
 import {NO_CACHE_PAGE_PARAMETER, PAGE_PARAMETER} from "../Constants";
 import {getCurrentCrashId} from "../PageUrl";
 

@@ -1,13 +1,13 @@
 import {AppBar} from "@mui/material";
-import {Row} from "../improvedapi/Flex";
-import {LinkContent} from "../improvedapi/Vanilla";
-import {CrashyLogo} from "../Utils";
-import {Text} from "../improvedapi/Text";
+import {Row} from "../utils/improvedapi/Flex";
+import {LinkContent} from "../utils/improvedapi/Vanilla";
+import {Text} from "../utils/improvedapi/Text";
 import {crashyTitleColor} from "../Colors";
-import {Spacer} from "../improvedapi/Core";
+import {Spacer} from "../utils/improvedapi/Core";
 import React from "react";
 import {ToolbarButtons} from "../CrashyCrashReport";
 import {GetCrashResponse} from "../CrashyServer";
+import {CrashyLogo} from "../utils/Crashy";
 
 export function CrashyAppBar({crash}: { crash?: GetCrashResponse }) {
     return <AppBar>

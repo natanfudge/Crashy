@@ -7,7 +7,7 @@ import {Variant} from "@mui/material/styles/createTypography";
 import {TypographyClasses} from "@mui/material/Typography/typographyClasses";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
-import {isObject} from "../Utils";
+import {isObj} from "../Generic";
 
 export interface TextThemeProps extends ManyChildParentProps {
     /**
@@ -88,7 +88,7 @@ export type GradientColor = string | {
 export type GradientDirection = "to bottom" | "to top" | "to right" | "to left"
 
 export function isGradient(obj?: Color) : obj is Gradient {
-    return isObject(obj) && obj?.firstColor !== undefined;
+    return isObj(obj) && obj?.firstColor !== undefined;
 }
 
 function gradientColorString(color: GradientColor) : string {

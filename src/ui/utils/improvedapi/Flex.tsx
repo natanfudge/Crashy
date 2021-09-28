@@ -20,8 +20,8 @@ export interface RowProps extends ManyChildParentProps {
     alignContent?: FlexAlignment
 }
 
-export type Alignment = "start" | "center" | "end"
-export type FlexAlignment = Alignment | "stretch"
+export type Align = "start" | "center" | "end"
+export type FlexAlignment = Align | "stretch"
 
 export type ColumnProps = RowProps
 

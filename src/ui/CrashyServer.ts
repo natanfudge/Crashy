@@ -1,5 +1,6 @@
-import {httpDelete, httpGet, httpPost} from "./Utils";
 // import {deflate, inflate} from "zlib";
+
+import {httpDelete, httpGet, httpPost} from "./utils/Http";
 
 namespace HttpStatusCode {
     export const OK = 200;

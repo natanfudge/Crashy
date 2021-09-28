@@ -1,7 +1,7 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype"
-import {Alignment, fixAlignment} from "./Flex";
-import {isObject} from "../Utils";
+import {Align, fixAlignment} from "./Flex";
+import {isObj} from "../Generic";
 
 
 interface FlexChildProps {
@@ -12,7 +12,7 @@ interface FlexChildProps {
      * sets the initial main size
      */
     flexBasis?: CSS.Property.FlexBasis
-    alignSelf?: Alignment
+    alignSelf?: Align
 }
 
 interface StyleProps extends FlexChildProps {
@@ -74,7 +74,7 @@ export type PaddingAxes = Axes
 export type MarginAxes = Axes
 
 function isAxes(obj: Padding): obj is Axes {
-    return isObject(obj) && ("horizontal" in obj || "vertical" in obj)
+    return isObj(obj) && ("horizontal" in obj || "vertical" in obj)
 }
 
 
@@ -101,7 +101,7 @@ function expandPaddingOrMargin(paddingOrMargin?: Padding): Directions {
 }
 
 function isPercent(obj: Size): obj is Percent {
-    return isObject(obj) && obj.percent !== undefined;
+    return isObj(obj) && obj.percent !== undefined;
 }
 
 function expandSize(size?: Size): CSS.Property.Width | undefined | number {
