@@ -5,7 +5,7 @@ import {createTheme, CssBaseline, LinearProgress} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage} from "./CrashyCrashReport";
-import {getCurrentCrashId} from "./PageUrl";
+import {getCurrentCrashId} from "./utils/PageUrl";
 
 
 const CrashyHome = React.lazy(() => import("./CrashyHome"))

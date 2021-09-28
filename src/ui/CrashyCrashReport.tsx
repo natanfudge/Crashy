@@ -16,7 +16,7 @@ import {parseCrashReportRich} from "../../parser/src/parser/CrashReportEnricher"
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
-import {getCurrentCrashId, getUrlNoCache} from "./PageUrl";
+import {getCurrentCrashId, getUrlNoCache} from "./utils/PageUrl";
 import {ExpandingButton} from "./utils/Crashy";
 
 

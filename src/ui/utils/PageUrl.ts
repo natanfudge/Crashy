@@ -1,4 +1,4 @@
-import {objectMap} from "./utils/Generic";
+import {objectMap} from "./Generic";
 
 const NO_CACHE_PAGE_PARAMETER = "nocache"
 
