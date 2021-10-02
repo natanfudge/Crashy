@@ -1,7 +1,6 @@
 - Mappings selection
   - Remove deobfuscation from NEC
 - Crashalytics?
-- Provide nice error messages when the crash log is invalid
 - 'Copy Link' button
   - Link expiry date
 - Mobile support: 
@@ -10,7 +9,6 @@
 - Light mode support
 - Authentication solution
   - Allow crash log expiry
-  - Allow deleting crash log
 - Improve 'Mods' panel
   - Click each mod to reach their website
   - Button to create new issue if github issues is available
@@ -29,7 +27,6 @@
   - Section detail
 - Configurable UI
 - Button to show raw log
-- Upload new crash button
 - Explore crashes
 - Add 'upload to crashy' to forge init crash screen
 - Dynamic meta tags https://crashy.net/R0AyHRMRXcfmeOC5BCDf
