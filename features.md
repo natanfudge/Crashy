@@ -32,4 +32,4 @@
 - Upload new crash button
 - Explore crashes
 - Add 'upload to crashy' to forge init crash screen
-
+- Dynamic meta tags https://crashy.net/R0AyHRMRXcfmeOC5BCDf

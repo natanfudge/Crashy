@@ -84,7 +84,7 @@ export interface Cookie {
 }
 
 export function setCookie(cookie: Cookie) {
-    document.cookie = `${cookie.name}=${encodeURIComponent(cookie.value)};${cookie.expires.toUTCString()}`
+    document.cookie = `${cookie.name}=${encodeURIComponent(cookie.value)};expires=${cookie.expires.toUTCString()};path=${window.location.pathname}`
 }
 
 export function getCookieValue(name: string): string | undefined {

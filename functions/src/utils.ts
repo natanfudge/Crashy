@@ -12,6 +12,8 @@ export async function getCrashValidationErrors(crash: Buffer): Promise<Error | u
             try {
                 parseCrashReportRich(unzipped.toString("utf8"));
             } catch (e) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 resolve(e);
             }
             resolve(undefined);

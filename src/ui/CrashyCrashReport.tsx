@@ -70,6 +70,8 @@ function CrashReportPageContent({crash}: { crash: GetCrashResponse | undefined }
 }
 
 export function CrashReportUi({report}: { report: RichCrashReport }) {
+    // Show what the crash is in previews
+    // useEffect(() => document.querySelector('meta[name="description"]')!.setAttribute("content", report.title))
     const context = report.context;
 
     const [activeSectionIndex, setActiveSectionIndex] = React.useState(0)
