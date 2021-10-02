@@ -36,18 +36,19 @@ export async function uploadCrash(req: functions.Request, res: functions.Respons
     const key = generateCrashKey();
 
     const writtenObject: Crash = {
-        uploadDate: uploadDate,
+        uploadDate,
         lastRead: uploadDate,
         log: body,
-        key: key
+        key
     };
     const writeResult = await admin.firestore().collection("crashes").add(writtenObject);
     console.log("Wrote crash log with id " + writeResult.id + ` of about ${body.length / 1000}KB`);
 
     const response: UploadCrashResponse = {
         crashId: writeResult.id,
+        //TODO: add code
         crashUrl: `https://crashy.net/${writeResult.id}`,
-        key: key
+        key
     };
     res.json(response);
 }

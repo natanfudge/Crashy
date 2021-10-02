@@ -70,7 +70,6 @@ interface TimeoutWrapper {
 
 function DynamicallyAttachedNode(props: ExpansionProps) {
     const {
-        id,
         show,
         anchor,
         onDismiss,
@@ -111,7 +110,6 @@ function DynamicallyAttachedNode(props: ExpansionProps) {
 function useExpansionPositioning({anchorRect, expansionRect, anchorAlignment, expansionAlignment}:
                                      { anchorRect: Rect, expansionRect: Rect, anchorAlignment: NumericAlignment, expansionAlignment: NumericAlignment })
     : { x: number, y: number } {
-    //TODO: tbh, the min shouldn't be 0, see what happens if you open up mod info and you ensmalden the screen too much.
 
     const anchorX = anchorRect.left * (1 - anchorAlignment.x) + (anchorRect.left + anchorRect.width) * anchorAlignment.x;
     const anchorY = anchorRect.top * (1 - anchorAlignment.y) + (anchorRect.top + anchorRect.height) * anchorAlignment.y;
@@ -133,9 +131,7 @@ function useExpansionPositioning({anchorRect, expansionRect, anchorAlignment, ex
 
         window.addEventListener('resize', handleResize)
 
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
+        return () => window.removeEventListener('resize', handleResize)
     })
 
     // Don't let the expansion overflow out of the screen

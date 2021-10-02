@@ -4,7 +4,6 @@ import {_implExpansion} from "./Impl";
 import {_implUseExpansion} from "./Util";
 import {Alignment} from "../Generic";
 
-//TODO: doesn't work well on screen resize
 export function Expansion(props: ExpansionPropsApi) {
     return _implExpansion(props);
 }
@@ -21,7 +20,6 @@ export interface ManagedExpansionProps extends BaseExpansionPropsApi {
 }
 
 export interface BaseExpansionPropsApi extends SingleChildParentProps {
-    id: string;
     onDismiss: OnDismiss
     anchorReference: Alignment
     position: Alignment;

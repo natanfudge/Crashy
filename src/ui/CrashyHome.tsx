@@ -35,7 +35,7 @@ export default function CrashyHome() {
                         setUploadState(response);
                         setDialogOpen(true);
                     } else {
-                        window.location.href =  response.crashId
+                        window.location.href =  response.crashUrl
                     }
                 }}
                         disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={

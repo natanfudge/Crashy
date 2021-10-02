@@ -8,6 +8,19 @@ export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, 
     return typedKeys(object).map((key, index) => mapFn(key, object[key], index), {});
 }
 
+export function objectFilter<V>(object: Record<string, V>, filter: (key: string, value: V) => boolean): Record<string, V> {
+    const newObj: Record<string, V> = {};
+    for (const key in object) {
+        const value = object[key];
+        if (filter(key, object[key])) newObj[key] = value;
+    }
+    return newObj;
+}
+
+export function objectIsEmpty(object: Record<string,unknown>) : boolean {
+    return Object.keys(object).length === 0;
+}
+
 export function isObj(x: unknown): x is Record<string, unknown> {
     return typeof x === 'object' && x != null;
 }

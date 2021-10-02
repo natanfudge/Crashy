@@ -31,3 +31,5 @@
 - Button to show raw log
 - Upload new crash button
 - Explore crashes
+- Add 'upload to crashy' to forge init crash screen
+

@@ -16,19 +16,18 @@ export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
 
 
 export interface ExpandingButtonProps {
-    id: string;
     sticky: boolean;
 }
 
-export function MoreInfoButton(props: WithChild & { id: string }) {
-    return <ExpandingButton sticky={false} id={props.id} buttonPadding={0}
+export function MoreInfoButton(props: WithChild) {
+    return <ExpandingButton sticky={false}  buttonPadding={0}
                             icon={<KeyboardArrowDown style={{filter: "brightness(0.5)"}}/>}>
         {props.children}
     </ExpandingButton>
 }
 
 
-export function ExpandingButton({buttonPadding, icon, id, children, sticky, ...expansionProps}:
+export function ExpandingButton({buttonPadding, icon,  children, sticky, ...expansionProps}:
                                     { buttonPadding?: Padding, icon: JSX.Element } & ExpandingButtonProps & SingleChildParentProps) {
     const expansion = useExpansion();
 
@@ -39,7 +38,7 @@ export function ExpandingButton({buttonPadding, icon, id, children, sticky, ...e
             {icon}
         </CIconButton>
         <Expansion {...expansionProps} anchorReference={"bottom-center"} position={"top-center"} state={expansion}
-                   onDismiss={() => expansion.hide()} id={id} sticky={sticky}>
+                   onDismiss={() => expansion.hide()}  sticky={sticky}>
             <ExpansionSurface>
                 {children}
             </ExpansionSurface>
