@@ -7,7 +7,7 @@ import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
 import {primaryColor} from "./Colors";
 import {RichCrashReportSection, RichStackTraceElement} from "../../parser/src/model/RichCrashReport";
-import {objectMap} from "./utils/Generic";
+import {objectMap} from "./utils/Javascript";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>

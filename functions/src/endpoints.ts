@@ -46,8 +46,7 @@ export async function uploadCrash(req: functions.Request, res: functions.Respons
 
     const response: UploadCrashResponse = {
         crashId: writeResult.id,
-        //TODO: add code
-        crashUrl: `https://crashy.net/${writeResult.id}`,
+        crashUrl: `https://crashy.net/${writeResult.id}?code=${key}`,
         key
     };
     res.json(response);

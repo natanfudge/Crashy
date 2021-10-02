@@ -1,7 +1,7 @@
-type Key = string | number | symbol
+import {Key, typedKeys} from "./Typescript";
 
-export function typedKeys<K extends Key, V>(object: Record<K, V>): K[] {
-    return Object.keys(object) as K[];
+export function removeSuffix(str: string, suffix: string): string {
+    return str.endsWith(suffix) ? str.slice(0, str.length - suffix.length) : str;
 }
 
 export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
@@ -17,13 +17,10 @@ export function objectFilter<V>(object: Record<string, V>, filter: (key: string,
     return newObj;
 }
 
-export function objectIsEmpty(object: Record<string,unknown>) : boolean {
+export function objectIsEmpty(object: Record<string, unknown>): boolean {
     return Object.keys(object).length === 0;
 }
 
-export function isObj(x: unknown): x is Record<string, unknown> {
-    return typeof x === 'object' && x != null;
-}
 
 export function areArraysEqualSets<T>(a1: T[], a2: T[]) {
     const superSet: Record<string, number> = {};
@@ -79,62 +76,22 @@ export function coercePreferMin(num: number, bounds: { min: number, max: number 
     else return num;
 }
 
-export function toNumericAlignment(edge: Alignment): NumericAlignment {
-    if (typeof edge !== "string") return edge;
-    switch (edge) {
-        case "top-left":
-            return {x: 0, y: 0}
-        case "top-center":
-            return {x: 0.5, y: 0}
-        case "top-right":
-            return {x: 1, y: 0}
-        case "middle-left":
-            return {x: 0, y: 0.5}
-        case "center":
-            return {x: 0.5, y: 0.5}
-        case "middle-right":
-            return {x: 1, y: 0.5}
-        case "bottom-left":
-            return {x: 0, y: 1}
-        case "bottom-center":
-            return {x: 0.5, y: 1}
-        case "bottom-right":
-            return {x: 1, y: 1}
-    }
+export interface Cookie {
+    name: string
+    value: string
+    expires: Date
+    // path: string
 }
 
-export interface NumericAlignment {
-    /**
-     * 0.0 to 1.0
-     */
-    x: number
-    /**
-     * 0.0 to 1.0
-     */
-    y: number
+export function setCookie(cookie: Cookie) {
+    document.cookie = `${cookie.name}=${encodeURIComponent(cookie.value)};${cookie.expires.toUTCString()}`
 }
 
-export type EdgeAlignment =
-    "top-left"
-    | "top-center"
-    | "top-right"
-    | "middle-left"
-    | "center"
-    | "middle-right"
-    | "bottom-left"
-    | "bottom-center"
-    | "bottom-right"
-export type Alignment = EdgeAlignment | NumericAlignment
-
-export interface Rect {
-    top: number;
-    left: number;
-    height: number;
-    width: number;
+export function getCookieValue(name: string): string | undefined {
+    const cookies = document.cookie.split("; ");
+    const targetCookie = cookies.find(row => row.startsWith(name + "="))
+    if (targetCookie === undefined) return undefined;
+    const [key, value] = targetCookie.split("=")
+    return value;
 }
 
-
-export type Require<T, K extends keyof T> = Omit<T, K> & {
-    [RequiredProperty in K]-?: T[RequiredProperty]
-}
-export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>

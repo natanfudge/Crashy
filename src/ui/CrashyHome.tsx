@@ -9,6 +9,7 @@ import {crashyTitleColor, dialogBodyColor} from "./Colors";
 import {CrashyServer, UploadCrashError, UploadCrashResponse} from "./CrashyServer";
 import pako from "pako";
 import {CrashyLogo} from "./utils/Crashy";
+import {goToUploadedCrash} from "./utils/PageUrl";
 
 enum InitialUploadState {
     Start,
@@ -35,7 +36,7 @@ export default function CrashyHome() {
                         setUploadState(response);
                         setDialogOpen(true);
                     } else {
-                        window.location.href =  response.crashUrl
+                        goToUploadedCrash({id: response.crashId, code: response.key})
                     }
                 }}
                         disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={
@@ -54,7 +55,6 @@ export default function CrashyHome() {
 
 
 }
-
 
 
 type UploadState = InitialUploadState | UploadCrashResponse

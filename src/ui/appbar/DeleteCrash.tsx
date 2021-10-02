@@ -5,7 +5,8 @@ import {CButton, CTextField} from "../utils/improvedapi/Material";
 import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../CrashyServer";
 import {Wrap} from "../utils/improvedapi/Core";
-import {getCurrentCrashId, setUrlNoCache} from "../utils/PageUrl";
+import {getUrlCrashId, setUrlNoCache} from "../utils/PageUrl";
+import {getCookieCrashCode} from "../utils/Cookies";
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"
 
@@ -23,7 +24,7 @@ enum DeleteState {
 const CodeLength = 6;
 
 export function DeleteSection() {
-    const [code, setCode] = React.useState("")
+    const [code, setCode] = React.useState(getCookieCrashCode() ?? "")
     const [deleteState, setDeleteState] = React.useState(DeleteState.NoAttemptMade)
 
     const label = determineLabel(deleteState)
@@ -78,7 +79,7 @@ function determineLabel(deleteState: DeleteState): string | undefined {
 
 
 async function deleteCrash(code: string): Promise<DeleteState.Incorrect | DeleteState.Deleted | DeleteState.AlreadyDeleted> {
-    const result = await CrashyServer.deleteCrash(getCurrentCrashId(), code);
+    const result = await CrashyServer.deleteCrash(getUrlCrashId()!, code);
     switch (result) {
         case DeleteCrashResponse.IncorrectKey:
             return DeleteState.Incorrect

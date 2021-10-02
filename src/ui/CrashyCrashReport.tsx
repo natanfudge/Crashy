@@ -16,14 +16,14 @@ import {parseCrashReportRich} from "../../parser/src/parser/CrashReportEnricher"
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
-import {getCurrentCrashId, getUrlNoCache} from "./utils/PageUrl";
+import {getUrlCrashId, getUrlNoCache} from "./utils/PageUrl";
 import {ExpandingButton} from "./utils/Crashy";
 
 
 export function CrashyCrashReportPage() {
     const [crash, setCrash] = useState<GetCrashResponse | undefined>(undefined)
     //TODO: ok, plan D. store in cookies and intentionally hide it from the user. we have no choice.
-    useEffect(() => void CrashyServer.getCrash(getCurrentCrashId(), getUrlNoCache()).then(res => setCrash(res)))
+    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!, getUrlNoCache()).then(res => setCrash(res)))
 
     return <Fragment>
         <CrashyAppBar crash={crash}/>

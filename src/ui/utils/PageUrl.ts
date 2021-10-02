@@ -1,9 +1,11 @@
-import {objectFilter, objectMap} from "./Generic";
+import {objectFilter, objectMap, removeSuffix, setCookie} from "./Javascript";
+import {setCookieCrashCode} from "./Cookies";
 
 
 interface PageArgs {
     nocache: boolean
     code?: string
+    crashId?: string
 }
 
 type Raw<T> = {
@@ -11,23 +13,34 @@ type Raw<T> = {
 };
 
 export function initPageArgs(): boolean {
-    const parsed = parsePageArgs();
-    if (parsed === undefined) return false;
-    const partialArgs = parsed as Raw<PageArgs>;
+    const query = parsePageQuery();
+    if (query === undefined) return false;
+    const partialArgs = query as Raw<PageArgs>;
+
+    if (partialArgs.code !== undefined) {
+        setCookieCrashCode(partialArgs.code)
+    }
 
     pageArgs = {
         nocache: partialArgs.nocache === "true",
         // Never keep the code in the url
         //TODO: store in cookies
-        code: undefined
+        code: undefined,
+        crashId: parsePageCrashId()
     }
 
     setPageArgs(pageArgs);
     return true;
 }
 
-export function getCurrentCrashId(): string {
-    return window.location.pathname.slice(1);
+function parsePageCrashId(): string | undefined {
+    const pathName = window.location.pathname;
+    if (pathName.length <= 1) return undefined;
+    else return pathName.slice(1);
+}
+
+export function getUrlCrashId(): string | undefined {
+    return getPageArgs().crashId;
 }
 
 export function getUrlNoCache(): boolean {
@@ -40,14 +53,13 @@ export function setUrlNoCache(value: boolean) {
     })
 }
 
-// export function getUrlCode(): string {
-//     return getPageArgs().code;
-// }
-// export function setUrlCode(code: string) {
-//     updatePageArgs(args => {
-//         args.code = code;
-//     })
-// }
+export function goToUploadedCrash(crash: { id: string, code: string }) {
+    updatePageArgs(args => {
+        args.crashId = crash.id;
+        args.code = crash.code;
+        args.nocache = false;
+    })
+}
 
 function updatePageArgs(updater: (args: PageArgs) => void) {
     const args = getPageArgs();
@@ -59,7 +71,7 @@ function updatePageArgs(updater: (args: PageArgs) => void) {
 function serializePageArgs(args: PageArgs): string {
     const asRecord = args as unknown as Record<string, unknown>;
     const noDefaults = objectFilter(asRecord, (key, value) => value !== undefined && value !== false);
-    return objectMap(noDefaults, (key, value) =>value === true ? key : `${key}=${value}` ).join(ARG_SEPARATOR)
+    return objectMap(noDefaults, (key, value) => value === true ? key : `${key}=${value}`).join(ARG_SEPARATOR)
 
 }
 
@@ -72,26 +84,23 @@ let pageArgs: PageArgs | null = null
 
 function setPageArgs(args: PageArgs) {
     pageArgs = args;
-    const serialized = serializePageArgs(args);
-    setUrlSearch(serialized);
+    const {crashId, ...query} = args;
+    const serializedQuery = serializePageArgs(query);
+    updateUrl({search: serializedQuery, pathname: crashId ?? ""});
 }
 
-// Custom implementation because chrome leaves the leading '?', and refreshes even when old href is the same as new one
-function setUrlSearch(newSearch: string) {
-    const href = window.location.href;
-    const queryIndex = href.indexOf(ARG_PREFIX);
-    const firstPart = queryIndex === -1 ? href : href.slice(0, queryIndex);
-    const secondPart = newSearch === "" ? "" : ARG_PREFIX + newSearch;
-    const newHref = firstPart + secondPart;
-    if (newHref !== href) {
+function updateUrl(newUrl: { search: string, pathname: string }) {
+    const oldHref = window.location.href;
+    const url = new URL(oldHref);
+    url.search = newUrl.search;
+    url.pathname = newUrl.pathname;
+    const newHref = removeSuffix(url.href, "?");
+    if (oldHref !== newHref) {
         window.location.href = newHref;
     }
 }
 
-
-//TODO: right at the start, perform a 'fixUrl' that quickly fetches the code, removes it, and resets the entire url if nonsense was passed.
-//TODO: in the fixup remove args that don't do anything
-function parsePageArgs(): Record<string, string> | undefined {
+function parsePageQuery(): Record<string, string> | undefined {
     const raw = window.location.search;
     if (raw.length === 0) return {};
     if (raw[0] !== ARG_PREFIX) return undefined;
