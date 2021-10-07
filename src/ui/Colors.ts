@@ -2,6 +2,7 @@ import {Gradient} from "./utils/improvedapi/Text";
 import {ThemeOptions} from "@mui/material";
 import {grey} from "@mui/material/colors";
 
+export const OnBackgroundColor = "white"
 export const primaryColor = "#90caf9"
 export const secondaryColor = "#65ff00"
 export const crashyTitleColor: Gradient = {

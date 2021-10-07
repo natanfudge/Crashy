@@ -67,11 +67,17 @@ function parseOperatingSystem(osString: string): OperatingSystem {
             name: `${majorVersion}(${bits} bit)`,
             type: OperatingSystemType.Windows
         };
-    } else {
-        //TODO: better parsing once we can get a hold of non-windows examples
+    } else if (osString.startsWith("Linux ")) {
+        //TODO: better parsing once we can get of more linux examples
         return {
             name: osString,
             type: OperatingSystemType.Linux
+        };
+    } else {
+        //TODO: better parsing once we can get of more macOS examples
+        return {
+            name: osString,
+            type: OperatingSystemType.Macos
         };
     }
 }
@@ -101,7 +107,12 @@ function parseCrashDate(dateStr: string): Date {
     // Forge format: 15.08.21 17:36
     const isFabricFormat = dateStr.includes(",");
     const [date, hourStr] = dateStr.split(isFabricFormat ? ", " : " ");
-    const [day, month, year] = date.split(isFabricFormat ? "/" : ".");
+    const [left, right, year] = date.split(dateStr.includes("/") ? "/" : ".");
+
+    // Fabric: always uses day/month/year
+    // Forge: When seperated with dots, is day/month/year. When seperated with slashes, is month/day/year.
+    const isDayMonthYear = isFabricFormat || dateStr.includes(".");
+    const [day, month] = isDayMonthYear ? [left, right] : [right, left];
 
     const [fullHourStr, minutesStr] = hourStr.split(":");
     // Convert PM format to 24 hour format
@@ -147,7 +158,7 @@ function enrichStackTraceMessage(rawMessage: string): StackTraceMessage {
 }
 
 function enrichStackTraceElements(elements: StackTraceElement[]): RichStackTraceElement[] {
-   //at net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344) ~[?:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,xf:OptiFine:default,pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}
+    //at net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344) ~[?:?] {re:mixin,pl:accesstransformer:B,re:classloading,pl:accesstransformer:B,xf:OptiFine:default,pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}
     return elements.map((element) => {
         // Ignore NEC's silly "Not Enough Crashes deobfuscated stack trace" thing
         if (element.startsWith("Not Enough")) return undefined;
@@ -219,8 +230,8 @@ function parseTraceLine(line: string): TraceLine {
     const [file, lineNumber] = line.split(":");
     return {
         // If there is no line number the file will have a trailing ')' that we need to remove
-        file: lineNumber ? file : removeLastChar(file),
-        number: lineNumber ? parseInt(removeLastChar(lineNumber)) : undefined
+        file: lineNumber !== undefined ? file : removeLastChar(file),
+        number: lineNumber !== undefined ? parseInt(removeLastChar(lineNumber)) : undefined
     };
 }
 

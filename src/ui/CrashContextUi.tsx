@@ -41,7 +41,7 @@ function CrashContextElement(props: { image: string, text: string, color: string
         <CDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
         <CImage src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon"
                 style={{filter: props.filter}}/>
-        <Text text={props.text} variant="h6"/>
+        <Text style = {{maxWidth: "15rem"}} text={props.text} variant="h6"/>
     </Row>
 
 }

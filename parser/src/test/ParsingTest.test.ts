@@ -1,6 +1,8 @@
 import {CrashReport} from "../model/CrashReport";
 import {parseCrashReport} from "../parser/CrashReportParser";
 import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
+import {TestBuggyParseCrash} from "./TestBuggyParseCrash";
+import {enrichCrashReport} from "../parser/CrashReportEnricher";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -220,5 +222,11 @@ test('Forge Crash Report is parsed correctly', () => {
 test("Fabric crash report is parsed correctly", () => {
     const report = parseCrashReport(testFabricCrashReport)
     testFabricCrashReportParse(report);
-
+})
+test("Crash that was found to be badly parsed is parsed correctly", () => {
+    const report = parseCrashReport(TestBuggyParseCrash)
+    expect(report.sections.length).toEqual(5)
+    const enriched = enrichCrashReport(report);
+    expect(enriched.context.time).toEqual(new Date(2021,10,3,12,22))
+    const x = 2;
 })

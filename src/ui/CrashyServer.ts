@@ -1,6 +1,8 @@
 // import {deflate, inflate} from "zlib";
 
 import {httpDelete, httpGet, httpPost} from "./utils/Http";
+import {TestBuggyParseCrash} from "../../parser/src/test/TestBuggyParseCrash";
+import {TestCrashReel} from "../../parser/src/test/TestCrashReel";
 
 namespace HttpStatusCode {
     export const OK = 200;
@@ -12,6 +14,10 @@ namespace HttpStatusCode {
 }
 
 export type GetCrashResponse = string | GetCrashError
+
+export function isSuccessfulGetCrashResponse(crash: GetCrashResponse | undefined) : crash is string {
+    return typeof crash === "string";
+}
 
 export enum GetCrashError {
     NoSuchCrashId
@@ -44,6 +50,7 @@ export namespace CrashyServer {
     const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
+        return TestCrashReel;
         const response = await httpGet({url: `${urlPrefix}/getCrash/${id}`, noCache});
         switch (response.code) {
             case HttpStatusCode.OK:

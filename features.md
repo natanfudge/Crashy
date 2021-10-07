@@ -30,3 +30,5 @@
 - Explore crashes
 - Add 'upload to crashy' to forge init crash screen
 - Dynamic meta tags https://crashy.net/R0AyHRMRXcfmeOC5BCDf
+- Expose and document API
+- 

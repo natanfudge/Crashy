@@ -35,11 +35,7 @@ export function CrashyCrashReportPage() {
 }
 
 
-export function ToolbarButtons() {
-    return <ExpandingButton  padding={{right: 10}} icon={<Delete/>} sticky>
-        <DeleteSection/>
-    </ExpandingButton>
-}
+
 
 
 function NoSuchCrashScreen() {

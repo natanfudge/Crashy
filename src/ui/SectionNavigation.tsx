@@ -30,7 +30,7 @@ function SectionButton(props: { name: string, active: boolean, onClick: () => vo
         <Row padding={{horizontal: 5}} width={"max"}>
             <Spacer flexGrow={1}/>
             <Wrap flexGrow={1}>
-                <Typography variant="h6" color={"white"} padding="5px">
+                <Typography variant="h6" color={"white"} padding="5px" style = {{maxWidth: "13rem"}}>
                     {props.name}
                 </Typography>
             </Wrap>

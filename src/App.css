@@ -60,9 +60,8 @@ div[role=dialog]{
 
 div[role=presentation]{
     z-index: unset !important;
-    /*position: unset !important;*/
 }
-
+/*Allows making a div into a link*/
 .link-spanner {
     position:absolute;
     width:100%;
@@ -70,4 +69,10 @@ div[role=presentation]{
     top:0;
     left: 0;
     z-index: 1;
+}
+
+/*Makes 'report an issue' and its icon entirely red.*/
+.bug-report * {
+    fill: rgba(255, 0, 0, 0.85) !important;
+    color:rgba(255, 0, 0, 0.85) !important;
 }

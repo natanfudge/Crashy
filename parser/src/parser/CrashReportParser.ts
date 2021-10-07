@@ -16,7 +16,7 @@ export function parseCrashReport(rawReport: string): CrashReport {
     let cursor = 0;
 
     // Skip '---- Minecraft Crash Report ----'
-   skipLine();
+    skipLine();
 
     const wittyComment = parseWittyComment();
 
@@ -125,7 +125,7 @@ export function parseCrashReport(rawReport: string): CrashReport {
         const stacktrace = parseSectionStacktrace();
 
         // Skip empty line
-        skipLine();
+        skipEmptyLine();
 
         return {thread, title, details, stacktrace};
     }
@@ -206,6 +206,10 @@ export function parseCrashReport(rawReport: string): CrashReport {
 
     function skipLine() {
         skipUntilAfterChar("\n");
+    }
+
+    function skipEmptyLine() {
+        if (current() === "\n" || current() === "\r") skipLine();
     }
 
     //TODO: see if this can be optimized by calculating length AOT
