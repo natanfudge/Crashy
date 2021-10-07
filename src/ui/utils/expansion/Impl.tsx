@@ -6,7 +6,7 @@ import {ClickAwayListener} from "@mui/material";
 import {Wrap} from "../improvedapi/Core";
 import {Require} from "../Typescript";
 import {NumericAlignment, Rect, toNumericAlignment} from "../Gui";
-import {coercePreferMin} from "../Javascript";
+import {coercePreferMin, getDocumentRelativeRect} from "../Javascript";
 
 export function _implExpansion(props: ExpansionPropsApi) {
     const manualProps: ManualExpansionProps = isManualApi(props) ? props : toManual(props)
@@ -83,9 +83,9 @@ function DynamicallyAttachedNode(props: ExpansionProps) {
         ...elementProps
     } = props
     // Calculate the size of the expansion so we can position it properly
-    const [rect, setRect] = useState<DOMRect | undefined>(undefined);
+    const [rect, setRect] = useState<Rect | undefined>(undefined);
     const {x, y} = useExpansionPositioning({
-        anchorRect: anchor?.getBoundingClientRect() ?? {height: 0, width: 0, top: 0, left: 0},
+        anchorRect: getDocumentRelativeRect(anchor),
         anchorAlignment: toNumericAlignment(anchorReference),
         expansionRect: rect ?? {height: 0, width: 0, top: 0, left: 0},
         expansionAlignment: toNumericAlignment(position)
@@ -120,6 +120,7 @@ function useExpansionPositioning({anchorRect, expansionRect, anchorAlignment, ex
 
     const x = anchorX - offsetX;
     const y = anchorY - offsetY;
+    console.log("anchorY: " + anchorRect.top);
 
     const [screenSize, setScreenSize] = useState({width: document.body.clientWidth, height: document.body.clientHeight})
 
@@ -138,12 +139,15 @@ function useExpansionPositioning({anchorRect, expansionRect, anchorAlignment, ex
 
     // Don't let the expansion overflow out of the screen
     const maxX = screenSize.width - expansionRect.width;
-    const maxY = screenSize.height - expansionRect.height;
+    // console.log("Scroll y = " + window.scrollY)
+    const maxY = screenSize.height - expansionRect.height + window.scrollY;
+    // console.log("Max y = " + maxY)
 
     // Make sure the expansion doesn't stick too much
     const minX = anchorRect.left - expansionRect.width;
     const minY = anchorRect.top - expansionRect.height;
 
+    // console.log("Final y: " + coercePreferMin(y, {min: minY, max: maxY}));
     return {x: coercePreferMin(x, {min: minX, max: maxX}), y: coercePreferMin(y, {min: minY, max: maxY})}
 }
 
@@ -154,7 +158,7 @@ function SizeCalculator({
                             depProps,
                             setRect,
                             finalProps
-                        }: { depProps: ExpansionProps, finalProps: SingleChildParentProps, setRect: (rect: DOMRect | undefined) => void }) {
+                        }: { depProps: ExpansionProps, finalProps: SingleChildParentProps, setRect: (rect: Rect | undefined) => void }) {
     // First run: calculate = true:
     // - First useLayoutEffect is called, but calculate is true so it does nothing
     // - Second useLayoutEffect is called, calculating correct size and setting calculate to false
@@ -185,7 +189,7 @@ function SizeCalculator({
 
     useLayoutEffect(() => {
         if (calculate) {
-            setRect(ref.current!.getBoundingClientRect())
+            setRect(getDocumentRelativeRect(ref.current!))
             setCalculate(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

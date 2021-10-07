@@ -31,7 +31,10 @@ export function ExpandingButton({buttonPadding, icon,  children, sticky, ...expa
                                     { buttonPadding?: Padding, icon: JSX.Element } & ExpandingButtonProps & SingleChildParentProps) {
     const expansion = useExpansion();
 
-    const handleClick: ClickCallback = (element: Element) => expansion.toggle(element)
+    const handleClick: ClickCallback = (element: Element) => {
+        console.log("glock")
+        expansion.toggle(element);
+    }
 
     return <Fragment>
         <CIconButton padding={buttonPadding} onClick={handleClick}>
