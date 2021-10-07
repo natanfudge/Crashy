@@ -31,4 +31,4 @@
 - Add 'upload to crashy' to forge init crash screen
 - Dynamic meta tags https://crashy.net/R0AyHRMRXcfmeOC5BCDf
 - Expose and document API
-- 
+- 'New Crash' button (maybe home and 'new crash' will be seperated in the future)
