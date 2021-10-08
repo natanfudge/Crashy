@@ -5,7 +5,7 @@ export interface RichCrashReport {
     wittyComment: string
     context: CrashContext
     stackTrace: RichStackTrace
-    mods: Mod[]
+    mods?: Mod[]
     sections: RichCrashReportSection[]
 }
 
@@ -117,10 +117,10 @@ export interface OperatingSystem {
 }
 
 export enum LoaderType {
-    Fabric, Forge
+    Fabric, Forge,Vanilla
 }
 
 export interface Loader {
     type: LoaderType
-    version: string
+    version?: string
 }

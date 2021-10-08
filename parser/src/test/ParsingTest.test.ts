@@ -3,6 +3,9 @@ import {parseCrashReport} from "../parser/CrashReportParser";
 import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 import {TestBuggyParseCrash} from "./TestBuggyParseCrash";
 import {enrichCrashReport} from "../parser/CrashReportEnricher";
+import {TestCrashReel} from "./TestCrashReel";
+import {BarebonesFabricCrash} from "./BarebonesFabricCrash";
+import {LoaderType} from "../model/RichCrashReport";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -228,5 +231,12 @@ test("Crash that was found to be badly parsed is parsed correctly", () => {
     expect(report.sections.length).toEqual(5)
     const enriched = enrichCrashReport(report);
     expect(enriched.context.time).toEqual(new Date(2021,10,3,12,22))
-    const x = 2;
+})
+
+test("Barebones Fabric crash is parsed correctly", () => {
+    const report = parseCrashReport(BarebonesFabricCrash)
+    const enriched = enrichCrashReport(report);
+    expect(enriched.context.loader.type).toEqual(LoaderType.Fabric);
+    expect(enriched.context.loader.version).toEqual(undefined);
+    expect(enriched.mods).toEqual(undefined);
 })

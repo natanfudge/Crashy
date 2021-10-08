@@ -42,7 +42,7 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 // }
 
 export namespace CrashyServer {
-    const localTesting = false;
+    const localTesting = true;
     const domain = localTesting ? "localhost:5001/crashy-9dd87/europe-west1" : "europe-west1-crashy-9dd87.cloudfunctions.net";
     const http = localTesting ? "http" : "https"
     const urlPrefix = `${http}://${domain}`

@@ -70,7 +70,7 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
 
     const [activeSectionIndex, setActiveSectionIndex] = React.useState(0)
 
-    const sectionNames = ["Stack Trace", "Mods"]
+    const sectionNames = report.mods !== undefined ? ["Stack Trace", "Mods"] : ["Stack Trace"]
 
     report.sections.forEach(section => sectionNames.push(section.name));
 
@@ -110,11 +110,13 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
 function ActiveSection({report, index}: { report: RichCrashReport, index: number }) {
     if (index === 0) {
         return <StackTraceUi stackTrace={report.stackTrace}/>
-    } else if (index === 1) {
+    } else if (index === 1 && report.mods !== undefined) {
         return <ModListUi mods={report.mods}/>
     }// We already use up the 0 and 1 index for the main stack trace and mods, so we need to reduce the index by 2.
     else {
-        return <CrashReportSectionUi section={report.sections[index - 2]}/>
+        // When there is no mods page, only shift by 1 index (for the StackTraceUi)
+        const indexShift = report.mods !== undefined? 2 : 1;
+        return <CrashReportSectionUi section={report.sections[index - indexShift]}/>
     }
 }
 

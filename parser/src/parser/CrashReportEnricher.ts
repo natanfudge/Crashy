@@ -39,8 +39,9 @@ const MinecraftVersionTitle = "Minecraft Version";
 const ForgeLoaderTitle = "Forge";
 const FabricLoaderId = "fabricloader";
 const OperatingSystemTitle = "Operating System";
+const IsModdedTitle = "Is Modded"
 
-function getCrashContext(report: CrashReport, mods: Mod[]): CrashContext {
+function getCrashContext(report: CrashReport, mods?: Mod[]): CrashContext {
     const systemDetails = getSystemDetails(report).details!;
     //16.0.2, Oracle Corporation
     // Brand ignored
@@ -82,23 +83,41 @@ function parseOperatingSystem(osString: string): OperatingSystem {
     }
 }
 
-function getLoader(report: CrashReport, systemDetails: StringMap, mods: Mod[]): Loader {
+function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]): Loader {
     const forgeEntry = systemDetails[ForgeLoaderTitle];
     if (forgeEntry !== undefined) {
         // Forge
-
         const [, version] = forgeEntry.split(":");
         return {
             type: LoaderType.Forge,
             version: version
         };
     } else {
-        // Fabric
-        const fabricLoaderMod = mods.find((mod) => mod.id === FabricLoaderId)!;
-        return {
-            type: LoaderType.Fabric,
-            version: fabricLoaderMod.version
-        };
+        if (mods !== undefined) {
+            // If mods exists, and not forge, then it's definitely Fabric and we have the version available
+            const fabricLoaderMod = mods.find((mod) => mod.id === FabricLoaderId)!;
+            return {
+                type: LoaderType.Fabric,
+                version: fabricLoaderMod.version
+            };
+        } else {
+            const isModded = systemDetails[IsModdedTitle];
+            if (isModded.startsWith("Definitely")) {
+                // Minecraft says it's modded, so it's gotta be fabric.
+                //TODO: for loaders other than forge/fabric, we need to check the brand that this detail gives.
+                return {
+                    type: LoaderType.Fabric,
+                    // No way to know what Fabric Loader version this is
+                    version: undefined
+                }
+            } else {
+                return {
+                    type: LoaderType.Vanilla,
+                    version: undefined
+                }
+            }
+        }
+
     }
 }
 
@@ -273,15 +292,15 @@ function getSystemDetails(report: CrashReport): CrashReportSection {
     return report.sections.find((section) => section.title === SystemDetailsTitle)!;
 }
 
-function getMods(report: CrashReport): Mod[] {
+function getMods(report: CrashReport): Mod[] | undefined {
     const systemDetails = getSystemDetails(report);
     const details = systemDetails.details!;
     // Fabric uses "Fabric Mods" and Forge uses "Mod List"
     const isFabric = FabricModsTitle in details;
     const isForge = ForgeModsTitle in details;
 
-    // If not fabric or forge, then vanilla! No mods.
-    if (!isFabric && !isForge) return [];
+    // If no mods appear, it's either vanilla or Fabric with no mod that adds a mod list to the crash log.
+    if (!isFabric && !isForge) return undefined;
 
     // Forge and fabric use a different format for the mod list.
     return isFabric ? parseFabricMods(details) : parseForgeMods(details);
@@ -298,8 +317,9 @@ function getSuspectedModIds(systemDetails: StringMap): string[] {
         .map((mod) => mod.substring(mod.indexOf("(") + 1, mod.length - 1));
 }
 
-function parseFabricMods(systemDetails: StringMap): Mod[] {
+function parseFabricMods(systemDetails: StringMap): Mod[] | undefined {
     const raw = systemDetails[FabricModsTitle];
+    if (raw === undefined) return undefined;
     // Remove leading newline
     const noLeadingNewline = raw.substring(1);
     const suspectedMods = getSuspectedModIds(systemDetails);

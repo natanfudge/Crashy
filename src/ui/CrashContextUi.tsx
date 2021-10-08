@@ -36,10 +36,10 @@ export function CrashLeftSide(props: { context: CrashContext }) {
     return <Surface height="fit-content" width="max-content" padding={{top: 16, left: 16, right: 16, bottom: 24}}>
         <Column>
             <CrashContextElement color={"#1cc11e"} image={MinecraftLogo} text={context.minecraftVersion}/>
-            <CrashContextElement color={"#ffe500"}
+            {context.loader.type !== LoaderType.Vanilla && <CrashContextElement color={"#ffe500"}
                                  filter={isForge ? "invert(79%) sepia(6%) saturate(187%) hue-rotate(335deg) brightness(83%) contrast(93%)" : undefined}
                                  image={isForge ? ForgeLogo : FabricLogo}
-                                 text={loaderName + context.loader.version}/>
+                                 text={loaderName +(context.loader.version !== undefined ? context.loader.version : "")}/>}
             <CrashContextElement color={"#ef8928"} image={JavaLogo} text={context.javaVersion}/>
             <CrashContextElement color={lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
                                  text={context.operatingSystem.name}/>
