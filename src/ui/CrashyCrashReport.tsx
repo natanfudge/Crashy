@@ -2,8 +2,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {Column, Row} from "./utils/improvedapi/Flex";
 import {CDivider, Spacer, Wrap} from "./utils/improvedapi/Core";
 import {RichCrashReport} from "../../parser/src/model/RichCrashReport";
-import {Text} from "./utils/improvedapi/Text";
-import {CrashContextUi} from "./CrashContextUi";
+import {Text, TextTheme} from "./utils/improvedapi/Text";
 import {SectionNavigation} from "./SectionNavigation";
 import {StackTraceUi} from "./StackTraceUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
@@ -13,11 +12,10 @@ import {Surface} from "./utils/improvedapi/Material";
 import {fadedOutColor} from "./Colors";
 import {CrashyServer, GetCrashError, GetCrashResponse} from "./CrashyServer";
 import {parseCrashReportRich} from "../../parser/src/parser/CrashReportEnricher";
-import {Delete} from "@mui/icons-material";
-import {DeleteSection} from "./appbar/DeleteCrash";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {getUrlCrashId, getUrlNoCache} from "./utils/PageUrl";
-import {ExpandingButton} from "./utils/Crashy";
+import {CrashyNewIssueUrl} from "./utils/Crashy";
+import {CrashLeftSide} from "./CrashContextUi";
 
 
 export function CrashyCrashReportPage() {
@@ -27,15 +25,15 @@ export function CrashyCrashReportPage() {
 
     return <Fragment>
         <CrashyAppBar crash={crash}/>
-        <Wrap height={"max"} padding={{top: 60}}>
+        <Wrap style = {{position: "absolute"}} height={"max"} width={"max"} padding={{top: 60}}>
             <CrashReportPageContent crash={crash}/>
         </Wrap>
+        {/*<Column style={{position: "fixed", height: "100%"}}>*/}
+
+        {/*</Column>*/}
 
     </Fragment>
 }
-
-
-
 
 
 function NoSuchCrashScreen() {
@@ -76,8 +74,8 @@ export function CrashReportUi({report}: { report: RichCrashReport }) {
 
     report.sections.forEach(section => sectionNames.push(section.name));
 
-    return <Row padding={{top: 4}} justifyContent={"space-between"}>
-        <CrashContextUi context={context}/>
+    return <Row height={"max"} padding={{top: 4}} justifyContent={"space-between"}>
+        <CrashLeftSide context={context}/>
         <CenterView report={report} activeSectionIndex={activeSectionIndex}/>
 
         <SectionNavigation sections={sectionNames}

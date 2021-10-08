@@ -1,4 +1,3 @@
-// import {RichCrashReportSection, RichStackTraceElement} from "../../parser/model/RichCrashReport";
 import {Column, Row} from "./utils/improvedapi/Flex";
 import {Text} from "./utils/improvedapi/Text";
 import {CDivider, Spacer} from "./utils/improvedapi/Core";

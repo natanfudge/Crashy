@@ -9,18 +9,31 @@ import WindowsLogo from "../media/windows_logo.svg";
 import LinuxLogo from "../media/linux_logo.svg";
 import MacosLogo from "../media/macos_logo.svg";
 import QuestionMarkIcon from "../media/questionmark_icon_white.svg";
-import {CDivider, CImage} from "./utils/improvedapi/Core";
-import {Text} from "./utils/improvedapi/Text";
+import {CDivider, CImage, Spacer} from "./utils/improvedapi/Core";
+import {Text, TextTheme} from "./utils/improvedapi/Text";
 import {lightBlue} from "@mui/material/colors";
 import {CrashContext, LoaderType, OperatingSystemType} from "../../parser/src/model/RichCrashReport";
 import {Surface} from "./utils/improvedapi/Material";
+import {fadedOutColor} from "./Colors";
+import {Link} from "@mui/material";
+import {CrashyNewIssueUrl} from "./utils/Crashy";
 
-export function CrashContextUi({context}: { context: CrashContext }) {
+export function CrashLeftSide(props: { context: CrashContext }) {
+    return <Column height={"max"}>
+        <CrashContextUi context={props.context}/>
+        <Spacer flexGrow={1}/>
+        <TextTheme style={{maxWidth: "fit-content"}} color={fadedOutColor} padding={{bottom: 70, left: 20, right: 10}}>
+            Something looks wrong? <br/><Link href={CrashyNewIssueUrl}>Report an issue</Link>
+        </TextTheme>
+    </Column>
+}
+
+ function CrashContextUi({context}: { context: CrashContext }) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
     const isForge = context.loader.type === LoaderType.Forge
 
-    return <Surface height="fit-content" width="fit-content" padding={{top: 16, left: 16, right: 16, bottom: 24}}>
+    return <Surface height="fit-content" width="max-content" padding={{top: 16, left: 16, right: 16, bottom: 24}}>
         <Column>
             <CrashContextElement color={"#1cc11e"} image={MinecraftLogo} text={context.minecraftVersion}/>
             <CrashContextElement color={"#ffe500"}
@@ -31,6 +44,7 @@ export function CrashContextUi({context}: { context: CrashContext }) {
             <CrashContextElement color={lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
                                  text={context.operatingSystem.name}/>
             <CrashContextElement color={"#CC9966"} image={ClockIcon} text={displayedTime}/>
+
         </Column>
     </Surface>
 }
@@ -41,7 +55,7 @@ function CrashContextElement(props: { image: string, text: string, color: string
         <CDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
         <CImage src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon"
                 style={{filter: props.filter}}/>
-        <Text style = {{maxWidth: "15rem"}} text={props.text} variant="h6"/>
+        <Text style={{maxWidth: "15rem"}} text={props.text} variant="h6"/>
     </Row>
 
 }

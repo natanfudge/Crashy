@@ -12,7 +12,7 @@ export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
 }
 
 
-
+export const CrashyNewIssueUrl = "https://github.com/natanfudge/Crashy/issues/new"
 
 
 export interface ExpandingButtonProps {
