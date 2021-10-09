@@ -6,12 +6,12 @@ However, if the ![Delete](images/delete_black_24dp.svg) window demands a code an
 ![img.png](images/img.png)  
 From there you can see the codes of crash logs you have uploaded:
 
-![Uploaded crash logs file](images\uploaded crash logs file)
+![Uploaded crash logs file](images/uploaded_crash_logs_file.png)
 
 The left side is **the ID of a crash** and the right side is **the code** of said crash.
 
 The ID of the crash you are viewing is **the path of the URL after crashy.net**:
-![Crash id in url](images\crash id in url)
+![Crash id in url](images/crash id in url.png)
 
 So search for the ID of the crash you are viewing, and on the right side you will see the code you need. 
 
