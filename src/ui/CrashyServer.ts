@@ -37,9 +37,6 @@ export interface UploadCrashSuccess {
 
 export type UploadCrashError = "Too Large" | "Invalid Crash"
 
-// export function isUploadCrashError(obj: UploadCrashResponse) : obj is UploadCrashError {
-//     return typeof obj === "string"
-// }
 
 export namespace CrashyServer {
     const localTesting = false;

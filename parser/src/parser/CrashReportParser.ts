@@ -199,11 +199,6 @@ export function parseCrashReport(rawReport: string): CrashReport {
         cursor++;
     }
 
-    // function skipLineWith(string: string) {
-    //     skipString(string);
-    //     skipLine();
-    // }
-
     function skipLine() {
         skipUntilAfterChar("\n");
     }
@@ -212,7 +207,6 @@ export function parseCrashReport(rawReport: string): CrashReport {
         if (current() === "\n" || current() === "\r") skipLine();
     }
 
-    //TODO: see if this can be optimized by calculating length AOT
     function skipString(string: string) {
         skipNumber(string.length);
     }

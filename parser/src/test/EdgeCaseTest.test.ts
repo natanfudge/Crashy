@@ -13,4 +13,3 @@ test("Windows newlines can be handled", () => {
     testFabricCrashReportEnrich(enriched)
 });
 
-//TODO: link parser to server
