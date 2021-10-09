@@ -162,7 +162,7 @@ function enrichCrashReportSection(section: CrashReportSection): RichCrashReportS
 function enrichStackTrace(trace: StackTrace): RichStackTrace {
     return {
         causedBy: trace.causedBy !== undefined ? enrichStackTrace(trace.causedBy) : undefined,
-        message: enrichStackTraceMessage(trace.message),
+        title: enrichStackTraceMessage(trace.message),
         elements: enrichStackTraceElements(trace.trace)
     };
 }

@@ -14,27 +14,36 @@ import {CrashyServer, GetCrashError, GetCrashResponse} from "./CrashyServer";
 import {parseCrashReportRich} from "../../parser/src/parser/CrashReportEnricher";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {getUrlCrashId, getUrlNoCache} from "./utils/PageUrl";
-import {CrashyNewIssueUrl} from "./utils/Crashy";
 import {CrashLeftSide} from "./CrashContextUi";
 
 
 export function CrashyCrashReportPage() {
-    const [crash, setCrash] = useState<GetCrashResponse | undefined>(undefined)
+    const [crash, setCrash] = useState<GetCrashResponse | undefined | Error>(undefined)
     //TODO: ok, plan D. store in cookies and intentionally hide it from the user. we have no choice.
-    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!, getUrlNoCache()).then(res => setCrash(res)))
+    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!, getUrlNoCache()).then(res => setCrash(res)).catch(e => setCrash(e)))
 
     return <Fragment>
         <CrashyAppBar crash={crash}/>
-        <Wrap style = {{position: "absolute"}} height={"max"} width={"max"} padding={{top: 60}}>
+        <Wrap style={{position: "absolute"}} height={"max"} width={"max"} padding={{top: 60}}>
             <CrashReportPageContent crash={crash}/>
         </Wrap>
-        {/*<Column style={{position: "fixed", height: "100%"}}>*/}
-
-        {/*</Column>*/}
-
     </Fragment>
 }
 
+function CrashReportPageContent({crash}: { crash: GetCrashResponse | undefined | Error }) {
+    if (crash === undefined) {
+        return <LinearProgress/>
+    } else if (crash === GetCrashError.NoSuchCrashId) {
+        return <NoSuchCrashScreen/>
+    } else if (crash instanceof Error) {
+        return <CrashErroredScreen/>
+    } else {
+        const parsed = parseCrashReportRich(crash)
+        document.title = parsed.title
+        return <CrashReportUi report={parsed}/>
+
+    }
+}
 
 function NoSuchCrashScreen() {
     return <Column height={"max"} alignItems={"center"}>
@@ -51,16 +60,12 @@ function NoSuchCrashScreen() {
     </Column>;
 }
 
-function CrashReportPageContent({crash}: { crash: GetCrashResponse | undefined }) {
-    if (crash === undefined) {
-        return <LinearProgress/>
-    } else if (crash === GetCrashError.NoSuchCrashId) {
-        return <NoSuchCrashScreen/>
-    } else {
-        const parsed = parseCrashReportRich(crash)
-        document.title = parsed.title
-        return <CrashReportUi report={parsed}/>
-    }
+function CrashErroredScreen() {
+    return <Column height={"max"} justifyContent={"center"}>
+        <TextTheme width={"max"} align={"center"} margin={{bottom: 200}}>
+            Something went wrong trying to get the crash log. Check your internet connection.
+        </TextTheme>
+    </Column>
 }
 
 export function CrashReportUi({report}: { report: RichCrashReport }) {
@@ -115,7 +120,7 @@ function ActiveSection({report, index}: { report: RichCrashReport, index: number
     }// We already use up the 0 and 1 index for the main stack trace and mods, so we need to reduce the index by 2.
     else {
         // When there is no mods page, only shift by 1 index (for the StackTraceUi)
-        const indexShift = report.mods !== undefined? 2 : 1;
+        const indexShift = report.mods !== undefined ? 2 : 1;
         return <CrashReportSectionUi section={report.sections[index - indexShift]}/>
     }
 }

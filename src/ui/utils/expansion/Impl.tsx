@@ -120,7 +120,6 @@ function useExpansionPositioning({anchorRect, expansionRect, anchorAlignment, ex
 
     const x = anchorX - offsetX;
     const y = anchorY - offsetY;
-    console.log("anchorY: " + anchorRect.top);
 
     const [screenSize, setScreenSize] = useState({width: document.body.clientWidth, height: document.body.clientHeight})
 
@@ -189,7 +188,7 @@ function SizeCalculator({
 
     useLayoutEffect(() => {
         if (calculate) {
-            setRect(getDocumentRelativeRect(ref.current!))
+            setRect(getDocumentRelativeRect(ref.current))
             setCalculate(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

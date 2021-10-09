@@ -10,7 +10,7 @@ import {CAppBar} from "../utils/improvedapi/Material";
 import {BugReport, Delete} from "@mui/icons-material";
 import {DeleteSection} from "./DeleteCrash";
 
-export function CrashyAppBar({crash}: { crash?: GetCrashResponse }) {
+export function CrashyAppBar({crash}: { crash?: GetCrashResponse | Error }) {
     return <CAppBar padding={10}>
         <LinkContent href="/">
             <Row>

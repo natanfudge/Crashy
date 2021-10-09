@@ -13,7 +13,7 @@ namespace HttpStatusCode {
 
 export type GetCrashResponse = string | GetCrashError
 
-export function isSuccessfulGetCrashResponse(crash: GetCrashResponse | undefined): crash is string {
+export function isSuccessfulGetCrashResponse(crash: GetCrashResponse | undefined | Error): crash is string {
     return typeof crash === "string";
 }
 
@@ -42,7 +42,7 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 // }
 
 export namespace CrashyServer {
-    const localTesting = true;
+    const localTesting = false;
     const domain = localTesting ? "localhost:5001/crashy-9dd87/europe-west1" : "europe-west1-crashy-9dd87.cloudfunctions.net";
     const http = localTesting ? "http" : "https"
     const urlPrefix = `${http}://${domain}`

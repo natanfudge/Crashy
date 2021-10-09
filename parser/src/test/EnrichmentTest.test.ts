@@ -38,7 +38,7 @@ export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
 
     //Caused by: org.spongepowered.asm.mixin.throwables.MixinApplyError: Mixin [screenshotclipboard.mixins.json:ScreenshotMixin] from phase [DEFAULT] in config [screenshotclipboard.mixins.json] FAILED during APPLY
     const cause = enriched.stackTrace.causedBy!;
-    expect(cause.message).toEqual({
+    expect(cause.title).toEqual({
         message: "Mixin [screenshotclipboard.mixins.json:ScreenshotMixin] from phase [DEFAULT] in config [screenshotclipboard.mixins.json] FAILED during APPLY",
         class: {
             packageName: "org.spongepowered.asm.mixin.throwables",
@@ -139,7 +139,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
 
     ])
 
-    expect(enriched.stackTrace.message).toEqual({
+    expect(enriched.stackTrace.title).toEqual({
         message: "Unexpected error",
         class: {
             packageName: "java.lang",

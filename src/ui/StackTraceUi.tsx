@@ -10,7 +10,7 @@ import {
 } from "../../parser/src/model/RichCrashReport";
 import {Column, Row} from "./utils/improvedapi/Flex";
 import {Text} from "./utils/improvedapi/Text";
-import React from "react";
+import React, {Fragment} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {Spacer} from "./utils/improvedapi/Core";
 import {clickableColor, fadedOutColor} from "./Colors";
@@ -26,11 +26,14 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
         {CausationButtons(currentCauserIndex, causerList, setCauserIndex)}
 
         <Row flexWrap={"wrap"}>
-            {StackTraceMessageUi(currentTrace.message)}
-            <Text text={":"} variant="h5"/>
-            <Spacer width={5}/>
-            <Text text={currentTrace.message.message}
-                  variant={currentTrace.message.message.length > 200 ? "body1" : "h5"}/>
+            {StackTraceMessageUi(currentTrace.title)}
+
+            {currentTrace.title.message !== undefined && <Fragment>
+                <Text text={":"} variant="h5"/>
+                <Spacer width={5}/>
+                <Text text={currentTrace.title.message}
+                      variant={currentTrace.title.message.length > 200 ? "body1" : "h5"}/>
+            </Fragment>}
         </Row>
 
         <Divider/>
@@ -48,12 +51,12 @@ function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace
     return <Row>
         <span style={{paddingLeft: 5}}/>
         {currentCauserIndex > 0 && <CausationButton
-            text={`Caused: ${causerList[currentCauserIndex - 1].message.class.simpleName}`}
+            text={`Caused: ${causerList[currentCauserIndex - 1].title.class.simpleName}`}
             onClick={() => onCauserIndexChanged(currentCauserIndex - 1)}
         />}
         {currentCauserIndex > 0 && <span style={{paddingLeft: 20}}/>}
         {currentCauserIndex < causerList.length - 1 && <CausationButton
-            text={`Caused By: ${causerList[currentCauserIndex + 1].message.class.simpleName}`}
+            text={`Caused By: ${causerList[currentCauserIndex + 1].title.class.simpleName}`}
             onClick={() => onCauserIndexChanged(currentCauserIndex + 1)}
         />}
     </Row>;
@@ -77,7 +80,7 @@ function StackTraceMessageUi(message: StackTraceMessage) {
                  onClick={() => setOpen(!open)} variant={"h5"}/>
 }
 
-function StackTraceElementUi({traceElement}: {traceElement: RichStackTraceElement }) {
+function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
     const [open, setOpen] = React.useState(false)
     const text = getTraceElementText(traceElement, open)
     const isXMore = typeof traceElement === "number"
@@ -91,7 +94,7 @@ function StackTraceElementUi({traceElement}: {traceElement: RichStackTraceElemen
             wordBreak: "break-word"
         }} onClick={isXMore ? undefined : () => setOpen(!open)}/>
         {typeof traceElement !== "number" && traceElement.forgeMetadata &&
-        <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}
+            <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}
 
     </Row>;
 }
@@ -107,7 +110,7 @@ function getTraceElementText(traceElement: RichStackTraceElement, open: boolean)
     }
 }
 
-function ForgeTraceMetadataUi({metadata}: {metadata: ForgeTraceMetadata }) {
+function ForgeTraceMetadataUi({metadata}: { metadata: ForgeTraceMetadata }) {
     return <MoreInfoButton>
 
         <Column padding={10}>

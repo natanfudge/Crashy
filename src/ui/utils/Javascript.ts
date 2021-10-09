@@ -96,8 +96,8 @@ export function getCookieValue(name: string): string | undefined {
     return value;
 }
 
-export function getDocumentRelativeRect(element?: Element | null) : Rect { // crossbrowser version
-    if(element === undefined || element === null) return {left: 0, top: 0, width:0,height:0}
+export function getDocumentRelativeRect(element?: Element | null): Rect { // crossbrowser version
+    if (element === undefined || element === null) return {left: 0, top: 0, width: 0, height: 0}
     const box = element.getBoundingClientRect();
     return {
         top: box.top + window.scrollY,

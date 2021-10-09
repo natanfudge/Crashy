@@ -31,7 +31,7 @@ export interface ForgeModMetadata {
 
 export interface RichStackTrace {
     causedBy?: RichStackTrace
-    message: StackTraceMessage
+    title: StackTraceMessage
     elements: RichStackTraceElement[]
 }
 
@@ -50,7 +50,7 @@ export function unfoldRichStackTrace(trace: RichStackTrace): RichStackTrace[] {
 
 export interface StackTraceMessage {
     class: JavaClass
-    message: string
+    message?: string
 }
 
 export type RichStackTraceElement = number | {

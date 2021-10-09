@@ -1,10 +1,13 @@
 import React, {Suspense} from 'react';
 import '../App.css';
 
-import {createTheme, CssBaseline, LinearProgress} from "@mui/material";
+import {createTheme, CssBaseline, LinearProgress, Link} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage} from "./CrashyCrashReport";
+import {ErrorBoundary} from "./utils/ErrorBoundary";
+import {TextTheme} from "./utils/improvedapi/Text";
+import {CrashyNewIssueUrl} from "./utils/Crashy";
 
 
 const CrashyHome = React.lazy(() => import("./CrashyHome"))
@@ -18,7 +21,10 @@ export default function App() {
 
     return <ThemeProvider theme={outerTheme}>
         <CssBaseline/>
-        {CrashyUi()}
+        <ErrorBoundary fallback={<CrashyUiFallback/>}>
+            <CrashyUi/>
+        </ErrorBoundary>
+
     </ThemeProvider>
 
 }
@@ -33,6 +39,12 @@ function CrashyUi() {
     }
 }
 
+function CrashyUiFallback() {
+    return <TextTheme>
+        Something went terribly wrong displaying this page. Please <Link href={CrashyNewIssueUrl}>Report this to
+        Crashy</Link>.
+    </TextTheme>
+}
 
 //Fabric:  HU4yNEW0d3xNpnEkgmwu
 //Forge: X

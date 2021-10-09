@@ -68,7 +68,7 @@ const testRichStackTrace: RichCrashReport = {
     title: "charTyped event handler",
     wittyComment: "Why did you do that?",
     stackTrace: {
-        message: {
+        title: {
             message: "charTyped event handler",
             class: {
                 packageName: "java.lang",
@@ -117,7 +117,7 @@ const testRichStackTrace: RichCrashReport = {
             }
         ],
         causedBy: {
-            message: {
+            title: {
                 message: "causer of hell",
                 class: {packageName: "java.lang", simpleName: "UberCrasher"}
             },
@@ -144,7 +144,7 @@ const testRichStackTrace: RichCrashReport = {
                 }
             ],
             causedBy: {
-                message: {
+                title: {
                     message: "actual causer of hell",
                     class: {packageName: "java.lang", simpleName: "UberSuperCrasher"}
                 },
