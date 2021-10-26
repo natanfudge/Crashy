@@ -7,7 +7,7 @@ export interface CrashReport {
     stacktrace: StackTrace
 }
 
-export type StringMap = { [key: string]: string }
+export type StringMap = Record<string, string>
 
 export type StackTraceElement = string
 
@@ -15,6 +15,7 @@ export interface StackTrace {
     message: string
     causedBy?: StackTrace
     trace: StackTraceElement[]
+    details: Record<string, string[]>
 }
 
 export interface CrashReportSection {

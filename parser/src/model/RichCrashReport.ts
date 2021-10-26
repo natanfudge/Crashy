@@ -33,6 +33,41 @@ export interface RichStackTrace {
     causedBy?: RichStackTrace
     title: StackTraceMessage
     elements: RichStackTraceElement[]
+    details: ExceptionDetails
+}
+
+//TODO: see if there are other forms of 'exception details'
+export interface ExceptionDetails {
+    location: ExceptionLocation
+    //TODO: NOTE: may contain class names that should be remapped
+    reason: string
+
+}
+
+export interface ExceptionLocation {
+    method: JavaMethod
+    line: number
+    instruction: string
+}
+
+export interface ExceptionFrame {
+    /**
+     * A single line, even a single Java statement, may translate to several bytecode instructions.
+     * The byte code index tells you which bytecode instruction was executed.
+     */
+    byteCodeIndex: number
+    flags: string[]
+    //TODO: NOTE: may contain class names that should be remapped
+    locals: string[]
+    //TODO: NOTE: may contain class names that should be remapped
+    stack: string[]
+    bytecode: Record<string, string>
+    stackmapTable: Record<string, ExceptionStackmap>
+}
+
+export interface ExceptionStackmap {
+    line: number
+    objects: string[][]
 }
 
 /**
@@ -117,7 +152,7 @@ export interface OperatingSystem {
 }
 
 export enum LoaderType {
-    Fabric, Forge,Vanilla
+    Fabric, Forge, Vanilla
 }
 
 export interface Loader {

@@ -15,6 +15,8 @@
   - Improve visibility of 'causing mod' to increase the chance an issue will be made
 - Crash discussion
   - Make sure crashes are easily searchable in Google
+  - Built-in crash search system (so you can search for an exception and see other people getting it)
+  - find some solution for secret info getting released, maybe make crashes private by default and have a button to make them public
   - Add a system for a 'solution' to be posted on the crash (e.g. update to version X, remove mod Y).
 - 'Click to copy'
   - Crash context
@@ -33,3 +35,6 @@
 - Expose and document API
 - 'New Crash' button (maybe home and 'new crash' will be seperated in the future)
 - Parse vanilla crashes
+- Log failures in crash report parsing for decently large reports, so we can identify ourselves more crashes that are not being parsed correctly. 
+- Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
+possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server.
