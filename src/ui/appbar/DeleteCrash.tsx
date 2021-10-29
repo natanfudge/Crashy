@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React from "react";
 import {Column, Row} from "../utils/improvedapi/Flex";
 import {Text, TextTheme} from "../utils/improvedapi/Text";
 import {CButton, CTextField} from "../utils/improvedapi/Material";
@@ -20,80 +20,89 @@ enum DeleteState {
     AlreadyDeleted
 }
 
-//TODO: write doc for crash help
 const CodeLength = 6;
 
-function LoadingDeleteIndicator(deleteState: DeleteState) {
-    return <>
-        {deleteState === DeleteState.Loading && <Wrap margin={{horizontal: 10}} alignSelf={"center"}>
-            <CircularProgress/>
-        </Wrap>}
-    </>;
-}
 
-//TODO: rewrite...
 export function DeleteSection() {
     const storedCrashCode = React.useMemo(() => getCookieCrashCode(), []);
-    const [code, setCode] = React.useState(storedCrashCode ?? "")
+    return storedCrashCode === undefined ? <UserSuppliedCodeDeleteSection/> :
+        <PreSuppliedCodeDeleteSection code={storedCrashCode}/>
+}
+
+
+
+function UserSuppliedCodeDeleteSection() {
+    const [code, setCode] = React.useState("")
     const [deleteState, setDeleteState] = React.useState(DeleteState.NoAttemptMade)
-    const hasCodeCookie = storedCrashCode !== undefined
-    const showNextToButtonLoadingIndicator = deleteState === DeleteState.Loading
 
     const label = determineLabel(deleteState)
     return <Column padding={10}>
         <Text align={"center"}
-              text={storedCrashCode === undefined ? "Enter the code for this crash to delete it" : "Delete this crash log?"}
+              text={"Enter the code for this crash to delete it"}
               padding={{bottom: 10}}/>
 
-        {!hasCodeCookie && <Row>
+        <Row>
             <CTextField flexGrow={1} label={label !== undefined ? <p>{label}</p> : undefined}
                         error={deleteState === DeleteState.Incorrect}
                         padding={{bottom: 10}}
                         value={code} onValueChanged={setCode}/>
-
-        </Row>}
-
-        <Row justifyContent={"center"} width={"max"}>
-            <CButton style={{position: showNextToButtonLoadingIndicator ? "absolute" : undefined}} margin={{bottom: 15}}
-                     alignSelf={"center"} variant={"contained"} width={"fit-content"}
-                     disabled={code.length !== CodeLength || deleteState === DeleteState.Loading}
-                     onClick={async () => {
-                         setDeleteState(DeleteState.Loading)
-                         const newState = await deleteCrash(code)
-                         setDeleteState(newState);
-                         if (newState === DeleteState.Deleted) {
-                             setCode("")
-                             setUrlNoCache(true);
-                         }
-                     }}>
-
-                <Text text={"DELETE"}/>
-
-
-            </CButton>
-            {showNextToButtonLoadingIndicator && <Fragment>
-                <Spacer flexGrow={1}/>
-                <Wrap margin={{right: 10, bottom: 10}}>
-                    <CircularProgress/>
-                </Wrap>
-            </Fragment> }
         </Row>
-        {hasCodeCookie && <Column>
+
+        <DeleteCrashButton code = {code} deleteState = {deleteState} setDeleteState = {setDeleteState}/>
+
+        <Link target="_blank" rel="noopener" underline={"hover"} variant={"subtitle2"} href={CRASH_CODE_HELP_URL}>
+            What is my crash code?
+        </Link>
+    </Column>
+}
+
+function PreSuppliedCodeDeleteSection({code}: { code: string }) {
+    const [deleteState, setDeleteState] = React.useState(DeleteState.NoAttemptMade)
+
+    const label = determineLabel(deleteState)
+    return <Column padding={10}>
+        <Text align={"center"}
+              text={"Delete this crash log?"}
+              padding={{bottom: 10}}/>
+        <DeleteCrashButton code = {code} deleteState = {deleteState} setDeleteState = {setDeleteState}/>
+        {label !== undefined &&
+            <Text text={label} padding={{bottom: 5}} align={"center"} variant={"caption"} color={fadedOutColor}/>}
+        <Column>
             <TextTheme color={fadedOutColor} variant={"subtitle2"}>
                 You've recently created this log,<br/> so you can delete it without a code.<br/>To delete in the future,
                 store this code now:
             </TextTheme>
             {/*TODO: copy button*/}
-            <Text padding={{top: 5}} align={"center"} text={storedCrashCode}/>
+            <Text padding={{top: 5}} align={"center"} text={code}/>
         </Column>
-        }
-
-        {!hasCodeCookie &&
-            <Link target="_blank" rel="noopener" underline={"hover"} variant={"subtitle2"} href={CRASH_CODE_HELP_URL}>
-                What is my crash code?
-            </Link>}
 
     </Column>
+}
+
+function DeleteCrashButton({code,deleteState,setDeleteState}: {code: string, deleteState: DeleteState, setDeleteState: (value: DeleteState) => void}) {
+    return <Row justifyContent={"center"} width={"max"}>
+        <CButton margin={{bottom: 15}}
+                 alignSelf={"center"} variant={"contained"} width={"fit-content"}
+                 disabled={code.length !== CodeLength || deleteState === DeleteState.Loading}
+                 onClick={async () => {
+                     setDeleteState(DeleteState.Loading)
+                     const newState = await deleteCrash(code)
+                     setDeleteState(newState);
+                     if (newState === DeleteState.Deleted) {
+                         setUrlNoCache(true);
+                     }
+                 }}>
+
+            <Text text={"DELETE"}/>
+
+        </CButton>
+        {deleteState === DeleteState.Loading && <Row style={{position: "absolute"}} width={"max"}>
+            <Spacer flexGrow={1}/>
+            <Wrap padding={{right: 30, bottom: 10}}>
+                <CircularProgress/>
+            </Wrap>
+        </Row>}
+    </Row>;
 }
 
 function determineLabel(deleteState: DeleteState): string | undefined {

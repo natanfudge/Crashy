@@ -1,6 +1,6 @@
 import {StringMap} from "../../../parser/src/model/CrashReport";
 import {objectMap} from "./Javascript";
-import {Require} from "./Typescript";
+import {Require} from "../../../parser/src/util/Utils";
 
 export interface HttpResponse {
     body: string

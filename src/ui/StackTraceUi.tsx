@@ -2,19 +2,21 @@ import {
     ForgeTraceMetadata,
     javaClassFullName,
     javaMethodFullNameName,
-    javaMethodSimpleName,
+    javaMethodSimpleName, RichExceptionDetails,
     RichStackTrace,
     RichStackTraceElement,
     StackTraceMessage,
     unfoldRichStackTrace
 } from "../../parser/src/model/RichCrashReport";
 import {Column, Row} from "./utils/improvedapi/Flex";
-import {Text} from "./utils/improvedapi/Text";
+import {Text, TextTheme} from "./utils/improvedapi/Text";
 import React, {Fragment} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {Spacer} from "./utils/improvedapi/Core";
 import {clickableColor, fadedOutColor} from "./Colors";
-import {MoreInfoButton} from "./utils/Crashy";
+import {ExpandingButton, MoreInfoButton} from "./utils/Crashy";
+import {ClickCallback} from "./utils/improvedapi/Element";
+import {CButton} from "./utils/improvedapi/Material";
 
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
@@ -34,11 +36,28 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
                 <Text text={currentTrace.title.message}
                       variant={currentTrace.title.message.length > 200 ? "body1" : "h5"}/>
             </Fragment>}
+            {currentTrace.details !== undefined && <JVMDetailsButton details = {currentTrace.details}/>}
         </Row>
 
         <Divider/>
         <StackTraceElementsUi elements={currentTrace.elements}/>
     </Column>
+}
+
+export function JVMDetailsButton(props: {details: RichExceptionDetails}) {
+    return <ExpandingButton button={handleClick => <CButton margin={{left: 10, bottom: 3}} padding={3} size={"small"} variant={"outlined"}  onClick={handleClick}>
+        <TextTheme variant={"subtitle2"}>
+            JVM Details
+        </TextTheme>
+    </CButton>} sticky={false}>
+        <TextTheme style={{maxHeight: "500px", maxWidth: "1500px", overflow: "auto", padding: "5px", whiteSpace: "pre"}}>
+            {JSON.stringify(props.details,null,2).split("\n").map(line => <Fragment>
+                    {line}
+                    <br/>
+            </Fragment>)}
+        </TextTheme>
+    </ExpandingButton>
+
 }
 
 export function StackTraceElementsUi({elements}: { elements: RichStackTraceElement[] }) {
@@ -63,8 +82,8 @@ function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace
 }
 
 
-function CausationButton(props: { text: string, onClick: () => void }) {
-    return <Button disableRipple={true} variant={"outlined"} size={"small"} onClick={props.onClick}>
+function CausationButton(props: { text: string, onClick: ClickCallback }) {
+    return <Button disableRipple={true} variant={"outlined"} size={"small"} onClick={(e) => props.onClick(e.currentTarget)}>
         {props.text}
     </Button>
 }

@@ -36,5 +36,6 @@
 - 'New Crash' button (maybe home and 'new crash' will be seperated in the future)
 - Parse vanilla crashes
 - Log failures in crash report parsing for decently large reports, so we can identify ourselves more crashes that are not being parsed correctly. 
+- When a failure happens, we always log the exception itself, with optionally logging the entire crash report. 
 - Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
 possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server.

@@ -7,7 +7,7 @@ import {Variant} from "@mui/material/styles/createTypography";
 import {TypographyClasses} from "@mui/material/Typography/typographyClasses";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
-import {isObj} from "../Typescript";
+import {isObj} from "../../../../parser/src/util/Utils";
 
 export interface TextThemeProps extends ManyChildParentProps {
     /**

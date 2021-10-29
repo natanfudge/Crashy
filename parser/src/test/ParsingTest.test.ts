@@ -4,7 +4,7 @@ import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 import {TestBuggyParseCrash} from "./TestBuggyParseCrash";
 import {enrichCrashReport} from "../parser/CrashReportEnricher";
 import {BarebonesFabricCrash} from "./BarebonesFabricCrash";
-import {LoaderType} from "../model/RichCrashReport";
+import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../model/RichCrashReport";
 import {TestVerifyErrorCrash} from "./TestVerifyErrorCrash";
 
 export function testForgeCrashReportParse(report: CrashReport) {
@@ -242,5 +242,40 @@ test("Barebones Fabric crash is parsed correctly", () => {
 
 test("VerifyError crash is parsed correctly", () => {
     const report = parseCrashReport(TestVerifyErrorCrash);
-    const x = 2;
+    expect(report.sections.length).toEqual(4)
+    expect(report.stacktrace.trace.length).toEqual(11)
+    expect(Object.keys(report.stacktrace.details!).length).toEqual(5)
+    expect(report.stacktrace.details!["Current Frame"].length).toEqual(4)
+    expect(report.stacktrace.details!["Location"]).toEqual(["net/minecraft/class_5944.<init>(Lnet/minecraft/class_5912;Ljava/lang/String;Lnet/minecraft/class_293;)V @7: invokespecial"])
+
+    const enriched = enrichCrashReport(report);
+    //2021-10-25, 10:07 a.m.
+    expect(enriched.context.time).toEqual(new Date(2021,10,25,10,7))
+    const details = enriched.stackTrace.details!;
+    expect(details.location).toEqual({
+        methodSignature: "net/minecraft/class_5944.<init>(Lnet/minecraft/class_5912;Ljava/lang/String;Lnet/minecraft/class_293;)V",
+        line: 7,
+        instruction: "invokespecial"
+    } as ExceptionLocation)
+
+    expect(details.reason).toEqual("Type uninitializedThis (current frame, stack[2]) is not assignable to 'net/minecraft/class_5944'")
+    const frame = details.currentFrame;
+    expect(frame.byteCodeIndex).toEqual(7)
+    expect(frame.flags).toEqual(["flagThisUninit"])
+    expect(frame.locals).toEqual(["uninitializedThis", "'net/minecraft/class_5912'", "'java/lang/String'", "'net/minecraft/class_293'"])
+    expect(frame.stack).toEqual(["uninitializedThis", "'net/minecraft/class_5912'", "uninitializedThis", "'java/lang/String'", "'net/minecraft/class_5912'", "'java/lang/String'", "'net/minecraft/class_293'"])
+    expect(details.bytecode).toEqual({
+        "0000000": "2a2b2a2c2b2c2db7005b59c7000dbb00",
+        "0000010": "5d59125fb70062bf2db70065b1"
+    })
+    //full_frame(@24,{UninitializedThis,Object[#108],Object[#110],Object[#112]},{UninitializedThis,Object[#108],Object[#114]})
+    expect(details.stackmapTable).toEqual({
+        "full_frame": {
+            line: 24,
+            objects: [
+                ["UninitializedThis", "Object[#108]", "Object[#110]", "Object[#112]"],
+                ["UninitializedThis", "Object[#108]", "Object[#114]"]
+            ]
+        }
+    } as ExceptionStackmapTable)
 });

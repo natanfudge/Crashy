@@ -20,28 +20,38 @@ export interface ExpandingButtonProps {
 }
 
 export function MoreInfoButton(props: WithChild) {
-    return <ExpandingButton sticky={false}  buttonPadding={0}
+    return <ExpandingIconButton sticky={false} buttonPadding={0}
                             icon={<KeyboardArrowDown style={{filter: "brightness(0.5)"}}/>}>
         {props.children}
-    </ExpandingButton>
+    </ExpandingIconButton>
 }
 
+export function ExpandingIconButton({buttonPadding, icon, ...expandingButtonProps}:
+                                        { buttonPadding?: Padding, icon: JSX.Element } & ExpandingButtonProps & SingleChildParentProps) {
+    return <ExpandingButton
+        {...expandingButtonProps}
+        button={
+            (handleClick) => <CIconButton padding={buttonPadding} onClick={handleClick}>
+                {icon}
+            </CIconButton>
+        }
+     />
+}
 
-export function ExpandingButton({buttonPadding, icon,  children, sticky, ...expansionProps}:
-                                    { buttonPadding?: Padding, icon: JSX.Element } & ExpandingButtonProps & SingleChildParentProps) {
+type ClickableElement = (handleClick: (element: Element) => void) => JSX.Element
+
+export function ExpandingButton({button, children, sticky, ...expansionProps}:
+                                    { button: ClickableElement } & ExpandingButtonProps & SingleChildParentProps) {
     const expansion = useExpansion();
 
     const handleClick: ClickCallback = (element: Element) => {
-        console.log("glock")
         expansion.toggle(element);
     }
 
     return <Fragment>
-        <CIconButton padding={buttonPadding} onClick={handleClick}>
-            {icon}
-        </CIconButton>
+        {button(handleClick)}
         <Expansion {...expansionProps} anchorReference={"bottom-center"} position={"top-center"} state={expansion}
-                   onDismiss={() => expansion.hide()}  sticky={sticky}>
+                   onDismiss={() => expansion.hide()} sticky={sticky}>
             <ExpansionSurface>
                 {children}
             </ExpansionSurface>

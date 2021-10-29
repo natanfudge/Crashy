@@ -1,6 +1,17 @@
-import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "../model/CrashReport";
+import {
+    CrashReport,
+    CrashReportSection,
+    ExceptionDetails,
+    StackTrace,
+    StackTraceElement,
+    StringMap
+} from "../model/CrashReport";
 import {
     CrashContext,
+    ExceptionBytecode,
+    ExceptionFrame,
+    ExceptionLocation,
+    ExceptionStackmapTable,
     ForgeTraceMetadata,
     JavaClass,
     JavaMethod,
@@ -11,12 +22,15 @@ import {
     OperatingSystemType,
     RichCrashReport,
     RichCrashReportSection,
+    RichExceptionDetails,
     RichStackTrace,
     RichStackTraceElement,
     StackTraceMessage,
     TraceLine
 } from "../model/RichCrashReport";
 import {parseCrashReport} from "./CrashReportParser";
+import {typedKeys} from "../util/Utils";
+import "../util/Extensions"
 
 export function parseCrashReportRich(rawReport: string): RichCrashReport {
     return enrichCrashReport(parseCrashReport(rawReport));
@@ -27,7 +41,7 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
     return {
         wittyComment: report.wittyComment,
         title: report.description,
-        mods: mods,
+        mods,
         stackTrace: enrichStackTrace(report.stacktrace),
         sections: report.sections.map((section) => enrichCrashReportSection(section)),
         context: getCrashContext(report, mods)
@@ -126,14 +140,8 @@ function parseCrashDate(dateStr: string): Date {
     // Forge format: 15.08.21 17:36
     const isFabricFormat = dateStr.includes(",");
     const [date, hourStr] = dateStr.split(isFabricFormat ? ", " : " ");
-    const [left, right, year] = date.split(dateStr.includes("/") ? "/" : ".");
-
-    // Fabric: always uses day/month/year
-    // Forge: When seperated with dots, is day/month/year. When seperated with slashes, is month/day/year.
-    const isDayMonthYear = isFabricFormat || dateStr.includes(".");
-    const [day, month] = isDayMonthYear ? [left, right] : [right, left];
-
-    const [fullHourStr, minutesStr] = hourStr.split(":");
+    const {day, month, year} = parseDayMonthYear(date, isFabricFormat);
+    const [fullHourStr, minutesStr] = hourStr.removeSuffix(" a.m.").split(":");
     // Convert PM format to 24 hour format
     const fullHour = parseInt(fullHourStr) + (minutesStr.endsWith(" PM") ? 12 : 0);
 
@@ -144,6 +152,21 @@ function parseCrashDate(dateStr: string): Date {
         fullHour,
         parseInt(removeSuffix(minutesStr, " PM")) // minutes
     );
+}
+
+function parseDayMonthYear(rawDate: string, isFabricFormat: boolean): { day: string, month: string, year: string } {
+    // Sometimes the date is in year-month-day format
+    if (rawDate.includes("-")) {
+        const [year, month, day] = rawDate.split("-");
+        return {day, month, year};
+    }
+    const [left, right, year] = rawDate.split(rawDate.includes("/") ? "/" : ".");
+
+    // Fabric: always uses day/month/year
+    // Forge: When seperated with dots, is day/month/year. When seperated with slashes, is month/day/year.
+    const isDayMonthYear = isFabricFormat || rawDate.includes(".");
+    const [day, month] = isDayMonthYear ? [left, right] : [right, left];
+    return {day, month, year};
 }
 
 function enrichCrashReportSection(section: CrashReportSection): RichCrashReportSection {
@@ -161,17 +184,115 @@ function enrichCrashReportSection(section: CrashReportSection): RichCrashReportS
 
 function enrichStackTrace(trace: StackTrace): RichStackTrace {
     return {
+        details: trace.details !== undefined ? enrichExceptionDetails(trace.details) : undefined,
         causedBy: trace.causedBy !== undefined ? enrichStackTrace(trace.causedBy) : undefined,
         title: enrichStackTraceMessage(trace.message),
         elements: enrichStackTraceElements(trace.trace)
     };
 }
 
+const expectedExceptionDetailFields = ["Location", "Reason", "Current Frame", "Bytecode", "Stackmap Table"]
+
+function enrichExceptionDetails(details: ExceptionDetails): RichExceptionDetails {
+    const keys = typedKeys(details);
+    expectOnlyCertainFieldsToBePresent(keys);
+    return {
+        location: enrichExceptionLocation(details["Location"]),
+        reason: enrichExceptionReason(details["Reason"]),
+        currentFrame: enrichExceptionFrame(details["Current Frame"]),
+        bytecode: enrichExceptionBytecode(details["Bytecode"]),
+        stackmapTable: enrichExceptionStackmapTable(details["Stackmap Table"])
+    }
+}
+
+function expectOnlyCertainFieldsToBePresent(keys: string[]) {
+    const unexpectedKey = keys.find(key => !expectedExceptionDetailFields.includes(key));
+    if (unexpectedKey !== undefined) {
+        throw new Error("Unexpected exception details field: " + unexpectedKey);
+    }
+}
+
+function enrichExceptionLocation(rawLocation: string[]): ExceptionLocation {
+    if (rawLocation.length !== 1) {
+        throw new Error("Expected exactly one element as exception location");
+    }
+    const [methodSignature, line, instruction] = rawLocation[0].split(" ");
+    return {
+        // Remove leading '@' and trailing ':'
+        line: parseInt(line.slice(1, -1)),
+        methodSignature,
+        instruction
+    }
+}
+
+function enrichExceptionReason(rawReason: string[]): string {
+    if (rawReason.length !== 1) {
+        throw new Error("Expected exactly one element as exception reason");
+    }
+    return rawReason[0];
+}
+
+
+function enrichExceptionFrame(rawFrame: string[]): ExceptionFrame {
+    if (rawFrame.length !== 4) {
+        throw new Error("Unexpected exception frame format: " + rawFrame.join(", "))
+    }
+    const [byteCodeIndex, flags, locals, stack] = rawFrame;
+    return {
+        // Remove leading 'bci: @'
+        byteCodeIndex: parseInt(byteCodeIndex.slice("bci: @".length)),
+        flags: parseExceptionFrameField("flags", flags),
+        locals: parseExceptionFrameField("locals", locals),
+        stack: parseExceptionFrameField("stack", stack)
+    }
+}
+
+function parseExceptionFrameField(fieldName: string, rawField: string): string[] {
+    return rawField.removeExpectedPrefix(fieldName + ": { ").removeExpectedSuffix(" }")
+        .split(", ")
+}
+
+
+function enrichExceptionBytecode(rawBytecode: string[]): ExceptionBytecode {
+    const bytecodes: ExceptionBytecode = {}
+    for (const bytecode of rawBytecode) {
+        //TODO: remember to trim and join
+        const [address, value] = bytecode.split(": ")
+        bytecodes[address] = value.replace(/ /g, "")
+    }
+    return bytecodes
+}
+
+function enrichExceptionStackmapTable(rawTable: string[]): ExceptionStackmapTable {
+    const stackmapTable: ExceptionStackmapTable = {}
+    for (const stackmap of rawTable) {
+        //    full_frame(@24,{UninitializedThis,Object[#108],Object[#110],Object[#112]},{UninitializedThis,Object[#108],Object[#114]})
+        const [name, valueWithClosingBracket] = stackmap.splitToTwo("(")
+        // Remove trailing ')'
+        const [rawLineNumber, rawObjects] = valueWithClosingBracket.removeExpectedSuffix(")").splitToTwo(",");
+        if (rawLineNumber === undefined) throw new Error("Expected exception stack map to at least contain line number. Instead got: " + stackmap);
+        // Remove leading '@"
+        const line = parseInt(rawLineNumber.slice(1));
+        const objects = splitStackmapObjects(rawObjects).map(rawObject => parseStackmapObject(rawObject));
+        stackmapTable[name] = {objects, line}
+    }
+    return stackmapTable;
+}
+
+function splitStackmapObjects(rawObjects: string): string[] {
+    return rawObjects.removeExpectedPrefix("{").removeExpectedSuffix("}").split("},{")
+}
+
+//{UninitializedThis,Object[#108],Object[#110],Object[#112]}
+function parseStackmapObject(rawObject: string): string[] {
+    return rawObject.split(",");
+}
+
 function enrichStackTraceMessage(rawMessage: string): StackTraceMessage {
     //Example: java.lang.NullPointerException: Unexpected error
     const [exception, message] = rawMessage.split(": ");
     return {
-        message: message,
+        message,
         class: parseJavaClass(exception)
     };
 }

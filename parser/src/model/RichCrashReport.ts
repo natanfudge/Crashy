@@ -33,19 +33,25 @@ export interface RichStackTrace {
     causedBy?: RichStackTrace
     title: StackTraceMessage
     elements: RichStackTraceElement[]
-    details: ExceptionDetails
+    details?: RichExceptionDetails
 }
 
 //TODO: see if there are other forms of 'exception details'
-export interface ExceptionDetails {
+export interface RichExceptionDetails {
     location: ExceptionLocation
     //TODO: NOTE: may contain class names that should be remapped
     reason: string
-
+    currentFrame: ExceptionFrame
+    bytecode: ExceptionBytecode
+    stackmapTable: ExceptionStackmapTable
 }
 
+export  type ExceptionBytecode = Record<string, string>
+export  type ExceptionStackmapTable = Record<string, ExceptionStackmap>
+
 export interface ExceptionLocation {
-    method: JavaMethod
+    //TODO: potentially parse as a MethodSignature type if needed
+    methodSignature: string
     line: number
     instruction: string
 }
@@ -61,8 +67,6 @@ export interface ExceptionFrame {
     locals: string[]
     //TODO: NOTE: may contain class names that should be remapped
     stack: string[]
-    bytecode: Record<string, string>
-    stackmapTable: Record<string, ExceptionStackmap>
 }
 
 export interface ExceptionStackmap {
