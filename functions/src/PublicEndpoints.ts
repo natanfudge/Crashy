@@ -56,7 +56,7 @@ export async function getCrashDocument(id: string): Promise<DocumentReference<Do
     return admin.firestore().doc(`crashes/${id}`);
 }
 
-export async function getCrashFromDb(document: DocumentReference<DocumentData>): Promise<Crash | undefined> {
+export async function getCrashFromDocument(document: DocumentReference<DocumentData>): Promise<Crash | undefined> {
     return (await document.get()).data() as Promise<Crash | undefined>;
 }
 
@@ -70,7 +70,7 @@ export async function getCrash(req: functions.Request & GetCrashRequest, res: fu
     const id = url.slice(1);
 
     const crashDocument = await getCrashDocument(id);
-    const crash = await getCrashFromDb(crashDocument);
+    const crash = await getCrashFromDocument(crashDocument);
 
     if (!crash) {
         res.status(HttpStatusCode.NotFound).send(`No crashlog with id ${id}`);
@@ -108,7 +108,7 @@ export async function deleteCrash(req: functions.Request, res: functions.Respons
     }
 
     const crashDocument = await getCrashDocument(crashId);
-    const crash = await getCrashFromDb(crashDocument);
+    const crash = await getCrashFromDocument(crashDocument);
 
     if (!crash) {
         res.status(HttpStatusCode.NotFound).send(`No crashlog with id ${crashId}`);

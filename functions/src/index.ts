@@ -2,7 +2,8 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as corsPackage from "cors";
 import {Request, Response} from "firebase-functions";
-import {deleteCrash, getCrash, uploadCrash} from "./endpoints";
+import {deleteCrash, getCrash, uploadCrash} from "./PublicEndpoints";
+import {downloadDatabaseOverview} from "./PrivateEndpoints";
 
 admin.initializeApp();
 
@@ -17,3 +18,4 @@ function endpoint(code: (req: Request, res: Response) => void) {
 exports.uploadCrash = endpoint(uploadCrash);
 exports.getCrash = endpoint(getCrash);
 exports.deleteCrash = endpoint(deleteCrash);
+exports.downloadDatabaseOverview = endpoint(downloadDatabaseOverview)
