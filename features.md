@@ -40,3 +40,4 @@
 - Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
 possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server.
 - Suggest fixes. For example, when a mod is blamed, suggest updating it (maybe even somehow detect it has an update)
+- Pay a flat amount to save a crash report forever. 

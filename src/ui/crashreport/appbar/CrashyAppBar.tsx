@@ -1,12 +1,12 @@
-import {Row} from "../utils/improvedapi/Flex";
-import {LinkContent} from "../utils/improvedapi/Vanilla";
-import {Text} from "../utils/improvedapi/Text";
-import {crashyTitleColor, OnBackgroundColor} from "../Colors";
-import {Spacer} from "../utils/improvedapi/Core";
+import {Row} from "../../utils/improvedapi/Flex";
+import {LinkContent} from "../../utils/improvedapi/Vanilla";
+import {Text} from "../../utils/improvedapi/Text";
+import {crashyTitleColor, OnBackgroundColor} from "../../Colors";
+import {Spacer} from "../../utils/improvedapi/Core";
 import React, {Fragment} from "react";
-import {GetCrashResponse, isSuccessfulGetCrashResponse} from "../CrashyServer";
-import {CrashyLogo, ExpandingButton, ExpandingIconButton} from "../utils/Crashy";
-import {CAppBar} from "../utils/improvedapi/Material";
+import {GetCrashResponse, isSuccessfulGetCrashResponse} from "../../../server/CrashyServer";
+import {CrashyLogo, ExpandingButton, ExpandingIconButton} from "../../utils/Crashy";
+import {CAppBar} from "../../utils/improvedapi/Material";
 import {BugReport, Delete} from "@mui/icons-material";
 import {DeleteSection} from "./DeleteCrash";
 

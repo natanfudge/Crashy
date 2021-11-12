@@ -1,12 +1,12 @@
-import {Column, Row} from "./utils/improvedapi/Flex";
-import {Text} from "./utils/improvedapi/Text";
-import {CDivider, Spacer} from "./utils/improvedapi/Core";
-import {StringMap} from "../../parser/src/model/CrashReport";
+import {Column, Row} from "../../utils/improvedapi/Flex";
+import {Text} from "../../utils/improvedapi/Text";
+import {CDivider, Spacer} from "../../utils/improvedapi/Core";
+import {StringMap} from "../../../../parser/src/model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
-import {primaryColor} from "./Colors";
-import {RichCrashReportSection, RichStackTraceElement} from "../../parser/src/model/RichCrashReport";
-import {objectMap} from "./utils/Javascript";
+import {primaryColor} from "../../Colors";
+import {RichCrashReportSection, RichStackTraceElement} from "../../../../parser/src/model/RichCrashReport";
+import {objectMap} from "../../../utils/Javascript";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>

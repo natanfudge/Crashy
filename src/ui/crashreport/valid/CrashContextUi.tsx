@@ -1,22 +1,22 @@
-import {Column, Row} from "./utils/improvedapi/Flex";
-import MinecraftLogo from "../media/minecraft_cube.svg";
-import ForgeLogo from "../media/forge_logo.svg";
-import FabricLogo from "../media/fabric_logo.svg";
-import JavaLogo from "../media/java-icon.svg";
-import ClockIcon from "../media/clock_white.svg";
+import {Column, Row} from "../../utils/improvedapi/Flex";
+import MinecraftLogo from "../../../media/minecraft_cube.svg";
+import ForgeLogo from "../../../media/forge_logo.svg";
+import FabricLogo from "../../../media/fabric_logo.svg";
+import JavaLogo from "../../../media/java-icon.svg";
+import ClockIcon from "../../../media/clock_white.svg";
 import React from "react";
-import WindowsLogo from "../media/windows_logo.svg";
-import LinuxLogo from "../media/linux_logo.svg";
-import MacosLogo from "../media/macos_logo.svg";
-import QuestionMarkIcon from "../media/questionmark_icon_white.svg";
-import {CDivider, CImage, Spacer} from "./utils/improvedapi/Core";
-import {Text, TextTheme} from "./utils/improvedapi/Text";
+import WindowsLogo from "../../../media/windows_logo.svg";
+import LinuxLogo from "../../../media/linux_logo.svg";
+import MacosLogo from "../../../media/macos_logo.svg";
+import QuestionMarkIcon from "../../../media/questionmark_icon_white.svg";
+import {CDivider, CImage, Spacer} from "../../utils/improvedapi/Core";
+import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {lightBlue} from "@mui/material/colors";
-import {CrashContext, LoaderType, OperatingSystemType} from "../../parser/src/model/RichCrashReport";
-import {Surface} from "./utils/improvedapi/Material";
-import {fadedOutColor} from "./Colors";
+import {CrashContext, LoaderType, OperatingSystemType} from "../../../../parser/src/model/RichCrashReport";
+import {Surface} from "../../utils/improvedapi/Material";
+import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";
-import {CrashyNewIssueUrl} from "./utils/Crashy";
+import {CrashyNewIssueUrl} from "../../utils/Crashy";
 
 export function CrashLeftSide(props: { context: CrashContext }) {
     return <Column height={"max"}>

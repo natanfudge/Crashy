@@ -1,4 +1,4 @@
-import {Key, typedKeys} from "../../../parser/src/util/Utils";
+import {Key, typedKeys} from "../../parser/src/util/Utils";
 import {Rect} from "./Gui";
 
 export function removeSuffix(str: string, suffix: string): string {

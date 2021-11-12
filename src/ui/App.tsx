@@ -4,13 +4,13 @@ import '../App.css';
 import {createTheme, CssBaseline, LinearProgress, Link} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
-import {CrashyCrashReportPage} from "./CrashyCrashReport";
+import {CrashyCrashReportPage} from "./crashreport/CrashReportPage";
 import {ErrorBoundary} from "./utils/ErrorBoundary";
 import {TextTheme} from "./utils/improvedapi/Text";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
 
 
-const CrashyHome = React.lazy(() => import("./CrashyHome"))
+const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
 
 //4ceKUQTeDaE47bLymRcy
 //UviVselptZNZBxe9Govx
