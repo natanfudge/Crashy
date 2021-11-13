@@ -15,6 +15,7 @@ import {Crash} from "./models";
 // Draw a graph of the current data so we can make better choices.
 // Every X amount of time take all crashes that have been inactive for Y months, and move them into a separate collection 'deleted', that is much more compact (only the id is stored)
 // When making a crash request, and the crash doesn't exist in the normal collection, check if it exists in the deleted collection and tell the client that.
+// Also increment a counter whenever a crash is visited
 
 // The business model is still an open question.
 
