@@ -160,6 +160,8 @@ function enrichCrashReportSection(section: CrashReportSection): RichCrashReportS
 }
 
 function enrichStackTrace(trace: StackTrace): RichStackTrace {
+    //TODO
+    // throw new Error("TODO")
     return {
         causedBy: trace.causedBy !== undefined ? enrichStackTrace(trace.causedBy) : undefined,
         title: enrichStackTraceMessage(trace.message),

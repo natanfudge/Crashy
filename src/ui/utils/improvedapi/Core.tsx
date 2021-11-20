@@ -1,4 +1,4 @@
-import {deflattenStyle, ElementProps, SingleChildParentProps} from "./Element";
+import {deflattenStyle, ElementProps, ManyChildParentProps, SingleChildParentProps} from "./Element";
 import {Divider} from "@mui/material";
 import React from "react";
 
@@ -16,8 +16,13 @@ export function Spacer(props: ElementProps) {
     return <div {...deflattenStyle(props)}/>
 }
 
-// Use Row/Col for wrapping because the layout is not obvious otherwise
+// Use Row/Col for wrapping because the layout is not obvious otherwise. 
+// When layout has no meaning use WrapMultiple
 export function Wrap(props: SingleChildParentProps & {divRef?: React.Ref<HTMLDivElement>}) {
+    return WrapMultiple(props);
+}
+
+export function WrapMultiple(props: ManyChildParentProps & {divRef?: React.Ref<HTMLDivElement>}) {
     const {divRef,...otherProps} = props;
     return <div {...deflattenStyle(otherProps)} ref = {props.divRef}/>
 }

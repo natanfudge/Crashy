@@ -33,7 +33,7 @@ export interface RichStackTrace {
     causedBy?: RichStackTrace
     title: StackTraceMessage
     elements: RichStackTraceElement[]
-    details: ExceptionDetails
+    details?: ExceptionDetails
 }
 
 //TODO: see if there are other forms of 'exception details'

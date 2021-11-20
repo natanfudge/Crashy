@@ -1,8 +1,8 @@
 import React, {Fragment} from "react";
-import {Surface} from "./utils/improvedapi/Material";
+import {CTextField, Surface} from "./utils/improvedapi/Material";
 import {Column, Row} from "./utils/improvedapi/Flex";
-import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, TextField} from "@mui/material";
-import {Wrap} from "./utils/improvedapi/Core";
+import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, SvgIcon, TextField} from "@mui/material";
+import {Wrap, WrapMultiple} from "./utils/improvedapi/Core";
 import {CloudUpload} from "@mui/icons-material";
 import {Text, TextTheme} from "./utils/improvedapi/Text";
 import {crashyTitleColor, dialogBodyColor} from "./Colors";
@@ -22,9 +22,9 @@ export default function CrashyHome() {
     const [dialogOpen, setDialogOpen] = React.useState(false)
     const isLoading = uploadState === InitialUploadState.Loading
 
-    return <div style={{height: "100%", width: "100%"}}>
+    return <WrapMultiple height = "max" width = "max">
         <Surface height={"max"}>
-            <Column padding={{bottom: 20}} alignItems={"center"} height={"max"} style={{}}>
+            <Column padding={{bottom: 20}} alignItems={"center"} height={"max"}>
                 <HomeTitle/>
 
                 <CrashTextField error={isUploadCrashError(uploadState)} log={log} setLog={setLog}/>
@@ -51,7 +51,7 @@ export default function CrashyHome() {
         </Surface>
         <UploadFailedDialog dialogOpen={dialogOpen} setDialogOpen={setDialogOpen}
                             uploadError={uploadState as UploadCrashError}/>
-    </div>
+    </WrapMultiple>
 
 
 }
@@ -65,9 +65,10 @@ function isUploadCrashError(obj: UploadState): obj is UploadCrashError {
 
 function CrashTextField(props: { error: boolean, log: string, setLog: (value: string) => void }) {
     return <Wrap padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
-        <TextField error={props.error} value={props.log} onChange={value => props.setLog(value.target.value)} multiline
+        <CTextField error={props.error} value={props.log} onValueChanged={value => props.setLog(value)} multiline
                    label={"Paste a crash log"} variant={"filled"}
-                   style={{width: "100%", height: "100%",}}
+                   width = "max" height = "max"
+    
         />
     </Wrap>;
 }
@@ -75,7 +76,7 @@ function CrashTextField(props: { error: boolean, log: string, setLog: (value: st
 function HomeTitle() {
     return <Row>
         <CrashyLogo size={100} margin={10}/>
-        <Text text="Crashy" style={{fontFamily: "serif"}} variant={"h1"} color={crashyTitleColor}/>
+        <Text text="Crashy" fontFamily = "serif" variant={"h1"} color={crashyTitleColor}/>
     </Row>;
 }
 

@@ -15,7 +15,7 @@ export interface StackTrace {
     message: string
     causedBy?: StackTrace
     trace: StackTraceElement[]
-    details: Record<string, string[]>
+    details?: Record<string, string[]>
 }
 
 export interface CrashReportSection {

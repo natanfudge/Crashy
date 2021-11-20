@@ -77,6 +77,7 @@ export function parseCrashReport(rawReport: string): CrashReport {
             skipString("Caused by: ");
             causedBy = parseStackTrace();
         }
+        //TODO: details
         return {
             causedBy: causedBy,
             message: message,

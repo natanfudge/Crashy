@@ -8,6 +8,7 @@ import {TypographyClasses} from "@mui/material/Typography/typographyClasses";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
 import {isObj} from "../Typescript";
+import * as CSS from "csstype"
 
 export interface TextThemeProps extends ManyChildParentProps {
     /**
@@ -68,6 +69,7 @@ export interface TextThemeProps extends ManyChildParentProps {
      */
     variantMapping?: Partial<Record<OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>, string>>;
     color?: Color
+    fontFamily?: CSS.Property.FontFamily
 }
 
 type Color = string | Gradient
@@ -100,7 +102,7 @@ function cssFunction(name: string, ...args: (unknown | undefined)[]): string{
 }
 
 export function TextTheme(props: TextThemeProps) {
-    const {color,style, ...otherProps} = deflattenStyle(props);
+    const {color,style,fontFamily, ...otherProps} = deflattenStyle(props);
 
     const actualColor = isGradient(color) ? undefined : color;
 
@@ -117,7 +119,7 @@ export function TextTheme(props: TextThemeProps) {
     } : {}
 
 
-    return <Typography style={{...gradientStyle, ...style}} color={actualColor}{...otherProps}/>
+    return <Typography style={{fontFamily,...gradientStyle, ...style}} color={actualColor}{...otherProps}/>
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {

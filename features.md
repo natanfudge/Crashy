@@ -35,6 +35,10 @@
 - Expose and document API
 - 'New Crash' button (maybe home and 'new crash' will be seperated in the future)
 - Parse vanilla crashes
-- Log failures in crash report parsing for decently large reports, so we can identify ourselves more crashes that are not being parsed correctly. 
+- When verifying fails, add a button 'report failure' to automatically Log failures in crash report parsing, so we can identify ourselves more crashes that are not being parsed correctly. 
 - Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
 possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server.
+- Nicer Mods screen:
+  - Group mods by parent (i.e. 30 fabric api mods shouldn't obscure the list)
+  - Make suspected mods more prominent, and explain why they were blamed (in the future it could be mixins)
+  - Add something in the main screen that makes suspected mods more discoverable
