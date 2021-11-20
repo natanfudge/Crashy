@@ -1,15 +1,15 @@
 import React, {Fragment} from "react";
-import {CTextField, Surface} from "./utils/improvedapi/Material";
-import {Column, Row} from "./utils/improvedapi/Flex";
-import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, SvgIcon, TextField} from "@mui/material";
-import {Wrap, WrapMultiple} from "./utils/improvedapi/Core";
+import {Surface} from "../utils/improvedapi/Material";
+import {Column, Row} from "../utils/improvedapi/Flex";
+import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, TextField} from "@mui/material";
+import {Wrap} from "../utils/improvedapi/Core";
 import {CloudUpload} from "@mui/icons-material";
-import {Text, TextTheme} from "./utils/improvedapi/Text";
-import {crashyTitleColor, dialogBodyColor} from "./Colors";
-import {CrashyServer, UploadCrashError, UploadCrashResponse} from "./CrashyServer";
+import {Text, TextTheme} from "../utils/improvedapi/Text";
+import {crashyTitleColor, dialogBodyColor} from "../Colors";
+import {CrashyServer, UploadCrashError, UploadCrashResponse} from "../../server/CrashyServer";
 import pako from "pako";
-import {CrashyLogo} from "./utils/Crashy";
-import {goToUploadedCrash} from "./utils/PageUrl";
+import {CrashyLogo} from "../utils/Crashy";
+import {goToUploadedCrash} from "../../utils/PageUrl";
 
 enum InitialUploadState {
     Start,

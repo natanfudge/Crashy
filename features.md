@@ -42,3 +42,9 @@ possible by checking strings exist when skipping them. Because that is slower ma
   - Group mods by parent (i.e. 30 fabric api mods shouldn't obscure the list)
   - Make suspected mods more prominent, and explain why they were blamed (in the future it could be mixins)
   - Add something in the main screen that makes suspected mods more discoverable
+- Log failures in crash report parsing for decently large reports, so we can identify ourselves more crashes that are not being parsed correctly. 
+- When a failure happens, we always log the exception itself, with optionally logging the entire crash report. 
+- Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
+possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server.
+- Suggest fixes. For example, when a mod is blamed, suggest updating it (maybe even somehow detect it has an update)
+- Pay a flat amount to save a crash report forever. 

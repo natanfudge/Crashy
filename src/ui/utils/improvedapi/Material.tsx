@@ -1,6 +1,8 @@
 import { ClickCallback, deflattenStyle, ElementProps, ManyChildParentProps, SingleChildParentProps } from "./Element";
 import { AppBar, Button, FormHelperTextProps, IconButton, InputBaseProps, InputLabelProps, Paper, SelectProps, TextField, TextFieldPropsSizeOverrides, Theme } from "@mui/material";
 import React from "react";
+import {OverridableStringUnion} from "@mui/types";
+import type {ButtonPropsSizeOverrides} from "@mui/material/Button/Button";
 
 export function Surface(props: SingleChildParentProps) {
     return <Paper {...deflattenStyle(props)} />
@@ -155,7 +157,17 @@ export interface CButtonProps extends SingleChildParentProps {
     onClick: ClickCallback
     variant?: 'text' | 'outlined' | 'contained'
     disabled?: boolean
-
+    /**
+     * The URL to link to when the button is clicked.
+     * If defined, an `a` element will be used as the root node.
+     */
+    href?: string;
+    /**
+     * The size of the component.
+     * `small` is equivalent to the dense button styling.
+     * @default 'medium'
+     */
+    size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides>;
 }
 
 export function CButton(props: CButtonProps) {

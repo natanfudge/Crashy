@@ -1,4 +1,12 @@
-import {CrashReport, CrashReportSection, StackTrace, StackTraceElement, StringMap} from "../model/CrashReport";
+import {
+    CrashReport,
+    CrashReportSection,
+    ExceptionDetails,
+    StackTrace,
+    StackTraceElement,
+    StringMap
+} from "../model/CrashReport";
+import "../util/ExtensionsImpl"
 
 class StringBuilder {
     str: string
@@ -70,6 +78,11 @@ export function parseCrashReport(rawReport: string): CrashReport {
 
     function parseStackTrace(): StackTrace {
         const message = readLine();
+        let details: ExceptionDetails | undefined = undefined
+        if (nextIsString("Exception Details:")) {
+            skipLine();
+            details = parseExceptionDetails();
+        }
         const trace = parseStackTraceElements();
 
         let causedBy: StackTrace | undefined = undefined;
@@ -77,12 +90,29 @@ export function parseCrashReport(rawReport: string): CrashReport {
             skipString("Caused by: ");
             causedBy = parseStackTrace();
         }
-        //TODO: details
-        return {
-            causedBy: causedBy,
-            message: message,
-            trace: trace
-        };
+        return {details, causedBy, message, trace};
+    }
+
+    function parseExceptionDetails(): ExceptionDetails {
+        const details: ExceptionDetails = {};
+        while (nextIsString("  ")) {
+            skipString("  ")
+            const detailNameWithColon = readLine()
+            const detailName = detailNameWithColon.slice(0, -1)
+            details[detailName] = parseExceptionDetailValue();
+        }
+        // Ignore empty line after exception details
+        skipLine();
+        return details;
+    }
+
+    function parseExceptionDetailValue(): string[] {
+        const lines = [];
+        while (nextIsString("    ")) {
+            skipString("    ")
+            lines.push(readLine())
+        }
+        return lines;
     }
 
     function parseStackTraceElements(): StackTraceElement[] {

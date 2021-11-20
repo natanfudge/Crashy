@@ -26,7 +26,7 @@
     "curly": ["warn", "multi-line"],
     "default-param-last": "warn",
     "no-constructor-return": "error",
-    "no-extend-native": "error",
+    "no-extend-native": "off",
     "no-extra-bind": "warn",
     "no-extra-label": "warn",
     "no-implicit-coercion": "error",

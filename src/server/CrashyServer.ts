@@ -1,6 +1,8 @@
 // import {deflate, inflate} from "zlib";
 
-import {httpDelete, httpGet, httpPost} from "./utils/Http";
+import {httpDelete, httpGet, httpPost} from "../utils/Http";
+import {TestCrashReel} from "../../parser/src/test/TestCrashReel";
+import {TestVerifyErrorCrash} from "../../parser/src/test/TestVerifyErrorCrash";
 
 namespace HttpStatusCode {
     export const OK = 200;
@@ -45,7 +47,7 @@ export namespace CrashyServer {
     const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
-        // return TestCrashReel;
+        // return TestVerifyErrorCrash;
         const response = await httpGet({url: `${urlPrefix}/getCrash/${id}`, noCache});
         switch (response.code) {
             case HttpStatusCode.OK:
