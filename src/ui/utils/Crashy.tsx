@@ -61,5 +61,5 @@ export function ExpandingButton({button, children, sticky, ...expansionProps}:
 
 
 function ExpansionSurface(props: SingleChildParentProps) {
-    return <Surface width={"max-content"} style={{border: `solid ${primaryColor} 1px`}} {...props}/>
+    return <Surface width={"max-content"} border={{style: "solid", color: primaryColor, width: 1}}  {...props}/>
 }

@@ -4,7 +4,7 @@ import {Align, fixAlignment} from "./Flex";
 import {isObj} from "../../../../parser/src/util/Utils";
 
 
-interface FlexChildProps {
+export interface FlexChildProps {
     order?: CSS.Property.Order
     flexGrow?: CSS.Property.FlexGrow
     flexShrink?: CSS.Property.FlexShrink
@@ -15,16 +15,23 @@ interface FlexChildProps {
     alignSelf?: Align
 }
 
-interface StyleProps extends FlexChildProps {
+export interface StyleProps extends FlexChildProps {
     padding?: Padding;
     margin?: Margin;
     height?: Size;
     width?: Size;
     backgroundColor?: CSS.Property.BackgroundColor
     isBold?: boolean
+    border?: Border
 }
 
-type Size = "auto"
+export interface Border {
+    width: number
+    style: CSS.Property.BorderStyle
+    color: CSS.Property.BorderColor
+}
+
+export type Size = "auto"
     | "fit-content"
     | "intrinsic"
     | "max-content"
@@ -34,7 +41,7 @@ type Size = "auto"
     | number
     | Percent
 
-interface Percent {
+export interface Percent {
     percent: number
 }
 
@@ -141,6 +148,7 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         style,
         isBold,
         onClick,
+        border,
         ...otherProps
     } = props;
 
@@ -161,11 +169,18 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         marginBottom: expandedMargin.bottom
     }
 
+    const borderObjPart = border === undefined? undefined: {
+        borderWidth: border.width,
+        borderStyle: border.style,
+        borderColor: border.color
+    }
+
     const expandedHeight = expandSize(height)
     const expandedWidth = expandSize(width)
 
+
     const newStyle: CSSProperties = {
-        ...paddingObjPart, ...marginObjPart,
+        ...paddingObjPart, ...marginObjPart, ...borderObjPart,
         height: expandedHeight,
         width: expandedWidth,
         minHeight: expandedHeight,
