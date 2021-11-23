@@ -5,8 +5,8 @@ import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
 import {Surface} from "../../utils/improvedapi/Material";
 import {Typography} from "@mui/material";
-import {CDivider} from "../../utils/improvedapi/Core";
-import {Text} from "../../utils/improvedapi/Text";
+import {CDivider, Spacer} from "../../utils/improvedapi/Core";
+import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
@@ -35,12 +35,11 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
         <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
             <Column alignSelf="center" margin={{bottom: 10}}>
                 <Row>
-                    <div style={{width: "150px"}}/>
-                    <Typography variant={"h4"} fontStyle={"italic"}>
+                    <Spacer width = {150}/>
+                    <TextTheme variant={"h4"} fontStyle={"italic"}>
                         {report.title}
-                    </Typography>
-                    <div style={{width: "150px"}}/>
-
+                    </TextTheme>
+                    <Spacer width = {150}/>
                 </Row>
 
                 <CDivider backgroundColor={"#9c1a1a"}/>

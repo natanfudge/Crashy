@@ -20,9 +20,13 @@ export interface StyleProps extends FlexChildProps {
     margin?: Margin;
     height?: Size;
     width?: Size;
+    maxWidth?: Size;
+    maxHeight?: Size;
     backgroundColor?: CSS.Property.BackgroundColor
     isBold?: boolean
     border?: Border
+    position?: CSS.Property.Position
+    overflow?: CSS.Property.Overflow
 }
 
 export interface Border {
@@ -111,7 +115,7 @@ function isPercent(obj: Size): obj is Percent {
     return isObj(obj) && obj.percent !== undefined;
 }
 
-function expandSize(size?: Size): CSS.Property.Width | undefined | number {
+function expandSize(size: Size | undefined): CSS.Property.Width | undefined | number {
     if (size === undefined) return undefined;
     if (size === "max") return "100%"
     if (isPercent(size)) {
@@ -149,6 +153,10 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         isBold,
         onClick,
         border,
+        position,
+        maxWidth,
+        maxHeight,
+        overflow,
         ...otherProps
     } = props;
 
@@ -177,6 +185,8 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
 
     const expandedHeight = expandSize(height)
     const expandedWidth = expandSize(width)
+    const expandedMaxWidth = expandSize(maxWidth)
+    const expandedMaxHeight = expandSize(maxHeight)
 
 
     const newStyle: CSSProperties = {
@@ -185,14 +195,18 @@ export function deflattenStyle<T extends ElementProps>(props: T) {
         width: expandedWidth,
         minHeight: expandedHeight,
         minWidth: expandedWidth,
+        maxWidth: expandedMaxWidth,
+        maxHeight: expandedMaxHeight,
         flexBasis,
         flexGrow,
         flexShrink,
         order,
+        overflow,
         fontWeight: isBold === true ? "bold" : undefined,
         alignSelf: fixAlignment(alignSelf),
         cursor: props.onClick !== undefined ? "pointer" : undefined,
         backgroundColor,
+        position,
         ...style
     }
 

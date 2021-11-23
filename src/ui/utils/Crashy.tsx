@@ -50,7 +50,7 @@ export function ExpandingButton({button, children, sticky, ...expansionProps}:
 
     return <Fragment>
         {button(handleClick)}
-        <Expansion {...expansionProps} anchorReference={"bottom-center"} position={"top-center"} state={expansion}
+        <Expansion {...expansionProps} anchorReference={"bottom-center"} alignment={"top-center"} state={expansion}
                    onDismiss={() => expansion.hide()} sticky={sticky}>
             <ExpansionSurface>
                 {children}

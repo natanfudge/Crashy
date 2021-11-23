@@ -25,12 +25,6 @@ export function CrashyAppBar({crash}: { crash?: GetCrashResponse | Error }) {
 
 function ToolbarButtons() {
     return <Fragment>
-        {/*<LinkContent href=>*/}
-        {/*    <Row className={"bug-report"} padding={{top: 5, right: 30}}>*/}
-        {/*        <BugReport style={{marginTop: "4px", marginRight: "5px"}}/>*/}
-        {/*        <Text text={"Report Issue"} variant={"h6"} />*/}
-        {/*    </Row>*/}
-        {/*</LinkContent>*/}
         <ExpandingIconButton padding={{right: 10}} icon={<Delete/>} sticky>
             <DeleteSection/>
         </ExpandingIconButton>

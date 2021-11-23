@@ -22,7 +22,7 @@ export function CrashLeftSide(props: { context: CrashContext }) {
     return <Column height={"max"}>
         <CrashContextUi context={props.context}/>
         <Spacer flexGrow={1}/>
-        <TextTheme style={{maxWidth: "fit-content"}} color={fadedOutColor} padding={{bottom: 70, left: 20, right: 10}}>
+        <TextTheme maxWidth="fit-content"  color={fadedOutColor} padding={{bottom: 70, left: 20, right: 10}}>
             Something looks wrong? <br/><Link href={CrashyNewIssueUrl}>Report an issue</Link>
         </TextTheme>
     </Column>
@@ -55,7 +55,7 @@ function CrashContextElement(props: { image: string, text: string, color: string
         <CDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
         <CImage src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon"
                 style={{filter: props.filter}}/>
-        <Text style={{maxWidth: "15rem"}} text={props.text} variant="h6"/>
+        <Text maxWidth= {240} text={props.text} variant="h6"/>
     </Row>
 
 }

@@ -82,7 +82,7 @@ export interface CTextFieldProps extends ElementProps {
     /**
      * Pass a ref to the `input` element.
      */
-    inputRef?: React.Ref<any>;
+    inputRef?: React.Ref<unknown>;
     /**
      * The label content.
      */

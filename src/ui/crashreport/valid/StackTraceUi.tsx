@@ -50,7 +50,7 @@ export function JVMDetailsButton(props: {details: RichExceptionDetails}) {
             JVM Details
         </TextTheme>
     </CButton>} sticky={false}>
-        <TextTheme style={{maxHeight: "500px", maxWidth: "1500px", overflow: "auto", padding: "5px", whiteSpace: "pre"}}>
+        <TextTheme maxHeight={500} maxWidth={1500} overflow="auto" padding={5} whiteSpace="pre">
             {JSON.stringify(props.details,null,2).split("\n").map(line => <Fragment>
                     {line}
                     <br/>
@@ -68,12 +68,12 @@ export function StackTraceElementsUi({elements}: { elements: RichStackTraceEleme
 
 function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace[], onCauserIndexChanged: (index: number) => void) {
     return <Row>
-        <span style={{paddingLeft: 5}}/>
+        <Spacer width={5}/>
         {currentCauserIndex > 0 && <CausationButton
             text={`Caused: ${causerList[currentCauserIndex - 1].title.class.simpleName}`}
             onClick={() => onCauserIndexChanged(currentCauserIndex - 1)}
         />}
-        {currentCauserIndex > 0 && <span style={{paddingLeft: 20}}/>}
+        {currentCauserIndex > 0 && <Spacer width={20}/>}
         {currentCauserIndex < causerList.length - 1 && <CausationButton
             text={`Caused By: ${causerList[currentCauserIndex + 1].title.class.simpleName}`}
             onClick={() => onCauserIndexChanged(currentCauserIndex + 1)}
@@ -90,12 +90,10 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
 
 function StackTraceMessageUi(message: StackTraceMessage) {
     const [open, setOpen] = React.useState(false)
-    // const className = open ? undefined : "glow"
-    const style = open ? {} : {color: "rgb(0 173 239)"}
 
     const text = open ? javaClassFullName(message.class) : message.class.simpleName;
 
-    return <Text style={style} text={text}
+    return <Text color={open? undefined: clickableColor} text={text}
                  onClick={() => setOpen(!open)} variant={"h5"}/>
 }
 
@@ -108,10 +106,7 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
         <Typography color={fadedOutColor} marginRight={"10px"}>
             at
         </Typography>
-        <Text color={open || isXMore ? undefined : clickableColor} text={text} style={{
-            whiteSpace: "pre-wrap",
-            wordBreak: "break-word"
-        }} onClick={isXMore ? undefined : () => setOpen(!open)}/>
+        <Text color={open || isXMore ? undefined : clickableColor} wordBreak="break-word" text={text} onClick={isXMore ? undefined : () => setOpen(!open)}/>
         {typeof traceElement !== "number" && traceElement.forgeMetadata &&
             <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}
 

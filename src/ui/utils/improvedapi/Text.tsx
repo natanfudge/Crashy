@@ -70,6 +70,9 @@ export interface TextThemeProps extends ManyChildParentProps {
     variantMapping?: Partial<Record<OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>, string>>;
     color?: Color
     fontFamily?: CSS.Property.FontFamily
+    fontStyle?: CSS.Property.FontStyle
+    whiteSpace?: CSS.Property.WhiteSpace
+    wordBreak?: CSS.Property.WordBreak
 }
 
 type Color = string | Gradient
@@ -102,7 +105,7 @@ function cssFunction(name: string, ...args: (unknown | undefined)[]): string{
 }
 
 export function TextTheme(props: TextThemeProps) {
-    const {color,style,fontFamily, ...otherProps} = deflattenStyle(props);
+    const {color,style,fontFamily,fontStyle,whiteSpace,wordBreak, ...otherProps} = deflattenStyle(props);
 
     const actualColor = isGradient(color) ? undefined : color;
 
@@ -119,7 +122,7 @@ export function TextTheme(props: TextThemeProps) {
     } : {}
 
 
-    return <Typography style={{fontFamily,...gradientStyle, ...style}} color={actualColor}{...otherProps}/>
+    return <Typography style={{fontFamily,fontStyle, whiteSpace,wordBreak,...gradientStyle, ...style}} color={actualColor}{...otherProps}/>
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {

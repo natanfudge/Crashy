@@ -17,7 +17,7 @@ export function CrashyCrashReportPage() {
 
     return <Fragment>
         <CrashyAppBar crash={crash}/>
-        <Wrap style={{position: "absolute"}} height={"max"} width={"max"} padding={{top: 60}}>
+        <Wrap position="absolute" height="max" width="max" padding={{top: 60}}>
             <CrashReportPageContent crash={crash}/>
         </Wrap>
     </Fragment>

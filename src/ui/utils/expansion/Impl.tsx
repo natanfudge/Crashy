@@ -76,7 +76,7 @@ function DynamicallyAttachedNode(props: ExpansionProps) {
         anchor,
         onDismiss,
         anchorReference,
-        position,
+        alignment,
         style,
         animationDurationMillis,
         sticky,
@@ -88,7 +88,7 @@ function DynamicallyAttachedNode(props: ExpansionProps) {
         anchorRect: getDocumentRelativeRect(anchor),
         anchorAlignment: toNumericAlignment(anchorReference),
         expansionRect: rect ?? {height: 0, width: 0, top: 0, left: 0},
-        expansionAlignment: toNumericAlignment(position)
+        expansionAlignment: toNumericAlignment(alignment)
     })
 
     if (anchor === null) return <Fragment/>
@@ -101,7 +101,7 @@ function DynamicallyAttachedNode(props: ExpansionProps) {
     return <Fragment>
         <SizeCalculator depProps={props} finalProps={finalProps} setRect={setRect}/>
         <ClickAwayListener onClickAway={() => props.onDismiss()}>
-            <div style={{zIndex: 2000}}>
+            <div>
                 <GrowingAnimation duration={props.animationDurationMillis} show={show} finalProps={finalProps}/>
             </div>
 

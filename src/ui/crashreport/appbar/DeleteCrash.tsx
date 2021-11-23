@@ -96,7 +96,7 @@ function DeleteCrashButton({code,deleteState,setDeleteState}: {code: string, del
             <Text text={"DELETE"}/>
 
         </CButton>
-        {deleteState === DeleteState.Loading && <Row style={{position: "absolute"}} width={"max"}>
+        {deleteState === DeleteState.Loading && <Row position="absolute"  width="max">
             <Spacer flexGrow={1}/>
             <Wrap padding={{right: 30, bottom: 10}}>
                 <CircularProgress/>

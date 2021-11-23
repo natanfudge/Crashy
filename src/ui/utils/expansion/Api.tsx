@@ -22,7 +22,7 @@ export interface ManagedExpansionProps extends BaseExpansionPropsApi {
 export interface BaseExpansionPropsApi extends SingleChildParentProps {
     onDismiss: OnDismiss
     anchorReference: Alignment
-    position: Alignment;
+    alignment: Alignment;
     sticky?: boolean
     animationDurationMillis?: number
 }
