@@ -1,8 +1,8 @@
 // import {deflate, inflate} from "zlib";
 
 import {httpDelete, httpGet, httpPost} from "../utils/Http";
-import {TestCrashReel} from "../../parser/src/test/TestCrashReel";
-import {TestVerifyErrorCrash} from "../../parser/src/test/TestVerifyErrorCrash";
+import {TestCrashReel} from "crash-parser/src/test/TestCrashReel";
+import {TestVerifyErrorCrash} from "crash-parser/src/test/TestVerifyErrorCrash";
 
 namespace HttpStatusCode {
     export const OK = 200;

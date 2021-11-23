@@ -2,7 +2,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {Wrap} from "../utils/improvedapi/Core";
 import {LinearProgress} from "@mui/material";
 import {CrashyServer, GetCrashError, GetCrashResponse} from "../../server/CrashyServer";
-import {parseCrashReportRich} from "../../../parser/src/parser/CrashReportEnricher";
+import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
 import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";

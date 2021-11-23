@@ -4,6 +4,6 @@ module.exports = override(
     removeModuleScopePlugin(),
     babelInclude([path.resolve('src'), path.resolve('parser')]),
     addWebpackAlias({
-        '../../parser/src': path.resolve('parser/src/'),
+        '../../parser/src': path.resolve('crash-parser/src/'),
     }),
 );

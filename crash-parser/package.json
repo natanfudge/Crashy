@@ -1,5 +1,5 @@
 {
-  "name": "parser",
+  "name": "crash-parser",
   "version": "1.0.0",
   "devDependencies": {
     "@babel/core": "^7.15.5",

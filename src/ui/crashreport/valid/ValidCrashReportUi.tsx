@@ -1,4 +1,4 @@
-import {RichCrashReport} from "../../../../parser/src/model/RichCrashReport";
+import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
 import React from "react";
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
