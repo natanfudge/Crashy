@@ -1,7 +1,7 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype"
 import {Align, fixAlignment} from "./Flex";
-import {isObj} from "../../../../parser/src/util/Utils";
+import {isObj} from "crash-parser/src/util/Utils";
 
 
 export interface FlexChildProps {

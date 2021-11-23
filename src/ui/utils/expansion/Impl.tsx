@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import {SingleChildParentProps} from "../improvedapi/Element";
 import {ClickAwayListener} from "@mui/material";
 import {Wrap} from "../improvedapi/Core";
-import {Require} from "../../../../parser/src/util/Utils";
+import {Require} from "crash-parser/src/util/Utils";
 import {NumericAlignment, Rect, toNumericAlignment} from "../../../utils/Gui";
 import {coercePreferMin, getDocumentRelativeRect} from "../../../utils/Javascript";
 

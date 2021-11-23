@@ -11,6 +11,7 @@
     "@types/node": "^12.20.25",
     "@types/react": "^17.0.22",
     "@types/react-dom": "^17.0.0",
+    "crash-parser": "file:crash-parser",
     "pako": "^2.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -23,9 +24,9 @@
   "scripts": {
     "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "deploysite": "npm run build && firebase deploy --only hosting",
-    "start": "react-app-rewired start --inspect",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
+    "start": "craco start --inspect",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "startprod": "npm run build && serve -s build",
     "profileprod": "npm run build -- --profile && serve -s build"
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^6.4.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -51,6 +53,7 @@
     "@types/react-window": "^1.8.5",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
+    "craco-esbuild": "^0.4.2",
     "customize-cra": "^1.0.0",
     "eslint": "^7.32.0",
     "react-app-rewired": "^2.1.8",

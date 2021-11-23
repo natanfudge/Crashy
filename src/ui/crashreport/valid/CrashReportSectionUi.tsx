@@ -1,11 +1,11 @@
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {Text} from "../../utils/improvedapi/Text";
 import {CDivider, Spacer} from "../../utils/improvedapi/Core";
-import {StringMap} from "../../../../parser/src/model/CrashReport";
+import {StringMap} from "crash-parser/src/model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi} from "./StackTraceUi";
 import {primaryColor} from "../../Colors";
-import {RichCrashReportSection, RichStackTraceElement} from "../../../../parser/src/model/RichCrashReport";
+import {RichCrashReportSection, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {objectMap} from "../../../utils/Javascript";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {

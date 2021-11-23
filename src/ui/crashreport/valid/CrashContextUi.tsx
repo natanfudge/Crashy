@@ -12,7 +12,7 @@ import QuestionMarkIcon from "../../../media/questionmark_icon_white.svg";
 import {CDivider, CImage, Spacer} from "../../utils/improvedapi/Core";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {lightBlue} from "@mui/material/colors";
-import {CrashContext, LoaderType, OperatingSystemType} from "../../../../parser/src/model/RichCrashReport";
+import {CrashContext, LoaderType, OperatingSystemType} from "crash-parser/src/model/RichCrashReport";
 import {Surface} from "../../utils/improvedapi/Material";
 import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";

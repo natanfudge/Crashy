@@ -1,13 +1,4 @@
-import {
-    ForgeTraceMetadata,
-    javaClassFullName,
-    javaMethodFullNameName,
-    javaMethodSimpleName, RichExceptionDetails,
-    RichStackTrace,
-    RichStackTraceElement,
-    StackTraceMessage,
-    unfoldRichStackTrace
-} from "../../../../parser/src/model/RichCrashReport";
+
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import React, {Fragment} from "react";
@@ -17,6 +8,14 @@ import {clickableColor, fadedOutColor} from "../../Colors";
 import {ExpandingButton, MoreInfoButton} from "../../utils/Crashy";
 import {ClickCallback} from "../../utils/improvedapi/Element";
 import {CButton} from "../../utils/improvedapi/Material";
+import {
+    ForgeTraceMetadata,
+    javaClassFullName, javaMethodFullNameName, javaMethodSimpleName,
+    RichExceptionDetails,
+    RichStackTrace, RichStackTraceElement,
+    StackTraceMessage,
+    unfoldRichStackTrace
+} from "crash-parser/src/model/RichCrashReport";
 
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {

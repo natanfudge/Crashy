@@ -5,7 +5,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/functions/lib" />
-      <excludeFolder url="file://$MODULE_DIR$/parser/coverage" />
+      <excludeFolder url="file://$MODULE_DIR$/crash-parser/coverage" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
