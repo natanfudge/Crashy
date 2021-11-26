@@ -5,7 +5,7 @@ import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
 import {Surface} from "../../utils/improvedapi/Material";
 import {Typography} from "@mui/material";
-import {CDivider, Spacer} from "../../utils/improvedapi/Core";
+import {SimpleDivider, Spacer} from "../../utils/improvedapi/Core";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
@@ -42,7 +42,7 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
                     <Spacer width = {150}/>
                 </Row>
 
-                <CDivider backgroundColor={"#9c1a1a"}/>
+                <SimpleDivider backgroundColor={"#9c1a1a"}/>
             </Column>
 
             <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>

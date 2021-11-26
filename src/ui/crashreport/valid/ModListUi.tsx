@@ -1,7 +1,7 @@
 import {Mod} from "crash-parser/src/model/RichCrashReport";
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {Text} from "../../utils/improvedapi/Text";
-import {CDivider, Spacer, Wrap} from "../../utils/improvedapi/Core";
+import {SimpleDivider, Spacer, Wrap} from "../../utils/improvedapi/Core";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Typography} from "@mui/material";
@@ -27,7 +27,7 @@ export function ModListUi({mods}: { mods: Mod[] }) {
     return <Column margin={{top: 20}} width={"max"}>
         <Column width={300} alignSelf={"center"}>
             <Text text={"Mods"} variant={"h4"} alignSelf={"center"}/>
-            <CDivider width={"max"}/>
+            <SimpleDivider width={"max"}/>
         </Column>
         <LazyColumn data={modsPrioritizingSuspectedMods}
                     childProvider={mod => <ModUi mod={mod} key={mod.id}/>}/>

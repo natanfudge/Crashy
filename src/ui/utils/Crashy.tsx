@@ -1,5 +1,5 @@
 import {ClickCallback, Margin, Padding, SingleChildParentProps, WithChild} from "./improvedapi/Element";
-import {CImage} from "./improvedapi/Core";
+import {SimpleImage} from "./improvedapi/Core";
 import {KeyboardArrowDown} from "@mui/icons-material";
 import {Expansion, useExpansion} from "./expansion/Api";
 import {CIconButton, Surface} from "./improvedapi/Material";
@@ -7,8 +7,8 @@ import {primaryColor} from "../Colors";
 import React, {Fragment} from "react";
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
-    return <CImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}
-                   margin={margin}/>
+    return <SimpleImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}
+                        margin={margin}/>
 }
 
 

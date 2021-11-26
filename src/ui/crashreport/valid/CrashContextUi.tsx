@@ -9,7 +9,7 @@ import WindowsLogo from "../../../media/windows_logo.svg";
 import LinuxLogo from "../../../media/linux_logo.svg";
 import MacosLogo from "../../../media/macos_logo.svg";
 import QuestionMarkIcon from "../../../media/questionmark_icon_white.svg";
-import {CDivider, CImage, Spacer} from "../../utils/improvedapi/Core";
+import {SimpleDivider, SimpleImage, Spacer} from "../../utils/improvedapi/Core";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {lightBlue} from "@mui/material/colors";
 import {CrashContext, LoaderType, OperatingSystemType} from "crash-parser/src/model/RichCrashReport";
@@ -52,9 +52,9 @@ export function CrashLeftSide(props: { context: CrashContext }) {
 
 function CrashContextElement(props: { image: string, text: string, color: string, filter?: string }) {
     return <Row padding={{vertical: 5}} margin={{top: 10}}>
-        <CDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
-        <CImage src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon"
-                style={{filter: props.filter}}/>
+        <SimpleDivider height={"auto"} width={2} backgroundColor={props.color} margin={{right: 10}}/>
+        <SimpleImage src={props.image} margin={{right: 10}} width={30} height={30} alt="Icon"
+                     style={{filter: props.filter}}/>
         <Text maxWidth= {240} text={props.text} variant="h6"/>
     </Row>
 

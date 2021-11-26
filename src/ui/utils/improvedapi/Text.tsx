@@ -71,6 +71,8 @@ export interface TextThemeProps extends ManyChildParentProps {
     color?: Color
     fontFamily?: CSS.Property.FontFamily
     fontStyle?: CSS.Property.FontStyle
+    //TODO:
+    //fontWeight?: CSS.Property.FontWeight
     whiteSpace?: CSS.Property.WhiteSpace
     wordBreak?: CSS.Property.WordBreak
 }
