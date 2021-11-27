@@ -1,21 +1,49 @@
 import React, {CSSProperties} from "react";
 import * as CSS from "csstype";
-import {deflattenStyle, ManyChildParentProps} from "./Element";
+import {ManyChildParentProps} from "./SimpleElementProps";
+import {deflattenStyle} from "./impl/SimpleImpl";
+import {Flex} from "./impl/FlexImpl";
+
+export function Stack(props: ManyChildParentProps) {
+    return <div className={"stack"} {...deflattenStyle(props)}/>
+}
+
+export function Row(props: FlexProps) {
+    return Flex({flexDirection: "row", ...props})
+}
+
+export function Column(props: FlexProps) {
+    return Flex({flexDirection: "column", ...props})
+}
 
 
 /**
- * {@link https://css-tricks.com/snippets/css/a-guide-to-flexbox/#flexbox-properties Flexbox Guide}
+ * @see https://css-tricks.com/snippets/css/a-guide-to-flexbox/#flexbox-properties
  */
-export interface RowProps extends ManyChildParentProps {
+export interface FlexProps extends ManyChildParentProps {
+    /**
+     * The **`flex-wrap`** CSS property sets whether flex items are forced onto one line or can wrap onto multiple lines. If wrapping is allowed, it sets the direction that lines are stacked.
+     * @see https://developer.mozilla.org/docs/Web/CSS/flex-wrap
+     */
     flexWrap?: CSS.Property.FlexWrap
+    /**
+     * The **`flex-flow`** CSS shorthand property specifies the direction of a flex container, as well as its wrapping behavior.
+     * @see https://developer.mozilla.org/docs/Web/CSS/flex-flow
+     */
     flexFlow?: CSS.Property.FlexFlow
+    /**
+     * The CSS **`justify-content`** property defines how the browser distributes space between and around content items along the main-axis of a flex container, and the inline axis of a grid container.
+     * @see https://developer.mozilla.org/docs/Web/CSS/justify-content
+     */
     justifyContent?: CSS.Property.JustifyContent
     /**
      * This defines the default behavior for how flex items are laid out along the cross axis on the current line. Think of it as the justify-content version for the cross-axis (perpendicular to the main-axis).
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/align-items
      */
     alignItems?: FlexAlignment
     /**
      * This aligns a flex container’s lines within when there is extra space in the cross-axis, similar to how justify-content aligns individual items within the main-axis.
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/align-content
      */
     alignContent?: FlexAlignment
 }
@@ -23,64 +51,16 @@ export interface RowProps extends ManyChildParentProps {
 export type Align = "start" | "center" | "end"
 export type FlexAlignment = Align | "stretch"
 
-export type ColumnProps = RowProps
 
-export interface FlexProps extends RowProps {
-    flexDirection: CSS.Property.FlexDirection
-}
 
-export function fixAlignment<T extends FlexAlignment>(alignment: T | undefined): T | "flex-end" | "flex-start" | undefined {
-    switch (alignment) {
-        case "end":
-            return "flex-end"
-        case "start":
-            return "flex-start"
-        default:
-            return alignment
-    }
-}
 
-function deflattenFlex(props: FlexProps) {
-    const {
-        flexWrap,
-        flexFlow,
-        justifyContent,
-        alignItems,
-        alignContent,
-        flexDirection,
-        style,
-        ...otherProps
-    } = deflattenStyle(props);
-    const newStyle: CSSProperties = {
-        display: "flex",
-        // flexFlow must be first to not override flexWrap and flexDirection...
-        flexFlow,
-        flexWrap,
-        justifyContent,
-        alignItems: fixAlignment(alignItems),
-        alignContent: fixAlignment(alignContent),
-        flexDirection, ...style
-    }
-    return {
-        style: newStyle, ...otherProps
-    }
-}
 
-function Flex(props: FlexProps) {
-    // const {flexWrap, flexFlow, justifyContent, alignItems, alignContent, flexDirection, style, ...otherProps} = props;
-    // const {children, style, ...otherProps} = props;
-    return <div{...deflattenFlex(props)}/>
-}
 
-export function Stack(props: ManyChildParentProps) {
-    return <div className={"stack"} {...deflattenStyle(props)}/>
-}
 
-export function Column(props: ColumnProps) {
-    return Flex({flexDirection: "column", ...props})
-}
 
-export function Row(props: RowProps) {
-    return Flex({flexDirection: "row", ...props})
-}
+
+
+
+
+
 

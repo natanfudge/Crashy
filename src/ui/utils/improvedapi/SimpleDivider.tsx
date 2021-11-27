@@ -1,6 +1,6 @@
 import * as Mui from "@mui/material";
 import React from "react";
-import {deflattenStyle} from "./SimpleImpl";
+import {deflattenStyle} from "./impl/SimpleImpl";
 import {ElementProps} from "./SimpleElementProps";
 
 /**

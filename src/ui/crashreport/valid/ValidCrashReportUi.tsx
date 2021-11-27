@@ -3,13 +3,14 @@ import React from "react";
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
-import {Surface} from "../../utils/improvedapi/Material";
 import {Typography} from "@mui/material";
-import {SimpleDivider, Spacer} from "../../utils/improvedapi/Core";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
+import {SimpleDivider} from "../../utils/improvedapi/SimpleDivider";
+import {Spacer} from "../../utils/improvedapi/SimpleDiv";
+import {Surface} from "../../utils/improvedapi/Surface";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews

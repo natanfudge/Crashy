@@ -1,12 +1,12 @@
 import {ExpansionPropsApi, ManagedExpansionProps, ManualExpansionProps} from "./Api";
 import React, {Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState} from "react";
 import ReactDOM from "react-dom";
-import {SingleChildParentProps} from "../improvedapi/Element";
 import {ClickAwayListener} from "@mui/material";
-import {Wrap} from "../improvedapi/Core";
 import {Require} from "crash-parser/src/util/Utils";
-import {NumericAlignment, Rect, toNumericAlignment} from "../../../utils/Gui";
-import {coercePreferMin, getDocumentRelativeRect} from "../../../utils/Javascript";
+import {NumericAlignment, Rect, toNumericAlignment} from "../../../../utils/Gui";
+import {coercePreferMin, getDocumentRelativeRect} from "../../../../utils/Javascript";
+import {Wrap} from "../SimpleDiv";
+import {SingleChildParentProps} from "../SimpleElementProps";
 
 export function _implExpansion(props: ExpansionPropsApi) {
     const manualProps: ManualExpansionProps = isManualApi(props) ? props : toManual(props)

@@ -1,5 +1,5 @@
 import React from "react";
-import {deflattenStyle} from "./SimpleImpl";
+import {deflattenStyle} from "./impl/SimpleImpl";
 import {ElementProps} from "./SimpleElementProps";
 
 export interface ImageProps extends ElementProps {

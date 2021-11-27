@@ -26,12 +26,7 @@ export type Size =
      * Uses the fit-content formula with the available space replaced by the specified argument, i.e. min(max-content, max(min-content, <length-percentage>)).
      */
     | "fit-content"
-    /**
-     * In CSS, the intrinsic size of an element is the size it would be based on its content, if no external factors were applied to it.
-     * For example, inline elements are sized intrinsically: width, height, and vertical margin and padding have no impact, though horizontal margin and padding do.
-     * @see https://developer.mozilla.org/en-US/docs/Glossary/Intrinsic_Size
-     */
-    | "intrinsic"
+    // | "intrinsic"
     /**
      * The intrinsic preferred size.
      */
@@ -40,7 +35,7 @@ export type Size =
      * The intrinsic minimum size.
      */
     | "min-content"
-    | "min-intrinsic"
+    // | "min-intrinsic"
     /**
      * Same as 100%
      */

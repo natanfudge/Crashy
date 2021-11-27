@@ -1,9 +1,9 @@
 import {Column} from "../../utils/improvedapi/Flex";
-import {Spacer} from "../../utils/improvedapi/Core";
 import {Text} from "../../utils/improvedapi/Text";
 import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";
 import React from "react";
+import {Spacer} from "../../utils/improvedapi/SimpleDiv";
 
 export function NoSuchCrashScreen() {
     return <Column height={"max"} alignItems={"center"}>

@@ -1,11 +1,12 @@
 import {Mod} from "crash-parser/src/model/RichCrashReport";
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {Text} from "../../utils/improvedapi/Text";
-import {SimpleDivider, Spacer, Wrap} from "../../utils/improvedapi/Core";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Typography} from "@mui/material";
 import {MoreInfoButton} from "../../utils/Crashy";
+import {Spacer, Wrap} from "../../utils/improvedapi/SimpleDiv";
+import {SimpleDivider} from "../../utils/improvedapi/SimpleDivider";
 
 
 export function ModListUi({mods}: { mods: Mod[] }) {

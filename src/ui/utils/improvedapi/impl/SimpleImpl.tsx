@@ -1,9 +1,9 @@
 import React, {CSSProperties} from "react";
-import {fixAlignment} from "./Flex";
 import * as CSS from "csstype";
 import {isObj} from "crash-parser/src/util/Utils";
-import {Axes, Directions, Padding, Percent, Size} from "./GuiTypes";
-import {ElementProps} from "./SimpleElementProps";
+import {Axes, Directions, Padding, Percent, Size} from "../GuiTypes";
+import {ElementProps} from "../SimpleElementProps";
+import {fixAlignment} from "./FlexImpl";
 
 export function deflattenStyle<T extends ElementProps>(props: T) {
     const {
