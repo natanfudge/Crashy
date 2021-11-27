@@ -4,7 +4,7 @@ import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../../../server/CrashyServer";
 import {getUrlCrashId, setUrlNoCache} from "../../../utils/PageUrl";
-import {getCookieCrashCode} from "../../../utils/Cookies";
+import {getCookieCrashCode, setCookieDeleted} from "../../../utils/Cookies";
 import {fadedOutColor} from "../../Colors";
 import {SimpleButton} from "../../utils/improvedapi/SimpleButton";
 import {Spacer, Wrap} from "../../utils/improvedapi/SimpleDiv";
@@ -90,7 +90,9 @@ function DeleteCrashButton({code,deleteState,setDeleteState}: {code: string, del
                      const newState = await deleteCrash(code)
                      setDeleteState(newState);
                      if (newState === DeleteState.Deleted) {
-                         setUrlNoCache(true);
+                         setCookieDeleted(true);
+                         window.location.reload();
+                         // setUrlNoCache(true);
                      }
                  }}>
 

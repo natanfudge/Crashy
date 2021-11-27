@@ -21,6 +21,9 @@ class StringBuilder {
 }
 
 export function parseCrashReport(rawReport: string): CrashReport {
+    return parseCrashReportImpl(rawReport, false);
+}
+export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     let cursor = 0;
 
     // Skip '---- Minecraft Crash Report ----'
@@ -50,7 +53,6 @@ export function parseCrashReport(rawReport: string): CrashReport {
     skipLine();
 
     const sections = parseSections();
-    // const systemDetails = pullSystemDetailsFrom(sections);
 
     return {
         // systemDetails,
@@ -140,13 +142,19 @@ export function parseCrashReport(rawReport: string): CrashReport {
     function parseSections(): CrashReportSection[] {
         const sections = [];
         while (!isEof()) {
+            // Ignore empty lines
+            if (current() === "\n" || current() === "\r") {
+                skip();
+                continue;
+            }
             sections.push(parseSection());
         }
         return sections;
     }
 
     function parseSection(): CrashReportSection {
-        skipChars(["-", " "]);
+        skipString("-- ")
+        // skipChars(["-", " "]);
         const title = readUntilNextChar("-");
         // Skip ' --'
         skipLine();
@@ -239,6 +247,11 @@ export function parseCrashReport(rawReport: string): CrashReport {
     }
 
     function skipString(string: string) {
+        if (strict) {
+            if (!nextIsString(string)) {
+                throw new Error(`Expected '${string}' but got '${current()}'`);
+            }
+        }
         skipNumber(string.length);
     }
 

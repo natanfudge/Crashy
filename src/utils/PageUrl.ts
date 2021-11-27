@@ -6,6 +6,19 @@ interface PageArgs {
     nocache: boolean
     code?: string
     crashId?: string
+    raw: boolean
+}
+
+export function getUrlCrashId(): string | undefined {
+    return getPageArgs().crashId;
+}
+
+export function getUrlNoCache(): boolean {
+    return getPageArgs().nocache;
+}
+
+export function getUrlIsRaw(): boolean {
+    return getPageArgs().raw;
 }
 
 type Raw<T> = {
@@ -23,8 +36,8 @@ export function initPageArgs(): boolean {
 
     pageArgs = {
         nocache: partialArgs.nocache === "true",
+        raw: partialArgs.raw === "true",
         // Never keep the code in the url
-        //TODO: store in cookies
         code: undefined,
         crashId: parsePageCrashId()
     }
@@ -39,13 +52,6 @@ function parsePageCrashId(): string | undefined {
     else return pathName.slice(1);
 }
 
-export function getUrlCrashId(): string | undefined {
-    return getPageArgs().crashId;
-}
-
-export function getUrlNoCache(): boolean {
-    return getPageArgs().nocache;
-}
 
 export function setUrlNoCache(value: boolean) {
     updatePageArgs(args => {

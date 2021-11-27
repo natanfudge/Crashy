@@ -5,10 +5,9 @@ import React from "react";
 import {SingleChildParentProps} from "./SimpleElementProps";
 import {ClickCallback} from "./GuiTypes";
 import {deflattenStyle} from "./impl/SimpleImpl";
+import {Require} from "crash-parser/src/util/Utils";
 
-export interface SimpleButtonProps extends SingleChildParentProps {
-    //TODO: use some form of required<onClick>
-    onClick: ClickCallback
+export interface SimpleButtonProps extends Require<SingleChildParentProps,'onClick'> {
     variant?: 'text' | 'outlined' | 'contained'
     disabled?: boolean
     /**

@@ -84,8 +84,11 @@ export interface TextThemeProps extends ManyChildParentProps {
      * @see https://developer.mozilla.org/docs/Web/CSS/font-style
      */
     fontStyle?: CSS.Property.FontStyle
-    //TODO:
-    //fontWeight?: CSS.Property.FontWeight
+    /**
+     * The **`font-weight`** CSS property specifies the weight or boldness of the font.
+     * @see https://developer.mozilla.org/docs/Web/CSS/font-weight
+     */
+    fontWeight?: CSS.Property.FontWeight
     /**
      * The **`white-space`** CSS property sets how white space inside an element is handled.
      * @see https://developer.mozilla.org/docs/Web/CSS/white-space

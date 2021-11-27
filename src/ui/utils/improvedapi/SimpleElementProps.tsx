@@ -68,8 +68,6 @@ export interface StyleProps extends FlexChildProps {
      * @see https://developer.mozilla.org/docs/Web/CSS/background-color
      */
     backgroundColor?: CSS.Property.BackgroundColor
-    //TODO: remove with fontWeight in text
-    isBold?: boolean
     /**
      * The **`border`** shorthand CSS property sets an element's border. It sets the values of `border-width`, `border-style`, and `border-color`.
      * @see https://developer.mozilla.org/docs/Web/CSS/border

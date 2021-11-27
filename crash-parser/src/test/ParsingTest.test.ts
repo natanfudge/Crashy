@@ -1,11 +1,14 @@
 import {CrashReport} from "../model/CrashReport";
-import {parseCrashReport} from "../parser/CrashReportParser";
+import {parseCrashReport, parseCrashReportImpl} from "../parser/CrashReportParser";
 import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 import {TestBuggyParseCrash} from "./TestBuggyParseCrash";
 import {enrichCrashReport} from "../parser/CrashReportEnricher";
 import {BarebonesFabricCrash} from "./BarebonesFabricCrash";
 import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../model/RichCrashReport";
 import {TestVerifyErrorCrash} from "./TestVerifyErrorCrash";
+import {BrokenTimeCrash} from "./BrokenTimeCrash";
+import {TestEmptySectionCrash} from "./TestEmptySectionCrash";
+import {BrokenSectionCrash} from "./BrokenSectionCrash";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -279,3 +282,22 @@ test("VerifyError crash is parsed correctly", () => {
         }
     } as ExceptionStackmapTable)
 });
+
+test("Time is parsed correctly in edge case", () => {
+    const report = parseCrashReport(BrokenTimeCrash);
+    const enriched = enrichCrashReport(report);
+    expect(enriched.context.time.getFullYear()).toEqual(2021);
+    expect(enriched.context.time.getMonth()).toEqual(10);
+    expect(enriched.context.time.getDate()).toEqual(21);
+})
+
+test("Empty space crash is parsed correctly", () => {
+    const report = parseCrashReport(TestEmptySectionCrash);
+    expect(report.sections.length).toEqual(3)
+})
+
+test("Broken section crash is recognized as broken", () => {
+    expect(() => {
+        parseCrashReportImpl(BrokenSectionCrash,true);
+    }).toThrowError("Expected '-- ' but got '['");
+})

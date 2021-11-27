@@ -5,6 +5,7 @@ import {parseCrashReport} from "../parser/CrashReportParser";
 
 
 export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
+    if(enriched.mods === undefined) throw new Error("Unexpected");
     expect(enriched.mods.length).toEqual(116)
     expect(enriched.mods[0]).toEqual(
         {id: "architectury", name: "Architectury", version: "2.0.7", isSuspected: false}

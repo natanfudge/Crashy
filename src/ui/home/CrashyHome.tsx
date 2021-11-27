@@ -98,12 +98,6 @@ function UploadFailedDialog(props: { dialogOpen: boolean, setDialogOpen: (dialog
     </Dialog>;
 }
 
-//rgba(255, 255, 255, 0.7)
-
-//TODO: add a more user friendly way of deleting by using cookies.
-// - open the site with ?code=xxxxxx and delete it from the url to prevent misuse, and store it in a cookie.
-// - When a code can be found, have a 'are you sure button', but after that, instantly delete with no panel.
-// - If the code is incorrect, open up the panel normally and inform the user the thing hey have stored is wrong.
 function UploadFailedBody({error}: { error: UploadCrashError }) {
     switch (error) {
         case "Too Large":

@@ -11,6 +11,7 @@ import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {SimpleDivider} from "../../utils/improvedapi/SimpleDivider";
 import {Spacer} from "../../utils/improvedapi/SimpleDiv";
 import {Surface} from "../../utils/improvedapi/Surface";
+import {SimpleButton} from "../../utils/improvedapi/SimpleButton";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews
@@ -33,22 +34,26 @@ export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
 
 function CenterView({report, activeSectionIndex}: { report: RichCrashReport, activeSectionIndex: number }) {
     return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
-        <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
-            <Column alignSelf="center" margin={{bottom: 10}}>
-                <Row>
-                    <Spacer width = {150}/>
-                    <TextTheme variant={"h4"} fontStyle={"italic"}>
-                        {report.title}
-                    </TextTheme>
-                    <Spacer width = {150}/>
-                </Row>
+        <Row>
+           {/* //TODO: raw button here*/}
+            {/*<SimpleButton position = "absolute" onClick={}*/}
+            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
+                <Column alignSelf="center" margin={{bottom: 10}}>
+                    <Row>
+                        <Spacer width = {150}/>
+                        <TextTheme variant={"h4"} fontStyle={"italic"}>
+                            {report.title}
+                        </TextTheme>
+                        <Spacer width = {150}/>
+                    </Row>
 
-                <SimpleDivider backgroundColor={"#9c1a1a"}/>
+                    <SimpleDivider backgroundColor={"#9c1a1a"}/>
+                </Column>
+
+                <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
+                <ActiveSection report={report} index={activeSectionIndex}/>
             </Column>
-
-            <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
-            <ActiveSection report={report} index={activeSectionIndex}/>
-        </Column>
+        </Row>
     </Surface>
 }
 

@@ -140,13 +140,16 @@ function parseCrashDate(dateStr: string): Date {
     // Forge format: 15.08.21 17:36
     const isFabricFormat = dateStr.includes(",");
     const [date, hourStr] = dateStr.split(isFabricFormat ? ", " : " ");
-    const {day, month, year} = parseDayMonthYear(date, isFabricFormat);
+    const {day, month, year} = parseDayMonthYear(date);
     const [fullHourStr, minutesStr] = hourStr.removeSuffix(" a.m.").split(":");
     // Convert PM format to 24 hour format
     const fullHour = parseInt(fullHourStr) + (minutesStr.endsWith(" PM") ? 12 : 0);
 
+    const yearNumber = parseInt(year);
+    // Add the 2000s when the 20 at the start is omitted, e.g. "08/20/21"
+    const actualYear = yearNumber < 1920 ? yearNumber + 2000 : yearNumber;
     return new Date(
-        parseInt(year) + (isFabricFormat ? 0 : 2000), // Forge uses '21' instead of '2021'
+        actualYear,
         parseInt(month),
         parseInt(day),
         fullHour,
@@ -154,7 +157,7 @@ function parseCrashDate(dateStr: string): Date {
     );
 }
 
-function parseDayMonthYear(rawDate: string, isFabricFormat: boolean): { day: string, month: string, year: string } {
+function parseDayMonthYear(rawDate: string): { day: string, month: string, year: string } {
     // Sometimes the date is in year-month-day format
     if (rawDate.includes("-")) {
         const [year, month, day] = rawDate.split("-");
@@ -162,11 +165,20 @@ function parseDayMonthYear(rawDate: string, isFabricFormat: boolean): { day: str
     }
     const [left, right, year] = rawDate.split(rawDate.includes("/") ? "/" : ".");
 
-    // Fabric: always uses day/month/year
-    // Forge: When seperated with dots, is day/month/year. When seperated with slashes, is month/day/year.
-    const isDayMonthYear = isFabricFormat || rawDate.includes(".");
-    const [day, month] = isDayMonthYear ? [left, right] : [right, left];
+    const [day, month] = isDayMonthYear(left, right,rawDate) ? [left, right] : [right, left];
     return {day, month, year};
+}
+
+// We pretty much needs to guess here if it's day/month/year or month/day/year. Obviously month can't be >12.
+function isDayMonthYear(left: string, right: string, rawDate: string): boolean {
+    const leftNum = parseInt(left);
+    const rightNum = parseInt(right);
+    // Left is day
+    if (leftNum > 12) return true;
+    // Right is day
+    if (rightNum > 12) return false;
+    // Forge: When seperated with dots, is day/month/year. When seperated with slashes, is month/day/year.
+    return rawDate.includes(".")
 }
 
 function enrichCrashReportSection(section: CrashReportSection): RichCrashReportSection {

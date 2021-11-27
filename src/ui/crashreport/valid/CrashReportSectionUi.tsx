@@ -38,7 +38,7 @@ function CrashReportSectionDetails({details}: { details: StringMap }) {
             if (name !== "Mod List" && name !== "Fabric Mods") {
                 return <Column key={index}>
                     <Row key={name}>
-                        <Text text={name} isBold={true} padding={5} width={{percent: 30}}/>
+                        <Text text={name} fontWeight={"bold"} padding={5} width={{percent: 30}}/>
                         <SimpleDivider backgroundColor={primaryColor} height={"auto"} width={1}/>
                         <Text style={{lineBreak: "anywhere"}} text={detail} padding={{horizontal: 10, vertical: 5}}/>
                     </Row>

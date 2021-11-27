@@ -47,7 +47,7 @@ possible by checking strings exist when skipping them. Because that is slower ma
 - Log failures in crash report parsing for decently large reports, so we can identify ourselves more crashes that are not being parsed correctly. 
 - When a failure happens, we always log the exception itself, with optionally logging the entire crash report. 
 - Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
-possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server.
+possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server. (enable strict in server)
 - Suggest fixes. For example, when a mod is blamed, suggest updating it (maybe even somehow detect it has an update)
 - Pay a flat amount to save a crash report forever. 
 >>>>>>> 4e98a19348bb8a8c740673f2c61e9c31f9c5d513

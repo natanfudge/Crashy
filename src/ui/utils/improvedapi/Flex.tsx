@@ -1,4 +1,4 @@
-import React, {CSSProperties} from "react";
+import React from "react";
 import * as CSS from "csstype";
 import {ManyChildParentProps} from "./SimpleElementProps";
 import {deflattenStyle} from "./impl/SimpleImpl";
