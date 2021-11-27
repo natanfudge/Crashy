@@ -1,2 +1,2 @@
-git pull
 git submodule update --remote
+git pull
