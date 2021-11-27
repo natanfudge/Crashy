@@ -1,24 +1,9 @@
-import { ClickCallback, deflattenStyle, ElementProps, ManyChildParentProps, SingleChildParentProps } from "./Element";
-import { AppBar, Button, FormHelperTextProps, IconButton, InputBaseProps, InputLabelProps, Paper, SelectProps, TextField, TextFieldPropsSizeOverrides, Theme } from "@mui/material";
 import React from "react";
-import {OverridableStringUnion} from "@mui/types";
-import type {ButtonPropsSizeOverrides} from "@mui/material/Button/Button";
+import {FormHelperTextProps, InputBaseProps, InputLabelProps, SelectProps, TextField} from "@mui/material";
+import {ElementProps} from "./SimpleElementProps";
+import {deflattenStyle} from "./impl/SimpleImpl";
 
-export function Surface(props: SingleChildParentProps) {
-    return <Paper {...deflattenStyle(props)} />
-}
-
-export interface CIconButtonProps extends SingleChildParentProps {
-    // icon: JSX.Element
-    onClick: ClickCallback
-}
-
-export function CIconButton(props: CIconButtonProps) {
-    // const {icon, ...otherProps} = props
-    return <IconButton {...deflattenStyle(props)} />
-}
-
-export interface CTextFieldProps extends ElementProps {
+export interface SimpleTextFieldProps extends ElementProps {
     /**
      * This prop helps users to fill forms faster, especially on mobile devices.
      * The name can be confusing, as it's more like an autofill.
@@ -146,35 +131,12 @@ export interface CTextFieldProps extends ElementProps {
     variant?: "outlined" | "filled" | "standard"
 }
 
-export function CTextField(props: CTextFieldProps) {
-    const { onValueChanged, ...otherProps } = props;
+/**
+ * @see https://mui.com/components/text-fields/
+ */
+export function SimpleTextField(props: SimpleTextFieldProps) {
+    const {onValueChanged, ...otherProps} = props;
     return <TextField
         onChange={e => onValueChanged(e.target.value)}
         {...deflattenStyle(otherProps)} />
-}
-
-export interface CButtonProps extends SingleChildParentProps {
-    onClick: ClickCallback
-    variant?: 'text' | 'outlined' | 'contained'
-    disabled?: boolean
-    /**
-     * The URL to link to when the button is clicked.
-     * If defined, an `a` element will be used as the root node.
-     */
-    href?: string;
-    /**
-     * The size of the component.
-     * `small` is equivalent to the dense button styling.
-     * @default 'medium'
-     */
-    size?: OverridableStringUnion<'small' | 'medium' | 'large', ButtonPropsSizeOverrides>;
-}
-
-export function CButton(props: CButtonProps) {
-    return <Button {...deflattenStyle(props)} />
-}
-
-export function CAppBar(props: ManyChildParentProps) {
-    const { style, ...otherProps } = deflattenStyle(props);
-    return <AppBar {...otherProps} style={{ display: "flex", flexDirection: "row", ...style }} />
 }

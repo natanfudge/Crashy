@@ -3,13 +3,14 @@ import React from "react";
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
-import {Surface} from "../../utils/improvedapi/Material";
 import {Typography} from "@mui/material";
-import {CDivider, Spacer} from "../../utils/improvedapi/Core";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
+import {SimpleDivider} from "../../utils/improvedapi/SimpleDivider";
+import {Spacer} from "../../utils/improvedapi/SimpleDiv";
+import {Surface} from "../../utils/improvedapi/Surface";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews
@@ -42,7 +43,7 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
                     <Spacer width = {150}/>
                 </Row>
 
-                <CDivider backgroundColor={"#9c1a1a"}/>
+                <SimpleDivider backgroundColor={"#9c1a1a"}/>
             </Column>
 
             <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>

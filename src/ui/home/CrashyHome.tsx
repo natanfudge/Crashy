@@ -1,8 +1,6 @@
 import React, {Fragment} from "react";
-import {CTextField, Surface} from "../utils/improvedapi/Material";
 import {Column, Row} from "../utils/improvedapi/Flex";
 import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, TextField} from "@mui/material";
-import {Wrap, WrapMultiple} from "../utils/improvedapi/Core";
 import {CloudUpload} from "@mui/icons-material";
 import {Text, TextTheme} from "../utils/improvedapi/Text";
 import {crashyTitleColor, dialogBodyColor} from "../Colors";
@@ -10,6 +8,9 @@ import {CrashyServer, UploadCrashError, UploadCrashResponse} from "../../server/
 import pako from "pako";
 import {CrashyLogo} from "../utils/Crashy";
 import {goToUploadedCrash} from "../../utils/PageUrl";
+import {Wrap, WrapMultiple} from "../utils/improvedapi/SimpleDiv";
+import {Surface} from "../utils/improvedapi/Surface";
+import {SimpleTextField} from "../utils/improvedapi/SimpleTextField";
 
 enum InitialUploadState {
     Start,
@@ -65,7 +66,7 @@ function isUploadCrashError(obj: UploadState): obj is UploadCrashError {
 
 function CrashTextField(props: { error: boolean, log: string, setLog: (value: string) => void }) {
     return <Wrap padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
-        <CTextField error={props.error} value={props.log} onValueChanged={value => props.setLog(value)} multiline
+        <SimpleTextField error={props.error} value={props.log} onValueChanged={value => props.setLog(value)} multiline
                    label={"Paste a crash log"} variant={"filled"}
                    width = "max" height = "max"
     

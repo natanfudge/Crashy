@@ -1,13 +1,14 @@
 import React from "react";
 import {Column, Row} from "../../utils/improvedapi/Flex";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
-import {CButton, CTextField} from "../../utils/improvedapi/Material";
 import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../../../server/CrashyServer";
-import {Spacer, Wrap} from "../../utils/improvedapi/Core";
 import {getUrlCrashId, setUrlNoCache} from "../../../utils/PageUrl";
 import {getCookieCrashCode} from "../../../utils/Cookies";
 import {fadedOutColor} from "../../Colors";
+import {SimpleButton} from "../../utils/improvedapi/SimpleButton";
+import {Spacer, Wrap} from "../../utils/improvedapi/SimpleDiv";
+import {SimpleTextField} from "../../utils/improvedapi/SimpleTextField";
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"
 
@@ -42,7 +43,7 @@ function UserSuppliedCodeDeleteSection() {
               padding={{bottom: 10}}/>
 
         <Row>
-            <CTextField flexGrow={1} label={label !== undefined ? <p>{label}</p> : undefined}
+            <SimpleTextField flexGrow={1} label={label !== undefined ? <p>{label}</p> : undefined}
                         error={deleteState === DeleteState.Incorrect}
                         padding={{bottom: 10}}
                         value={code} onValueChanged={setCode}/>
@@ -81,7 +82,7 @@ function PreSuppliedCodeDeleteSection({code}: { code: string }) {
 
 function DeleteCrashButton({code,deleteState,setDeleteState}: {code: string, deleteState: DeleteState, setDeleteState: (value: DeleteState) => void}) {
     return <Row justifyContent={"center"} width={"max"}>
-        <CButton margin={{bottom: 15}}
+        <SimpleButton margin={{bottom: 15}}
                  alignSelf={"center"} variant={"contained"} width={"fit-content"}
                  disabled={code.length !== CodeLength || deleteState === DeleteState.Loading}
                  onClick={async () => {
@@ -95,7 +96,7 @@ function DeleteCrashButton({code,deleteState,setDeleteState}: {code: string, del
 
             <Text text={"DELETE"}/>
 
-        </CButton>
+        </SimpleButton>
         {deleteState === DeleteState.Loading && <Row position="absolute"  width="max">
             <Spacer flexGrow={1}/>
             <Wrap padding={{right: 30, bottom: 10}}>

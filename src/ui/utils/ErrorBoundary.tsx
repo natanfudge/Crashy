@@ -1,5 +1,5 @@
 import React, {ErrorInfo} from "react";
-import {WithChild} from "./improvedapi/Element";
+import {WithChild} from "./improvedapi/SimpleElementProps";
 
 export interface ErrorBoundaryProps extends WithChild {
     fallback: JSX.Element

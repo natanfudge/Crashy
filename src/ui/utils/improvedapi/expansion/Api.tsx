@@ -1,8 +1,8 @@
-import {SingleChildParentProps} from "../improvedapi/Element";
 import React from "react";
 import {_implExpansion} from "./Impl";
 import {_implUseExpansion} from "./Util";
-import {Alignment} from "../../../utils/Gui";
+import {Alignment} from "../../../../utils/Gui";
+import {SingleChildParentProps} from "../SimpleElementProps";
 
 export function Expansion(props: ExpansionPropsApi) {
     return _implExpansion(props);

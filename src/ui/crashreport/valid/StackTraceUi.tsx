@@ -3,11 +3,8 @@ import {Column, Row} from "../../utils/improvedapi/Flex";
 import {Text, TextTheme} from "../../utils/improvedapi/Text";
 import React, {Fragment} from "react";
 import {Button, Divider, Typography} from "@mui/material";
-import {Spacer} from "../../utils/improvedapi/Core";
 import {clickableColor, fadedOutColor} from "../../Colors";
 import {ExpandingButton, MoreInfoButton} from "../../utils/Crashy";
-import {ClickCallback} from "../../utils/improvedapi/Element";
-import {CButton} from "../../utils/improvedapi/Material";
 import {
     ForgeTraceMetadata,
     javaClassFullName, javaMethodFullNameName, javaMethodSimpleName,
@@ -16,6 +13,9 @@ import {
     StackTraceMessage,
     unfoldRichStackTrace
 } from "crash-parser/src/model/RichCrashReport";
+import {Spacer} from "../../utils/improvedapi/SimpleDiv";
+import {ClickCallback} from "../../utils/improvedapi/GuiTypes";
+import {SimpleButton} from "../../utils/improvedapi/SimpleButton";
 
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
@@ -44,11 +44,11 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
 }
 
 export function JVMDetailsButton(props: {details: RichExceptionDetails}) {
-    return <ExpandingButton button={handleClick => <CButton margin={{left: 10, bottom: 3}} padding={3} size={"small"} variant={"outlined"}  onClick={handleClick}>
+    return <ExpandingButton button={handleClick => <SimpleButton margin={{left: 10, bottom: 3}} padding={3} size={"small"} variant={"outlined"}  onClick={handleClick}>
         <TextTheme variant={"subtitle2"}>
             JVM Details
         </TextTheme>
-    </CButton>} sticky={false}>
+    </SimpleButton>} sticky={false}>
         <TextTheme maxHeight={500} maxWidth={1500} overflow="auto" padding={5} whiteSpace="pre">
             {JSON.stringify(props.details,null,2).split("\n").map(line => <Fragment>
                     {line}

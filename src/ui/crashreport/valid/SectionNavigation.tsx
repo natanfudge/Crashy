@@ -1,8 +1,8 @@
 import {Row} from "../../utils/improvedapi/Flex";
-import {Spacer, Wrap} from "../../utils/improvedapi/Core";
 import React from "react";
 import {Button, ButtonGroup, Typography} from "@mui/material";
-import {Surface} from "../../utils/improvedapi/Material";
+import {Spacer, Wrap} from "../../utils/improvedapi/SimpleDiv";
+import {Surface} from "../../utils/improvedapi/Surface";
 
 
 export function SectionNavigation(props: {

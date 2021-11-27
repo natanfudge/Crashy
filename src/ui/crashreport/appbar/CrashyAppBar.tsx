@@ -1,17 +1,17 @@
 import {Row} from "../../utils/improvedapi/Flex";
-import {LinkContent} from "../../utils/improvedapi/Vanilla";
+import {LinkContent} from "../../utils/improvedapi/LinkContent";
 import {Text} from "../../utils/improvedapi/Text";
-import {crashyTitleColor, OnBackgroundColor} from "../../Colors";
-import {Spacer} from "../../utils/improvedapi/Core";
+import {crashyTitleColor} from "../../Colors";
 import React, {Fragment} from "react";
 import {GetCrashResponse, isSuccessfulGetCrashResponse} from "../../../server/CrashyServer";
-import {CrashyLogo, ExpandingButton, ExpandingIconButton} from "../../utils/Crashy";
-import {CAppBar} from "../../utils/improvedapi/Material";
-import {BugReport, Delete} from "@mui/icons-material";
+import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
+import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./DeleteCrash";
+import {SimpleAppBar} from "../../utils/improvedapi/SimpleAppBar";
+import {Spacer} from "../../utils/improvedapi/SimpleDiv";
 
 export function CrashyAppBar({crash}: { crash?: GetCrashResponse | Error }) {
-    return <CAppBar padding={10}>
+    return <SimpleAppBar padding={10}>
         <LinkContent href="/">
             <Row>
                 <CrashyLogo size={30} margin={{top: 5, right: 10}}/>
@@ -20,7 +20,7 @@ export function CrashyAppBar({crash}: { crash?: GetCrashResponse | Error }) {
         </LinkContent>
         <Spacer flexGrow={1}/>
         {(isSuccessfulGetCrashResponse(crash)) && <ToolbarButtons/>}
-    </CAppBar>
+    </SimpleAppBar>
 }
 
 function ToolbarButtons() {

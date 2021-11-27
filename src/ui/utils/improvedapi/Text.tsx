@@ -1,4 +1,3 @@
-import {deflattenStyle, ManyChildParentProps} from "./Element";
 import {Typography} from "@mui/material";
 import React, {CSSProperties} from "react";
 import {OverridableStringUnion} from "@mui/types";
@@ -7,8 +6,10 @@ import {Variant} from "@mui/material/styles/createTypography";
 import {TypographyClasses} from "@mui/material/Typography/typographyClasses";
 import {SxProps} from "@mui/system";
 import {Theme} from "@mui/material/styles";
-import {isObj} from "crash-parser/src/util/Utils";
 import * as CSS from "csstype"
+import {deflattenStyle} from "./impl/SimpleImpl";
+import {ManyChildParentProps} from "./SimpleElementProps";
+import {Color, gradientToCss, isGradient} from "./Color";
 
 export interface TextThemeProps extends ManyChildParentProps {
     /**
@@ -68,61 +69,33 @@ export interface TextThemeProps extends ManyChildParentProps {
      * }
      */
     variantMapping?: Partial<Record<OverridableStringUnion<Variant | 'inherit', TypographyPropsVariantOverrides>, string>>;
+    /**
+     * The **`color`** CSS property sets the foreground color value of an element's text and text decorations, and sets the `<currentcolor>` value. `currentcolor` may be used as an indirect value on _other_ properties and is the default for other color properties, such as `border-color`.
+     * @see https://developer.mozilla.org/docs/Web/CSS/color
+     */
     color?: Color
+    /**
+     * The **`font-family`** CSS property specifies a prioritized list of one or more font family names and/or generic family names for the selected element.
+     * @see https://developer.mozilla.org/docs/Web/CSS/font-family
+     */
     fontFamily?: CSS.Property.FontFamily
+    /**
+     * The **`font-style`** CSS property sets whether a font should be styled with a normal, italic, or oblique face from its `font-family`.
+     * @see https://developer.mozilla.org/docs/Web/CSS/font-style
+     */
     fontStyle?: CSS.Property.FontStyle
+    //TODO:
+    //fontWeight?: CSS.Property.FontWeight
+    /**
+     * The **`white-space`** CSS property sets how white space inside an element is handled.
+     * @see https://developer.mozilla.org/docs/Web/CSS/white-space
+     */
     whiteSpace?: CSS.Property.WhiteSpace
+    /**
+     * The **`word-break`** CSS property sets whether line breaks appear wherever the text would otherwise overflow its content box.
+     * @see https://developer.mozilla.org/docs/Web/CSS/word-break
+     */
     wordBreak?: CSS.Property.WordBreak
-}
-
-type Color = string | Gradient
-//
-export interface Gradient {
-    direction: GradientDirection
-    firstColor: GradientColor
-    midpointPercent?: number
-    secondColor: GradientColor
-
-}
-
-export type GradientColor = string | {
-    color: string
-    endPercent: number
-}
-
-export type GradientDirection = "to bottom" | "to top" | "to right" | "to left"
-
-export function isGradient(obj?: Color) : obj is Gradient {
-    return isObj(obj) && obj?.firstColor !== undefined;
-}
-
-function gradientColorString(color: GradientColor) : string {
-    return typeof color === "string"? color: `${color.color} ${color.endPercent}%`
-}
-
-function cssFunction(name: string, ...args: (unknown | undefined)[]): string{
-    return `${name}(${args.filter(arg => arg !== undefined).join(",")})`
-}
-
-export function TextTheme(props: TextThemeProps) {
-    const {color,style,fontFamily,fontStyle,whiteSpace,wordBreak, ...otherProps} = deflattenStyle(props);
-
-    const actualColor = isGradient(color) ? undefined : color;
-
-    const gradientStyle : CSSProperties = isGradient(color) ? {
-        background:cssFunction("linear-gradient",
-            color.direction,
-            gradientColorString(color.firstColor),
-            color.midpointPercent !== undefined? `${color.midpointPercent}%` : undefined,
-            gradientColorString(color.secondColor)
-        ),
-        backgroundClip: "text",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent"
-    } : {}
-
-
-    return <Typography style={{fontFamily,fontStyle, whiteSpace,wordBreak,...gradientStyle, ...style}} color={actualColor}{...otherProps}/>
 }
 
 export interface TextProps extends Omit<TextThemeProps, 'children'> {
@@ -133,3 +106,24 @@ export function Text(props: TextProps) {
     const {text, ...otherProps} = props;
     return <TextTheme {...otherProps}>{text}</TextTheme>
 }
+
+/**
+ * Applies a text style to all child text nodes.
+ * Also useful for formatting with <b> and <link> and such
+ */
+export function TextTheme(props: TextThemeProps) {
+    const {color, style, fontFamily, fontStyle, whiteSpace, wordBreak, ...otherProps} = deflattenStyle(props);
+
+    const actualColor = isGradient(color) ? undefined : color;
+
+    const gradientStyle: CSSProperties = isGradient(color) ? {
+        background: gradientToCss(color),
+        backgroundClip: "text",
+        WebkitBackgroundClip: "text",
+        WebkitTextFillColor: "transparent"
+    } : {}
+
+    return <Typography style={{fontFamily, fontStyle, whiteSpace, wordBreak, ...gradientStyle, ...style}}
+                       color={actualColor}{...otherProps}/>
+}
+

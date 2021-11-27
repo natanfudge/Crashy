@@ -1,5 +1,5 @@
 import React from "react";
-import {WithChild} from "./Element";
+import {WithChild} from "./SimpleElementProps";
 
 /**
  * Makes the parent a link

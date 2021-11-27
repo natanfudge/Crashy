@@ -1,14 +1,16 @@
-import {ClickCallback, Margin, Padding, SingleChildParentProps, WithChild} from "./improvedapi/Element";
-import {CImage} from "./improvedapi/Core";
 import {KeyboardArrowDown} from "@mui/icons-material";
-import {Expansion, useExpansion} from "./expansion/Api";
-import {CIconButton, Surface} from "./improvedapi/Material";
+import {Expansion, useExpansion} from "./improvedapi/expansion/Api";
 import {primaryColor} from "../Colors";
 import React, {Fragment} from "react";
+import {SingleChildParentProps, WithChild} from "./improvedapi/SimpleElementProps";
+import {SimpleImage} from "./improvedapi/SimpleImage";
+import {ClickCallback, Margin, Padding} from "./improvedapi/GuiTypes";
+import {SimpleIconButton} from "./improvedapi/SimpleIconButton";
+import {Surface} from "./improvedapi/Surface";
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
-    return <CImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}
-                   margin={margin}/>
+    return <SimpleImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}
+                        margin={margin}/>
 }
 
 
@@ -31,9 +33,9 @@ export function ExpandingIconButton({buttonPadding, icon, ...expandingButtonProp
     return <ExpandingButton
         {...expandingButtonProps}
         button={
-            (handleClick) => <CIconButton padding={buttonPadding} onClick={handleClick}>
+            (handleClick) => <SimpleIconButton padding={buttonPadding} onClick={handleClick}>
                 {icon}
-            </CIconButton>
+            </SimpleIconButton>
         }
      />
 }

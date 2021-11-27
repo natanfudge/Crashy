@@ -1,5 +1,4 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Wrap} from "../utils/improvedapi/Core";
 import {LinearProgress} from "@mui/material";
 import {CrashyServer, GetCrashError, GetCrashResponse} from "../../server/CrashyServer";
 import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
@@ -8,6 +7,7 @@ import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
 import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";
 import {NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
+import {Wrap} from "../utils/improvedapi/SimpleDiv";
 
 
 export function CrashyCrashReportPage() {
