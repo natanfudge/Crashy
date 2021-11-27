@@ -1,6 +1,6 @@
 import {ThemeOptions} from "@mui/material";
 import {grey} from "@mui/material/colors";
-import {Gradient} from "./utils/improvedapi/Color";
+import {Gradient} from "./utils/simple/Color";
 
 export const OnBackgroundColor = "white"
 export const primaryColor = "#90caf9"

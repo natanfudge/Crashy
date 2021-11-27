@@ -1,14 +1,14 @@
-import {Row} from "../../utils/improvedapi/Flex";
-import {LinkContent} from "../../utils/improvedapi/LinkContent";
-import {Text} from "../../utils/improvedapi/Text";
+import {Row} from "../../utils/simple/Flex";
+import {LinkContent} from "../../utils/simple/LinkContent";
+import {Text} from "../../utils/simple/Text";
 import {crashyTitleColor} from "../../Colors";
 import React, {Fragment} from "react";
 import {GetCrashResponse, isSuccessfulGetCrashResponse} from "../../../server/CrashyServer";
 import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
 import {Delete} from "@mui/icons-material";
 import {DeleteSection} from "./DeleteCrash";
-import {SimpleAppBar} from "../../utils/improvedapi/SimpleAppBar";
-import {Spacer} from "../../utils/improvedapi/SimpleDiv";
+import {SimpleAppBar} from "../../utils/simple/SimpleAppBar";
+import {Spacer} from "../../utils/simple/SimpleDiv";
 
 export function CrashyAppBar({crash}: { crash?: GetCrashResponse | Error }) {
     return <SimpleAppBar padding={10}>

@@ -12,7 +12,7 @@ import {
     useCrash
 } from "./crashreport/CrashReportPage";
 import {ErrorBoundary} from "./utils/ErrorBoundary";
-import {Text, TextTheme} from "./utils/improvedapi/Text";
+import {Text, TextTheme} from "./utils/simple/Text";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
 import {getUrlCrashId, getUrlIsRaw} from "../utils/PageUrl";
 import {GetCrashError, GetCrashResponse} from "../server/CrashyServer";

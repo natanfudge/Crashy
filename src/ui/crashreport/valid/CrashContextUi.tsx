@@ -1,4 +1,4 @@
-import {Column, Row} from "../../utils/improvedapi/Flex";
+import {Column, Row} from "../../utils/simple/Flex";
 import MinecraftLogo from "../../../media/minecraft_cube.svg";
 import ForgeLogo from "../../../media/forge_logo.svg";
 import FabricLogo from "../../../media/fabric_logo.svg";
@@ -9,16 +9,16 @@ import WindowsLogo from "../../../media/windows_logo.svg";
 import LinuxLogo from "../../../media/linux_logo.svg";
 import MacosLogo from "../../../media/macos_logo.svg";
 import QuestionMarkIcon from "../../../media/questionmark_icon_white.svg";
-import {Text, TextTheme} from "../../utils/improvedapi/Text";
+import {Text, TextTheme} from "../../utils/simple/Text";
 import {lightBlue} from "@mui/material/colors";
 import {CrashContext, LoaderType, OperatingSystemType} from "crash-parser/src/model/RichCrashReport";
 import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";
 import {CrashyNewIssueUrl} from "../../utils/Crashy";
-import {SimpleDivider} from "../../utils/improvedapi/SimpleDivider";
-import {Spacer} from "../../utils/improvedapi/SimpleDiv";
-import {SimpleImage} from "../../utils/improvedapi/SimpleImage";
-import {Surface} from "../../utils/improvedapi/Surface";
+import {SimpleDivider} from "../../utils/simple/SimpleDivider";
+import {Spacer} from "../../utils/simple/SimpleDiv";
+import {SimpleImage} from "../../utils/simple/SimpleImage";
+import {Surface} from "../../utils/simple/Surface";
 
 export function CrashLeftSide(props: { context: CrashContext }) {
     return <Column height={"max"}>

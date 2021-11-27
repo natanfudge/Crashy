@@ -1,6 +1,6 @@
 
-import {Column, Row} from "../../utils/improvedapi/Flex";
-import {Text, TextTheme} from "../../utils/improvedapi/Text";
+import {Column, Row} from "../../utils/simple/Flex";
+import {Text, TextTheme} from "../../utils/simple/Text";
 import React, {Fragment} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {clickableColor, fadedOutColor} from "../../Colors";
@@ -13,9 +13,9 @@ import {
     StackTraceMessage,
     unfoldRichStackTrace
 } from "crash-parser/src/model/RichCrashReport";
-import {Spacer} from "../../utils/improvedapi/SimpleDiv";
-import {ClickCallback} from "../../utils/improvedapi/GuiTypes";
-import {SimpleButton} from "../../utils/improvedapi/SimpleButton";
+import {Spacer} from "../../utils/simple/SimpleDiv";
+import {ClickCallback} from "../../utils/simple/GuiTypes";
+import {SimpleButton} from "../../utils/simple/SimpleButton";
 
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {

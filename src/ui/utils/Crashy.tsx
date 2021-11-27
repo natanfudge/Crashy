@@ -1,12 +1,12 @@
 import {KeyboardArrowDown} from "@mui/icons-material";
-import {Expansion, useExpansion} from "./improvedapi/expansion/Api";
+import {Expansion, useExpansion} from "./simple/expansion/Api";
 import {primaryColor} from "../Colors";
 import React, {Fragment} from "react";
-import {SingleChildParentProps, WithChild} from "./improvedapi/SimpleElementProps";
-import {SimpleImage} from "./improvedapi/SimpleImage";
-import {ClickCallback, Margin, Padding} from "./improvedapi/GuiTypes";
-import {SimpleIconButton} from "./improvedapi/SimpleIconButton";
-import {Surface} from "./improvedapi/Surface";
+import {SingleChildParentProps, WithChild} from "./simple/SimpleElementProps";
+import {SimpleImage} from "./simple/SimpleImage";
+import {ClickCallback, Margin, Padding} from "./simple/GuiTypes";
+import {SimpleIconButton} from "./simple/SimpleIconButton";
+import {Surface} from "./simple/Surface";
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
     return <SimpleImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}

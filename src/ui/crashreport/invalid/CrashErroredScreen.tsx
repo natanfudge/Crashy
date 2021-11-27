@@ -1,5 +1,5 @@
-import {Column} from "../../utils/improvedapi/Flex";
-import {TextTheme} from "../../utils/improvedapi/Text";
+import {Column} from "../../utils/simple/Flex";
+import {TextTheme} from "../../utils/simple/Text";
 import React from "react";
 
 export function CrashErroredScreen() {

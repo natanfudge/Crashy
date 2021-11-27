@@ -1,14 +1,14 @@
 import React from "react";
-import {Column, Row} from "../../utils/improvedapi/Flex";
-import {Text, TextTheme} from "../../utils/improvedapi/Text";
+import {Column, Row} from "../../utils/simple/Flex";
+import {Text, TextTheme} from "../../utils/simple/Text";
 import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../../../server/CrashyServer";
 import {getUrlCrashId, setUrlNoCache} from "../../../utils/PageUrl";
 import {getCookieCrashCode, setCookieDeleted} from "../../../utils/Cookies";
 import {fadedOutColor} from "../../Colors";
-import {SimpleButton} from "../../utils/improvedapi/SimpleButton";
-import {Spacer, Wrap} from "../../utils/improvedapi/SimpleDiv";
-import {SimpleTextField} from "../../utils/improvedapi/SimpleTextField";
+import {SimpleButton} from "../../utils/simple/SimpleButton";
+import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
+import {SimpleTextField} from "../../utils/simple/SimpleTextField";
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"
 

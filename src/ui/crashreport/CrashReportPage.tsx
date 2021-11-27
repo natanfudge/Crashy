@@ -6,7 +6,7 @@ import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";
 import {NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
-import {Wrap} from "../utils/improvedapi/SimpleDiv";
+import {Wrap} from "../utils/simple/SimpleDiv";
 import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
 import {getCookieDeleted} from "../../utils/Cookies";
 

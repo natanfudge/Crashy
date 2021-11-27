@@ -1,17 +1,17 @@
 import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
 import React from "react";
-import {Column, Row} from "../../utils/improvedapi/Flex";
+import {Column, Row} from "../../utils/simple/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
 import {Typography} from "@mui/material";
-import {Text, TextTheme} from "../../utils/improvedapi/Text";
+import {Text, TextTheme} from "../../utils/simple/Text";
 import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
-import {SimpleDivider} from "../../utils/improvedapi/SimpleDivider";
-import {Spacer} from "../../utils/improvedapi/SimpleDiv";
-import {Surface} from "../../utils/improvedapi/Surface";
-import {SimpleButton} from "../../utils/improvedapi/SimpleButton";
+import {SimpleDivider} from "../../utils/simple/SimpleDivider";
+import {Spacer} from "../../utils/simple/SimpleDiv";
+import {Surface} from "../../utils/simple/Surface";
+import {SimpleButton} from "../../utils/simple/SimpleButton";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews
