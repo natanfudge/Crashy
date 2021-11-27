@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 export interface NumericAlignment {
     /**
      * 0.0 to 1.0
@@ -52,3 +54,13 @@ export function toNumericAlignment(edge: Alignment): NumericAlignment {
     }
 }
 
+function orientationIsPortrait(orientationType: OrientationType): boolean {
+    return orientationType === "portrait-primary" || orientationType === "portrait-secondary";
+}
+
+export function useOrientation(): boolean {
+    const [isPortrait, setIsPortrait] = useState(orientationIsPortrait(window.screen.orientation.type));
+    // console.log("height:"+window.innerHeight+"width:"+window.innerWidth)
+    window.screen.orientation.onchange = () => setIsPortrait(orientationIsPortrait(window.screen.orientation.type))
+    return isPortrait;
+}

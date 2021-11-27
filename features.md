@@ -28,14 +28,12 @@
   - Entire section
   - Section detail
 - Configurable UI
-- Button to show raw log
 - Explore crashes
 - Add 'upload to crashy' to forge init crash screen
 - Dynamic meta tags https://crashy.net/R0AyHRMRXcfmeOC5BCDf
 - Expose and document API
 - 'New Crash' button (maybe home and 'new crash' will be seperated in the future)
 - Parse vanilla crashes
-<<<<<<< HEAD
 - When verifying fails, add a button 'report failure' to automatically Log failures in crash report parsing, so we can identify ourselves more crashes that are not being parsed correctly. 
 - Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
 possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server.
@@ -43,11 +41,9 @@ possible by checking strings exist when skipping them. Because that is slower ma
   - Group mods by parent (i.e. 30 fabric api mods shouldn't obscure the list)
   - Make suspected mods more prominent, and explain why they were blamed (in the future it could be mixins)
   - Add something in the main screen that makes suspected mods more discoverable
-=======
 - Log failures in crash report parsing for decently large reports, so we can identify ourselves more crashes that are not being parsed correctly. 
 - When a failure happens, we always log the exception itself, with optionally logging the entire crash report. 
 - Stricter verifying to find cases where verifying succeeds but crash log looks completely wrong, 
 possible by checking strings exist when skipping them. Because that is slower maybe add a 'strict' flag that is only used on the server. (enable strict in server)
 - Suggest fixes. For example, when a mod is blamed, suggest updating it (maybe even somehow detect it has an update)
 - Pay a flat amount to save a crash report forever. 
->>>>>>> 4e98a19348bb8a8c740673f2c61e9c31f9c5d513

@@ -71,8 +71,8 @@ div[role=presentation]{
     z-index: 1;
 }
 
-/*Makes 'report an issue' and its icon entirely red.*/
-.bug-report * {
-    fill: rgba(255, 0, 0, 0.85) !important;
-    color:rgba(255, 0, 0, 0.85) !important;
-}
+/*html {*/
+/*    -webkit-text-size-adjust: 100%;*/
+/*    -moz-text-size-adjust: 100%;*/
+/*    -ms-text-size-adjust: 100%;*/
+/*}*/

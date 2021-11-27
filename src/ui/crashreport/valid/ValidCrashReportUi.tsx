@@ -12,6 +12,8 @@ import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {Surface} from "../../utils/simple/Surface";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
+import {setUrlRaw} from "../../../utils/PageUrl";
+import {useOrientation} from "../../../utils/Gui";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews
@@ -23,28 +25,31 @@ export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
 
     report.sections.forEach(section => sectionNames.push(section.name));
 
+    const isPortrait = /*useOrientation();*/ true;
+    // console.log("Portrait: " + isPortrait)
     return <Row height={"max"} padding={{top: 4}} justifyContent={"space-between"}>
-        <CrashLeftSide context={context}/>
+        {!isPortrait && <CrashLeftSide context={context}/>}
         <CenterView report={report} activeSectionIndex={activeSectionIndex}/>
 
-        <SectionNavigation sections={sectionNames}
-                           activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>
+        {!isPortrait && <SectionNavigation sections={sectionNames}
+                            activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>}
     </Row>
 }
 
 function CenterView({report, activeSectionIndex}: { report: RichCrashReport, activeSectionIndex: number }) {
     return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
         <Row>
-           {/* //TODO: raw button here*/}
-            {/*<SimpleButton position = "absolute" onClick={}*/}
+            <SimpleButton margin={10} variant={"outlined"} position = "absolute" onClick={() => setUrlRaw(true)}>
+                <Text text = "Raw"/>
+            </SimpleButton>
             <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
                 <Column alignSelf="center" margin={{bottom: 10}}>
-                    <Row>
-                        <Spacer width = {150}/>
-                        <TextTheme variant={"h4"} fontStyle={"italic"}>
-                            {report.title}
+                    <Row maxWidth={"max"}>
+                        {/*<Spacer style={{width: 150}}/>*/}
+                        <TextTheme overflow={"clip"} whiteSpace={"pre"} variant={"h4"} fontStyle={"italic"}>
+                              {"    "+report.title+"    "}
                         </TextTheme>
-                        <Spacer width = {150}/>
+                        {/*<Spacer style={{width: 150}}/>*/}
                     </Row>
 
                     <SimpleDivider backgroundColor={"#9c1a1a"}/>

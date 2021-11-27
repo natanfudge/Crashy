@@ -19,6 +19,8 @@ import {GetCrashError, GetCrashResponse} from "../server/CrashyServer";
 import {NoSuchCrashScreen} from "./crashreport/invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./crashreport/invalid/CrashErroredScreen";
 
+//TODO: MOBILE:
+// - When scrolling down the header ensmoldens to a 3-line button
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
 
@@ -51,7 +53,6 @@ function CrashyUi() {
     }
 }
 
-//TODO: ok, plan D. store in cookies and intentionally hide it from the user. we have no choice.
 
 
 function CrashyRawUi() {

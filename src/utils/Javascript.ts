@@ -106,3 +106,7 @@ export function getDocumentRelativeRect(element?: Element | null): Rect { // cro
         height: box.height
     }
 }
+
+// export function isPortrait(): boolean {
+//     return window.innerWidth < window.innerHeight;
+// }

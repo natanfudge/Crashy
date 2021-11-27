@@ -21,6 +21,18 @@ export function getUrlIsRaw(): boolean {
     return getPageArgs().raw;
 }
 
+export function setUrlNoCache(value: boolean) {
+    updatePageArgs(args => {
+        args.nocache = value
+    })
+}
+
+export function setUrlRaw(value: boolean) {
+    updatePageArgs(args => {
+        args.raw = value
+    })
+}
+
 type Raw<T> = {
     [P in keyof T]?: string;
 };
@@ -53,11 +65,7 @@ function parsePageCrashId(): string | undefined {
 }
 
 
-export function setUrlNoCache(value: boolean) {
-    updatePageArgs(args => {
-        args.nocache = value
-    })
-}
+
 
 export function goToUploadedCrash(crash: { id: string, code: string }) {
     updatePageArgs(args => {
