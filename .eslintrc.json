@@ -65,7 +65,8 @@
         "react/jsx-no-undef": "off",
         "@typescript-eslint/no-unsafe-call": "off",
         "@typescript-eslint/ban-ts-comment" : "off",
-        "@typescript-eslint/require-await": "warn"
+        "@typescript-eslint/require-await": "warn",
+        "@typescript-eslint/no-unsafe-return": "warn"
       }
     }
   ]

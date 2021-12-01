@@ -14,6 +14,7 @@ import {Surface} from "../../utils/simple/Surface";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {setUrlRaw} from "../../../utils/PageUrl";
 import {useOrientation} from "../../../utils/Gui";
+import {BottomElementDynamicallyLarger} from "../../App";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews
@@ -43,17 +44,24 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
                 <Text text = "Raw"/>
             </SimpleButton>
             <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
-                <Column alignSelf="center" margin={{bottom: 10}}>
-                    <Row maxWidth={"max"}>
-                        {/*<Spacer style={{width: 150}}/>*/}
-                        <TextTheme overflow={"clip"} whiteSpace={"pre"} variant={"h4"} fontStyle={"italic"}>
-                              {"    "+report.title+"    "}
-                        </TextTheme>
-                        {/*<Spacer style={{width: 150}}/>*/}
-                    </Row>
+                <BottomElementDynamicallyLarger
+                    topElement={ref => <TextTheme spanRef = {ref} whiteSpace={"pre"} variant={"h4"} fontStyle={"italic"}>
+                    {report.title}
+                </TextTheme>}
+                    bottomElement={<SimpleDivider backgroundColor={"#9c1a1a"}/>}
+                    largerBy={150}
+                />
+                {/*<Column alignSelf="center" margin={{bottom: 10}}>*/}
+                {/*    <Row maxWidth={"max"}>*/}
+                {/*        <Spacer style={{width: 150}}/>*/}
+                {/*        <TextTheme overflow={"clip"} whiteSpace={"pre"} variant={"h4"} fontStyle={"italic"}>*/}
+                {/*            {report.title}*/}
+                {/*        </TextTheme>*/}
+                {/*        <Spacer style={{width: 150}}/>*/}
+                {/*    </Row>*/}
 
-                    <SimpleDivider backgroundColor={"#9c1a1a"}/>
-                </Column>
+                {/*    */}
+                {/*</Column>*/}
 
                 <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
                 <ActiveSection report={report} index={activeSectionIndex}/>
