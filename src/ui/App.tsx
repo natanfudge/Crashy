@@ -65,7 +65,7 @@ export function BottomElementDynamicallyLarger(props: {
 
     useLayoutEffect(() => recalculateWidth(), [])
 
-    return <Column>
+    return <Column width = "max">
         <Row>
             <div ref={leftSpaceRef} style={{maxWidth: props.largerBy, flexBasis: "100%"}}/>
             {props.topElement(textRef)}
