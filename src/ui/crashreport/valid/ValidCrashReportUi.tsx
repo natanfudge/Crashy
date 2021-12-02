@@ -26,6 +26,7 @@ export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
 
     report.sections.forEach(section => sectionNames.push(section.name));
 
+    //TODO: check to see if this causes issues when rotating in mobile
     const isPortrait = /*useOrientation();*/ true;
     // console.log("Portrait: " + isPortrait)
     return <Row height={"max"} padding={{top: 4}} justifyContent={"space-between"}>
@@ -44,24 +45,25 @@ function CenterView({report, activeSectionIndex}: { report: RichCrashReport, act
                 <Text text = "Raw"/>
             </SimpleButton>
             <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
-                <BottomElementDynamicallyLarger
-                    topElement={ref => <TextTheme spanRef = {ref} whiteSpace={"pre"} variant={"h4"} fontStyle={"italic"}>
-                    {report.title}
-                </TextTheme>}
-                    bottomElement={<SimpleDivider backgroundColor={"#9c1a1a"}/>}
-                    largerBy={150}
-                />
-                {/*<Column alignSelf="center" margin={{bottom: 10}}>*/}
-                {/*    <Row maxWidth={"max"}>*/}
-                {/*        <Spacer style={{width: 150}}/>*/}
-                {/*        <TextTheme overflow={"clip"} whiteSpace={"pre"} variant={"h4"} fontStyle={"italic"}>*/}
-                {/*            {report.title}*/}
-                {/*        </TextTheme>*/}
-                {/*        <Spacer style={{width: 150}}/>*/}
-                {/*    </Row>*/}
+                {/*<Column maxWidth={500}>
+                    <TextTheme  variant={"h4"} fontStyle={"italic"}>
+                        {report.title}
+                    </TextTheme>
+                    <SimpleDivider backgroundColor={"#9c1a1a"}/>
+                </Column>*/}
+                {/*<Row>*/}
+                    {/*<Spacer flexGrow={1}/>*/}
+                    <BottomElementDynamicallyLarger
+                        columnProps={{/*alignItems: "center"*/}}
+                        topElement={ref => <TextTheme spanRef = {ref} variant={"h4"} fontStyle={"italic"}>
+                            {report.title}
+                        </TextTheme>}
+                        bottomElement={<SimpleDivider  backgroundColor={"#9c1a1a"}/>}
+                        largerBy={150}
+                    />
+                    {/*<Spacer flexGrow={1}/>*/}
+                {/*</Row>*/}
 
-                {/*    */}
-                {/*</Column>*/}
 
                 <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
                 <ActiveSection report={report} index={activeSectionIndex}/>

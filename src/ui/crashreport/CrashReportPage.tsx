@@ -9,16 +9,19 @@ import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
 import {Wrap} from "../utils/simple/SimpleDiv";
 import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
 import {getCookieDeleted} from "../../utils/Cookies";
+import {BottomElementDynamicallyLarger} from "../App";
+import {TextTheme} from "../utils/simple/Text";
+import {SimpleDivider} from "../utils/simple/SimpleDivider";
 
 
 export function CrashyCrashReportPage() {
     const crash = useCrash();
 
     return <Fragment>
-        <CrashyAppBar crash={crash}/>
-        <Wrap position="absolute" height="max" width="max" padding={{top: 60}}>
+        {/*<CrashyAppBar crash={crash}/>*/}
+        {/*<Wrap position="absolute" height="max" width="max" padding={{top: 60}}>*/}
             <CrashReportPageContent crash={crash}/>
-        </Wrap>
+        {/*</Wrap>*/}
     </Fragment>
 }
 

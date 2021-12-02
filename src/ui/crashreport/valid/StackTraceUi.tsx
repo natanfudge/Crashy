@@ -92,7 +92,7 @@ function StackTraceMessageUi(message: StackTraceMessage) {
 
     const text = open ? javaClassFullName(message.class) : message.class.simpleName;
 
-    return <Text color={open? undefined: clickableColor} text={text}
+    return <Text wordBreak={"break-word"} color={open? undefined: clickableColor} text={text}
                  onClick={() => setOpen(!open)} variant={"h5"}/>
 }
 
