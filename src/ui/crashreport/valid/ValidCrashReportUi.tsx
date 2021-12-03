@@ -11,8 +11,9 @@ import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Surface} from "../../utils/simple/Surface";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {setUrlRaw} from "../../../utils/PageUrl";
-import {useOrientation} from "../../../utils/Gui";
+import {ScreenSize, useScreenSize} from "../../../utils/Gui";
 import {DynamicallyUnderlinedText} from "../../App";
+import {Wrap} from "../../utils/simple/SimpleDiv";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews
@@ -24,10 +25,11 @@ export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
 
     report.sections.forEach(section => sectionNames.push(section.name));
 
-    const isPortrait = useOrientation();
+    const screen = useScreenSize();
+    const isPortrait = screen.isPortrait;
     return <Row height={"max"} padding={{top: 4}} justifyContent={"space-between"}>
         {!isPortrait && <CrashLeftSide context={context}/>}
-        <CenterView isPortrait={isPortrait} report={report} activeSectionIndex={activeSectionIndex}/>
+        <CenterView screen={screen} report={report} activeSectionIndex={activeSectionIndex}/>
 
         {!isPortrait && <SectionNavigation sections={sectionNames}
                                            activeSection={activeSectionIndex}
@@ -38,18 +40,24 @@ export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
 function CenterView({
                         report,
                         activeSectionIndex,
-                        isPortrait
-                    }: { report: RichCrashReport, activeSectionIndex: number, isPortrait: boolean }) {
+                        screen
+                    }: { report: RichCrashReport, activeSectionIndex: number, screen: ScreenSize }) {
+    const isPortrait = screen.isPortrait;
     return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
         <Row>
-            {/*TODO: restore raw button in portrait somehow*/}
-            {!isPortrait && <SimpleButton margin={10} variant={"outlined"} position="absolute" onClick={() => setUrlRaw(true)}>
+            {/*TODO: restore raw button in portrait somehow, also there is no space for this in mobile, even in landscape, */}
+            {/*TODO: maybe move it to left view? there is space there even in mobile landscape*/}
+            {/*todo: IDK maybe add more padding or move it to the right or make it a real element*/}
+            {!isPortrait && !screen.isPhone &&  <SimpleButton margin={{top: 3, left: 10}} variant={"outlined"} position="absolute" onClick={() => setUrlRaw(true)}>
                 <Text text="Raw"/>
             </SimpleButton>}
-            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: isPortrait ? 0 : 50}} width={"max"}>
-                <DynamicallyUnderlinedText text={report.title} largerBy={150}>
-                    <SimpleDivider backgroundColor={"#9c1a1a"}/>
-                </DynamicallyUnderlinedText>
+            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: screen.isPhone ? 5 : 50}} width={"max"}>
+                <Wrap padding = {{horizontal: 5}} width={"max"}>
+                    <DynamicallyUnderlinedText text={report.title} largerBy={150}>
+                        <SimpleDivider backgroundColor={"#9c1a1a"}/>
+                    </DynamicallyUnderlinedText>
+                </Wrap>
+
                 <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
                 <ActiveSection report={report} index={activeSectionIndex}/>
             </Column>

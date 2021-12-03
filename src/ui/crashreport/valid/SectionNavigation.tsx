@@ -3,6 +3,7 @@ import React from "react";
 import {Button, ButtonGroup, Typography} from "@mui/material";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {Surface} from "../../utils/simple/Surface";
+import {OnBackgroundColor} from "../../Colors";
 
 
 export function SectionNavigation(props: {
@@ -30,7 +31,7 @@ function SectionButton(props: { name: string, active: boolean, onClick: () => vo
         <Row padding={{horizontal: 5}} width={"max"}>
             <Spacer flexGrow={1}/>
             <Wrap flexGrow={1}>
-                <Typography variant="h6" color={"white"} padding="5px" maxWidth={208}>
+                <Typography variant="h6" color={OnBackgroundColor} padding="5px" maxWidth={208}>
                     {props.name}
                 </Typography>
             </Wrap>
