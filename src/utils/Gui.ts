@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export interface NumericAlignment {
     /**
@@ -60,7 +60,15 @@ function orientationIsPortrait(orientationType: OrientationType): boolean {
 
 export function useOrientation(): boolean {
     const [isPortrait, setIsPortrait] = useState(orientationIsPortrait(window.screen.orientation.type));
-    // console.log("height:"+window.innerHeight+"width:"+window.innerWidth)
-    window.screen.orientation.onchange = () => setIsPortrait(orientationIsPortrait(window.screen.orientation.type))
+
+    useEffect(() => {
+        function handleResize() {
+            setIsPortrait(document.body.clientHeight > document.body.clientWidth)
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    })
     return isPortrait;
 }

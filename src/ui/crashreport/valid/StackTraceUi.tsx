@@ -1,6 +1,6 @@
 
 import {Column, Row} from "../../utils/simple/Flex";
-import {Text, TextTheme} from "../../utils/simple/Text";
+import {SimpleSpan, Text, TextTheme} from "../../utils/simple/Text";
 import React, {Fragment} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {clickableColor, fadedOutColor} from "../../Colors";
@@ -29,12 +29,12 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
         <Row flexWrap={"wrap"}>
             {StackTraceMessageUi(currentTrace.title)}
 
-            {currentTrace.title.message !== undefined && <Fragment>
-                <Text text={":"} variant="h5"/>
-                <Spacer width={5}/>
-                <Text text={currentTrace.title.message}
-                      variant={currentTrace.title.message.length > 200 ? "body1" : "h5"}/>
-            </Fragment>}
+            {/*{currentTrace.title.message !== undefined && <Fragment>*/}
+            {/*    <Text text={":"} variant="h5"/>*/}
+            {/*    <Spacer width={5}/>*/}
+            {/*    <Text text={currentTrace.title.message}*/}
+            {/*          variant={currentTrace.title.message.length > 200 ? "body1" : "h5"}/>*/}
+            {/*</Fragment>}*/}
             {currentTrace.details !== undefined && <JVMDetailsButton details = {currentTrace.details}/>}
         </Row>
 
@@ -87,13 +87,18 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
     </Button>
 }
 
-function StackTraceMessageUi(message: StackTraceMessage) {
+function StackTraceMessageUi(title: StackTraceMessage) {
     const [open, setOpen] = React.useState(false)
 
-    const text = open ? javaClassFullName(message.class) : message.class.simpleName;
+    const text = open ? javaClassFullName(title.class) : title.class.simpleName;
 
-    return <Text wordBreak={"break-word"} color={open? undefined: clickableColor} text={text}
-                 onClick={() => setOpen(!open)} variant={"h5"}/>
+    return <TextTheme wordBreak={"break-word"} variant={"h5"}>
+        <SimpleSpan text={text} color={open? undefined: clickableColor}
+              onClick={() => setOpen(!open)}/>
+        {title.message !== undefined && <Fragment>
+            : {title.message}
+        </Fragment>}
+    </TextTheme>
 }
 
 function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {

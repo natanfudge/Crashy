@@ -10,7 +10,9 @@ import {Text, TextTheme} from "./utils/simple/Text";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
 import {getUrlIsRaw} from "../utils/PageUrl";
 import {Wrap} from "./utils/simple/SimpleDiv";
-import {Column, FlexProps, Row} from "./utils/simple/Flex";
+import {Column, Row} from "./utils/simple/Flex";
+import {WithChild} from "./utils/simple/SimpleElementProps";
+import {SimpleDivider} from "./utils/simple/SimpleDivider";
 
 //TODO: MOBILE:
 // - When scrolling down the header ensmoldens to a 3-line button
@@ -38,19 +40,20 @@ function getWidth(ref: RefObject<Element>): number {
     return ref.current?.clientWidth ?? 0;
 }
 
-export function BottomElementDynamicallyLarger(props: {
-    largerBy: number, bottomElement: JSX.Element,
-    topElement: (ref: React.RefObject<any>) => JSX.Element,
-    columnProps: FlexProps
-}) {
+export function DynamicallyUnderlinedText(props: {
+    text: string,
+    largerBy: number
+} & WithChild) {
     const leftSpaceRef = useRef<HTMLDivElement>(null);
     const rightSpaceRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLSpanElement>(null)
     const [width, setWidth] = useState(0);
+    const [extraWidth, setExtraWidth] = useState(0);
 
     function recalculateWidth() {
-        const totalWidth = getWidth(leftSpaceRef) + getWidth(rightSpaceRef) + getWidth(textRef);
-        console.log("New width " + totalWidth);
+        const leftWidth = getWidth(leftSpaceRef);
+        setExtraWidth(leftWidth)
+        const totalWidth = leftWidth + getWidth(rightSpaceRef) + getWidth(textRef);
         setWidth(totalWidth);
     }
 
@@ -66,43 +69,29 @@ export function BottomElementDynamicallyLarger(props: {
 
     useLayoutEffect(() => recalculateWidth(), [])
 
-    return <Column width="max" {...props.columnProps}>
+    return <Column width="max">
         <Row justifyContent={"center"}>
-            {/*<Spacer flexGrow = {1}/>*/}
-            <div ref={leftSpaceRef} style={{maxWidth: props.largerBy, flexBasis: "100%"}}/>
-            {props.topElement(textRef)}
-            <div ref={rightSpaceRef} style={{maxWidth: props.largerBy, flexBasis: "100%"}}/>
-            {/*<Spacer flexGrow = {1}/>*/}
+            <div ref={leftSpaceRef} style={{maxWidth: props.largerBy,flexGrow: 1}}/>
+            <Text spanRef={textRef} variant={"h4"} fontStyle={"italic"} text={props.text}/>
+            <div ref={rightSpaceRef} style={{maxWidth: props.largerBy, flexGrow: 1}}/>
         </Row>
-        <Wrap alignSelf={"center"} style = {{width: "100%"}} maxWidth={width}>
-            {props.bottomElement}
+        <Wrap alignSelf={"center"} style={{width: "100%"}} maxWidth={width}>
+            {props.children}
         </Wrap>
     </Column>
 }
 
-
-
 function CrashyUi2() {
-    return <div style={{display: "flex", flexDirection: "column"}}>
-        <div style={{maxWidth: 500, width: "100%", alignSelf: "center"}}>
-            <div style={{backgroundColor: "red", height: 20}}/>
-        </div>
-    </div>
-    // <Column>
-    //     <Wrap alignSelf={"center"} maxWidth={500}>
-    //         <div style = {{backgroundColor : "red", height: 20}}/>
-    //     </Wrap>
-    // </Column>
-
-    // return <BottomElementDynamicallyLarger
-    //     columnProps={{/*alignItems: "center"*/}}
-    //     topElement={ref => <TextTheme spanRef = {ref} variant={"h4"} fontStyle={"italic"}>
-    //         Unexpected Error
-    //     </TextTheme>}
-    //     bottomElement={<SimpleDivider  backgroundColor={"#9c1a1a"}/>}
-    //     largerBy={150}
-    // />
+    return <DynamicallyUnderlinedText text={"Unexpected error"} largerBy={150}>
+        <SimpleDivider  backgroundColor={"#9c1a1a"}/>
+    </DynamicallyUnderlinedText>
+    // return <div style={{display: "flex", flexDirection: "row"}}>
+    //     <div style={{maxWidth: 500, width: "100%", height: 200, backgroundColor: "red"}}/>
+    //     Hello Multiple words
+    //     <div style={{maxWidth: 500, width: "100%", height: 200, backgroundColor: "red"}}/>
+    // </div>
 }
+
 
 function CrashyUi() {
     if (getUrlIsRaw()) {
@@ -116,7 +105,7 @@ function CrashyUi() {
     }
 }
 
-//TODO: investigate why everything is so zoomed in suddenly, see what viewport stuff we had earlier.
+//TODO: investigate why everything is so zoomed in suddenly in the home UI, see what viewport stuff we had earlier.
 function CrashyRawUi() {
     const crash = useCrash();
     if (isCrashAttemptValid(crash)) {

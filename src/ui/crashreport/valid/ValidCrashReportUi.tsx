@@ -3,18 +3,16 @@ import React from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
-import {Typography} from "@mui/material";
-import {Text, TextTheme} from "../../utils/simple/Text";
+import {Text} from "../../utils/simple/Text";
 import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
-import {Spacer} from "../../utils/simple/SimpleDiv";
 import {Surface} from "../../utils/simple/Surface";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {setUrlRaw} from "../../../utils/PageUrl";
 import {useOrientation} from "../../../utils/Gui";
-import {BottomElementDynamicallyLarger} from "../../App";
+import {DynamicallyUnderlinedText} from "../../App";
 
 export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
     // Show what the crash is in previews
@@ -26,45 +24,32 @@ export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
 
     report.sections.forEach(section => sectionNames.push(section.name));
 
-    //TODO: check to see if this causes issues when rotating in mobile
-    const isPortrait = /*useOrientation();*/ true;
-    // console.log("Portrait: " + isPortrait)
+    const isPortrait = useOrientation();
     return <Row height={"max"} padding={{top: 4}} justifyContent={"space-between"}>
         {!isPortrait && <CrashLeftSide context={context}/>}
-        <CenterView report={report} activeSectionIndex={activeSectionIndex}/>
+        <CenterView isPortrait={isPortrait} report={report} activeSectionIndex={activeSectionIndex}/>
 
         {!isPortrait && <SectionNavigation sections={sectionNames}
-                            activeSection={activeSectionIndex} onActiveSectionChanged={setActiveSectionIndex}/>}
+                                           activeSection={activeSectionIndex}
+                                           onActiveSectionChanged={setActiveSectionIndex}/>}
     </Row>
 }
 
-function CenterView({report, activeSectionIndex}: { report: RichCrashReport, activeSectionIndex: number }) {
+function CenterView({
+                        report,
+                        activeSectionIndex,
+                        isPortrait
+                    }: { report: RichCrashReport, activeSectionIndex: number, isPortrait: boolean }) {
     return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
         <Row>
-            <SimpleButton margin={10} variant={"outlined"} position = "absolute" onClick={() => setUrlRaw(true)}>
-                <Text text = "Raw"/>
-            </SimpleButton>
-            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: 50}} width={"max"}>
-                {/*<Column maxWidth={500}>
-                    <TextTheme  variant={"h4"} fontStyle={"italic"}>
-                        {report.title}
-                    </TextTheme>
+            {/*TODO: restore raw button in portrait somehow*/}
+            {!isPortrait && <SimpleButton margin={10} variant={"outlined"} position="absolute" onClick={() => setUrlRaw(true)}>
+                <Text text="Raw"/>
+            </SimpleButton>}
+            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: isPortrait ? 0 : 50}} width={"max"}>
+                <DynamicallyUnderlinedText text={report.title} largerBy={150}>
                     <SimpleDivider backgroundColor={"#9c1a1a"}/>
-                </Column>*/}
-                {/*<Row>*/}
-                    {/*<Spacer flexGrow={1}/>*/}
-                    <BottomElementDynamicallyLarger
-                        columnProps={{/*alignItems: "center"*/}}
-                        topElement={ref => <TextTheme spanRef = {ref} variant={"h4"} fontStyle={"italic"}>
-                            {report.title}
-                        </TextTheme>}
-                        bottomElement={<SimpleDivider  backgroundColor={"#9c1a1a"}/>}
-                        largerBy={150}
-                    />
-                    {/*<Spacer flexGrow={1}/>*/}
-                {/*</Row>*/}
-
-
+                </DynamicallyUnderlinedText>
                 <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
                 <ActiveSection report={report} index={activeSectionIndex}/>
             </Column>
