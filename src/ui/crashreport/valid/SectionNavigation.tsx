@@ -4,18 +4,19 @@ import {Button, ButtonGroup, Typography} from "@mui/material";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {Surface} from "../../utils/simple/Surface";
 import {OnBackgroundColor} from "../../Colors";
+import {SectionState} from "../CrashReportPage";
 
 
-export function SectionNavigation(props: {
+export function SectionNavigation({sections,sectionState}: {
     sections: string[],
-    activeSection: number, onActiveSectionChanged: (section: number) => void
+   sectionState: SectionState
 }) {
 
     return <Surface width={"fit-content"} margin={{right: 10}} height={"fit-content"}>
         <ButtonGroup orientation={"vertical"} variant={"contained"}>
-            {props.sections.map((section, index) => SectionButton({
-                    name: section, active: props.activeSection === index,
-                    onClick: () => props.onActiveSectionChanged(index)
+            {sections.map((section, index) => SectionButton({
+                    name: section, active: sectionState.activeSection === index,
+                    onClick: () => sectionState.onActiveSectionChanged(index)
                 })
             )}
 

@@ -14,26 +14,31 @@ import {setUrlRaw} from "../../../utils/PageUrl";
 import {ScreenSize, useScreenSize} from "../../../utils/Gui";
 import {DynamicallyUnderlinedText} from "../../App";
 import {Wrap} from "../../utils/simple/SimpleDiv";
+import {SectionState} from "../CrashReportPage";
 
-export function ValidCrashReportUi({report}: { report: RichCrashReport }) {
-    // Show what the crash is in previews
-    const context = report.context;
+export interface ValidCrashProps {
+    report: RichCrashReport
+    sectionState: SectionState
+}
 
-    const [activeSectionIndex, setActiveSectionIndex] = React.useState(0)
-
+export function sectionNavigationOf(report: RichCrashReport): string[]{
     const sectionNames = report.mods !== undefined ? ["Stack Trace", "Mods"] : ["Stack Trace"]
 
     report.sections.forEach(section => sectionNames.push(section.name));
+    return sectionNames;
+}
+
+export function ValidCrashReportUi({report, sectionState}: ValidCrashProps) {
+    // Show what the crash is in previews
+    const context = report.context;
 
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
     return <Row height={"max"} padding={{top: 4}} justifyContent={"space-between"}>
         {!isPortrait && <CrashLeftSide context={context}/>}
-        <CenterView screen={screen} report={report} activeSectionIndex={activeSectionIndex}/>
+        <CenterView screen={screen} report={report} activeSectionIndex={sectionState.activeSection}/>
 
-        {!isPortrait && <SectionNavigation sections={sectionNames}
-                                           activeSection={activeSectionIndex}
-                                           onActiveSectionChanged={setActiveSectionIndex}/>}
+        {!isPortrait && <SectionNavigation sections={sectionNavigationOf(report)} sectionState={sectionState}/> }
     </Row>
 }
 

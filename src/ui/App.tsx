@@ -15,7 +15,13 @@ import {WithChild} from "./utils/simple/SimpleElementProps";
 import {SimpleDivider} from "./utils/simple/SimpleDivider";
 
 //TODO: MOBILE:
-// - When scrolling down the header ensmoldens to a 3-line button
+// - When scrolling down only the navigation button remains
+// - Find new home for forge trace extra info
+// - Generic change for both mobile and desktop: replace mod extra info with a toggle button that shows the mod id.
+//    The rest of the forge extra info should have a new home, it's pretty much useless.
+// - Find new home for 'raw' button
+// - Test 'caused by/caused/ buttons
+// - Test JVM extra info button
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
 
