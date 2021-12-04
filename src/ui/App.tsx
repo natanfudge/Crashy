@@ -15,7 +15,6 @@ import {WithChild} from "./utils/simple/SimpleElementProps";
 import {SimpleDivider} from "./utils/simple/SimpleDivider";
 
 //TODO: MOBILE:
-// - When scrolling down only the navigation button remains
 // - Find new home for forge trace extra info
 // - Generic change for both mobile and desktop: replace mod extra info with a toggle button that shows the mod id.
 //    The rest of the forge extra info should have a new home, it's pretty much useless.
@@ -54,12 +53,9 @@ export function DynamicallyUnderlinedText(props: {
     const rightSpaceRef = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLSpanElement>(null)
     const [width, setWidth] = useState(0);
-    const [extraWidth, setExtraWidth] = useState(0);
 
     function recalculateWidth() {
-        const leftWidth = getWidth(leftSpaceRef);
-        setExtraWidth(leftWidth)
-        const totalWidth = leftWidth + getWidth(rightSpaceRef) + getWidth(textRef);
+        const totalWidth =  getWidth(leftSpaceRef) + getWidth(rightSpaceRef) + getWidth(textRef);
         setWidth(totalWidth);
     }
 

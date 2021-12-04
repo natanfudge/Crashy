@@ -17,6 +17,7 @@ export const errorColor = "rgb(234,8,8)"
 export const fadedOutColor = grey[600]
 export const slightlyPronouncedColor = "#323232"
 export const dialogBodyColor = "rgba(255, 255, 255, 0.7)"
+export const AppbarColor = "#272727"
 
 export const CrashyTheme: ThemeOptions = {
     palette: {

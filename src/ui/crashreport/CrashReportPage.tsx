@@ -10,23 +10,19 @@ import {Wrap} from "../utils/simple/SimpleDiv";
 import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
 import {getCookieDeleted} from "../../utils/Cookies";
 import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
+import {useScreenSize} from "../../utils/Gui";
 
 
 export function CrashyCrashReportPage() {
     const crash = useCrash();
-    const [activeSectionIndex, setActiveSectionIndex] = React.useState(0)
+    const [activeSection, setActiveSection] = React.useState<Section>(SpecialSection.StackTrace)
+    const screen = useScreenSize();
 
-    const sectionState: SectionState = {
-        activeSection: activeSectionIndex,
-        onActiveSectionChanged: (index) => {
-            console.log("New index: " + index);
-            setActiveSectionIndex(index);
-        }
-    }
+    const sectionState: SectionState = {activeSection, onActiveSectionChanged: setActiveSection}
 
     return <Fragment>
-        <CrashyAppBar crash={crash} sectionState={sectionState}/>
-        <Wrap position="absolute" height="max" width="max" padding={{top: 60}}>
+        <CrashyAppBar crash={crash} screen={screen} sectionState={sectionState}/>
+        <Wrap position="absolute" height="max" width="max" padding={{top: screen.isPhone ? 0 : 60}}>
             <CrashReportPageContent sectionState={sectionState} crash={crash}/>
         </Wrap>
     </Fragment>
@@ -40,8 +36,39 @@ export interface CrashProps {
 }
 
 export interface SectionState {
-    activeSection: number,
-    onActiveSectionChanged: (section: number) => void
+    activeSection: Section,
+    onActiveSectionChanged: (section: Section) => void
+}
+
+export interface RealReportSection {
+    index: number
+    name: string
+}
+
+export type Section = RealReportSection | SpecialSection
+
+export enum SpecialSection {
+    Mods, StackTrace
+}
+
+export function nameOfSection(section: Section): string {
+    if (section === SpecialSection.Mods) {
+        return "Mods"
+    } else if (section === SpecialSection.StackTrace) {
+        return "Stack Trace"
+    } else {
+        return section.name;
+    }
+}
+
+export function sectionsEqual(section1: Section, section2: Section): boolean {
+    if (section1 === SpecialSection.Mods) {
+        return section2 === SpecialSection.Mods
+    } else if (section1 === SpecialSection.StackTrace) {
+        return section2 === SpecialSection.StackTrace
+    } else {
+        return !(section2 === SpecialSection.Mods || section2 === SpecialSection.StackTrace) && section1.index === section2.index;
+    }
 }
 
 

@@ -14,18 +14,19 @@ import {setUrlRaw} from "../../../utils/PageUrl";
 import {ScreenSize, useScreenSize} from "../../../utils/Gui";
 import {DynamicallyUnderlinedText} from "../../App";
 import {Wrap} from "../../utils/simple/SimpleDiv";
-import {SectionState} from "../CrashReportPage";
+import {Section, SectionState, SpecialSection} from "../CrashReportPage";
 
 export interface ValidCrashProps {
     report: RichCrashReport
     sectionState: SectionState
 }
 
-export function sectionNavigationOf(report: RichCrashReport): string[]{
-    const sectionNames = report.mods !== undefined ? ["Stack Trace", "Mods"] : ["Stack Trace"]
+export function sectionNavigationOf(report: RichCrashReport): Section[] {
+    const sections: Section[] = report.mods !== undefined ? [SpecialSection.StackTrace, SpecialSection.Mods]
+        : [SpecialSection.StackTrace]
 
-    report.sections.forEach(section => sectionNames.push(section.name));
-    return sectionNames;
+    report.sections.forEach((section, i) => sections.push({name: section.name, index: i}));
+    return sections;
 }
 
 export function ValidCrashReportUi({report, sectionState}: ValidCrashProps) {
@@ -33,52 +34,50 @@ export function ValidCrashReportUi({report, sectionState}: ValidCrashProps) {
     const context = report.context;
 
     const screen = useScreenSize();
-    const isPortrait = screen.isPortrait;
+    const isPhone = screen.isPhone;
     return <Row height={"max"} padding={{top: 4}} justifyContent={"space-between"}>
-        {!isPortrait && <CrashLeftSide context={context}/>}
-        <CenterView screen={screen} report={report} activeSectionIndex={sectionState.activeSection}/>
+        {!isPhone && <CrashLeftSide context={context}/>}
+        <CenterView screen={screen} report={report} sectionState={sectionState}/>
 
-        {!isPortrait && <SectionNavigation sections={sectionNavigationOf(report)} sectionState={sectionState}/> }
+        {!isPhone && <SectionNavigation sections={sectionNavigationOf(report)} sectionState={sectionState}/>}
     </Row>
 }
 
 function CenterView({
                         report,
-                        activeSectionIndex,
+                        sectionState,
                         screen
-                    }: { report: RichCrashReport, activeSectionIndex: number, screen: ScreenSize }) {
-    const isPortrait = screen.isPortrait;
+                    }: ValidCrashProps & { screen: ScreenSize }) {
     return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
         <Row>
             {/*TODO: restore raw button in portrait somehow, also there is no space for this in mobile, even in landscape, */}
             {/*TODO: maybe move it to left view? there is space there even in mobile landscape*/}
             {/*todo: IDK maybe add more padding or move it to the right or make it a real element*/}
-            {!isPortrait && !screen.isPhone &&  <SimpleButton margin={{top: 3, left: 10}} variant={"outlined"} position="absolute" onClick={() => setUrlRaw(true)}>
+            {!screen.isPhone && <SimpleButton margin={{top: 3, left: 10}} variant={"outlined"} position="absolute"
+                                              onClick={() => setUrlRaw(true)}>
                 <Text text="Raw"/>
             </SimpleButton>}
-            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: screen.isPhone ? 5 : 50}} width={"max"}>
-                <Wrap padding = {{horizontal: 5}} width={"max"}>
+            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: screen.isPortrait ? 5 : 50}} width={"max"}>
+                <Wrap padding={{horizontal: 5}} width={"max"}>
                     <DynamicallyUnderlinedText text={report.title} largerBy={150}>
                         <SimpleDivider backgroundColor={"#9c1a1a"}/>
                     </DynamicallyUnderlinedText>
                 </Wrap>
 
                 <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
-                <ActiveSection report={report} index={activeSectionIndex}/>
+                <ActiveSection report={report} section={sectionState.activeSection}/>
             </Column>
         </Row>
     </Surface>
 }
 
-function ActiveSection({report, index}: { report: RichCrashReport, index: number }) {
-    if (index === 0) {
+
+function ActiveSection({report, section}: { report: RichCrashReport, section: Section }) {
+    if (section === SpecialSection.StackTrace) {
         return <StackTraceUi stackTrace={report.stackTrace}/>
-    } else if (index === 1 && report.mods !== undefined) {
-        return <ModListUi mods={report.mods}/>
-    }// We already use up the 0 and 1 index for the main stack trace and mods, so we need to reduce the index by 2.
-    else {
-        // When there is no mods page, only shift by 1 index (for the StackTraceUi)
-        const indexShift = report.mods !== undefined ? 2 : 1;
-        return <CrashReportSectionUi section={report.sections[index - indexShift]}/>
+    } else if (section === SpecialSection.Mods) {
+        return <ModListUi mods={report.mods!}/>
+    } else {
+        return <CrashReportSectionUi section={report.sections[section.index]}/>
     }
 }
