@@ -1,5 +1,6 @@
 
 export interface CrashReport {
+    raw: string
     description: string
     wittyComment: string
     time: string,

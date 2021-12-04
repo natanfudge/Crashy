@@ -30,7 +30,7 @@ export function CrashLeftSide(props: { context: CrashContext }) {
     </Column>
 }
 
-function CrashContextUi({context}: { context: CrashContext }) {
+export function CrashContextUi({context}: { context: CrashContext }) {
     const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
     const displayedTime = formatTime(context.time);
     const isForge = context.loader.type === LoaderType.Forge

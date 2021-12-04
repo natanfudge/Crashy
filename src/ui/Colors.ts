@@ -2,7 +2,7 @@ import {ThemeOptions} from "@mui/material";
 import {grey} from "@mui/material/colors";
 import {Gradient} from "./utils/simple/Color";
 
-export const OnBackgroundColor = "white"
+export const OnBackgroundColor = "#FFFFFF"
 export const primaryColor = "#90caf9"
 export const secondaryColor = "#65ff00"
 export const crashyTitleColor: Gradient = {
@@ -33,6 +33,9 @@ export const CrashyTheme: ThemeOptions = {
         },
         background: {
             // default: "#1d1515"
+        },
+        info: {
+            main: OnBackgroundColor
         }
     },
 }

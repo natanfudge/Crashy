@@ -1,6 +1,7 @@
 import {StringMap} from "./CrashReport";
 
 export interface RichCrashReport {
+    raw: string
     title: string
     wittyComment: string
     context: CrashContext

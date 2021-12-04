@@ -60,7 +60,8 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         description,
         time,
         wittyComment,
-        stacktrace
+        stacktrace,
+        raw: rawReport
     };
 
     function parseWittyComment(): string {

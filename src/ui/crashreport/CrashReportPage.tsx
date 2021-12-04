@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {LinearProgress} from "@mui/material";
-import {CrashyServer, GetCrashError, GetCrashResponse} from "../../server/CrashyServer";
+import {CrashyServer, GetCrashError, GetCrashResponse, isSuccessfulGetCrashResponse} from "../../server/CrashyServer";
 import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";
@@ -12,6 +12,7 @@ import {getCookieDeleted} from "../../utils/Cookies";
 import {DynamicallyUnderlinedText} from "../App";
 import {TextTheme} from "../utils/simple/Text";
 import {SimpleDivider} from "../utils/simple/SimpleDivider";
+import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
 
 
 export function CrashyCrashReportPage() {
@@ -25,25 +26,25 @@ export function CrashyCrashReportPage() {
     </Fragment>
 }
 
-export type GetCrashAttempt = GetCrashResponse | undefined | Error
+export type GetCrashAttempt = RichCrashReport | undefined | Error | GetCrashError
 
 export function useCrash(): GetCrashAttempt {
-    const [crash, setCrash] = useState<GetCrashResponse | undefined | Error>(undefined)
-    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!, getUrlNoCache()).then(res => setCrash(res)).catch(e => setCrash(e)))
+    const [crash, setCrash] = useState<GetCrashAttempt>(undefined)
+    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!, getUrlNoCache())
+        .then(res => setCrash(isSuccessfulGetCrashResponse(res) ? parseCrashReportRich(res) : res)).catch(e => setCrash(e)))
     return crash;
 }
 
-function CrashReportPageContent({crash}: { crash: GetCrashResponse | undefined | Error }) {
+function CrashReportPageContent({crash}: { crash: GetCrashAttempt }) {
     if (isCrashAttemptValid(crash)) {
-        const parsed = parseCrashReportRich(crash)
-        document.title = parsed.title
-        return <ValidCrashReportUi report={parsed}/>
+        document.title = crash.title
+        return <ValidCrashReportUi report={crash}/>
     } else {
         return <InvalidCrashAttempt attempt={crash}/>
     }
 }
 
-export function isCrashAttemptValid(attempt: GetCrashAttempt): attempt is string {
+export function isCrashAttemptValid(attempt: GetCrashAttempt): attempt is RichCrashReport {
     return !getCookieDeleted() && attempt !== undefined && attempt !== GetCrashError.NoSuchCrashId && !(attempt instanceof Error);
 }
 

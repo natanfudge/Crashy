@@ -44,7 +44,8 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
         mods,
         stackTrace: enrichStackTrace(report.stacktrace),
         sections: report.sections.map((section) => enrichCrashReportSection(section)),
-        context: getCrashContext(report, mods)
+        context: getCrashContext(report, mods),
+        raw: report.raw
     };
 }
 
