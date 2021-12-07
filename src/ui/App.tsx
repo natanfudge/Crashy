@@ -111,7 +111,7 @@ function CrashyUi() {
 function CrashyRawUi() {
     const crash = useCrash();
     if (isCrashAttemptValid(crash)) {
-        return <Text padding={3} text={crash.raw} whiteSpace={"pre"}/>
+        return <Text padding={3} text={crash.raw} whiteSpace={"pre-wrap"} wordBreak={"break-word"}/>
     } else {
         return <InvalidCrashAttempt attempt={crash}/>
     }

@@ -3,8 +3,8 @@ import React from "react";
 import {Button, ButtonGroup, Typography} from "@mui/material";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {Surface} from "../../utils/simple/Surface";
-import {OnBackgroundColor} from "../../Colors";
-import {nameOfSection, Section, sectionsEqual, SectionState} from "../CrashReportPage";
+import {ActiveColor, OnBackgroundColor} from "../../Colors";
+import {nameOfSection, Section, sectionsEqual, SectionState} from "../../../utils/Section";
 
 
 export function SectionNavigation({sections,sectionState}: {
@@ -27,7 +27,7 @@ export function SectionNavigation({sections,sectionState}: {
 
 
 function SectionButton(props: { name: string, active: boolean, onClick: () => void }) {
-    return <Button sx={{backgroundColor: props.active ? "#374550" : undefined}} key={props.name} variant={"text"}
+    return <Button sx={{backgroundColor: props.active ?ActiveColor : undefined}} key={props.name} variant={"text"}
                    onClick={props.onClick} color={"primary"}>
         <Row padding={{horizontal: 5}} width={"max"}>
             <Spacer flexGrow={1}/>

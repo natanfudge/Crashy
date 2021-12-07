@@ -93,7 +93,9 @@ export interface StackTraceMessage {
     message?: string
 }
 
-export type RichStackTraceElement = number | {
+export type RichStackTraceElement = number | FullRichStackTraceElement
+
+export type FullRichStackTraceElement = {
     method: JavaMethod
     line: TraceLine
     forgeMetadata?: ForgeTraceMetadata

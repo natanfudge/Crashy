@@ -11,6 +11,7 @@ import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
 import {getCookieDeleted} from "../../utils/Cookies";
 import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
 import {useScreenSize} from "../../utils/Gui";
+import {Section, SectionState, SpecialSection} from "../../utils/Section";
 
 
 export function CrashyCrashReportPage() {
@@ -33,42 +34,6 @@ export type GetCrashAttempt = RichCrashReport | undefined | Error | GetCrashErro
 export interface CrashProps {
     crash: GetCrashAttempt
     sectionState: SectionState
-}
-
-export interface SectionState {
-    activeSection: Section,
-    onActiveSectionChanged: (section: Section) => void
-}
-
-export interface RealReportSection {
-    index: number
-    name: string
-}
-
-export type Section = RealReportSection | SpecialSection
-
-export enum SpecialSection {
-    Mods, StackTrace
-}
-
-export function nameOfSection(section: Section): string {
-    if (section === SpecialSection.Mods) {
-        return "Mods"
-    } else if (section === SpecialSection.StackTrace) {
-        return "Stack Trace"
-    } else {
-        return section.name;
-    }
-}
-
-export function sectionsEqual(section1: Section, section2: Section): boolean {
-    if (section1 === SpecialSection.Mods) {
-        return section2 === SpecialSection.Mods
-    } else if (section1 === SpecialSection.StackTrace) {
-        return section2 === SpecialSection.StackTrace
-    } else {
-        return !(section2 === SpecialSection.Mods || section2 === SpecialSection.StackTrace) && section1.index === section2.index;
-    }
 }
 
 

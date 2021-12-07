@@ -24,15 +24,15 @@ enum DeleteState {
 const CodeLength = 6;
 
 
-export function DeleteSection() {
+export function DeletePopup() {
     const storedCrashCode = React.useMemo(() => getCookieCrashCode(), []);
-    return storedCrashCode === undefined ? <UserSuppliedCodeDeleteSection/> :
-        <PreSuppliedCodeDeleteSection code={storedCrashCode}/>
+    return storedCrashCode === undefined ? <UserSuppliedCodeDeletePopup/> :
+        <PreSuppliedCodeDeletePopup code={storedCrashCode}/>
 }
 
 
 
-function UserSuppliedCodeDeleteSection() {
+function UserSuppliedCodeDeletePopup() {
     const [code, setCode] = React.useState("")
     const [deleteState, setDeleteState] = React.useState(DeleteState.NoAttemptMade)
 
@@ -57,7 +57,7 @@ function UserSuppliedCodeDeleteSection() {
     </Column>
 }
 
-function PreSuppliedCodeDeleteSection({code}: { code: string }) {
+function PreSuppliedCodeDeletePopup({code}: { code: string }) {
     const [deleteState, setDeleteState] = React.useState(DeleteState.NoAttemptMade)
 
     const label = determineLabel(deleteState)
