@@ -101,7 +101,7 @@ function StackTraceMessageUi(title: StackTraceMessage) {
     </TextTheme>
 }
 
-function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
+export function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
     const [open, setOpen] = React.useState(false)
     const text = getTraceElementText(traceElement, open)
     const isXMore = typeof traceElement === "number"
@@ -111,8 +111,8 @@ function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceEleme
             at
         </Typography>
         <Text color={open || isXMore ? undefined : clickableColor} wordBreak="break-word" text={text} onClick={isXMore ? undefined : () => setOpen(!open)}/>
-        {typeof traceElement !== "number" && traceElement.forgeMetadata &&
-            <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}
+        {/*{typeof traceElement !== "number" && traceElement.forgeMetadata &&*/}
+        {/*    <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}*/}
 
     </Row>;
 }

@@ -1,23 +1,29 @@
-import {FullRichStackTraceElement, LoaderType, RichCrashReport} from "crash-parser/src/model/RichCrashReport";
+import {
+    FullRichStackTraceElement,
+    LoaderType,
+    RichCrashReport,
+    RichCrashReportSection,
+    RichStackTrace,
+    RichStackTraceElement
+} from "crash-parser/src/model/RichCrashReport";
 import React, {useState} from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
-import {Text, TextTheme} from "../../utils/simple/Text";
+import {Text} from "../../utils/simple/Text";
 import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Surface} from "../../utils/simple/Surface";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
-import {setUrlRaw} from "../../../utils/PageUrl";
 import {ScreenSize, useScreenSize} from "../../../utils/Gui";
 import {DynamicallyUnderlinedText} from "../../App";
 import {Wrap} from "../../utils/simple/SimpleDiv";
 import {Section, SectionState, SpecialSection} from "../../../utils/Section";
-import {StringMap} from "crash-parser/src/model/CrashReport";
-import {ButtonGroup} from "@mui/material";
-import {ActiveColor, fadedOutColor, OnBackgroundColor} from "../../Colors";
+import {ButtonGroup, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {ActiveColor, OnBackgroundColor, primaryColor, secondaryColor} from "../../Colors";
+import {Require} from "crash-parser/src/util/Utils";
 
 export interface ValidCrashProps {
     report: RichCrashReport
@@ -88,37 +94,115 @@ function ActiveSection({report, section}: { report: RichCrashReport, section: Se
     }
 }
 
-function ForgeExtraInfoSection({report}: {report: RichCrashReport}) {
-    const [isTraceSection,setIsTraceSection] = useState(true);
-    return <ButtonGroup orientation = "vertical" /*style = {{alignSelf: "start"}}*/>
-        <ExtraInfoTypeButton active={isTraceSection} onClick={() => setIsTraceSection(true)} text={"Trace Information"}/>
-        <ExtraInfoTypeButton active={!isTraceSection} onClick={() => setIsTraceSection(false)} text={"Mod Information"}/>
-        {/*<SimpleButton  backgroundColor={isTraceSection? ActiveColor: undefined}  onClick={() => setIsTraceSection(true)}>*/}
-        {/*    <TextTheme>*/}
-        {/*        Trace <br/> Information*/}
-        {/*    </TextTheme>*/}
-        {/*</SimpleButton>*/}
-        {/*<SimpleButton backgroundColor={!isTraceSection? ActiveColor: undefined} onClick={() => setIsTraceSection(false)}>*/}
-        {/*    <TextTheme>*/}
-        {/*        Mod <br/> Information*/}
-        {/*    </TextTheme>*/}
-        {/*</SimpleButton>*/}
-    </ButtonGroup>
+function FeiSelection({
+                          isTraceSection,
+                          setIsTraceSection
+                      }: { isTraceSection: boolean, setIsTraceSection: (prevState: boolean) => void }) {
+    return <ButtonGroup orientation="vertical" variant={"outlined"} style={{
+        alignSelf: "center",
+        width: "fit-content",
+        borderWidth: 2,
+        borderColor: primaryColor,
+        borderStyle: "solid",
+        borderRadius: 7
+    }} /*style = {{alignSelf: "start"}}*/>
+        <ExtraInfoTypeButton active={isTraceSection} onClick={() => setIsTraceSection(true)}
+                             text={"Trace Information"}/>
+        <SimpleDivider backgroundColor={secondaryColor}/>
+        <ExtraInfoTypeButton active={!isTraceSection} onClick={() => setIsTraceSection(false)}
+                             text={"Mod Information"}/>
 
-    // <Column margin={{top: 10}} width={"max"}>
-    //     <Column  alignSelf={"center"}>
-    //         <Text text="Forge Extra Info" variant={"h4"} alignSelf={"center"}/>
-    //         <SimpleDivider width={"max"}/>
-    //     </Column>
-    //
-    //     {/*{section.details !== undefined && <CrashReportSectionDetails details={section.details}/>}*/}
-    //     {/*{section.stackTrace !== undefined && <CrashReportSectionTrace trace={section.stackTrace}/>}*/}
-    // </Column>
+    </ButtonGroup>;
 }
 
-function ExtraInfoTypeButton(props: {active: boolean, onClick: () => void, text: string}) {
-    return <SimpleButton backgroundColor={props.active? ActiveColor: undefined} onClick={props.onClick}>
-        <Text color = {OnBackgroundColor} text = {props.text}/>
+function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
+    const [isTraceSection, setIsTraceSection] = useState(true);
+    return <Column width={"max"}>
+        <FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>
+        {/*{FeiSelection(isTraceSection, setIsTraceSection)}*/}
+
+        {isTraceSection ? <TraceFeiUi fei={allTraceFei(report)}/> : <ModFei report={report}/>}
+    </Column>
+}
+
+function allTraceFei(report: RichCrashReport): TraceFei[] {
+    return [
+        mainStackTraceAsFei(report.stackTrace),
+        ...(report.sections.map(section => sectionTraceAsFei(section)).filter(fei => fei !== undefined) as TraceFei[])
+    ]
+}
+
+type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
+
+interface TraceFei {
+    name: string
+    metadata: ElementWithFei[]
+}
+
+function mainStackTraceAsFei(trace: RichStackTrace): TraceFei {
+    return {
+        name: "Primary Stack Trace",
+        metadata: onlyWithFei(trace.elements)
+    };
+}
+
+function sectionTraceAsFei(section: RichCrashReportSection): TraceFei | undefined {
+    if (section.stackTrace === undefined) return undefined;
+    return {
+        name: section.name,
+        metadata: onlyWithFei(section.stackTrace)
+    };
+}
+
+function onlyWithFei(elements: RichStackTraceElement[]): ElementWithFei[] {
+    return elements.filter(element => typeof element !== "number" && element.forgeMetadata !== undefined) as ElementWithFei[];
+}
+
+function TraceFeiUi({fei}: { fei: TraceFei[] }) {
+    // type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
+    // type SectionWithFei = Replace<ElementWithFei, "forgeMetadata", ElementWithFei[]>
+    // const richElements: ElementWithFei = report.stackTrace.elements
+    //     .filter((element) => typeof element !== "number" && element.forgeMetadata !== null) as ElementWithFei;
+    // // const pluginTransformerReasons = ele
+    //
+    // const sectionTraces: Record<string, StackTraceElement[]> = {
+    //     "Primary Stack Trace": report.stackTrace.elements,
+    //     ...Object.fromEntries(richElements.map((section) => [section.name, section.stackTrace]))
+    // }
+
+    const [currentTrace, setCurrentTrace] = React.useState(0);
+    return <Column alignSelf={"start"}>
+        <FormControl>
+            <InputLabel id="demo-simple-select-label">Stack Trace</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={fei[currentTrace].name}
+                onChange={(e) => setCurrentTrace(fei.findIndex(fei => fei.name === e.target.value))}
+            >
+                {fei.map((fei, index) => <MenuItem key={fei.name} value={fei.name}>{fei.name}</MenuItem>)}
+                {/*{Object.values(ForgeVersion).map((version) => <MenuItem key={version}*/}
+                {/*                                                        value={version}>{version}</MenuItem>)}*/}
+            </Select>
+        </FormControl>
+        {/*{richElements.map(element => <Column>*/}
+        {/*        <StackTraceElementUi traceElement={element}/>*/}
+        {/*        /!*<Text whiteSpace={"pre"} text={element.forgeMetadata.pluginTransformerReasons.join("\n")}/>*!/*/}
+        {/*    </Column>*/}
+        {/*)}*/}
+    </Column>
+}
+
+function ModFei({report}: { report: RichCrashReport }) {
+    return <Column>
+        {/*{report.mods.map(mod => <Text text={mod.forgeMetadata.pluginTransformerReasons.join("\n")}/>)}*/}
+    </Column>
+}
+
+function ExtraInfoTypeButton(props: { active: boolean, onClick: () => void, text: string }) {
+    return <SimpleButton style={{borderRadius: 7}} backgroundColor={props.active ? ActiveColor : undefined}
+                         onClick={props.onClick}>
+        <Text color={OnBackgroundColor} text={props.text}/>
     </SimpleButton>
 }
 
