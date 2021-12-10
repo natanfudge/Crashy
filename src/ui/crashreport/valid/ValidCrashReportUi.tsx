@@ -19,7 +19,7 @@ import {Surface} from "../../utils/simple/Surface";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {ScreenSize, useScreenSize} from "../../../utils/Gui";
 import {DynamicallyUnderlinedText} from "../../App";
-import {Wrap} from "../../utils/simple/SimpleDiv";
+import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {Section, SectionState, SpecialSection} from "../../../utils/Section";
 import {ButtonGroup, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {ActiveColor, OnBackgroundColor, primaryColor, secondaryColor} from "../../Colors";
@@ -117,12 +117,12 @@ function FeiSelection({
 
 function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
     const [isTraceSection, setIsTraceSection] = useState(true);
-    return <Column width={"max"}>
+    return <Row alignItems={"center"} width={"max"}>
         <FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>
         {/*{FeiSelection(isTraceSection, setIsTraceSection)}*/}
-
+        <Spacer width={20}/>
         {isTraceSection ? <TraceFeiUi fei={allTraceFei(report)}/> : <ModFei report={report}/>}
-    </Column>
+    </Row>
 }
 
 function allTraceFei(report: RichCrashReport): TraceFei[] {
@@ -171,10 +171,11 @@ function TraceFeiUi({fei}: { fei: TraceFei[] }) {
     // }
 
     const [currentTrace, setCurrentTrace] = React.useState(0);
-    return <Column alignSelf={"start"}>
-        <FormControl>
-            <InputLabel id="demo-simple-select-label">Stack Trace</InputLabel>
+    // return <Column alignSelf={"start"}>
+     return   <FormControl style = {{minWidth:"fit-content", maxWidth: "fit-content"}} fullWidth>
+            {/*<InputLabel id="demo-simple-select-label">Stack Trace</InputLabel>*/}
             <Select
+                variant={'outlined'}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={fei[currentTrace].name}
@@ -190,7 +191,7 @@ function TraceFeiUi({fei}: { fei: TraceFei[] }) {
         {/*        /!*<Text whiteSpace={"pre"} text={element.forgeMetadata.pluginTransformerReasons.join("\n")}/>*!/*/}
         {/*    </Column>*/}
         {/*)}*/}
-    </Column>
+    // </Column>
 }
 
 function ModFei({report}: { report: RichCrashReport }) {

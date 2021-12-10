@@ -12,10 +12,14 @@ div.stack > * {
 /*.MuiFormControl-root {*/
 /*    height: 100%;*/
 /*}*/
-.MuiInputBase-input {
+/*Makes text take all of the text field's space*/
+div.crashy-text-field .MuiInputBase-input {
     height: 100% !important;
     overflow: auto !important;
 }
+/*.MuiInputBase-input {*/
+/*   */
+/*}*/
 .MuiFilledInput-multiline {
     height: 100%;
 }

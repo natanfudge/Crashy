@@ -65,7 +65,7 @@ function isUploadCrashError(obj: UploadState): obj is UploadCrashError {
 }
 
 function CrashTextField(props: { error: boolean, log: string, setLog: (value: string) => void }) {
-    return <Wrap padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
+    return <Wrap className={"crashy-text-field"} padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
         <SimpleTextField error={props.error} value={props.log} onValueChanged={value => props.setLog(value)} multiline
                    label={"Paste a crash log"} variant={"filled"}
                    width = "max" height = "max"
