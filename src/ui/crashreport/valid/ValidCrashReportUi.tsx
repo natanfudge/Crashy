@@ -1,29 +1,30 @@
 import {
     FullRichStackTraceElement,
-    LoaderType,
+    LoaderType, Mod,
     RichCrashReport,
     RichCrashReportSection,
     RichStackTrace,
     RichStackTraceElement
 } from "crash-parser/src/model/RichCrashReport";
-import React, {useState} from "react";
+import React, {Fragment, RefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
-import {Text} from "../../utils/simple/Text";
-import {StackTraceUi} from "./StackTraceUi";
+import {Text, TextTheme} from "../../utils/simple/Text";
+import {StackTraceElementUi, StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Surface} from "../../utils/simple/Surface";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {ScreenSize, useScreenSize} from "../../../utils/Gui";
-import {DynamicallyUnderlinedText} from "../../App";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {Section, SectionState, SpecialSection} from "../../../utils/Section";
-import {ButtonGroup, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {ButtonGroup, FormControl, MenuItem, Select} from "@mui/material";
 import {ActiveColor, OnBackgroundColor, primaryColor, secondaryColor} from "../../Colors";
 import {Require} from "crash-parser/src/util/Utils";
+import {WithChild} from "../../utils/simple/SimpleElementProps";
+import {LazyColumn} from "../../utils/LazyColumn";
 
 export interface ValidCrashProps {
     report: RichCrashReport
@@ -94,6 +95,48 @@ function ActiveSection({report, section}: { report: RichCrashReport, section: Se
     }
 }
 
+function DynamicallyUnderlinedText(props: {
+    text: string,
+    largerBy: number
+} & WithChild) {
+    const leftSpaceRef = useRef<HTMLDivElement>(null);
+    const rightSpaceRef = useRef<HTMLDivElement>(null);
+    const textRef = useRef<HTMLSpanElement>(null)
+    const [width, setWidth] = useState(0);
+
+    function recalculateWidth() {
+        const totalWidth = getWidth(leftSpaceRef) + getWidth(rightSpaceRef) + getWidth(textRef);
+        setWidth(totalWidth);
+    }
+
+    useEffect(() => {
+        function handleResize() {
+            recalculateWidth();
+        }
+
+        window.addEventListener('resize', handleResize)
+
+        return () => window.removeEventListener('resize', handleResize)
+    })
+
+    useLayoutEffect(() => recalculateWidth(), [])
+
+    return <Column width="max">
+        <Row justifyContent={"center"}>
+            <div ref={leftSpaceRef} style={{maxWidth: props.largerBy, flexGrow: 1}}/>
+            <Text spanRef={textRef} variant={"h4"} fontStyle={"italic"} text={props.text}/>
+            <div ref={rightSpaceRef} style={{maxWidth: props.largerBy, flexGrow: 1}}/>
+        </Row>
+        <Wrap alignSelf={"center"} style={{width: "100%"}} maxWidth={width}>
+            {props.children}
+        </Wrap>
+    </Column>
+}
+
+function getWidth(ref: RefObject<Element>): number {
+    return ref.current?.clientWidth ?? 0;
+}
+
 function FeiSelection({
                           isTraceSection,
                           setIsTraceSection
@@ -104,7 +147,8 @@ function FeiSelection({
         borderWidth: 2,
         borderColor: primaryColor,
         borderStyle: "solid",
-        borderRadius: 7
+        borderRadius: 7,
+        maxWidth: "40%"
     }} /*style = {{alignSelf: "start"}}*/>
         <ExtraInfoTypeButton active={isTraceSection} onClick={() => setIsTraceSection(true)}
                              text={"Trace Information"}/>
@@ -117,12 +161,20 @@ function FeiSelection({
 
 function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
     const [isTraceSection, setIsTraceSection] = useState(true);
-    return <Row alignItems={"center"} width={"max"}>
-        <FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>
-        {/*{FeiSelection(isTraceSection, setIsTraceSection)}*/}
-        <Spacer width={20}/>
-        {isTraceSection ? <TraceFeiUi fei={allTraceFei(report)}/> : <ModFei report={report}/>}
-    </Row>
+    const [currentTrace, setCurrentTrace] = React.useState(0);
+    const allFei = allTraceFei(report)
+    return <Column width="max">
+        <Row alignItems={"center"} width={"max"}>
+            <FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>
+            {/*{FeiSelection(isTraceSection, setIsTraceSection)}*/}
+            <Spacer flexGrow={1}/>
+            {isTraceSection && <TraceFeiSelection
+                currentTrace={currentTrace} setCurrentTrace={setCurrentTrace} fei={allFei}
+            />}
+        </Row>
+
+        {isTraceSection ? <TraceFei fei={allFei[currentTrace]}/> : <ModsFei report={report}/>}
+    </Column>
 }
 
 function allTraceFei(report: RichCrashReport): TraceFei[] {
@@ -158,45 +210,82 @@ function onlyWithFei(elements: RichStackTraceElement[]): ElementWithFei[] {
     return elements.filter(element => typeof element !== "number" && element.forgeMetadata !== undefined) as ElementWithFei[];
 }
 
-function TraceFeiUi({fei}: { fei: TraceFei[] }) {
-    // type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
-    // type SectionWithFei = Replace<ElementWithFei, "forgeMetadata", ElementWithFei[]>
-    // const richElements: ElementWithFei = report.stackTrace.elements
-    //     .filter((element) => typeof element !== "number" && element.forgeMetadata !== null) as ElementWithFei;
-    // // const pluginTransformerReasons = ele
-    //
-    // const sectionTraces: Record<string, StackTraceElement[]> = {
-    //     "Primary Stack Trace": report.stackTrace.elements,
-    //     ...Object.fromEntries(richElements.map((section) => [section.name, section.stackTrace]))
-    // }
-
-    const [currentTrace, setCurrentTrace] = React.useState(0);
-    // return <Column alignSelf={"start"}>
-     return   <FormControl style = {{minWidth:"fit-content", maxWidth: "fit-content"}} fullWidth>
-            {/*<InputLabel id="demo-simple-select-label">Stack Trace</InputLabel>*/}
-            <Select
-                variant={'outlined'}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={fei[currentTrace].name}
-                onChange={(e) => setCurrentTrace(fei.findIndex(fei => fei.name === e.target.value))}
-            >
-                {fei.map((fei, index) => <MenuItem key={fei.name} value={fei.name}>{fei.name}</MenuItem>)}
-                {/*{Object.values(ForgeVersion).map((version) => <MenuItem key={version}*/}
-                {/*                                                        value={version}>{version}</MenuItem>)}*/}
-            </Select>
-        </FormControl>
-        {/*{richElements.map(element => <Column>*/}
-        {/*        <StackTraceElementUi traceElement={element}/>*/}
-        {/*        /!*<Text whiteSpace={"pre"} text={element.forgeMetadata.pluginTransformerReasons.join("\n")}/>*!/*/}
-        {/*    </Column>*/}
-        {/*)}*/}
-    // </Column>
+function TraceFeiSelection({fei, currentTrace, setCurrentTrace}:
+                               { fei: TraceFei[], currentTrace: number, setCurrentTrace: (trace: number) => void }) {
+    return <FormControl style={{minWidth: "fit-content", maxWidth: "fit-content"}} fullWidth>
+        <Select
+            variant={'outlined'}
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={fei[currentTrace].name}
+            onChange={(e) => setCurrentTrace(fei.findIndex(fei => fei.name === e.target.value))}
+        >
+            {fei.map((fei, index) => <MenuItem key={fei.name} value={fei.name}>{fei.name}</MenuItem>)}
+        </Select>
+    </FormControl>
 }
 
-function ModFei({report}: { report: RichCrashReport }) {
+function TraceFei({fei}: { fei: TraceFei }) {
     return <Column>
-        {/*{report.mods.map(mod => <Text text={mod.forgeMetadata.pluginTransformerReasons.join("\n")}/>)}*/}
+        <Spacer height={5}/>
+        <SimpleDivider height={1}/>
+        <Spacer height={5}/>
+        {fei.metadata.map((element, i) => <TraceFeiElement key={i} element={element}/>)}
+    </Column>
+}
+
+function TraceFeiElement({element}: { element: ElementWithFei }) {
+    const metadata = element.forgeMetadata;
+    return <Column>
+        <StackTraceElementUi withMarginLeft={false} traceElement={element}/>
+
+        <Column margin={{left: 20}}>
+            <KeyValueTraceFei name={"Jar File"} value={metadata.jarFile}/>
+            <KeyValueTraceFei name={"Version"} value={metadata.version}/>
+            <ListTraceFei name={"Classloading Reasons"} value={metadata.classloadingReasons}/>
+            <ListTraceFei name={"Plugin Transformer Reasons"} value={metadata.pluginTransformerReasons}/>
+            <ListTraceFei name={"Additional Transforme Reasons"} value={metadata.additionalTransformerData}/>
+        </Column>
+
+    </Column>
+}
+
+function KeyValueTraceFei({name, value}: { name: string, value: string | undefined }) {
+    return <Fragment>
+        {value !== undefined && <TextTheme wordBreak={"break-word"}>
+            {name}: <b>{value}</b>
+        </TextTheme>}
+    </Fragment>
+}
+
+function ListTraceFei({name, value}: { name: string, value: string[] }) {
+    return <Fragment>
+        {value.length > 0 && <Column>
+            <Text text={name + ":"}/>
+            {value.map(element => <Text wordBreak={"break-all"} margin={{left: 10}} text={"- " + element}
+                                        fontWeight="bold"/>)}
+        </Column>}
+    </Fragment>
+}
+
+function ModsFei({report}: { report: RichCrashReport }) {
+    return <LazyColumn data = {report.mods!}
+                       childProvider={(mod, i) => <ModFei key = {i} mod = {mod}/>}/> /*alignItems={"center"}*/
+    {/*    {report.mods!.map((mod, i) => <ModFei key = {i} mod = {mod}/>)}*/}
+    {/*</LazyColumn>*/}
+}
+
+function ModFei({mod}: {mod:Mod}){
+    const metadata = mod.forgeMetadata;
+    return <Column alignItems={"center"}>
+        <Text wordBreak={"break-all"} fontWeight={"bold"} text={mod.name}/>
+        <SimpleDivider width={{percent: 50}} height = {1}/>
+        {metadata !== undefined && <Fragment>
+            <Text wordBreak = "break-all" text={metadata.file}/>
+            <Text wordBreak = "break-all" text={metadata.signature}/>
+            <Text wordBreak = "break-all" text={metadata.completeness}/>
+        </Fragment>}
+        <Spacer height = {10}/>
     </Column>
 }
 

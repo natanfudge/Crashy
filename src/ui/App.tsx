@@ -15,10 +15,6 @@ import {WithChild} from "./utils/simple/SimpleElementProps";
 import {SimpleDivider} from "./utils/simple/SimpleDivider";
 
 //TODO: MOBILE:
-// - Find new home for forge trace extra info
-// - Generic change for both mobile and desktop: replace mod extra info with a toggle button that shows the mod id.
-//    The rest of the forge extra info should have a new home, it's pretty much useless.
-// - Find new home for 'raw' button
 // - Test 'caused by/caused/ buttons
 // - Test JVM extra info button
 
@@ -41,60 +37,6 @@ export default function App() {
 
 }
 
-function getWidth(ref: RefObject<Element>): number {
-    return ref.current?.clientWidth ?? 0;
-}
-
-export function DynamicallyUnderlinedText(props: {
-    text: string,
-    largerBy: number
-} & WithChild) {
-    const leftSpaceRef = useRef<HTMLDivElement>(null);
-    const rightSpaceRef = useRef<HTMLDivElement>(null);
-    const textRef = useRef<HTMLSpanElement>(null)
-    const [width, setWidth] = useState(0);
-
-    function recalculateWidth() {
-        const totalWidth =  getWidth(leftSpaceRef) + getWidth(rightSpaceRef) + getWidth(textRef);
-        setWidth(totalWidth);
-    }
-
-    useEffect(() => {
-        function handleResize() {
-            recalculateWidth();
-        }
-
-        window.addEventListener('resize', handleResize)
-
-        return () => window.removeEventListener('resize', handleResize)
-    })
-
-    useLayoutEffect(() => recalculateWidth(), [])
-
-    return <Column width="max">
-        <Row justifyContent={"center"}>
-            <div ref={leftSpaceRef} style={{maxWidth: props.largerBy,flexGrow: 1}}/>
-            <Text spanRef={textRef} variant={"h4"} fontStyle={"italic"} text={props.text}/>
-            <div ref={rightSpaceRef} style={{maxWidth: props.largerBy, flexGrow: 1}}/>
-        </Row>
-        <Wrap alignSelf={"center"} style={{width: "100%"}} maxWidth={width}>
-            {props.children}
-        </Wrap>
-    </Column>
-}
-
-function CrashyUi2() {
-    return <DynamicallyUnderlinedText text={"Unexpected error"} largerBy={150}>
-        <SimpleDivider  backgroundColor={"#9c1a1a"}/>
-    </DynamicallyUnderlinedText>
-    // return <div style={{display: "flex", flexDirection: "row"}}>
-    //     <div style={{maxWidth: 500, width: "100%", height: 200, backgroundColor: "red"}}/>
-    //     Hello Multiple words
-    //     <div style={{maxWidth: 500, width: "100%", height: 200, backgroundColor: "red"}}/>
-    // </div>
-}
-
-
 function CrashyUi() {
     if (getUrlIsRaw()) {
         return <CrashyRawUi/>
@@ -107,7 +49,6 @@ function CrashyUi() {
     }
 }
 
-//TODO: investigate why everything is so zoomed in suddenly in the home UI, see what viewport stuff we had earlier.
 function CrashyRawUi() {
     const crash = useCrash();
     if (isCrashAttemptValid(crash)) {

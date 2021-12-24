@@ -61,7 +61,7 @@ export function JVMDetailsButton(props: {details: RichExceptionDetails}) {
 
 export function StackTraceElementsUi({elements}: { elements: RichStackTraceElement[] }) {
     return <div>
-        {elements.map((traceElement, i) => <StackTraceElementUi key={i} traceElement={traceElement}/>)}
+        {elements.map((traceElement, i) => <StackTraceElementUi withMarginLeft={true} key={i} traceElement={traceElement}/>)}
     </div>
 }
 
@@ -101,12 +101,12 @@ function StackTraceMessageUi(title: StackTraceMessage) {
     </TextTheme>
 }
 
-export function StackTraceElementUi({traceElement}: { traceElement: RichStackTraceElement }) {
+export function StackTraceElementUi({traceElement, withMarginLeft}: { traceElement: RichStackTraceElement, withMarginLeft: boolean }) {
     const [open, setOpen] = React.useState(false)
     const text = getTraceElementText(traceElement, open)
     const isXMore = typeof traceElement === "number"
 
-    return <Row margin={{left: 30}}>
+    return <Row margin={{left: withMarginLeft? 30 :0}}>
         <Typography color={fadedOutColor} marginRight={"10px"}>
             at
         </Typography>

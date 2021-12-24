@@ -1,12 +1,13 @@
 import {Mod} from "crash-parser/src/model/RichCrashReport";
 import {Column, Row} from "../../utils/simple/Flex";
-import {Text} from "../../utils/simple/Text";
+import {Text, TextTheme} from "../../utils/simple/Text";
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Typography} from "@mui/material";
 import {MoreInfoButton} from "../../utils/Crashy";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
+import {LazyColumn} from "../../utils/LazyColumn";
 
 
 export function ModListUi({mods}: { mods: Mod[] }) {
@@ -36,43 +37,13 @@ export function ModListUi({mods}: { mods: Mod[] }) {
     </Column>
 }
 
-//TODO: maybe improve this to calculate height AOT (would require reimplementing InfiniteScroll I think)
-function LazyColumn<T>({data, childProvider}: { data: T[], childProvider: (item: T, index: number) => JSX.Element }) {
-    const batchSize = 25;
-    const [activeAmount, setActiveAmount] = React.useState(batchSize)
-    const hasMore = activeAmount < data.length;
 
-    const active = data.slice(0, activeAmount);
-
-    return <InfiniteScroll dataLength={activeAmount}
-                           next={() => setActiveAmount(Math.min(activeAmount + batchSize, data.length))}
-                           hasMore={hasMore}
-                           loader={<h4>Loading...</h4>}
-    >
-        {active.map((item, index) => childProvider(item, index))}
-    </InfiniteScroll>
-}
 
 function ModUi({mod}: { mod: Mod }) {
-    const metadata = mod.forgeMetadata
     return <Row>
-        <Typography variant={"h6"} alignSelf={"start"} fontWeight={"bold"} color={mod.isSuspected ? "red" : undefined}>
-            {mod.name + " " + mod.version + (mod.isSuspected ? " - may have caused crash" : "")}
-        </Typography>
-
-        <Wrap alignSelf={"center"}>
-            <MoreInfoButton>
-                <Column padding={10}>
-                    <Text text={"ID: " + mod.id}
-                          alignSelf={"center"}/>
-                    <Spacer height={5}/>
-                    {metadata?.file !== undefined && <Text text={"File: " + metadata.file}/>}
-                    {metadata?.signature !== undefined && <Text text={"Signature: " + metadata.signature}/>}
-                    {metadata?.completeness !== undefined && <Text text={metadata.completeness}/>}
-                </Column>
-
-            </MoreInfoButton>
-        </Wrap>
-
+        <TextTheme wordBreak={"break-all"} variant={"h6"} alignSelf={"start"} color={mod.isSuspected ? "red" : undefined}>
+            <b>{mod.name + " " + mod.version + (mod.isSuspected ? " - may have caused crash" : "")}</b>
+            <span style={{fontSize: 14, whiteSpace: "pre", wordBreak: "break-all"}}> ({mod.id})</span>
+        </TextTheme>
     </Row>;
 }
