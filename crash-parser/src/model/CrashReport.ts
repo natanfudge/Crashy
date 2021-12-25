@@ -1,6 +1,6 @@
 
 export interface CrashReport {
-    raw: string
+    rawText: string
     description: string
     wittyComment: string
     time: string,
@@ -11,7 +11,10 @@ export interface CrashReport {
 export type StringMap = Record<string, string>
 
 export type StackTraceElement = string
-export type ExceptionDetails = Record<string,string[]>
+export interface ExceptionDetails {
+    details: Record<string,string[]>
+    rawText: string
+}
 export interface StackTrace {
     message: string
     causedBy?: StackTrace

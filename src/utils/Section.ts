@@ -1,4 +1,5 @@
 import {isObj} from "crash-parser/src/util/Utils";
+import {LoaderType, RichCrashReport} from "crash-parser/src/model/RichCrashReport";
 
 export interface SectionState {
     activeSection: Section,
@@ -13,7 +14,7 @@ export interface RealReportSection {
 export type Section = RealReportSection | SpecialSection
 
 export enum SpecialSection {
-    Mods, StackTrace, ForgeInfo
+    Mods, StackTrace, ForgeInfo, JvmInfo
 }
 
 function isRealReportSection(section: Section): section is RealReportSection {
@@ -27,6 +28,8 @@ export function nameOfSection(section: Section): string {
         return "Stack Trace"
     } else if (section === SpecialSection.ForgeInfo) {
         return "Extra Forge Info"
+    } else if (section === SpecialSection.JvmInfo) {
+        return "JVM Details"
     } else {
         return section.name;
     }
@@ -38,4 +41,14 @@ export function sectionsEqual(section1: Section, section2: Section): boolean {
     } else {
         return section1 === section2;
     }
+}
+
+export function sectionNavigationOf(report: RichCrashReport): Section[] {
+    const sections: Section[] = [SpecialSection.StackTrace];
+    if (report.mods !== undefined) sections.push(SpecialSection.Mods);
+
+    report.sections.forEach((section, i) => sections.push({name: section.name, index: i}));
+    if (report.context.loader.type === LoaderType.Forge) sections.push(SpecialSection.ForgeInfo);
+    if (report.stackTrace.details !== undefined) sections.push(SpecialSection.JvmInfo);
+    return sections;
 }

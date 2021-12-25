@@ -23,6 +23,7 @@ class StringBuilder {
 export function parseCrashReport(rawReport: string): CrashReport {
     return parseCrashReportImpl(rawReport, false);
 }
+
 export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     let cursor = 0;
 
@@ -61,7 +62,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         time,
         wittyComment,
         stacktrace,
-        raw: rawReport
+        rawText: rawReport
     };
 
     function parseWittyComment(): string {
@@ -97,16 +98,21 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
     function parseExceptionDetails(): ExceptionDetails {
-        const details: ExceptionDetails = {};
+        const details: Record<string,string[]> = {};
+        const startIndex = cursor;
         while (nextIsString("  ")) {
             skipString("  ")
             const detailNameWithColon = readLine()
             const detailName = detailNameWithColon.slice(0, -1)
             details[detailName] = parseExceptionDetailValue();
         }
+        const endIndex = cursor;
         // Ignore empty line after exception details
         skipLine();
-        return details;
+        return {
+            rawText: rawReport.slice(startIndex, endIndex),
+            details
+        };
     }
 
     function parseExceptionDetailValue(): string[] {

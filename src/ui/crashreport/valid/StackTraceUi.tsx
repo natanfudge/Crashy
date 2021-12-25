@@ -28,14 +28,6 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
 
         <Row flexWrap={"wrap"}>
             {StackTraceMessageUi(currentTrace.title)}
-
-            {/*{currentTrace.title.message !== undefined && <Fragment>*/}
-            {/*    <Text text={":"} variant="h5"/>*/}
-            {/*    <Spacer width={5}/>*/}
-            {/*    <Text text={currentTrace.title.message}*/}
-            {/*          variant={currentTrace.title.message.length > 200 ? "body1" : "h5"}/>*/}
-            {/*</Fragment>}*/}
-            {currentTrace.details !== undefined && <JVMDetailsButton details = {currentTrace.details}/>}
         </Row>
 
         <Divider/>
@@ -43,21 +35,7 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
     </Column>
 }
 
-export function JVMDetailsButton(props: {details: RichExceptionDetails}) {
-    return <ExpandingButton button={handleClick => <SimpleButton margin={{left: 10, bottom: 3}} padding={3} size={"small"} variant={"outlined"}  onClick={handleClick}>
-        <TextTheme variant={"subtitle2"}>
-            JVM Details
-        </TextTheme>
-    </SimpleButton>} sticky={false}>
-        <TextTheme maxHeight={500} maxWidth={1500} overflow="auto" padding={5} whiteSpace="pre">
-            {JSON.stringify(props.details,null,2).split("\n").map(line => <Fragment>
-                    {line}
-                    <br/>
-            </Fragment>)}
-        </TextTheme>
-    </ExpandingButton>
 
-}
 
 export function StackTraceElementsUi({elements}: { elements: RichStackTraceElement[] }) {
     return <div>
@@ -82,7 +60,8 @@ function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace
 
 
 function CausationButton(props: { text: string, onClick: ClickCallback }) {
-    return <Button disableRipple={true} variant={"outlined"} size={"small"} onClick={(e) => props.onClick(e.currentTarget)}>
+    return <Button style = {{wordBreak: "break-word"}} disableRipple={true} variant={"outlined"} size={"small"}
+                   onClick={(e) => props.onClick(e.currentTarget)}>
         {props.text}
     </Button>
 }
@@ -111,8 +90,6 @@ export function StackTraceElementUi({traceElement, withMarginLeft}: { traceEleme
             at
         </Typography>
         <Text color={open || isXMore ? undefined : clickableColor} wordBreak="break-word" text={text} onClick={isXMore ? undefined : () => setOpen(!open)}/>
-        {/*{typeof traceElement !== "number" && traceElement.forgeMetadata &&*/}
-        {/*    <ForgeTraceMetadataUi metadata={traceElement.forgeMetadata}/>}*/}
 
     </Row>;
 }
@@ -128,20 +105,4 @@ function getTraceElementText(traceElement: RichStackTraceElement, open: boolean)
     }
 }
 
-function ForgeTraceMetadataUi({metadata}: { metadata: ForgeTraceMetadata }) {
-    return <MoreInfoButton>
-
-        <Column padding={10}>
-            <Text text={"Forge Metadata"} variant={"h6"}/>
-            {metadata.jarFile !== undefined && <Text text={`File: ${metadata.jarFile}`}/>}
-            {metadata.version !== undefined && <Text text={`Version: ${metadata.version}`}/>}
-            {metadata.pluginTransformerReasons.length > 0 && metadata.pluginTransformerReasons.map((reason, i) =>
-                <Text key={i} text={`Plugin Transformer Reason: ${reason}`}/>)}
-            {metadata.classloadingReasons.length > 0 && metadata.classloadingReasons.map((reason, i) =>
-                <Text key={i} text={`Class Loading Reason: ${reason}`}/>)}
-            {metadata.additionalTransformerData.length > 0 && metadata.additionalTransformerData.map((reason, i) =>
-                <Text key={i} text={`Additional Transformer Data: ${reason}`}/>)}
-        </Column>
-    </MoreInfoButton>
-}
 

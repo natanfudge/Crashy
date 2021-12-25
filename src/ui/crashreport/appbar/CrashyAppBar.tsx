@@ -1,27 +1,14 @@
-import {Column, Row} from "../../utils/simple/Flex";
+import {Row} from "../../utils/simple/Flex";
 import {LinkContent} from "../../utils/simple/LinkContent";
-import {Text, TextTheme} from "../../utils/simple/Text";
-import {AppbarColor, crashyTitleColor, fadedOutColor, OnBackgroundColor} from "../../Colors";
-import React, {Fragment, useState} from "react";
+import {Text} from "../../utils/simple/Text";
+import {AppbarColor, crashyTitleColor} from "../../Colors";
+import React, {Fragment} from "react";
 import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
-import {ArrowDropDown, ArrowDropUp, Delete, Inbox, Mail, Menu, Subject} from "@mui/icons-material";
+import {Delete, Subject} from "@mui/icons-material";
 import {DeletePopup} from "./DeleteCrash";
-import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
-import {
-    ButtonGroup,
-    ClickAwayListener, Divider, List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    SvgIcon,
-    SwipeableDrawer, Toolbar
-} from "@mui/material";
+import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ScreenSize} from "../../../utils/Gui";
-import {SimpleButton} from "../../utils/simple/SimpleButton";
-import {CrashContextUi} from "../valid/CrashContextUi";
 import {CrashProps, isCrashAttemptValid} from "../CrashReportPage";
-import {sectionNavigationOf, ValidCrashProps} from "../valid/ValidCrashReportUi";
-import {nameOfSection, sectionsEqual} from "../../../utils/Section";
 import {NavigationDrawer} from "./NavigationDrawer";
 import {SimpleIconButton} from "../../utils/simple/SimpleIconButton";
 import {setUrlRaw} from "../../../utils/PageUrl";

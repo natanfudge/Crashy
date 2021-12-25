@@ -45,7 +45,7 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
         stackTrace: enrichStackTrace(report.stacktrace),
         sections: report.sections.map((section) => enrichCrashReportSection(section)),
         context: getCrashContext(report, mods),
-        raw: report.raw
+        rawText: report.rawText
     };
 }
 
@@ -208,10 +208,12 @@ function enrichStackTrace(trace: StackTrace): RichStackTrace {
 
 const expectedExceptionDetailFields = ["Location", "Reason", "Current Frame", "Bytecode", "Stackmap Table"]
 
-function enrichExceptionDetails(details: ExceptionDetails): RichExceptionDetails {
+function enrichExceptionDetails(detailsWithRaw: ExceptionDetails): RichExceptionDetails {
+    const details = detailsWithRaw.details;
     const keys = typedKeys(details);
     expectOnlyCertainFieldsToBePresent(keys);
     return {
+        rawText: detailsWithRaw.rawText,
         location: enrichExceptionLocation(details["Location"]),
         reason: enrichExceptionReason(details["Reason"]),
         currentFrame: enrichExceptionFrame(details["Current Frame"]),

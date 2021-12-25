@@ -1,7 +1,7 @@
 import {StringMap} from "./CrashReport";
 
 export interface RichCrashReport {
-    raw: string
+    rawText: string
     title: string
     wittyComment: string
     context: CrashContext
@@ -39,6 +39,7 @@ export interface RichStackTrace {
 
 //TODO: see if there are other forms of 'exception details'
 export interface RichExceptionDetails {
+    rawText: string
     location: ExceptionLocation
     //TODO: NOTE: may contain class names that should be remapped
     reason: string

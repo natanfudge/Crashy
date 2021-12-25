@@ -1,11 +1,11 @@
-import {sectionNavigationOf, ValidCrashProps} from "../valid/ValidCrashReportUi";
+import {ValidCrashProps} from "../valid/ValidCrashReportUi";
 import React, {Fragment, useState} from "react";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {AppbarColor, fadedOutColor, OnBackgroundColor} from "../../Colors";
 import {ArrowDropDown, ArrowDropUp, Menu} from "@mui/icons-material";
 import {ButtonGroup, ClickAwayListener, SvgIcon, SwipeableDrawer} from "@mui/material";
 import {CrashContextUi} from "../valid/CrashContextUi";
-import {nameOfSection, sectionsEqual} from "../../../utils/Section";
+import {nameOfSection, sectionNavigationOf, sectionsEqual} from "../../../utils/Section";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {Text, TextTheme} from "../../utils/simple/Text";
 const HeaderHeight = 65

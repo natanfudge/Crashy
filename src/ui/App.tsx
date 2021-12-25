@@ -14,16 +14,13 @@ import {Column, Row} from "./utils/simple/Flex";
 import {WithChild} from "./utils/simple/SimpleElementProps";
 import {SimpleDivider} from "./utils/simple/SimpleDivider";
 
-//TODO: MOBILE:
-// - Test 'caused by/caused/ buttons
-// - Test JVM extra info button
-
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
 
 //4ceKUQTeDaE47bLymRcy
 //UviVselptZNZBxe9Govx
 //g1VhToB8Si79hK9TTrLi:PruTPL
 //2c2vAe5oUVgiNck3NfXU:K80Eid
+//Verify Error: TgC7ZMXXXhHhTRnpoKw9
 export default function App() {
     const outerTheme = createTheme(CrashyTheme);
 
@@ -52,7 +49,7 @@ function CrashyUi() {
 function CrashyRawUi() {
     const crash = useCrash();
     if (isCrashAttemptValid(crash)) {
-        return <Text padding={3} text={crash.raw} whiteSpace={"pre-wrap"} wordBreak={"break-word"}/>
+        return <Text padding={3} text={crash.rawText} whiteSpace={"pre-wrap"} wordBreak={"break-word"}/>
     } else {
         return <InvalidCrashAttempt attempt={crash}/>
     }
