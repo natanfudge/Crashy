@@ -9,14 +9,14 @@ import {DeletePopup} from "./DeleteCrash";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ScreenSize} from "../../../utils/Gui";
 import {CrashProps, isCrashAttemptValid} from "../CrashReportPage";
-import {NavigationDrawer} from "./NavigationDrawer";
+import {HeaderHeight, NavigationDrawer} from "./NavigationDrawer";
 import {SimpleIconButton} from "../../utils/simple/SimpleIconButton";
 import {setUrlRaw} from "../../../utils/PageUrl";
 
 export function CrashyAppBar({crash, sectionState, screen}: CrashProps & { screen: ScreenSize }) {
     const validCrash = isCrashAttemptValid(crash);
     const showDrawer = screen.isPhone && validCrash;
-    return <Row style={{zIndex: 1201, position: showDrawer ? undefined : "fixed"}} width={"max"}
+    return <Row /*height={HeaderHeight}*/ style={{zIndex: 1201, position: showDrawer ? undefined : "fixed"}} width={"max"}
                 backgroundColor={AppbarColor}>
         {showDrawer && <NavigationDrawer sectionState={sectionState} report={crash}/>}
 

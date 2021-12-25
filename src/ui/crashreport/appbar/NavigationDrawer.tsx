@@ -8,12 +8,18 @@ import {CrashContextUi} from "../valid/CrashContextUi";
 import {nameOfSection, sectionNavigationOf, sectionsEqual} from "../../../utils/Section";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {Text, TextTheme} from "../../utils/simple/Text";
-const HeaderHeight = 65
+export const HeaderHeight = 65
 export function NavigationDrawer(props: ValidCrashProps) {
     const [open, setOpen] = useState(false);
     return <Fragment>
-        <Wrap style={{zIndex: 3000, borderRadius: 30, borderStyle: "solid", borderWidth: 1, borderColor: "rgb(51 50 50)"}} position="fixed" backgroundColor={AppbarColor}
-              onClick={() => setOpen(oldOpen => !oldOpen)} padding={{left: 10, top: 10, right: 10, bottom: 3}}>
+        <Wrap
+            style={{
+                zIndex: 3000,
+                borderRadius: 30, borderStyle: "solid", borderWidth: 1, borderColor: "rgb(51 50 50)",
+                margin: 3
+            }}
+            position="fixed" backgroundColor={AppbarColor}
+              onClick={() => setOpen(oldOpen => !oldOpen)} padding={{left: 7, top: 7, right: 7, bottom: 0}}>
             <Menu style={{width: 40, height: 40}}/>
         </Wrap>
         <SwipeableDrawer
