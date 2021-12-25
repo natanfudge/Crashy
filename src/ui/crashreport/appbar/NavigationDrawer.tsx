@@ -1,7 +1,7 @@
 import {ValidCrashProps} from "../valid/ValidCrashReportUi";
 import React, {Fragment, useState} from "react";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
-import {AppbarColor, fadedOutColor, OnBackgroundColor} from "../../Colors";
+import {AppbarColor, fadedOutColor, OnBackgroundColor, secondaryColor} from "../../Colors";
 import {ArrowDropDown, ArrowDropUp, Menu} from "@mui/icons-material";
 import {ButtonGroup, ClickAwayListener, SvgIcon, SwipeableDrawer} from "@mui/material";
 import {CrashContextUi} from "../valid/CrashContextUi";
@@ -12,9 +12,9 @@ const HeaderHeight = 65
 export function NavigationDrawer(props: ValidCrashProps) {
     const [open, setOpen] = useState(false);
     return <Fragment>
-        <Wrap style={{zIndex: 3000}} position="fixed" backgroundColor={AppbarColor}
-              onClick={() => setOpen(oldOpen => !oldOpen)} padding={{left: 10, top: 10, right: 10}}>
-            <Menu style={{width: 43, height: 43}}/>
+        <Wrap style={{zIndex: 3000, borderRadius: 30, borderStyle: "solid", borderWidth: 1, borderColor: "rgb(51 50 50)"}} position="fixed" backgroundColor={AppbarColor}
+              onClick={() => setOpen(oldOpen => !oldOpen)} padding={{left: 10, top: 10, right: 10, bottom: 3}}>
+            <Menu style={{width: 40, height: 40}}/>
         </Wrap>
         <SwipeableDrawer
             variant="temporary"
