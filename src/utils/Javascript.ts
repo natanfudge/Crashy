@@ -18,43 +18,10 @@ export function objectFilter<V>(object: Record<string, V>, filter: (key: string,
     return newObj;
 }
 
-export function objectIsEmpty(object: Record<string, unknown>): boolean {
-    return Object.keys(object).length === 0;
-}
-
-
-export function areArraysEqualSets<T>(a1: T[], a2: T[]) {
-    const superSet: Record<string, number> = {};
-    for (const i of a1) {
-        const e = i + typeof i;
-        superSet[e] = 1;
-    }
-
-    for (const i of a2) {
-        const e = i + typeof i;
-        if (superSet[e] === 0) {
-            return false;
-        }
-        superSet[e] = 2;
-    }
-
-    for (const e in superSet) {
-        if (superSet[e] === 1) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-export function splitFilter<T>(array: T[], condition: (element: T) => boolean): [T[], T[]] {
-    const match: T[] = [];
-    const noMatch: T[] = [];
-    for (const element of array) {
-        if (condition(element)) match.push(element)
-        else noMatch.push(element)
-    }
-    return [match, noMatch];
+export function indexOfOrThrow<T>(arr: T[], element: T): number {
+    const index = arr.indexOf(element);
+    if (index === -1) throw new Error(`The element '${element}' doesn't exist in the array: ${arr}`)
+    return index;
 }
 
 
@@ -64,17 +31,17 @@ export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V
     return otherProps;
 }
 
-export function withProperty<K extends Key, V>(record: Record<K, V>, key: K, value: V): Record<K, V> {
-    if (key in record) return record;
-    return {...record, [key]: value};
-}
 
 export function coercePreferMin(num: number, bounds: { min: number, max: number }): number {
-    // Opinionated referral of min over max
+    // Opinionated preferral of min over max
     if (bounds.min > bounds.max) return bounds.min;
-    if (num < bounds.min) return bounds.min;
-    else if (num > bounds.max) return bounds.max
-    else return num;
+    if (num < bounds.min) {
+        return bounds.min;
+    } else if (num > bounds.max) {
+        return bounds.max
+    } else {
+        return num;
+    }
 }
 
 export interface Cookie {

@@ -1,5 +1,5 @@
 import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
-import React, {RefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {Fragment, RefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {CrashLeftSide} from "./CrashContextUi";
 import {SectionNavigation} from "./SectionNavigation";
@@ -42,7 +42,7 @@ function CenterView({
                     }: ValidCrashProps & { screen: ScreenSize }) {
     return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
         <Row>
-            <Column alignItems={"center"} flexGrow={1} padding={{horizontal: screen.isPortrait ? 5 : 50}} width={"max"}>
+            <Column alignItems={"center"} flexGrow={1} padding={{left: screen.isPortrait ? 5 : 50}} width={"max"}>
                 <Wrap padding={{horizontal: 5}} width={"max"}>
                     <DynamicallyUnderlinedText text={report.title} largerBy={150}>
                         <SimpleDivider backgroundColor={"#9c1a1a"}/>

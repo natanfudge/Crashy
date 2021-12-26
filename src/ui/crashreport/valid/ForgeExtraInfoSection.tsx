@@ -1,20 +1,22 @@
 import {
-    FullRichStackTraceElement, Mod,
+    FullRichStackTraceElement,
+    Mod,
     RichCrashReport,
     RichCrashReportSection,
-    RichStackTrace, RichStackTraceElement
+    RichStackTrace,
+    RichStackTraceElement
 } from "crash-parser/src/model/RichCrashReport";
 import React, {Fragment, useState} from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {Spacer} from "../../utils/simple/SimpleDiv";
-import {ButtonGroup, FormControl, MenuItem, Select} from "@mui/material";
-import {ActiveColor, OnBackgroundColor, primaryColor, secondaryColor} from "../../Colors";
+import {FormControl, MenuItem, Select} from "@mui/material";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Require} from "crash-parser/src/util/Utils";
-import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {Text, TextTheme} from "../../utils/simple/Text";
 import {StackTraceElementUi} from "./StackTraceUi";
 import {LazyColumn} from "../../utils/LazyColumn";
+import {VisibleSelection} from "../../utils/VisibleSelection";
+import {DropdownSelection} from "../../utils/DropdownSelection";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
 
@@ -29,11 +31,13 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
     const allFei = allTraceFei(report)
     return <Column width="max">
         <Row alignItems={"center"} width={"max"}>
-            <FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>
+            <VisibleSelection showAll={true} values={["Trace Information", "Mod Information"]}
+                              currentIndex={isTraceSection ? 0 : 1} onValueChange={i => setIsTraceSection(i === 0)}/>
+            {/*<FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>*/}
             {/*{FeiSelection(isTraceSection, setIsTraceSection)}*/}
             <Spacer flexGrow={1}/>
-            {isTraceSection && <TraceFeiSelection
-                currentTrace={currentTrace} setCurrentTrace={setCurrentTrace} fei={allFei}
+            {isTraceSection && <DropdownSelection
+                index={currentTrace} onIndexChange={setCurrentTrace} options={allFei.map(fei => fei.name)}
             />}
         </Row>
 
@@ -41,50 +45,48 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
     </Column>
 }
 
-function TraceFeiSelection({fei, currentTrace, setCurrentTrace}:
-                               { fei: TraceFei[], currentTrace: number, setCurrentTrace: (trace: number) => void }) {
-    return <FormControl style={{minWidth: "fit-content", maxWidth: "fit-content"}} fullWidth>
-        <Select
-            variant={'outlined'}
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={fei[currentTrace].name}
-            onChange={(e) => setCurrentTrace(fei.findIndex(fei => fei.name === e.target.value))}
-        >
-            {fei.map(fei => <MenuItem key={fei.name} value={fei.name}>{fei.name}</MenuItem>)}
-        </Select>
-    </FormControl>
-}
+// function TraceFeiSelection({fei, currentTrace, setCurrentTrace}:
+//                                { fei: TraceFei[], currentTrace: number, setCurrentTrace: (trace: number) => void }) {
+//     return <FormControl style={{minWidth: "fit-content", maxWidth: "fit-content"}} fullWidth>
+//         <Select
+//             variant={'outlined'}
+//             value={fei[currentTrace].name}
+//             onChange={(e) => setCurrentTrace(fei.findIndex(fei => fei.name === e.target.value))}
+//         >
+//             {fei.map(fei => <MenuItem key={fei.name} value={fei.name}>{fei.name}</MenuItem>)}
+//         </Select>
+//     </FormControl>
+// }
 
 
-function FeiSelection({
-                          isTraceSection,
-                          setIsTraceSection
-                      }: { isTraceSection: boolean, setIsTraceSection: (prevState: boolean) => void }) {
-    return <ButtonGroup orientation="vertical" variant={"outlined"} style={{
-        alignSelf: "center",
-        width: "fit-content",
-        borderWidth: 2,
-        borderColor: primaryColor,
-        borderStyle: "solid",
-        borderRadius: 7,
-        maxWidth: "40%"
-    }}>
-        <ExtraInfoTypeButton active={isTraceSection} onClick={() => setIsTraceSection(true)}
-                             text={"Trace Information"}/>
-        <SimpleDivider backgroundColor={secondaryColor}/>
-        <ExtraInfoTypeButton active={!isTraceSection} onClick={() => setIsTraceSection(false)}
-                             text={"Mod Information"}/>
-
-    </ButtonGroup>;
-}
-
-function ExtraInfoTypeButton(props: { active: boolean, onClick: () => void, text: string }) {
-    return <SimpleButton style={{borderRadius: 7}} backgroundColor={props.active ? ActiveColor : undefined}
-                         onClick={props.onClick}>
-        <Text color={OnBackgroundColor} text={props.text}/>
-    </SimpleButton>
-}
+// function FeiSelection({
+//                           isTraceSection,
+//                           setIsTraceSection
+//                       }: { isTraceSection: boolean, setIsTraceSection: (prevState: boolean) => void }) {
+//     return <ButtonGroup orientation="vertical" variant={"outlined"} style={{
+//         alignSelf: "center",
+//         width: "fit-content",
+//         borderWidth: 2,
+//         borderColor: primaryColor,
+//         borderStyle: "solid",
+//         borderRadius: 7,
+//         maxWidth: "40%"
+//     }}>
+//         <ExtraInfoTypeButton active={isTraceSection} onClick={() => setIsTraceSection(true)}
+//                              text={"Trace Information"}/>
+//         <SimpleDivider backgroundColor={secondaryColor}/>
+//         <ExtraInfoTypeButton active={!isTraceSection} onClick={() => setIsTraceSection(false)}
+//                              text={"Mod Information"}/>
+//
+//     </ButtonGroup>;
+// }
+//
+// function ExtraInfoTypeButton(props: { active: boolean, onClick: () => void, text: string }) {
+//     return <SimpleButton style={{borderRadius: 7}} backgroundColor={props.active ? ActiveColor : undefined}
+//                          onClick={props.onClick}>
+//         <Text color={OnBackgroundColor} text={props.text}/>
+//     </SimpleButton>
+// }
 
 function TraceFei({fei}: { fei: TraceFei }) {
     return <Column>
@@ -130,21 +132,21 @@ function ListTraceFei({name, value}: { name: string, value: string[] }) {
 }
 
 function ModsFei({report}: { report: RichCrashReport }) {
-    return <LazyColumn data = {report.mods!}
-                       childProvider={(mod, i) => <ModFei key = {i} mod = {mod}/>}/>
+    return <LazyColumn data={report.mods!}
+                       childProvider={(mod, i) => <ModFei key={i} mod={mod}/>}/>
 }
 
-function ModFei({mod}: {mod:Mod}){
+function ModFei({mod}: { mod: Mod }) {
     const metadata = mod.forgeMetadata;
     return <Column alignItems={"center"}>
         <Text wordBreak={"break-all"} fontWeight={"bold"} text={mod.name}/>
-        <SimpleDivider width={{percent: 50}} height = {1}/>
+        <SimpleDivider width={{percent: 50}} height={1}/>
         {metadata !== undefined && <Fragment>
-            <Text wordBreak = "break-all" text={metadata.file}/>
-            <Text wordBreak = "break-all" text={metadata.signature}/>
-            <Text wordBreak = "break-all" text={metadata.completeness}/>
+            <Text wordBreak="break-all" text={metadata.file}/>
+            <Text wordBreak="break-all" text={metadata.signature}/>
+            <Text wordBreak="break-all" text={metadata.completeness}/>
         </Fragment>}
-        <Spacer height = {10}/>
+        <Spacer height={10}/>
     </Column>
 }
 
