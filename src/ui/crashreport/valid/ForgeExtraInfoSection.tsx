@@ -36,8 +36,8 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
             {/*<FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>*/}
             {/*{FeiSelection(isTraceSection, setIsTraceSection)}*/}
             <Spacer flexGrow={1}/>
-            {isTraceSection && <DropdownSelection
-                index={currentTrace} onIndexChange={setCurrentTrace} options={allFei.map(fei => fei.name)}
+            {isTraceSection && <DropdownSelection variant={"outlined"}
+                index={currentTrace} onIndexChange={setCurrentTrace} values={allFei.map(fei => fei.name)}
             />}
         </Row>
 

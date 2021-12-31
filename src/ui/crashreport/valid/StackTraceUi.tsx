@@ -14,25 +14,33 @@ import {
 } from "crash-parser/src/model/RichCrashReport";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
-import {MappingsSelection} from "./MappingsSelection";
+import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
 import {MappingsState, MappingsType, versionsOf} from "../../../utils/Mappings";
+import {useScreenSize} from "../../../utils/Gui";
 
 //TODO: mappings selection for other sections
+
 
 export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
     const causerList = unfoldRichStackTrace(stackTrace);
     const [currentCauserIndex, setCauserIndex] = useState(0)
     const currentTrace = causerList[currentCauserIndex];
 
-    const [mappingsState,setMappingsState] = useState<MappingsState>(
-        {type: MappingsType.Yarn, version: versionsOf(MappingsType.Yarn)[0]}
-    )
+    const [mappingsState, setMappingsState] = useMappingsState();
 
+    const screen = useScreenSize();
+
+    const mappingsProps: MappingsSelectionProps = {
+        mappings: mappingsState,
+        onMappingsChange: setMappingsState,
+        isPortrait: screen.isPortrait
+    }
 
     return <Row width={"max"}>
         <Column alignSelf={"start"}>
             {CausationButtons(currentCauserIndex, causerList, setCauserIndex)}
 
+            {screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
             <Row flexWrap={"wrap"}>
                 {StackTraceMessageUi(currentTrace.title)}
             </Row>
@@ -41,11 +49,15 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
             <StackTraceElementsUi elements={currentTrace.elements}/>
         </Column>
         <Spacer flexGrow={1}/>
-        <MappingsSelection mappings = {mappingsState} onMappingsChange={setMappingsState}/>
+        {!screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
     </Row>
 }
 
-
+export function useMappingsState(): [MappingsState, React.Dispatch<React.SetStateAction<MappingsState>>] {
+    return useState<MappingsState>(
+        {type: MappingsType.Yarn, version: versionsOf(MappingsType.Yarn)[0]}
+    )
+}
 
 
 export function StackTraceElementsUi({elements}: { elements: RichStackTraceElement[] }) {

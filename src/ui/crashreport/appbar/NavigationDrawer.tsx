@@ -1,7 +1,7 @@
 import {ValidCrashProps} from "../valid/ValidCrashReportUi";
 import React, {Fragment, useState} from "react";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
-import {AppbarColor, fadedOutColor, OnBackgroundColor, secondaryColor} from "../../Colors";
+import {AppbarColor, fadedOutColor, NavigationDrawerColor, OnBackgroundColor, secondaryColor} from "../../Colors";
 import {ArrowDropDown, ArrowDropUp, Menu} from "@mui/icons-material";
 import {ButtonGroup, ClickAwayListener, SvgIcon, SwipeableDrawer} from "@mui/material";
 import {CrashContextUi} from "../valid/CrashContextUi";
@@ -27,11 +27,11 @@ export function NavigationDrawer(props: ValidCrashProps) {
             anchor="left"
             onOpen={() => setOpen(true)} onClose={() => setOpen(false)}
             open={open}
-            SlideProps={{style: {marginTop: HeaderHeight}}}
+            SlideProps={{style: {marginTop: HeaderHeight, backgroundColor: "transparent", backgroundImage: "unset"/*, backgroundColor: "transparent"*/}}}
         >
             <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <div>
-                    <ButtonGroup orientation={"vertical"} variant={"contained"}>
+                    <ButtonGroup style = {{backgroundColor: NavigationDrawerColor}} orientation={"vertical"} variant={"contained"}>
                         <NavigationDrawerContent sectionState={props.sectionState} report={props.report}/>
                     </ButtonGroup>
                     {/*Since the drawer is margined by HeaderHeight pixels, the bottom HeaderHeight pixels of the drawer

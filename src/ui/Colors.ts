@@ -19,6 +19,7 @@ export const slightlyPronouncedColor = "#323232"
 export const dialogBodyColor = "rgba(255, 255, 255, 0.7)"
 export const AppbarColor = "#272727"
 export const ActiveColor = "#374550"
+export const NavigationDrawerColor = "#353535"
 
 export const CrashyTheme: ThemeOptions = {
     palette: {

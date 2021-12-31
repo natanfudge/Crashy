@@ -196,8 +196,6 @@ function enrichCrashReportSection(section: CrashReportSection): RichCrashReportS
 }
 
 function enrichStackTrace(trace: StackTrace): RichStackTrace {
-    //TODO
-    // throw new Error("TODO")
     return {
         details: trace.details !== undefined ? enrichExceptionDetails(trace.details) : undefined,
         causedBy: trace.causedBy !== undefined ? enrichStackTrace(trace.causedBy) : undefined,
@@ -273,7 +271,6 @@ function parseExceptionFrameField(fieldName: string, rawField: string): string[]
 function enrichExceptionBytecode(rawBytecode: string[]): ExceptionBytecode {
     const bytecodes: ExceptionBytecode = {}
     for (const bytecode of rawBytecode) {
-        //TODO: remember to trim and join
         const [address, value] = bytecode.split(": ")
         bytecodes[address] = value.replace(/ /g, "")
     }

@@ -39,7 +39,7 @@ export function withVersion(state: MappingsState, version: string): MappingsStat
 }
 
 const versionsData: Record<MappingsType, string[]> = {
-    [MappingsType.Yarn] : ["1.15", "1.16", "1.17"],
+    [MappingsType.Yarn] : ["1.15", "1.16", "1.17", "This super long thingy", "1.18.1+build.14"],
     [MappingsType.Official] : ["1.14"],
     [MappingsType.MojMap] : ["1.14"],
     [MappingsType.Intermediary] : ["1.14"],

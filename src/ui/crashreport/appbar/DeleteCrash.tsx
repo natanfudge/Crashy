@@ -12,7 +12,6 @@ import {SimpleTextField} from "../../utils/simple/SimpleTextField";
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"
 
-//TODO: test noCache with real server, maybe it works there
 enum DeleteState {
     NoAttemptMade,
     Loading,
@@ -73,7 +72,6 @@ function PreSuppliedCodeDeletePopup({code}: { code: string }) {
                 You've recently created this log,<br/> so you can delete it without a code.<br/>To delete in the future,
                 store this code now:
             </TextTheme>
-            {/*TODO: copy button*/}
             <Text padding={{top: 5}} align={"center"} text={code}/>
         </Column>
 

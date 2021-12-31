@@ -2,16 +2,18 @@ import {Column, Row} from "../../utils/simple/Flex";
 import {Text} from "../../utils/simple/Text";
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import React from "react";
-import {StackTraceElementsUi} from "./StackTraceUi";
+import {StackTraceElementsUi, useMappingsState} from "./StackTraceUi";
 import {primaryColor} from "../../Colors";
 import {RichCrashReportSection, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {objectMap} from "../../../utils/Javascript";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Spacer} from "../../utils/simple/SimpleDiv";
+import {useScreenSize} from "../../../utils/Gui";
+import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
 
 export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
     return <Column margin={{top: 10}} width={"max"}>
-        <Column width = {300}  alignSelf={"center"}>
+        <Column width={300} alignSelf={"center"}>
             <Text text={section.name} variant={"h4"} alignSelf={"center"}/>
             <SimpleDivider width={"max"}/>
         </Column>
@@ -22,12 +24,30 @@ export function CrashReportSectionUi({section}: { section: RichCrashReportSectio
 }
 
 function CrashReportSectionTrace({trace}: { trace: RichStackTraceElement[] }) {
-    return <Column alignSelf={"start"}>
-        <Spacer height={20}/>
-        <Text text={"Stack Trace"} variant={"h5"}/>
-        <SimpleDivider width={"max"}/>
-        <StackTraceElementsUi elements={trace}/>
-    </Column>
+    const [mappingsState, setMappingsState] = useMappingsState();
+
+    const screen = useScreenSize();
+
+    const mappingsProps: MappingsSelectionProps = {
+        mappings: mappingsState,
+        onMappingsChange: setMappingsState,
+        isPortrait: screen.isPortrait
+    }
+
+    return <Row width={"max"}>
+        <Column alignSelf={"start"}>
+            <Spacer height={20}/>
+            {screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
+            <div>
+                <Text text={"Stack Trace"} variant={"h5"}/>
+                <SimpleDivider width={"max"}/>
+            </div>
+            <StackTraceElementsUi elements={trace}/>
+        </Column>
+
+        <Spacer flexGrow={1}/>
+        {!screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
+    </Row>
 }
 
 function CrashReportSectionDetails({details}: { details: StringMap }) {
