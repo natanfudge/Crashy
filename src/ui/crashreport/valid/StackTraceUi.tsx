@@ -15,8 +15,10 @@ import {
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
 import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
-import {MappingsState, MappingsType, versionsOf} from "../../../utils/Mappings";
 import {useScreenSize} from "../../../utils/Gui";
+import {versionsOf} from "../../../mappings/Mappings";
+import {MappingsState} from "../../../mappings/MappingsState";
+import {MappingsNamespace} from "../../../mappings/MappingsNamespace";
 
 //TODO: mappings selection for other sections
 
@@ -55,7 +57,7 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
 
 export function useMappingsState(): [MappingsState, React.Dispatch<React.SetStateAction<MappingsState>>] {
     return useState<MappingsState>(
-        {type: MappingsType.Yarn, version: versionsOf(MappingsType.Yarn)[0]}
+        {type: MappingsNamespace.Yarn, version: versionsOf(MappingsNamespace.Yarn)[0]}
     )
 }
 

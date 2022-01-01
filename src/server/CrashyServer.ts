@@ -49,13 +49,13 @@ export namespace CrashyServer {
     export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
         // return TestVerifyErrorCrash;
         const response = await httpGet({url: `${urlPrefix}/getCrash/${id}`, noCache});
-        switch (response.code) {
+        switch (response.status) {
             case HttpStatusCode.OK:
-                return response.body;
+                return response.text();
             case HttpStatusCode.NotFound:
                 return GetCrashError.NoSuchCrashId
             default:
-                throw new Error("Unexpected status code: " + response.code)
+                throw new Error("Unexpected status code: " + response.status)
         }
     }
 
@@ -66,7 +66,7 @@ export namespace CrashyServer {
         const response = await httpDelete({
             url: `${urlPrefix}/deleteCrash`, parameters: {crashId: id, key: code}
         })
-        switch (response.code) {
+        switch (response.status) {
             case HttpStatusCode.OK:
                 return DeleteCrashResponse.Success;
             case HttpStatusCode.Unauthorized:
@@ -74,7 +74,7 @@ export namespace CrashyServer {
             case HttpStatusCode.NotFound:
                 return DeleteCrashResponse.NoSuchCrashId
             default:
-                throw new Error("Unexpected status code: " + response.code)
+                throw new Error("Unexpected status code: " + response.status)
         }
     }
 
@@ -87,16 +87,16 @@ export namespace CrashyServer {
             }
         )
 
-        switch (response.code) {
+        switch (response.status) {
             case HttpStatusCode.OK:
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                return JSON.parse(response.body);
+                return JSON.parse(await response.text());
             case HttpStatusCode.BadRequest:
                 return "Invalid Crash";
             case HttpStatusCode.PayloadTooLarge:
                 return "Too Large"
             default:
-                throw new Error("Unexpected status code: " + response.code)
+                throw new Error("Unexpected status code: " + response.status)
         }
     }
 }

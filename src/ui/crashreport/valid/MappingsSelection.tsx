@@ -5,10 +5,12 @@ import {IconButton} from "@mui/material";
 import {ArrowDropDown, ArrowDropUp} from "@mui/icons-material";
 import {DropdownSelection} from "../../utils/DropdownSelection";
 import {indexOfOrThrow} from "../../../utils/Javascript";
-import {allMappingTypes, mappingsName, MappingsState, versionsOf, withVersion} from "../../../utils/Mappings";
 import {Text} from "../../utils/simple/Text";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {primaryColor, secondaryColor} from "../../Colors";
+import {versionsOf} from "../../../mappings/Mappings";
+import {MappingsState, withVersion} from "../../../mappings/MappingsState";
+import {allMappingTypes, mappingsName} from "../../../mappings/MappingsNamespace";
 
 export interface MappingsSelectionProps {
     isPortrait: boolean;
