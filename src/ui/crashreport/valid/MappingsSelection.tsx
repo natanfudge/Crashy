@@ -10,7 +10,7 @@ import {Spacer} from "../../utils/simple/SimpleDiv";
 import {primaryColor, secondaryColor} from "../../Colors";
 import {versionsOf} from "../../../mappings/Mappings";
 import {MappingsState, withVersion} from "../../../mappings/MappingsState";
-import {allMappingTypes, mappingsName} from "../../../mappings/MappingsNamespace";
+import {allMappingNamespaces, mappingsName} from "../../../mappings/MappingsNamespace";
 
 export interface MappingsSelectionProps {
     isPortrait: boolean;
@@ -25,10 +25,10 @@ export function MappingsSelection({props}:
     return <Row justifyContent={"end"}>
         <Selection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
                    style={{paddingTop: isPortrait? 0: 8}}
-                   values={allMappingTypes.map(type => mappingsName(type))}
-                   index={indexOfOrThrow(allMappingTypes, mappings.type)}
+                   values={allMappingNamespaces.map(type => mappingsName(type))}
+                   index={indexOfOrThrow(allMappingNamespaces, mappings.type)}
                    onIndexChange={i => onMappingsChange(
-                       {version: versionsOf(allMappingTypes[i])[0], type: allMappingTypes[i]}
+                       {version: versionsOf(allMappingNamespaces[i])[0], type: allMappingNamespaces[i]}
                    )}/>
 
         <DropdownSelection variant={isPortrait? "standard": "outlined"} style={{paddingLeft: 10, paddingRight: 5, alignSelf: isPortrait? "center": undefined}}

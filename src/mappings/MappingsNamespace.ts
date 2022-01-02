@@ -1,25 +1,33 @@
-export enum MappingsNamespace {
-    Yarn, Official, MojMap, Intermediary, Srg, Mcp, Quilt
-}
+// export enum MappingsNamespace {
+//     Yarn, Official, MojMap, Intermediary, Srg, Mcp, Quilt
+// }
+export type MappingsNamespace = "Yarn" | "Official" | "MojMap" | "Intermediary" | "Srg" | "Mcp" | "Quilt";
 
 export function mappingsName(type: MappingsNamespace): string {
     switch (type) {
-        case MappingsNamespace.Yarn:
+        case "Yarn":
             return "Yarn"
-        case MappingsNamespace.Official:
+        case "Official":
             return "Obfuscated"
-        case MappingsNamespace.MojMap:
+        case "MojMap":
             return "Mojang"
-        case MappingsNamespace.Intermediary:
+        case "Intermediary":
             return "Intermediary"
-        case MappingsNamespace.Srg:
+        case "Srg":
             return "SRG"
-        case MappingsNamespace.Mcp:
+        case "Mcp":
             return "MCP"
-        case MappingsNamespace.Quilt:
+        case "Quilt":
             return "Quilt"
     }
 }
 
-export const allMappingTypes = [MappingsNamespace.Yarn, MappingsNamespace.Official, MappingsNamespace.MojMap, MappingsNamespace.Intermediary,
-    MappingsNamespace.Srg, MappingsNamespace.Mcp, MappingsNamespace.Quilt];
+export const allMappingNamespaces = [
+    "Yarn",
+    "Official",
+    "MojMap",
+    "Intermediary",
+    "Srg",
+    "Mcp",
+    "Quilt"
+];

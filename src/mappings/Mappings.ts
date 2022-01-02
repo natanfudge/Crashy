@@ -2,28 +2,7 @@ import {StringMap} from "crash-parser/src/model/CrashReport";
 import {MappingsNamespace} from "./MappingsNamespace";
 import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
 
-export interface MappingsProvider {
-    fromNamespace: MappingsNamespace
-    toNamespace: MappingsNamespace
-    getBuilds(minecraftVersion: string): Promise<string[]>
 
-    /**
-     * The build is the full version name of the mappings, e.g. 1.18.1+build.13
-     */
-    getMappings(build: string): Promise<Mappings>
-}
-
-const YarnMappingsProvider: MappingsProvider = {
-    fromNamespace: MappingsNamespace.Intermediary,
-    toNamespace: MappingsNamespace.Yarn,
-    async getBuilds(minecraftVersion: string): Promise<string[]> {
-        const builds = await getYarnBuilds(minecraftVersion)
-        return builds.map(build => build.version)
-    },
-    getMappings(build: string): Promise<Mappings> {
-        return getYarnMappings(build)
-    }
-}
 
 // const
 
@@ -33,9 +12,10 @@ export interface Mappings {
     fields: StringMap
 }
 
-const mappingsProviders: Record<MappingsNamespace, MappingsProvider> = {
-    [MappingsNamespace.Yarn]: YarnMappingsProvider
-}
+
+//     [MappingsNamespace.Yarn]: YarnMappingsProvider
+//     [MappingsNamespace.MojMap]
+// }
 
 const versionsData: Record<MappingsNamespace, string[]> = {
     [MappingsNamespace.Yarn]: ["1.15", "1.16", "1.17", "This super long thingy", "1.18.1+build.14"],
@@ -47,11 +27,12 @@ const versionsData: Record<MappingsNamespace, string[]> = {
     [MappingsNamespace.Quilt]: ["1.14"]
 }
 
-export function versionsOf(mappingsType: MappingsNamespace): Promise<string[]> {
+export async function versionsOf(mappingsType: MappingsNamespace): Promise<string[]> {
     switch (mappingsType) {
 
     }
-    return versionsData[mappingsType];
+    return [];
+    // return versionsData[mappingsType];
 }
 
 //TODO: Given a trace mapped with namespace X, and given a user preference of namespace Y, we must find a pathway from X to Y.
