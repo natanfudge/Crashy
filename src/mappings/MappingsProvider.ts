@@ -13,7 +13,7 @@ export interface MappingsProvider {
     getMappings(build: string): Promise<Mappings>
 }
 
-const YarnToIntermediaryMappingsProvider: MappingsProvider = {
+export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
     fromNamespace: "Intermediary",
     toNamespace: "Yarn",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
@@ -24,8 +24,19 @@ const YarnToIntermediaryMappingsProvider: MappingsProvider = {
         return getYarnMappings(build)
     }
 }
+export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
+    fromNamespace: "Intermediary",
+    toNamespace: "Quilt",
+    async getBuilds(minecraftVersion: string): Promise<string[]> {
+        const builds = await getYarnBuilds(minecraftVersion)
+        return builds.map(build => build.version)
+    },
+    getMappings(build: string): Promise<Mappings> {
+        return getYarnMappings(build)
+    }
+}
 
-const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
+export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
     toNamespace: "Intermediary",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
@@ -36,7 +47,7 @@ const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     }
 }
 
-const OfficialToSrgMappingsProvider: MappingsProvider = {
+export const OfficialToSrgMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
     toNamespace: "Srg",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
@@ -47,7 +58,7 @@ const OfficialToSrgMappingsProvider: MappingsProvider = {
     }
 }
 
-const SrgToMcpMappingsProvider: MappingsProvider = {
+export const SrgToMcpMappingsProvider: MappingsProvider = {
     fromNamespace: "Srg",
     toNamespace: "Mcp",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
@@ -59,7 +70,8 @@ const SrgToMcpMappingsProvider: MappingsProvider = {
 }
 
 export const mappingsProviders: MappingsProvider[] = [
-    YarnToIntermediaryMappingsProvider,
+    IntermediaryToYarnMappingsProvider,
+    IntermediaryToQuiltMappingsProvider,
     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
     SrgToMcpMappingsProvider

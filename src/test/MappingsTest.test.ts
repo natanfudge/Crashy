@@ -1,7 +1,11 @@
 import {getYarnBuilds, getYarnMappings} from "../mappings/YarnMappingsProvider";
-import {BFS} from "../mappings/MappingsResolver";
-import {MappingsNamespace} from "../mappings/MappingsNamespace";
-import {mappingsProviders} from "../mappings/MappingsProvider";
+import {resolveMappingsChain} from "../mappings/MappingsResolver";
+import {
+    IntermediaryToQuiltMappingsProvider,
+    OfficialToIntermediaryMappingsProvider,
+    OfficialToSrgMappingsProvider,
+    SrgToMcpMappingsProvider
+} from "../mappings/MappingsProvider";
 
 test("Yarn mappings can be retrieved", async () => {
     const versions = await getYarnBuilds("1.18.1");
@@ -12,8 +16,14 @@ test("Yarn mappings can be retrieved", async () => {
 })
 
 test("Mappings BFS works correctly", () => {
-    const path = BFS("Mcp", "Quilt", mappingsProviders)
-    const x = 2
+    const path1 = resolveMappingsChain("Mcp", "Quilt")
+    expect(path1).toEqual([SrgToMcpMappingsProvider, OfficialToSrgMappingsProvider, OfficialToIntermediaryMappingsProvider, IntermediaryToQuiltMappingsProvider])
+
+    const path2 = resolveMappingsChain("Official", "Quilt")
+    expect(path2).toEqual([OfficialToIntermediaryMappingsProvider, IntermediaryToQuiltMappingsProvider])
+
+    const path3 = resolveMappingsChain("Intermediary", "Srg")
+    expect(path3).toEqual([OfficialToIntermediaryMappingsProvider, OfficialToSrgMappingsProvider])
 })
 
 //TODO: test it does the shortest path by adding more providers

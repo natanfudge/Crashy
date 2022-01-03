@@ -247,9 +247,9 @@ test("VerifyError crash is parsed correctly", () => {
     const report = parseCrashReport(TestVerifyErrorCrash);
     expect(report.sections.length).toEqual(4)
     expect(report.stacktrace.trace.length).toEqual(11)
-    expect(Object.keys(report.stacktrace.details!).length).toEqual(5)
-    expect(report.stacktrace.details!["Current Frame"].length).toEqual(4)
-    expect(report.stacktrace.details!["Location"]).toEqual(["net/minecraft/class_5944.<init>(Lnet/minecraft/class_5912;Ljava/lang/String;Lnet/minecraft/class_293;)V @7: invokespecial"])
+    expect(Object.values(report.stacktrace.details?.details!).length).toEqual(5)
+    expect(report.stacktrace.details?.details!["Current Frame"].length).toEqual(4)
+    expect(report.stacktrace.details?.details!["Location"]).toEqual(["net/minecraft/class_5944.<init>(Lnet/minecraft/class_5912;Ljava/lang/String;Lnet/minecraft/class_293;)V @7: invokespecial"])
 
     const enriched = enrichCrashReport(report);
     //2021-10-25, 10:07 a.m.

@@ -1,60 +1,53 @@
 import {allMappingNamespaces, MappingsNamespace} from "./MappingsNamespace";
-import {MappingsProvider} from "./MappingsProvider";
+import {MappingsProvider, mappingsProviders} from "./MappingsProvider";
+import {Queue} from "./Queue";
 
 /**
  * Problem: Given only a limited set of mappings from namespaces to other namespaces, find a way to map from any namespace to any other namespace.
  * We need to find a sequence of mappings that can eventually reach from 'fromNamespace' to 'toNamespace'.
  * This problem is equivalent to finding a path in a non-directed graph (because if we can map from a to b we can map from b to a), where we try to reach from the 'fromNamespace' node to the 'toNamespace' node.
  */
-export function resolveMappingsChain(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace, availableProviders: MappingsProvider[]): MappingsProvider[] {
-    return BFS(fromNamespace, toNamespace, availableProviders);
+export function resolveMappingsChain(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace): MappingsProvider[] | undefined {
+    return BFS(fromNamespace, toNamespace, mappingsProviders);
 }
 
-// function DFS(fromNamespace: string, toNamespace: string, availableProviders: MappingsProvider.ts[], visited: string[], path: MappingsProvider.ts[]): MappingsProvider.ts[] {
-//     if (fromNamespace === toNamespace) {
-//         return path;
-//     }
-//
-//     for (let provider of availableProviders) {
-//         if (visited.indexOf(provider.namespace) !== -1) {
-//             continue;
-//         }
-//
-//         visited.push(provider.namespace);
-//         let result = DFS(provider.namespace, toNamespace, provider.getMappings(), visited, path.concat(provider));
-//         if (result) {
-//             return result;
-//         }
-//     }
-//
-//     return null;
-// }
+type PartialRecord<K extends keyof any, V> = Partial<Record<K, V>>
+type ShortLinks = PartialRecord<MappingsNamespace, { prev: MappingsNamespace, provider: MappingsProvider }>
 
-export function BFS(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace, availableProviders: MappingsProvider[]): MappingsProvider[] {
+function BFS(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace, availableProviders: MappingsProvider[]): MappingsProvider[] | undefined {
     const graphAdj = makeAdjacencyList(availableProviders);
+
     const visited: Set<MappingsNamespace> = new Set([fromNamespace]);
-    const queue = [fromNamespace];
+    const queue: Queue<MappingsNamespace> = new Queue(fromNamespace)
 
-    const distances : Partial<Record<MappingsNamespace, number>> = {}
-    const predecessors : Partial<Record<MappingsNamespace, MappingsNamespace>> = {}
+    // When a BFS reaches a node, it will reach it by the shortest path.
+    // We store in this map how exactly the BFS reached each node, and then track back from the 'toNamespace' node to find the shortest path.
+    const shortLinks: ShortLinks = {}
 
-    //TODO: figure out how to extract the path after we found the target node. (probably add another array and add to it)
+    while (queue.isNotEmpty()) {
+        let node = queue.dequeue()!;
+        for (const neighbor of graphAdj[node]) {
+            const neighborNode = neighbor.node;
+            if (visited.has(neighborNode)) continue;
+            shortLinks[neighborNode] = {prev: node, provider: neighbor.provider}
+            if (neighborNode === toNamespace) return createPathFromShortLinks(shortLinks,fromNamespace, toNamespace);
 
-    while (queue.length > 0) {
-        let visiting = queue.shift()!;
-        console.log(`we visited ${visiting}`)
-        for (const neighborProvider of graphAdj[visiting]) {
-            const neighbor = neighborProvider.node;
-            if (visited.has(neighbor)) continue;
-            visited.add(neighbor);
 
-            if (neighbor === toNamespace) {
-                throw new Error("TODO");
-            }
-            queue.push(neighbor);
+            visited.add(neighborNode)
+            queue.push(neighborNode)
         }
     }
-    return [];
+    return undefined;
+}
+
+function createPathFromShortLinks(shortLinks: ShortLinks, fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace): MappingsProvider[] {
+    const path: MappingsProvider[] = [];
+    let current = toNamespace;
+    while (current !== fromNamespace) {
+        path.push(shortLinks[current]!.provider);
+        current = shortLinks[current]!.prev;
+    }
+    return path.reverse();
 }
 
 type MappingsAdjacencyList = Record<MappingsNamespace, { node: MappingsNamespace, provider: MappingsProvider }[]>;
