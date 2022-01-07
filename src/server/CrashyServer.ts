@@ -4,7 +4,7 @@ import {httpDelete, httpGet, httpPost} from "../utils/Http";
 import {TestCrashReel} from "crash-parser/src/test/TestCrashReel";
 import {TestVerifyErrorCrash} from "crash-parser/src/test/TestVerifyErrorCrash";
 
-namespace HttpStatusCode {
+export namespace HttpStatusCode {
     export const OK = 200;
     export const BadRequest = 400;
     export const Unauthorized = 401;

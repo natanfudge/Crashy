@@ -1,42 +1,53 @@
-import React, {CSSProperties, Fragment, useState} from "react";
+import React, {CSSProperties, useState} from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {VisibleSelection} from "../../utils/VisibleSelection";
-import {IconButton} from "@mui/material";
+import {CircularProgress, IconButton} from "@mui/material";
 import {ArrowDropDown, ArrowDropUp} from "@mui/icons-material";
 import {DropdownSelection} from "../../utils/DropdownSelection";
 import {indexOfOrThrow} from "../../../utils/Javascript";
-import {Text} from "../../utils/simple/Text";
-import {Spacer} from "../../utils/simple/SimpleDiv";
-import {primaryColor, secondaryColor} from "../../Colors";
-import {versionsOf} from "../../../mappings/Mappings";
+import {buildsOf} from "../../../mappings/Mappings";
 import {MappingsState, withVersion} from "../../../mappings/MappingsState";
 import {allMappingNamespaces, mappingsName} from "../../../mappings/MappingsNamespace";
+import {PromiseBuilder} from "../../utils/PromiseBuilder";
 
 export interface MappingsSelectionProps {
     isPortrait: boolean;
     mappings: MappingsState;
     onMappingsChange: (mappings: MappingsState) => void;
+    minecraftVersion: string
 }
 
 export function MappingsSelection({props}:
-                                      {props:MappingsSelectionProps}) {
+                                      { props: MappingsSelectionProps }) {
     const {isPortrait, mappings, onMappingsChange} = props;
-    const versions = versionsOf(mappings.type)
     return <Row justifyContent={"end"}>
         <Selection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
-                   style={{paddingTop: isPortrait? 0: 8}}
+                   style={{paddingTop: isPortrait ? 0 : 8}}
                    values={allMappingNamespaces.map(type => mappingsName(type))}
-                   index={indexOfOrThrow(allMappingNamespaces, mappings.type)}
-                   onIndexChange={i => onMappingsChange(
-                       {version: versionsOf(allMappingNamespaces[i])[0], type: allMappingNamespaces[i]}
-                   )}/>
+                   index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
+                   onIndexChange={i => {
+                       const newNamespace = allMappingNamespaces[i];
 
-        <DropdownSelection variant={isPortrait? "standard": "outlined"} style={{paddingLeft: 10, paddingRight: 5, alignSelf: isPortrait? "center": undefined}}
-                           values={versions}
-                           index={indexOfOrThrow(versions, mappings.version)}
-                           onIndexChange={i => onMappingsChange(withVersion(mappings, versions[i]))}/>
+                       //TODO: merge this with useMappingsState()
+
+                       // When the user switches mapping, immediately switch to that mapping, and since getting what versions are available takes time, we'll set the version to undefined
+                       // for now and what the available versions load we will set it to the first available one.
+                       onMappingsChange({namespace: newNamespace, version: undefined})
+                       void buildsOf(newNamespace, props.minecraftVersion).then(builds => onMappingsChange(withVersion(mappings, builds[0])))
+                   }}/>
+
+        <PromiseBuilder promise={buildsOf(mappings.namespace, props.minecraftVersion)} whenLoading={<CircularProgress/>} whenDone={builds =>
+            <DropdownSelection variant={isPortrait ? "standard" : "outlined"}
+                               style={{paddingLeft: 10, paddingRight: 5, alignSelf: isPortrait ? "center" : undefined}}
+                               values={builds}
+                               index={indexOfOrThrow(builds, mappings.version)}
+                               onIndexChange={i => onMappingsChange(withVersion(mappings, builds[i]))}/>
+        }/>
+
     </Row>
 }
+
+// export function set
 
 export enum SelectionType {
     Expandable, Dropdown

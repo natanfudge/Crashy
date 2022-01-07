@@ -7,6 +7,7 @@ import {
     javaClassFullName,
     javaMethodFullNameName,
     javaMethodSimpleName,
+    RichCrashReport,
     RichStackTrace,
     RichStackTraceElement,
     StackTraceMessage,
@@ -16,26 +17,26 @@ import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
 import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
 import {useScreenSize} from "../../../utils/Gui";
-import {versionsOf} from "../../../mappings/Mappings";
-import {MappingsState} from "../../../mappings/MappingsState";
-import {MappingsNamespace} from "../../../mappings/MappingsNamespace";
+import {buildsOf} from "../../../mappings/Mappings";
+import {MappingsState, withVersion} from "../../../mappings/MappingsState";
 
 //TODO: mappings selection for other sections
 
 
-export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
-    const causerList = unfoldRichStackTrace(stackTrace);
+export function StackTraceUi({report}: { report: RichCrashReport }) {
+    const causerList = unfoldRichStackTrace(report.stackTrace);
     const [currentCauserIndex, setCauserIndex] = useState(0)
     const currentTrace = causerList[currentCauserIndex];
 
-    const [mappingsState, setMappingsState] = useMappingsState();
+    const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
 
     const screen = useScreenSize();
 
     const mappingsProps: MappingsSelectionProps = {
         mappings: mappingsState,
         onMappingsChange: setMappingsState,
-        isPortrait: screen.isPortrait
+        isPortrait: screen.isPortrait,
+        minecraftVersion: report.context.minecraftVersion
     }
 
     return <Row width={"max"}>
@@ -55,10 +56,15 @@ export function StackTraceUi({stackTrace}: { stackTrace: RichStackTrace }) {
     </Row>
 }
 
-export function useMappingsState(): [MappingsState, React.Dispatch<React.SetStateAction<MappingsState>>] {
-    return useState<MappingsState>(
-        {type: MappingsNamespace.Yarn, version: versionsOf(MappingsNamespace.Yarn)[0]}
+export function useMappingsState(minecraftVersion: string): [MappingsState, React.Dispatch<React.SetStateAction<MappingsState>>] {
+    // Initially, immediately show a mapping, and since getting what versions are available takes time, we'll set the version to undefined
+    // for now and what the available versions load we will set it to the first available one.
+    const [state, setState] = useState<MappingsState>(
+        {namespace: "Yarn", version: undefined}
     )
+
+    void buildsOf("Yarn", minecraftVersion).then(builds => setState(old => withVersion(old, builds[0])))
+    return [state, setState];
 }
 
 

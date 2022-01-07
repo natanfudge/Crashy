@@ -1,8 +1,8 @@
 import {httpGet} from "../utils/Http";
-import {HttpStatusCode} from "../../functions/src/utils";
 import {Mappings} from "./Mappings";
 import pako from "pako";
 import {StringMap} from "crash-parser/src/model/CrashReport";
+import {HttpStatusCode} from "../server/CrashyServer";
 
 export interface YarnBuild {
     gameVersion: string;
@@ -43,14 +43,14 @@ function parseTinyV1(input: string): Mappings {
     const methods: StringMap = {}
 
     let foundHeader = false;
-    let namespace: Record<string, number> = {};
+    const namespace: Record<string, number> = {};
 
     for (const value of input.split("\n")) {
         const split = value.split("\t")
         //Reads the header to find the coloum of the mapping format
         if (!foundHeader) {
             if (split[0] !== 'v1') {
-                throw "Unsupported mapping format"
+                throw new Error("Unsupported mapping format")
             }
             foundHeader = true;
             for (let i = 1; i < split.length; i++) {

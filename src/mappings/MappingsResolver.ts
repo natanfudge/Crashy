@@ -1,6 +1,7 @@
 import {allMappingNamespaces, MappingsNamespace} from "./MappingsNamespace";
 import {MappingsProvider, mappingsProviders} from "./MappingsProvider";
 import {Queue} from "./Queue";
+import {toRecord} from "../utils/Javascript";
 
 /**
  * Problem: Given only a limited set of mappings from namespaces to other namespaces, find a way to map from any namespace to any other namespace.
@@ -53,11 +54,7 @@ function createPathFromShortLinks(shortLinks: ShortLinks, fromNamespace: Mapping
 type MappingsAdjacencyList = Record<MappingsNamespace, { node: MappingsNamespace, provider: MappingsProvider }[]>;
 
 function makeAdjacencyList(mappingsProviders: MappingsProvider[]): MappingsAdjacencyList {
-    //TODO: make this into a generic function i think
-    const adjacencyList = allMappingNamespaces.reduce((o, namespace) => ({
-        ...o,
-        [namespace]: []
-    }), {}) as MappingsAdjacencyList
+    const adjacencyList = toRecord(allMappingNamespaces, namespace => [namespace,[]]) as MappingsAdjacencyList;
 
     for (const provider of mappingsProviders) {
         // We store the provider so we can know later what provider we need to use to implement the edge

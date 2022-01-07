@@ -11,7 +11,7 @@ import {Spacer} from "../../utils/simple/SimpleDiv";
 import {useScreenSize} from "../../../utils/Gui";
 import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
 
-export function CrashReportSectionUi({section}: { section: RichCrashReportSection }) {
+export function CrashReportSectionUi({section, minecraftVersion}: { section: RichCrashReportSection, minecraftVersion: string }) {
     return <Column margin={{top: 10}} width={"max"}>
         <Column width={300} alignSelf={"center"}>
             <Text text={section.name} variant={"h4"} alignSelf={"center"}/>
@@ -19,19 +19,20 @@ export function CrashReportSectionUi({section}: { section: RichCrashReportSectio
         </Column>
 
         {section.details !== undefined && <CrashReportSectionDetails details={section.details}/>}
-        {section.stackTrace !== undefined && <CrashReportSectionTrace trace={section.stackTrace}/>}
+        {section.stackTrace !== undefined && <CrashReportSectionTrace trace={section.stackTrace} minecraftVersion={minecraftVersion}/>}
     </Column>
 }
 
-function CrashReportSectionTrace({trace}: { trace: RichStackTraceElement[] }) {
-    const [mappingsState, setMappingsState] = useMappingsState();
+function CrashReportSectionTrace({trace,minecraftVersion}: { trace: RichStackTraceElement[], minecraftVersion: string }) {
+    const [mappingsState, setMappingsState] = useMappingsState(minecraftVersion);
 
     const screen = useScreenSize();
 
     const mappingsProps: MappingsSelectionProps = {
         mappings: mappingsState,
         onMappingsChange: setMappingsState,
-        isPortrait: screen.isPortrait
+        isPortrait: screen.isPortrait,
+        minecraftVersion
     }
 
     return <Row width={"max"}>

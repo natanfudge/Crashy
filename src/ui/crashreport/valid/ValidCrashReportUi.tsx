@@ -59,7 +59,7 @@ function CenterView({
 
 function ActiveSection({report, section}: { report: RichCrashReport, section: Section }) {
     if (section === SpecialSection.StackTrace) {
-        return <StackTraceUi stackTrace={report.stackTrace}/>
+        return <StackTraceUi report={report}/>
     } else if (section === SpecialSection.Mods) {
         return <ModListUi mods={report.mods!}/>
     } else if (section === SpecialSection.ForgeInfo) {
@@ -67,7 +67,7 @@ function ActiveSection({report, section}: { report: RichCrashReport, section: Se
     } else if (section === SpecialSection.JvmInfo) {
         return <JVMDetailsSection details={report.stackTrace.details!}/>
     } else {
-        return <CrashReportSectionUi section={report.sections[section.index]}/>
+        return <CrashReportSectionUi section={report.sections[section.index]} minecraftVersion={report.context.minecraftVersion}/>
     }
 }
 
