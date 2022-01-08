@@ -1,4 +1,4 @@
-import React, {CSSProperties, useState} from "react";
+import React, {CSSProperties, Fragment, useState} from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {VisibleSelection} from "../../utils/VisibleSelection";
 import {CircularProgress, IconButton} from "@mui/material";
@@ -8,7 +8,7 @@ import {indexOfOrThrow} from "../../../utils/Javascript";
 import {buildsOf} from "../../../mappings/Mappings";
 import {MappingsState, withVersion} from "../../../mappings/MappingsState";
 import {allMappingNamespaces, mappingsName} from "../../../mappings/MappingsNamespace";
-import {PromiseBuilder} from "../../utils/PromiseBuilder";
+import {PromiseBuilder, usePromise} from "../../utils/PromiseBuilder";
 
 export interface MappingsSelectionProps {
     isPortrait: boolean;
@@ -20,29 +20,58 @@ export interface MappingsSelectionProps {
 export function MappingsSelection({props}:
                                       { props: MappingsSelectionProps }) {
     const {isPortrait, mappings, onMappingsChange} = props;
-    return <Row justifyContent={"end"}>
+    const builds = usePromise(buildsOf(mappings.namespace, props.minecraftVersion), [mappings.namespace]);
+    console.log("Builds: " + builds)
+    console.log("Builds undefined: " + (builds === undefined))
+    return <Row justifyContent={"end"} padding={{top: isPortrait ? 0 : 8}}>
         <Selection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
-                   style={{paddingTop: isPortrait ? 0 : 8}}
+            // style={{paddingTop: }}
                    values={allMappingNamespaces.map(type => mappingsName(type))}
                    index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
                    onIndexChange={i => {
                        const newNamespace = allMappingNamespaces[i];
+                       console.log("Changing namespace to " + newNamespace);
 
                        //TODO: merge this with useMappingsState()
 
                        // When the user switches mapping, immediately switch to that mapping, and since getting what versions are available takes time, we'll set the version to undefined
                        // for now and what the available versions load we will set it to the first available one.
                        onMappingsChange({namespace: newNamespace, version: undefined})
-                       void buildsOf(newNamespace, props.minecraftVersion).then(builds => onMappingsChange(withVersion(mappings, builds[0])))
+                       //TODO: test if there are issues when switching quickly with high delay
+                       // void buildsOf(newNamespace, props.minecraftVersion)
+                       //     .then(builds => onMappingsChange({namespace: newNamespace, version: builds[0]}))
+                       //     .catch(e => console.error(e));
                    }}/>
 
-        <PromiseBuilder promise={buildsOf(mappings.namespace, props.minecraftVersion)} whenLoading={<CircularProgress/>} whenDone={builds =>
-            <DropdownSelection variant={isPortrait ? "standard" : "outlined"}
-                               style={{paddingLeft: 10, paddingRight: 5, alignSelf: isPortrait ? "center" : undefined}}
-                               values={builds}
-                               index={indexOfOrThrow(builds, mappings.version)}
-                               onIndexChange={i => onMappingsChange(withVersion(mappings, builds[i]))}/>
-        }/>
+
+        {/*<CircularProgress/>*/}
+        {builds === undefined? <CircularProgress/> : <Fragment>
+            {builds.length > 0 && <DropdownSelection variant={isPortrait ? "standard" : "outlined"}
+                                                     style={{
+                                                         paddingLeft: 10,
+                                                         paddingRight: 5,
+                                                         alignSelf: isPortrait ? "center" : undefined,
+                                                         // paddingTop: 8
+                                                     }}
+                                                     values={builds}
+                                                     index={mappings.version === undefined ? 0 : indexOfOrThrow(builds, mappings.version)}
+                                                     onIndexChange={i => onMappingsChange(withVersion(mappings, builds[i]))}/>}
+        </Fragment>}
+        {/*<PromiseBuilder promise={buildsOf(mappings.namespace, props.minecraftVersion)} whenLoading={<CircularProgress/>}*/}
+        {/*                whenDone={builds =>*/}
+        {/*                    <Fragment>*/}
+        {/*                        {builds.length > 0 && <DropdownSelection variant={isPortrait ? "standard" : "outlined"}*/}
+        {/*                                                                 style={{*/}
+        {/*                                                                     paddingLeft: 10,*/}
+        {/*                                                                     paddingRight: 5,*/}
+        {/*                                                                     alignSelf: isPortrait ? "center" : undefined,*/}
+        {/*                                                                     // paddingTop: 8*/}
+        {/*                                                                 }}*/}
+        {/*                                                                 values={builds}*/}
+        {/*                                                                 index={mappings.version === undefined ? 0 : indexOfOrThrow(builds, mappings.version)}*/}
+        {/*                                                                 onIndexChange={i => onMappingsChange(withVersion(mappings, builds[i]))}/>}*/}
+        {/*                    </Fragment>*/}
+        {/*                } deps={[mappings.namespace]}/>*/}
 
     </Row>
 }

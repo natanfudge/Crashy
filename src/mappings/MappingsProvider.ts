@@ -5,11 +5,13 @@ import {Mappings} from "./Mappings";
 export interface MappingsProvider {
     fromNamespace: MappingsNamespace
     toNamespace: MappingsNamespace
+    //TODO: cache calls
     getBuilds(minecraftVersion: string): Promise<string[]>
 
     /**
      * The build is the full version name of the mappings, e.g. 1.18.1+build.13
      */
+    //TODO: cache calls
     getMappings(build: string): Promise<Mappings>
 }
 
@@ -18,11 +20,17 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
     toNamespace: "Yarn",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
         const builds = await getYarnBuilds(minecraftVersion)
+        await new Promise(resolve => setTimeout(resolve, 3000))
         return builds.map(build => build.version)
     },
     getMappings(build: string): Promise<Mappings> {
         return getYarnMappings(build)
     }
+}
+function delay(t: number, v: any) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve.bind(null, v), t)
+    });
 }
 // export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
 //     fromNamespace: "Intermediary",

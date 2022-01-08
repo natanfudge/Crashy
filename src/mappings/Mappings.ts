@@ -37,7 +37,7 @@ export async function buildsOf(mappingsType: MappingsNamespace, minecraftVersion
         case "Official":
             return [];
     }
-    return [];
+    // return [];
 }
 
 //TODO: Given a trace mapped with namespace X, and given a user preference of namespace Y, we must find a pathway from X to Y.

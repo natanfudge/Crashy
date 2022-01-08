@@ -1,6 +1,6 @@
 import {Column, Row} from "../../utils/simple/Flex";
 import {SimpleSpan, Text, TextTheme} from "../../utils/simple/Text";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {clickableColor, fadedOutColor} from "../../Colors";
 import {
@@ -63,7 +63,9 @@ export function useMappingsState(minecraftVersion: string): [MappingsState, Reac
         {namespace: "Yarn", version: undefined}
     )
 
-    void buildsOf("Yarn", minecraftVersion).then(builds => setState(old => withVersion(old, builds[0])))
+    // useEffect(() => void buildsOf("Yarn", minecraftVersion).then(builds => setState(old => withVersion(old, builds[0]))),[])
+
+
     return [state, setState];
 }
 

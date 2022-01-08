@@ -1,7 +1,6 @@
 import {ButtonGroup} from "@mui/material";
 import {ActiveColor, OnBackgroundColor, primaryColor, secondaryColor} from "../Colors";
 import React from "react";
-import {SimpleDivider} from "./simple/SimpleDivider";
 import {SimpleButton} from "./simple/SimpleButton";
 import {Text} from "./simple/Text";
 
@@ -14,8 +13,7 @@ export function VisibleSelection({
 
     if (values.length === 0) throw new Error("A selection must have at least one item")
 
-    console.log("Redraw")
-    const actualValues = showAll ? values : [values[0]]
+    const actualValues = showAll ? values : [values[currentIndex]]
     return <ButtonGroup orientation="vertical" variant={"outlined"} style={{
         height: "fit-content",
         width: "fit-content",
@@ -24,19 +22,19 @@ export function VisibleSelection({
         borderStyle: "solid",
         borderRadius: 7,
     }}>
-        {actualValues.flatMap((value, i) => {
-            const children = []
-            if (i > 0) children.push(<SimpleDivider backgroundColor={secondaryColor} margin={{bottom: 0}}/>)
-            children.push(<VisibleSelectionButton active={i === currentIndex} onClick={() => onValueChange(i)}
-                                                  text={value}/>)
-            return children;
-        })}
+        {actualValues.map((value, i) =>
+            <VisibleSelectionButton last={i === actualValues.length - 1} key={i * 2 + 1} active={i === currentIndex}
+                                    onClick={() => onValueChange(i)}
+                                    enabled = {showAll}
+                                    text={value}/>)
+        }
     </ButtonGroup>
 }
 
 
-function VisibleSelectionButton(props: { active: boolean, onClick: () => void, text: string }) {
-    return <SimpleButton style={{/*borderRadius: 7*/}} backgroundColor={props.active ? ActiveColor : undefined}
+function VisibleSelectionButton(props: { active: boolean, onClick: () => void, text: string, last: boolean, enabled: boolean }) {
+    return <SimpleButton disabled={!props.enabled} style={{borderBottom: props.last ? undefined : `2px solid ${secondaryColor}`}}
+                         backgroundColor={props.active ? ActiveColor : undefined}
                          onClick={props.onClick}>
         <Text color={OnBackgroundColor} text={props.text}/>
     </SimpleButton>
