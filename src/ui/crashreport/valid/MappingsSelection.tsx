@@ -21,8 +21,6 @@ export function MappingsSelection({props}:
                                       { props: MappingsSelectionProps }) {
     const {isPortrait, mappings, onMappingsChange} = props;
     const builds = usePromise(buildsOf(mappings.namespace, props.minecraftVersion), [mappings.namespace]);
-    console.log("Builds: [" + builds + "]")
-    console.log("Builds undefined: " + (builds === undefined))
     return <Row justifyContent={"end"} padding={{top: isPortrait ? 0 : 8}}>
         <Selection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
             // style={{paddingTop: }}
@@ -30,7 +28,6 @@ export function MappingsSelection({props}:
                    index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
                    onIndexChange={i => {
                        const newNamespace = allMappingNamespaces[i];
-                       console.log("Changing namespace to " + newNamespace);
 
                        //TODO: merge this with useMappingsState()
 
