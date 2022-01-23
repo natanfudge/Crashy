@@ -21,7 +21,7 @@ export function MappingsSelection({props}:
                                       { props: MappingsSelectionProps }) {
     const {isPortrait, mappings, onMappingsChange} = props;
     const builds = usePromise(buildsOf(mappings.namespace, props.minecraftVersion), [mappings.namespace]);
-    console.log("Builds: " + builds)
+    console.log("Builds: [" + builds + "]")
     console.log("Builds undefined: " + (builds === undefined))
     return <Row justifyContent={"end"} padding={{top: isPortrait ? 0 : 8}}>
         <Selection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
@@ -43,9 +43,7 @@ export function MappingsSelection({props}:
                        //     .catch(e => console.error(e));
                    }}/>
 
-
-        {/*<CircularProgress/>*/}
-        {builds === undefined? <CircularProgress/> : <Fragment>
+        {builds === undefined? <CircularProgress style={{padding:7}}/> : <Fragment>
             {builds.length > 0 && <DropdownSelection variant={isPortrait ? "standard" : "outlined"}
                                                      style={{
                                                          paddingLeft: 10,
@@ -57,22 +55,6 @@ export function MappingsSelection({props}:
                                                      index={mappings.version === undefined ? 0 : indexOfOrThrow(builds, mappings.version)}
                                                      onIndexChange={i => onMappingsChange(withVersion(mappings, builds[i]))}/>}
         </Fragment>}
-        {/*<PromiseBuilder promise={buildsOf(mappings.namespace, props.minecraftVersion)} whenLoading={<CircularProgress/>}*/}
-        {/*                whenDone={builds =>*/}
-        {/*                    <Fragment>*/}
-        {/*                        {builds.length > 0 && <DropdownSelection variant={isPortrait ? "standard" : "outlined"}*/}
-        {/*                                                                 style={{*/}
-        {/*                                                                     paddingLeft: 10,*/}
-        {/*                                                                     paddingRight: 5,*/}
-        {/*                                                                     alignSelf: isPortrait ? "center" : undefined,*/}
-        {/*                                                                     // paddingTop: 8*/}
-        {/*                                                                 }}*/}
-        {/*                                                                 values={builds}*/}
-        {/*                                                                 index={mappings.version === undefined ? 0 : indexOfOrThrow(builds, mappings.version)}*/}
-        {/*                                                                 onIndexChange={i => onMappingsChange(withVersion(mappings, builds[i]))}/>}*/}
-        {/*                    </Fragment>*/}
-        {/*                } deps={[mappings.namespace]}/>*/}
-
     </Row>
 }
 

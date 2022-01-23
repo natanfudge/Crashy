@@ -1,12 +1,16 @@
 import {MappingsNamespace} from "./MappingsNamespace";
 import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
 import {Mappings} from "./Mappings";
+import {MemoryCache} from "../utils/MemoryCache";
+
+export type MappingsBuilds = string[];
 
 export interface MappingsProvider {
     fromNamespace: MappingsNamespace
     toNamespace: MappingsNamespace
+
     //TODO: cache calls
-    getBuilds(minecraftVersion: string): Promise<string[]>
+    getBuilds(minecraftVersion: string): Promise<MappingsBuilds>
 
     /**
      * The build is the full version name of the mappings, e.g. 1.18.1+build.13
@@ -14,6 +18,7 @@ export interface MappingsProvider {
     //TODO: cache calls
     getMappings(build: string): Promise<Mappings>
 }
+
 
 export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
     fromNamespace: "Intermediary",
@@ -27,11 +32,13 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
         return getYarnMappings(build)
     }
 }
+
 function delay(t: number, v: any) {
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         setTimeout(resolve.bind(null, v), t)
     });
 }
+
 // export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
 //     fromNamespace: "Intermediary",
 //     toNamespace: "Quilt",
@@ -84,10 +91,11 @@ export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
 //     Srg: OfficialToSrgMappingsProvider,
 //     MCP: SrgToMcpMappingsProvider
 // }
-export const mappingsProviders: MappingsProvider[] = [
+export const allMappingsProviders: MappingsProvider[] = [
     IntermediaryToYarnMappingsProvider,
     // IntermediaryToQuiltMappingsProvider,
     OfficialToIntermediaryMappingsProvider,
     // OfficialToSrgMappingsProvider,
     // SrgToMcpMappingsProvider
 ]
+

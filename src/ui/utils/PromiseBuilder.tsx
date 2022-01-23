@@ -4,7 +4,7 @@ export function PromiseBuilder<T>({
                                       promise,
                                       whenLoading,
                                       whenDone,
-    deps
+                                      deps
                                   }: { promise: Promise<NonNullable<T>>, whenLoading: JSX.Element, whenDone: (result: T) => JSX.Element, deps: any[] }): JSX.Element {
     const [result, setResult] = useState<T | undefined>(undefined)
     useEffect(() => void promise.then(setResult), [deps])
@@ -17,6 +17,9 @@ export function PromiseBuilder<T>({
 
 export function usePromise<T>(promise: Promise<NonNullable<T>>, deps: any[]): T | undefined {
     const [result, setResult] = useState<T | undefined>(undefined)
-    useEffect(() => void promise.then(setResult), deps)
+    useEffect(() => {
+        setResult(undefined);
+        void promise.then(setResult)
+    }, deps)
     return result
 }

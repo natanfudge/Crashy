@@ -1,7 +1,12 @@
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import {MappingsNamespace} from "./MappingsNamespace";
 import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
-import {IntermediaryToYarnMappingsProvider, OfficialToIntermediaryMappingsProvider} from "./MappingsProvider";
+import {
+    IntermediaryToYarnMappingsProvider, MappingsBuilds,
+    MappingsProvider,
+    OfficialToIntermediaryMappingsProvider
+} from "./MappingsProvider";
+import {MemoryCache} from "../utils/MemoryCache";
 
 
 
@@ -28,8 +33,9 @@ export interface Mappings {
 //     [MappingsNamespaceName.Quilt]: ["1.14"]
 // }
 
-export async function buildsOf(mappingsType: MappingsNamespace, minecraftVersion: string): Promise<string[]> {
-    switch (mappingsType) {
+
+export async function buildsOfNoCache(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
+    switch (namespace) {
         case "Intermediary":
             return [];
         case "Yarn":
@@ -40,5 +46,29 @@ export async function buildsOf(mappingsType: MappingsNamespace, minecraftVersion
     // return [];
 }
 
-//TODO: Given a trace mapped with namespace X, and given a user preference of namespace Y, we must find a pathway from X to Y.
-// The best solution may be to give the computer a list of all possible conversions, and then use an algorithm to find the shortest series of conversions that leads from X to Y.
+const buildsCache = new MemoryCache<MappingsBuilds>();
+export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
+    return buildsCache.get(
+        namespace + minecraftVersion,
+        () => buildsOfNoCache(namespace,minecraftVersion)
+    );
+}
+
+
+
+//
+// export async function getBuildsCached(mappingsProvider: MappingsProvider, minecraftVersion: string): Promise<MappingsBuilds> {
+//     return buildsCache.get(
+//         mappingsProvider.fromNamespace + mappingsProvider.toNamespace + minecraftVersion,
+//         () => mappingsProvider.getBuilds(minecraftVersion)
+//     );
+// }
+
+const mappingsCache = new MemoryCache<Mappings>()
+
+export async function getMappingsCached(mappingsProvider: MappingsProvider, build: string): Promise<Mappings> {
+    return mappingsCache.get(
+        mappingsProvider.fromNamespace + mappingsProvider.toNamespace + build,
+        () => mappingsProvider.getMappings(build)
+    );
+}

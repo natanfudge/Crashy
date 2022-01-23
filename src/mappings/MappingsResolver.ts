@@ -1,5 +1,5 @@
 import {allMappingNamespaces, MappingsNamespace} from "./MappingsNamespace";
-import {MappingsProvider, mappingsProviders} from "./MappingsProvider";
+import {MappingsProvider, allMappingsProviders} from "./MappingsProvider";
 import {Queue} from "./Queue";
 import {toRecord} from "../utils/Javascript";
 
@@ -9,7 +9,7 @@ import {toRecord} from "../utils/Javascript";
  * This problem is equivalent to finding a path in a non-directed graph (because if we can map from a to b we can map from b to a), where we try to reach from the 'fromNamespace' node to the 'toNamespace' node.
  */
 export function resolveMappingsChain(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace): MappingsProvider[] | undefined {
-    return BFS(fromNamespace, toNamespace, mappingsProviders);
+    return BFS(fromNamespace, toNamespace, allMappingsProviders);
 }
 
 type PartialRecord<K extends keyof any, V> = Partial<Record<K, V>>
