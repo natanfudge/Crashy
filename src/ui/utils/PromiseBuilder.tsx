@@ -15,11 +15,11 @@ export function PromiseBuilder<T>({
     }
 }
 
-export function usePromise<T>(promise: Promise<NonNullable<T>>, deps: any[]): T | undefined {
+export function usePromise<T>(promise: Promise<NonNullable<T>> | T, deps: any[]): T | undefined {
     const [result, setResult] = useState<T | undefined>(undefined)
     useEffect(() => {
         setResult(undefined);
-        void promise.then(setResult)
+        void Promise.resolve(promise).then(setResult)
     }, deps)
     return result
 }

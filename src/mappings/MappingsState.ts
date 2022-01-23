@@ -3,9 +3,9 @@ import {MappingsNamespace} from "./MappingsNamespace";
 export interface MappingsState {
     namespace: MappingsNamespace,
     // Undefined if still loading available versions
-    version: string | undefined
+    build: string | undefined
 }
 
-export function withVersion(state: MappingsState, version: string): MappingsState {
-    return {namespace: state.namespace, version}
+export function withBuild(state: MappingsState, build: string | undefined): MappingsState {
+    return {namespace: state.namespace, build: build}
 }

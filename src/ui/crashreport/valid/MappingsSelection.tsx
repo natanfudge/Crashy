@@ -6,7 +6,7 @@ import {ArrowDropDown, ArrowDropUp} from "@mui/icons-material";
 import {DropdownSelection} from "../../utils/DropdownSelection";
 import {indexOfOrThrow} from "../../../utils/Javascript";
 import {buildsOf} from "../../../mappings/Mappings";
-import {MappingsState, withVersion} from "../../../mappings/MappingsState";
+import {MappingsState, withBuild} from "../../../mappings/MappingsState";
 import {allMappingNamespaces, mappingsName} from "../../../mappings/MappingsNamespace";
 import {PromiseBuilder, usePromise} from "../../utils/PromiseBuilder";
 
@@ -28,16 +28,10 @@ export function MappingsSelection({props}:
                    index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
                    onIndexChange={i => {
                        const newNamespace = allMappingNamespaces[i];
-
-                       //TODO: merge this with useMappingsState()
-
                        // When the user switches mapping, immediately switch to that mapping, and since getting what versions are available takes time, we'll set the version to undefined
                        // for now and what the available versions load we will set it to the first available one.
-                       onMappingsChange({namespace: newNamespace, version: undefined})
-                       //TODO: test if there are issues when switching quickly with high delay
-                       // void buildsOf(newNamespace, props.minecraftVersion)
-                       //     .then(builds => onMappingsChange({namespace: newNamespace, version: builds[0]}))
-                       //     .catch(e => console.error(e));
+                       onMappingsChange({namespace: newNamespace, build: undefined})
+                       //TODO: version:undefined should do usePromise, see useMappingsState
                    }}/>
 
         {builds === undefined? <CircularProgress style={{padding:7}}/> : <Fragment>
@@ -49,8 +43,8 @@ export function MappingsSelection({props}:
                                                          // paddingTop: 8
                                                      }}
                                                      values={builds}
-                                                     index={mappings.version === undefined ? 0 : indexOfOrThrow(builds, mappings.version)}
-                                                     onIndexChange={i => onMappingsChange(withVersion(mappings, builds[i]))}/>}
+                                                     index={mappings.build === undefined ? 0 : indexOfOrThrow(builds, mappings.build)}
+                                                     onIndexChange={i => onMappingsChange(withBuild(mappings, builds[i]))}/>}
         </Fragment>}
     </Row>
 }

@@ -10,6 +10,10 @@ declare global {
         removeExpectedSuffix(prefix: string): string
 
         splitToTwo(splitOn: string): [string, string]
+
+        removeAfterFirst(removeAfter: string): string
+
+        removeBeforeLastExclusive(removeBefore: string): string
     }
 
     interface Array<T> {

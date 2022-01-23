@@ -1,4 +1,5 @@
 import {StringMap} from "./CrashReport";
+import {Mappings, remap} from "../../../src/mappings/Mappings";
 
 export interface RichCrashReport {
     rawText: string
@@ -126,16 +127,17 @@ export interface JavaClass {
     simpleName: string
 }
 
-export function javaClassFullName(javaClass: JavaClass) {
-    return javaClass.packageName + "." + javaClass.simpleName;
+
+export function javaClassFullName(javaClass: JavaClass, mappings: Mappings) {
+    return remap(javaClass.packageName + "." + javaClass.simpleName, mappings.classes);
 }
 
-export function javaMethodSimpleName(javaMethod: JavaMethod) {
-    return javaMethod.class.simpleName + "." + javaMethod.name;
+export function javaMethodSimpleName(javaMethod: JavaMethod, mappings: Mappings) {
+    return javaClassFullName(javaMethod.class, mappings).removeBeforeLastExclusive(".") + "." + remap(javaMethod.name, mappings.methods);
 }
 
-export function javaMethodFullNameName(javaMethod: JavaMethod) {
-    return javaClassFullName(javaMethod.class) + "." + javaMethod.name;
+export function javaMethodFullName(javaMethod: JavaMethod, mappings: Mappings) {
+    return javaClassFullName(javaMethod.class, mappings) + "." + remap(javaMethod.name, mappings.methods);
 }
 
 

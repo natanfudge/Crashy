@@ -1,4 +1,5 @@
 import "./Extensions"
+
 export {}
 
 String.prototype.removeExpectedSuffix = function (this: string, suffix: string) {
@@ -29,3 +30,21 @@ Array.prototype.arrayEquals = function <T>(this: T[], b: T[]): boolean {
     return this.length === b.length &&
         this.every((val, index) => val === b[index]);
 }
+
+String.prototype.removeAfterFirst = function (this: string, removeAfter: string): string {
+    const index = this.indexOf(removeAfter);
+    if (index === -1) {
+        return this;
+    } else {
+        return this.slice(0, index + 1);
+    }
+}
+String.prototype.removeBeforeLastExclusive = function (this: string, removeBefore: string): string {
+    const index = this.lastIndexOf(removeBefore);
+    if (index === -1) {
+        return this;
+    } else {
+        return this.slice(index + 1);
+    }
+}
+

@@ -13,9 +13,20 @@ import {MemoryCache} from "../utils/MemoryCache";
 // const
 
 export interface Mappings {
+    // Must use dot.notation e.g. net.minecraft.gui.GuiThing
     classes: StringMap
     methods: StringMap
-    fields: StringMap
+    // fields: StringMap
+}
+
+export const EmptyMappings : Mappings = {
+    classes: {},
+    methods: {}
+}
+
+export function remap(name: string, map: StringMap): string {
+    const mapped = map[name];
+    return mapped !== undefined ? mapped: name;
 }
 
 

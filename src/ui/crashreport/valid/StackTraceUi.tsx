@@ -1,11 +1,11 @@
 import {Column, Row} from "../../utils/simple/Flex";
 import {SimpleSpan, Text, TextTheme} from "../../utils/simple/Text";
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useState} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {clickableColor, fadedOutColor} from "../../Colors";
 import {
     javaClassFullName,
-    javaMethodFullNameName,
+    javaMethodFullName,
     javaMethodSimpleName,
     RichCrashReport,
     RichStackTrace,
@@ -17,10 +17,15 @@ import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
 import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
 import {useScreenSize} from "../../../utils/Gui";
-import {buildsOf} from "../../../mappings/Mappings";
-import {MappingsState, withVersion} from "../../../mappings/MappingsState";
+import {buildsOf, EmptyMappings, getMappingsCached, Mappings} from "../../../mappings/Mappings";
+import {MappingsState, withBuild} from "../../../mappings/MappingsState";
+import {usePromise} from "../../utils/PromiseBuilder";
+import {getYarnMappings} from "../../../mappings/YarnMappingsProvider";
+import {IntermediaryToYarnMappingsProvider} from "../../../mappings/MappingsProvider";
 
 //TODO: mappings selection for other sections
+
+
 
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
@@ -28,8 +33,11 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
     const [currentCauserIndex, setCauserIndex] = useState(0)
     const currentTrace = causerList[currentCauserIndex];
 
+    //TODO: figure out a way of deduplicating this
     const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
 
+    const mappings = useMappings(mappingsState);
+    // const mappings = loadingMappings
     const screen = useScreenSize();
 
     const mappingsProps: MappingsSelectionProps = {
@@ -39,41 +47,63 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
         minecraftVersion: report.context.minecraftVersion
     }
 
+    console.log("Mappings: " + JSON.stringify(mappings))
+
     return <Row width={"max"}>
         <Column alignSelf={"start"}>
             {CausationButtons(currentCauserIndex, causerList, setCauserIndex)}
 
             {screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
             <Row flexWrap={"wrap"}>
-                {StackTraceMessageUi(currentTrace.title)}
+                <StackTraceMessageUi title={currentTrace.title} mappings={mappings}/>
             </Row>
 
             <Divider/>
-            <StackTraceElementsUi elements={currentTrace.elements}/>
+            <StackTraceElementsUi elements={currentTrace.elements} mappings={mappings}/>
         </Column>
         <Spacer flexGrow={1}/>
         {!screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
     </Row>
 }
 
-export function useMappingsState(minecraftVersion: string): [MappingsState, React.Dispatch<React.SetStateAction<MappingsState>>] {
+export function useMappingsState(minecraftVersion: string): [MappingsState, (newState: MappingsState) => void] {
     // Initially, immediately show a mapping, and since getting what versions are available takes time, we'll set the version to undefined
     // for now and what the available versions load we will set it to the first available one.
     const [state, setState] = useState<MappingsState>(
-        {namespace: "Yarn", version: undefined}
+        {namespace: "Yarn",
+            build: undefined
+        }
     )
 
-    // useEffect(() => void buildsOf("Yarn", minecraftVersion).then(builds => setState(old => withVersion(old, builds[0]))),[])
+    const allBuilds = usePromise(buildsOf(state.namespace,minecraftVersion),[state.namespace])
 
+    //TODO: solution: have seperate variables for the state and the promise; if something is chosen use the state, else use the promise.
+    //TODO: see how this aligns with MappingsSelectiona
 
-    return [state, setState];
+    const actualState = withBuild(state,state.build ?? allBuilds?.[0]);
+    return [actualState, setState];
+}
+
+//TODO: indicate that mappings are loading
+export function useMappings(mappingsState: MappingsState): Mappings {
+    const build = mappingsState.build
+    console.log("Build: " + build)
+    const promise = build !== undefined ? getMappingsCached(IntermediaryToYarnMappingsProvider, build) : EmptyMappings
+    console.log("Promise: " + promise)
+    const value = usePromise(
+        promise, [build]
+    ) ?? EmptyMappings;
+    console.log("Value: " + value)
+    return value;
 }
 
 
-export function StackTraceElementsUi({elements}: { elements: RichStackTraceElement[] }) {
+export function StackTraceElementsUi(props: { elements: RichStackTraceElement[], mappings: Mappings }) {
     return <div>
-        {elements.map((traceElement, i) => <StackTraceElementUi withMarginLeft={true} key={i}
-                                                                traceElement={traceElement}/>)}
+        {props.elements.map((traceElement, i) =>
+            <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}
+                                                                      key={i}
+                                                                      traceElement={traceElement}/>)}
     </div>
 }
 
@@ -100,10 +130,10 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
     </Button>
 }
 
-function StackTraceMessageUi(title: StackTraceMessage) {
+function StackTraceMessageUi({title, mappings}: { title: StackTraceMessage, mappings: Mappings }) {
     const [open, setOpen] = React.useState(false)
 
-    const text = open ? javaClassFullName(title.class) : title.class.simpleName;
+    const text = open ? javaClassFullName(title.class, mappings) : title.class.simpleName;
 
     return <TextTheme wordBreak={"break-word"} variant={"h5"}>
         <SimpleSpan text={text} color={open ? undefined : clickableColor}
@@ -116,10 +146,11 @@ function StackTraceMessageUi(title: StackTraceMessage) {
 
 export function StackTraceElementUi({
                                         traceElement,
-                                        withMarginLeft
-                                    }: { traceElement: RichStackTraceElement, withMarginLeft: boolean }) {
+                                        withMarginLeft,
+                                        mappings
+                                    }: { traceElement: RichStackTraceElement, withMarginLeft: boolean, mappings: Mappings }) {
     const [open, setOpen] = React.useState(false)
-    const text = getTraceElementText(traceElement, open)
+    const text = getTraceElementText(traceElement, open, mappings)
     const isXMore = typeof traceElement === "number"
 
     return <Row margin={{left: withMarginLeft ? 30 : 0}}>
@@ -132,14 +163,14 @@ export function StackTraceElementUi({
     </Row>;
 }
 
-function getTraceElementText(traceElement: RichStackTraceElement, open: boolean): string {
+function getTraceElementText(traceElement: RichStackTraceElement, open: boolean, mappings: Mappings): string {
     if (typeof traceElement === "number") return `${traceElement} more...`
     if (open) {
         const inBracketText = traceElement.line.number === undefined ? "Native Method" : `${traceElement.line.file}:${traceElement.line.number}`
-        return javaMethodFullNameName(traceElement.method) + ` (${inBracketText})`
+        return javaMethodFullName(traceElement.method, mappings) + ` (${inBracketText})`
     } else {
         const inBracketText = traceElement.line.number === undefined ? "Native Method" : `Line ${traceElement.line.number}`
-        return javaMethodSimpleName(traceElement.method) + ` (${inBracketText})`
+        return javaMethodSimpleName(traceElement.method, mappings) + ` (${inBracketText})`
     }
 }
 

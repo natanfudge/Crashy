@@ -39,7 +39,8 @@ async function extract(response: Response): Promise<string> {
 
 function parseTinyV1(input: string): Mappings {
     const classes: StringMap = {}
-    const fields: StringMap = {}
+    // We don't need fields right now
+    // const fields: StringMap = {}
     const methods: StringMap = {}
 
     let foundHeader = false;
@@ -61,11 +62,11 @@ function parseTinyV1(input: string): Mappings {
 
         switch (split[0]) {
             case "CLASS":
-                classes[split[namespace.intermediary + 1]] = split[namespace.named + 1]
+                classes[withDotNotation(split[namespace.intermediary + 1])] = withDotNotation(split[namespace.named + 1])
                 break
-            case "FIELD":
-                fields[split[namespace.intermediary + 3]] = split[namespace.named + 3]
-                break
+            // case "FIELD":
+            //     fields[split[namespace.intermediary + 3]] = split[namespace.named + 3]
+            //     break
             case "METHOD":
                 methods[split[namespace.intermediary + 3]] = split[namespace.named + 3]
                 break
@@ -75,6 +76,10 @@ function parseTinyV1(input: string): Mappings {
     }
 
     return {
-        methods, classes, fields
+        methods, classes/*, fields*/
     }
+}
+
+function withDotNotation(string: string): string {
+    return string.replace(/\//g, ".")
 }

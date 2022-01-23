@@ -9,7 +9,6 @@ import {
 import React, {Fragment, useState} from "react";
 import {Column, Row} from "../../utils/simple/Flex";
 import {Spacer} from "../../utils/simple/SimpleDiv";
-import {FormControl, MenuItem, Select} from "@mui/material";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Require} from "crash-parser/src/util/Utils";
 import {Text, TextTheme} from "../../utils/simple/Text";
@@ -17,6 +16,7 @@ import {StackTraceElementUi} from "./StackTraceUi";
 import {LazyColumn} from "../../utils/LazyColumn";
 import {VisibleSelection} from "../../utils/VisibleSelection";
 import {DropdownSelection} from "../../utils/DropdownSelection";
+import {EmptyMappings, Mappings} from "../../../mappings/Mappings";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
 
@@ -33,74 +33,35 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
         <Row alignItems={"center"} width={"max"}>
             <VisibleSelection showAll={true} values={["Trace Information", "Mod Information"]}
                               currentIndex={isTraceSection ? 0 : 1} onValueChange={i => setIsTraceSection(i === 0)}/>
-            {/*<FeiSelection isTraceSection={isTraceSection} setIsTraceSection={setIsTraceSection}/>*/}
-            {/*{FeiSelection(isTraceSection, setIsTraceSection)}*/}
             <Spacer flexGrow={1}/>
             {isTraceSection && <DropdownSelection variant={"outlined"}
-                index={currentTrace} onIndexChange={setCurrentTrace} values={allFei.map(fei => fei.name)}
+                                                  index={currentTrace} onIndexChange={setCurrentTrace}
+                                                  values={allFei.map(fei => fei.name)}
             />}
         </Row>
 
-        {isTraceSection ? <TraceFei fei={allFei[currentTrace]}/> : <ModsFei report={report}/>}
+        {isTraceSection ? <TraceFeiUi fei={allFei[currentTrace]}/> : <ModsFei report={report}/>}
     </Column>
 }
 
-// function TraceFeiSelection({fei, currentTrace, setCurrentTrace}:
-//                                { fei: TraceFei[], currentTrace: number, setCurrentTrace: (trace: number) => void }) {
-//     return <FormControl style={{minWidth: "fit-content", maxWidth: "fit-content"}} fullWidth>
-//         <Select
-//             variant={'outlined'}
-//             value={fei[currentTrace].name}
-//             onChange={(e) => setCurrentTrace(fei.findIndex(fei => fei.name === e.target.value))}
-//         >
-//             {fei.map(fei => <MenuItem key={fei.name} value={fei.name}>{fei.name}</MenuItem>)}
-//         </Select>
-//     </FormControl>
-// }
 
 
-// function FeiSelection({
-//                           isTraceSection,
-//                           setIsTraceSection
-//                       }: { isTraceSection: boolean, setIsTraceSection: (prevState: boolean) => void }) {
-//     return <ButtonGroup orientation="vertical" variant={"outlined"} style={{
-//         alignSelf: "center",
-//         width: "fit-content",
-//         borderWidth: 2,
-//         borderColor: primaryColor,
-//         borderStyle: "solid",
-//         borderRadius: 7,
-//         maxWidth: "40%"
-//     }}>
-//         <ExtraInfoTypeButton active={isTraceSection} onClick={() => setIsTraceSection(true)}
-//                              text={"Trace Information"}/>
-//         <SimpleDivider backgroundColor={secondaryColor}/>
-//         <ExtraInfoTypeButton active={!isTraceSection} onClick={() => setIsTraceSection(false)}
-//                              text={"Mod Information"}/>
-//
-//     </ButtonGroup>;
-// }
-//
-// function ExtraInfoTypeButton(props: { active: boolean, onClick: () => void, text: string }) {
-//     return <SimpleButton style={{borderRadius: 7}} backgroundColor={props.active ? ActiveColor : undefined}
-//                          onClick={props.onClick}>
-//         <Text color={OnBackgroundColor} text={props.text}/>
-//     </SimpleButton>
-// }
-
-function TraceFei({fei}: { fei: TraceFei }) {
+function TraceFeiUi(props: { fei: TraceFei}) {
+    //TODO: implement mappings selection here
+    const mappings = EmptyMappings;
     return <Column>
         <Spacer height={5}/>
         <SimpleDivider height={1}/>
         <Spacer height={5}/>
-        {fei.metadata.map((element, i) => <TraceFeiElement key={i} element={element}/>)}
+        {props.fei.metadata.map((element, i) =>
+            <TraceFeiElement key={i} element={element} mappings={mappings}/>)}
     </Column>
 }
 
-function TraceFeiElement({element}: { element: ElementWithFei }) {
+function TraceFeiElement({element, mappings}: { element: ElementWithFei, mappings: Mappings }) {
     const metadata = element.forgeMetadata;
     return <Column>
-        <StackTraceElementUi withMarginLeft={false} traceElement={element}/>
+        <StackTraceElementUi withMarginLeft={false} traceElement={element} mappings={mappings}/>
 
         <Column margin={{left: 20}}>
             <KeyValueTraceFei name={"Jar File"} value={metadata.jarFile}/>
