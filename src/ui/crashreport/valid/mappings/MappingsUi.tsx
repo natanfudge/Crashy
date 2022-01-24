@@ -67,7 +67,6 @@ export function useMappingsState(minecraftVersion: string): MutableMappingsState
     return [actualState, setState];
 }
 
-//TODO: indicate that mappings are loading
 export function useMappings(mappingsState: MappingsState): Mappings {
     const build = mappingsState.build
     const promise = build !== undefined ? getMappingsCached(IntermediaryToYarnMappingsProvider, build) : EmptyMappings

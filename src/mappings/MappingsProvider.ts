@@ -9,13 +9,11 @@ export interface MappingsProvider {
     fromNamespace: MappingsNamespace
     toNamespace: MappingsNamespace
 
-    //TODO: cache calls
     getBuilds(minecraftVersion: string): Promise<MappingsBuilds>
 
     /**
      * The build is the full version name of the mappings, e.g. 1.18.1+build.13
      */
-    //TODO: cache calls
     getMappings(build: string): Promise<Mappings>
 }
 

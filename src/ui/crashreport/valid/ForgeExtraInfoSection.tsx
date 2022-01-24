@@ -48,7 +48,6 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
 
 
 function TraceFeiUi(props: {minecraftVersion: string, fei: TraceFei}) {
-    //TODO: implement mappings selection here
     const mappingsController = new MappingsController(props.minecraftVersion);
     return <WithMappings controller={mappingsController}>
         <Column>
