@@ -49,7 +49,7 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
 export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
     toNamespace: "Intermediary",
-    async getBuilds(minecraftVersion: string): Promise<string[]> {
+     getBuilds(minecraftVersion: string): Promise<string[]> {
         throw new Error("TODO")
     },
     getMappings(build: string): Promise<Mappings> {

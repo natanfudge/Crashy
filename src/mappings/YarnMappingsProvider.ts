@@ -21,6 +21,7 @@ export async function getYarnBuilds(minecraftVersion: string): Promise<YarnBuild
     if (response.status !== HttpStatusCode.OK) {
         throw new Error(`Failed to get yarn versions for ${minecraftVersion}`);
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return JSON.parse(await response.text());
 }
 

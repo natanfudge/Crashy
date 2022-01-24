@@ -15,45 +15,21 @@ import {
 } from "crash-parser/src/model/RichCrashReport";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
-import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
-import {useScreenSize} from "../../../utils/Gui";
-import {buildsOf, EmptyMappings, getMappingsCached, Mappings} from "../../../mappings/Mappings";
-import {MappingsState, withBuild} from "../../../mappings/MappingsState";
-import {usePromise} from "../../utils/PromiseBuilder";
-import {getYarnMappings} from "../../../mappings/YarnMappingsProvider";
-import {IntermediaryToYarnMappingsProvider} from "../../../mappings/MappingsProvider";
-
-//TODO: mappings selection for other sections
-
-
-
+import {Mappings} from "../../../mappings/Mappings";
+import {MappingsController, WithMappings} from "./mappings/MappingsUi";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
     const causerList = unfoldRichStackTrace(report.stackTrace);
     const [currentCauserIndex, setCauserIndex] = useState(0)
     const currentTrace = causerList[currentCauserIndex];
 
-    //TODO: figure out a way of deduplicating this
-    const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
+    const mappingsController = new MappingsController(report.context.minecraftVersion)
+    const mappings = mappingsController.mappings;
 
-    const mappings = useMappings(mappingsState);
-    // const mappings = loadingMappings
-    const screen = useScreenSize();
-
-    const mappingsProps: MappingsSelectionProps = {
-        mappings: mappingsState,
-        onMappingsChange: setMappingsState,
-        isPortrait: screen.isPortrait,
-        minecraftVersion: report.context.minecraftVersion
-    }
-
-    console.log("Mappings: " + JSON.stringify(mappings))
-
-    return <Row width={"max"}>
+    return <WithMappings controller={mappingsController}>
         <Column alignSelf={"start"}>
             {CausationButtons(currentCauserIndex, causerList, setCauserIndex)}
 
-            {screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
             <Row flexWrap={"wrap"}>
                 <StackTraceMessageUi title={currentTrace.title} mappings={mappings}/>
             </Row>
@@ -61,40 +37,7 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
             <Divider/>
             <StackTraceElementsUi elements={currentTrace.elements} mappings={mappings}/>
         </Column>
-        <Spacer flexGrow={1}/>
-        {!screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
-    </Row>
-}
-
-export function useMappingsState(minecraftVersion: string): [MappingsState, (newState: MappingsState) => void] {
-    // Initially, immediately show a mapping, and since getting what versions are available takes time, we'll set the version to undefined
-    // for now and what the available versions load we will set it to the first available one.
-    const [state, setState] = useState<MappingsState>(
-        {namespace: "Yarn",
-            build: undefined
-        }
-    )
-
-    const allBuilds = usePromise(buildsOf(state.namespace,minecraftVersion),[state.namespace])
-
-    //TODO: solution: have seperate variables for the state and the promise; if something is chosen use the state, else use the promise.
-    //TODO: see how this aligns with MappingsSelectiona
-
-    const actualState = withBuild(state,state.build ?? allBuilds?.[0]);
-    return [actualState, setState];
-}
-
-//TODO: indicate that mappings are loading
-export function useMappings(mappingsState: MappingsState): Mappings {
-    const build = mappingsState.build
-    console.log("Build: " + build)
-    const promise = build !== undefined ? getMappingsCached(IntermediaryToYarnMappingsProvider, build) : EmptyMappings
-    console.log("Promise: " + promise)
-    const value = usePromise(
-        promise, [build]
-    ) ?? EmptyMappings;
-    console.log("Value: " + value)
-    return value;
+    </WithMappings>
 }
 
 
@@ -102,8 +45,8 @@ export function StackTraceElementsUi(props: { elements: RichStackTraceElement[],
     return <div>
         {props.elements.map((traceElement, i) =>
             <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}
-                                                                      key={i}
-                                                                      traceElement={traceElement}/>)}
+                                 key={i}
+                                 traceElement={traceElement}/>)}
     </div>
 }
 

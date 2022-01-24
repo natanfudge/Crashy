@@ -24,7 +24,7 @@ export function indexOfOrThrow<T>(arr: T[], element: T): number {
     return index;
 }
 
-export function toRecord<K extends keyof any,V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
+export function toRecord<K extends Key,V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
     const result = {} as Record<K,V>;
     for (let i = 0; i < arr.length; i++) {
         const [key, value] = mapFn(arr[i], i);

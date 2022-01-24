@@ -2,16 +2,18 @@ import {Column, Row} from "../../utils/simple/Flex";
 import {Text} from "../../utils/simple/Text";
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import React from "react";
-import {StackTraceElementsUi, useMappings, useMappingsState} from "./StackTraceUi";
+import {StackTraceElementsUi,} from "./StackTraceUi";
 import {primaryColor} from "../../Colors";
 import {RichCrashReportSection, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {objectMap} from "../../../utils/Javascript";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
-import {Spacer} from "../../utils/simple/SimpleDiv";
-import {useScreenSize} from "../../../utils/Gui";
-import {MappingsSelection, MappingsSelectionProps} from "./MappingsSelection";
+import {Wrap} from "../../utils/simple/SimpleDiv";
+import {MappingsController, WithMappings} from "./mappings/MappingsUi";
 
-export function CrashReportSectionUi({section, minecraftVersion}: { section: RichCrashReportSection, minecraftVersion: string }) {
+export function CrashReportSectionUi({
+                                         section,
+                                         minecraftVersion
+                                     }: { section: RichCrashReportSection, minecraftVersion: string }) {
     return <Column margin={{top: 10}} width={"max"}>
         <Column width={300} alignSelf={"center"}>
             <Text text={section.name} variant={"h4"} alignSelf={"center"}/>
@@ -19,38 +21,30 @@ export function CrashReportSectionUi({section, minecraftVersion}: { section: Ric
         </Column>
 
         {section.details !== undefined && <CrashReportSectionDetails details={section.details}/>}
-        {section.stackTrace !== undefined && <CrashReportSectionTrace trace={section.stackTrace} minecraftVersion={minecraftVersion}/>}
+        {section.stackTrace !== undefined &&
+            <CrashReportSectionTrace trace={section.stackTrace} minecraftVersion={minecraftVersion}/>}
     </Column>
 }
 
-function CrashReportSectionTrace({trace,minecraftVersion}: { trace: RichStackTraceElement[], minecraftVersion: string }) {
-    const [mappingsState, setMappingsState] = useMappingsState(minecraftVersion);
-    const mappings = useMappings(mappingsState)
+function CrashReportSectionTrace({
+                                     trace,
+                                     minecraftVersion
+                                 }: { trace: RichStackTraceElement[], minecraftVersion: string }) {
+    const mappingsController = new MappingsController(minecraftVersion);
 
-    const screen = useScreenSize();
-
-    const mappingsProps: MappingsSelectionProps = {
-        mappings: mappingsState,
-        onMappingsChange: setMappingsState,
-        isPortrait: screen.isPortrait,
-        minecraftVersion
-    }
-
-    return <Row width={"max"}>
-        <Column alignSelf={"start"}>
-            <Spacer height={20}/>
-            {screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
-            <div>
-                <Text text={"Stack Trace"} variant={"h5"}/>
-                <SimpleDivider width={"max"}/>
-            </div>
-            <StackTraceElementsUi elements={trace} mappings = {mappings}/>
-        </Column>
-
-        <Spacer flexGrow={1}/>
-        {!screen.isPortrait && <MappingsSelection props={mappingsProps}/>}
-    </Row>
+    return <Wrap padding={{top: 20}}>
+        <WithMappings controller={mappingsController}>
+            <Column alignSelf={"start"}>
+                <div>
+                    <Text text={"Stack Trace"} variant={"h5"}/>
+                    <SimpleDivider width={"max"}/>
+                </div>
+                <StackTraceElementsUi elements={trace} mappings={mappingsController.mappings}/>
+            </Column>
+        </WithMappings>
+    </Wrap>
 }
+
 
 function CrashReportSectionDetails({details}: { details: StringMap }) {
     return <Column margin={{top: 5}}>
