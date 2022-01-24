@@ -11,6 +11,7 @@ import {goToUploadedCrash} from "../../utils/PageUrl";
 import {Wrap, WrapMultiple} from "../utils/simple/SimpleDiv";
 import {Surface} from "../utils/simple/Surface";
 import {SimpleTextField} from "../utils/simple/SimpleTextField";
+import {useScreenSize} from "../../utils/Gui";
 
 enum InitialUploadState {
     Start,
@@ -69,15 +70,16 @@ function CrashTextField(props: { error: boolean, log: string, setLog: (value: st
         <SimpleTextField error={props.error} value={props.log} onValueChanged={value => props.setLog(value)} multiline
                    label={"Paste a crash log"} variant={"filled"}
                    width = "max" height = "max"
-    
+
         />
     </Wrap>;
 }
 
 function HomeTitle() {
+    const isPortrait = useScreenSize().isPortrait;
     return <Row>
-        <CrashyLogo size={100} margin={10}/>
-        <Text text="Crashy" fontFamily = "serif" variant={"h1"} color={crashyTitleColor}/>
+        <CrashyLogo size={isPortrait? 60: 100} margin={10}/>
+        <Text text="Crashy" fontFamily = "serif" variant={isPortrait? "h2": "h1"} color={crashyTitleColor}/>
     </Row>;
 }
 

@@ -16,12 +16,19 @@ export interface Mappings {
     // Must use dot.notation e.g. net.minecraft.gui.GuiThing
     classes: StringMap
     methods: StringMap
+    isLoading?: boolean
     // fields: StringMap
 }
 
 export const EmptyMappings : Mappings = {
     classes: {},
-    methods: {}
+    methods: {},
+    isLoading: false
+}
+export const LoadingMappings : Mappings = {
+    classes: {},
+    methods: {},
+    isLoading: true
 }
 
 export function remap(name: string, map: StringMap): string {

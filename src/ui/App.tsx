@@ -21,6 +21,8 @@ const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
 //g1VhToB8Si79hK9TTrLi:PruTPL
 //2c2vAe5oUVgiNck3NfXU:K80Eid
 //Verify Error: TgC7ZMXXXhHhTRnpoKw9
+
+//TODO :wtf scroll bar is gone
 export default function App() {
     const outerTheme = createTheme(CrashyTheme);
 

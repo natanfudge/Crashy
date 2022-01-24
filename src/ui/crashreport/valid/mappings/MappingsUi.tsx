@@ -5,7 +5,7 @@ import {Spacer} from "../../../utils/simple/SimpleDiv";
 import React, {useState} from "react";
 import {MappingsSelection} from "./MappingsSelection";
 import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
-import {buildsOf, EmptyMappings, getMappingsCached, Mappings} from "../../../../mappings/Mappings";
+import {buildsOf, EmptyMappings, getMappingsCached, LoadingMappings, Mappings} from "../../../../mappings/Mappings";
 import {IntermediaryToYarnMappingsProvider} from "../../../../mappings/MappingsProvider";
 import {usePromise} from "../../../utils/PromiseBuilder";
 
@@ -30,7 +30,9 @@ export function WithMappings({controller, children}:
                                  { controller: MappingsController }
                                  & WithChildren) {
     return <MappingSelectionLayout selection={
-        <MappingsSelection mappings={controller.mappingsState} onMappingsChange={controller.onMappingsStateChanged}
+        <MappingsSelection mappingsLoading={controller.mappings.isLoading === true}
+                           mappings={controller.mappingsState}
+                           onMappingsChange={controller.onMappingsStateChanged}
                            minecraftVersion={controller.minecraftVersion}/>
     }>
         {children}
@@ -69,5 +71,5 @@ export function useMappingsState(minecraftVersion: string): MutableMappingsState
 export function useMappings(mappingsState: MappingsState): Mappings {
     const build = mappingsState.build
     const promise = build !== undefined ? getMappingsCached(IntermediaryToYarnMappingsProvider, build) : EmptyMappings
-    return usePromise(promise, [build]) ?? EmptyMappings;
+    return usePromise(promise, [build]) ?? LoadingMappings;
 }

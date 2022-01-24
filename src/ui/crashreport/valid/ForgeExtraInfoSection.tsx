@@ -17,6 +17,7 @@ import {LazyColumn} from "../../utils/LazyColumn";
 import {VisibleSelection} from "../../utils/VisibleSelection";
 import {DropdownSelection} from "../../utils/DropdownSelection";
 import {EmptyMappings, Mappings} from "../../../mappings/Mappings";
+import {MappingsController, WithMappings} from "./mappings/MappingsUi";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
 
@@ -30,7 +31,7 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
     const [currentTrace, setCurrentTrace] = React.useState(0);
     const allFei = allTraceFei(report)
     return <Column width="max">
-        <Row alignItems={"center"} width={"max"}>
+        <Row alignItems={"center"} width={"max"} padding={{bottom: 5}}>
             <VisibleSelection showAll={true} values={["Trace Information", "Mod Information"]}
                               currentIndex={isTraceSection ? 0 : 1} onValueChange={i => setIsTraceSection(i === 0)}/>
             <Spacer flexGrow={1}/>
@@ -40,22 +41,24 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
             />}
         </Row>
 
-        {isTraceSection ? <TraceFeiUi fei={allFei[currentTrace]}/> : <ModsFei report={report}/>}
+        {isTraceSection ? <TraceFeiUi minecraftVersion={report.context.minecraftVersion} fei={allFei[currentTrace]}/> : <ModsFei report={report}/>}
     </Column>
 }
 
 
 
-function TraceFeiUi(props: { fei: TraceFei}) {
+function TraceFeiUi(props: {minecraftVersion: string, fei: TraceFei}) {
     //TODO: implement mappings selection here
-    const mappings = EmptyMappings;
-    return <Column>
-        <Spacer height={5}/>
-        <SimpleDivider height={1}/>
-        <Spacer height={5}/>
-        {props.fei.metadata.map((element, i) =>
-            <TraceFeiElement key={i} element={element} mappings={mappings}/>)}
-    </Column>
+    const mappingsController = new MappingsController(props.minecraftVersion);
+    return <WithMappings controller={mappingsController}>
+        <Column>
+            <Spacer height={5}/>
+            <SimpleDivider height={1}/>
+            <Spacer height={5}/>
+            {props.fei.metadata.map((element, i) =>
+                <TraceFeiElement key={i} element={element} mappings={mappingsController.mappings}/>)}
+        </Column>
+    </WithMappings>
 }
 
 function TraceFeiElement({element, mappings}: { element: ElementWithFei, mappings: Mappings }) {
@@ -86,7 +89,8 @@ function ListTraceFei({name, value}: { name: string, value: string[] }) {
     return <Fragment>
         {value.length > 0 && <Column>
             <Text text={name + ":"}/>
-            {value.map(element => <Text wordBreak={"break-all"} margin={{left: 10}} text={"- " + element}
+            {value.map((element, i) =>
+                <Text key = {i} wordBreak={"break-all"} margin={{left: 10}} text={"- " + element}
                                         fontWeight="bold"/>)}
         </Column>}
     </Fragment>
