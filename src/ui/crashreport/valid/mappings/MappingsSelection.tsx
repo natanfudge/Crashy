@@ -47,7 +47,7 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
-    return <Row justifyContent={"end"} padding={{top: isPortrait ? 0 : 8}}>
+    return <Row justifyContent={"end"} padding={{top: isPortrait ? 0 : 8, left: isPortrait? 0: 5}}>
         <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
                        values={allMappingNamespaces.map(type => mappingsName(type))}
                        index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}

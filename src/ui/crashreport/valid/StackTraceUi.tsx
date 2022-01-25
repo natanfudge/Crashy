@@ -15,7 +15,7 @@ import {
 } from "crash-parser/src/model/RichCrashReport";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
-import {MappingContext, MappingMethod, Mappings, useMappingFor, useMappingForName} from "../../../mappings/Mappings";
+import {MappingContext, MappingMethod, useMappingForName} from "../../../mappings/Mappings";
 import {MappingsController, WithMappings} from "./mappings/MappingsUi";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
@@ -93,7 +93,7 @@ export function StackTraceElementUi({
                                         mappings
                                     }: { traceElement: RichStackTraceElement, withMarginLeft: boolean, mappings: MappingContext }) {
     const [open, setOpen] = React.useState(false)
-    const mappingMethod = useMappingFor(traceElement,mappings);
+    const mappingMethod = useMappingFor(traceElement, mappings);
     const text = getTraceElementText(traceElement, open, mappingMethod)
     const isXMore = typeof traceElement === "number"
 
