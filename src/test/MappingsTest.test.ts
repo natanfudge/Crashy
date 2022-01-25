@@ -7,6 +7,9 @@ import {
     javaMethodFullName,
     javaMethodSimpleName
 } from "crash-parser/src/model/RichCrashReport";
+import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
+import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
+import {hasNecDeobfuscation} from "../mappings/MappingsDetection";
 
 test("Yarn mappings can be retrieved", async () => {
     const versions = await getYarnBuilds("1.18.1");
@@ -51,3 +54,6 @@ test("Remapping works correctly", async () => {
     expect(remappedMethodSimple).toEqual("MathConstants.register")
 }, 15000)
 
+test("Mappings detection works correctly", () => {
+    const report = parseCrashReportRich(testFabricCrashReport);
+})

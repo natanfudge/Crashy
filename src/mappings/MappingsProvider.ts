@@ -1,7 +1,7 @@
 import {MappingsNamespace} from "./MappingsNamespace";
 import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
 import {Mappings} from "./Mappings";
-import {MemoryCache} from "../utils/MemoryCache";
+import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 
 export type MappingsBuilds = string[];
 
@@ -30,6 +30,24 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
         return getYarnMappings(build)
     }
 }
+
+// export function reverseMappingsProvider(provider: MappingsProvider): MappingsProvider  {
+//     return {
+//         fromNamespace: provider.toNamespace,
+//         toNamespace: provider.fromNamespace,
+//         async getMappings(build: string): Promise<Mappings> {
+//
+//             return {
+//                 classes: name => {
+//                     const key = provider.g
+//                 },
+//                 methods: name => name
+//             }
+//         },
+//         getBuilds(minecraftVersion: string): Promise<MappingsBuilds> {
+//         }
+//     }
+// }
 
 
 // export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {

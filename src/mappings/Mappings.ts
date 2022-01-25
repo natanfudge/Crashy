@@ -1,13 +1,15 @@
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import {MappingsNamespace} from "./MappingsNamespace";
-import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
 import {
-    IntermediaryToYarnMappingsProvider, MappingsBuilds,
+    IntermediaryToYarnMappingsProvider,
+    MappingsBuilds,
     MappingsProvider,
     OfficialToIntermediaryMappingsProvider
 } from "./MappingsProvider";
-import {MemoryCache} from "../utils/MemoryCache";
-
+import {MemoryCache, PromiseMemoryCache} from "../utils/PromiseMemoryCache";
+import {JavaClass, JavaMethod, Loader} from "crash-parser/src/model/RichCrashReport";
+import {usePromise} from "../ui/utils/PromiseBuilder";
+import {flipRecord} from "../utils/Javascript";
 
 
 // const
@@ -20,12 +22,12 @@ export interface Mappings {
     // fields: StringMap
 }
 
-export const EmptyMappings : Mappings = {
+export const EmptyMappings: Mappings = {
     classes: {},
     methods: {},
     isLoading: false
 }
-export const LoadingMappings : Mappings = {
+export const LoadingMappings: Mappings = {
     classes: {},
     methods: {},
     isLoading: true
@@ -33,7 +35,81 @@ export const LoadingMappings : Mappings = {
 
 export function remap(name: string, map: StringMap): string {
     const mapped = map[name];
-    return mapped !== undefined ? mapped: name;
+    return mapped !== undefined ? mapped : name;
+}
+
+export interface MappingContext {
+    desiredNamespace: MappingsNamespace;
+    desiredBuild: string;
+    //TODO: check if we need this when done
+    minecraftVersion: string;
+    isDeobfuscated: boolean;
+    loader: Loader;
+}
+
+type MappingMethod = (unmapped: string) => string
+
+export function useMappingForClass(javaClass: JavaClass, context: MappingContext): MappingMethod {
+    return usePromise(
+        getMappingForClass(javaClass, context), [context.desiredBuild, context.desiredNamespace]
+    ) ?? (name => name); // When mappings have not loaded yet keep name as-is
+}
+
+//TODO: implement mapping loading detection via querying the PromiseMemoryCache object, and remove isLoading in Mappings.
+
+async function getMappingForClass(javaClass: JavaClass, context: MappingContext): Promise<MappingMethod> {
+    if (isIntermediaryClassName(javaClass)) {
+        switch (context.desiredNamespace) {
+            case "Intermediary":
+                // If it's intermediary => intermediary, keep name as is
+                return name => name;
+            case "Yarn":
+                return classMappingViaProvider(IntermediaryToYarnMappingsProvider, context.desiredBuild, {reverse: false})
+            case "Official":
+                return classMappingViaProvider(OfficialToIntermediaryMappingsProvider, context.desiredBuild, {reverse: true})
+            default:
+                throw new Error("TODO")
+        }
+    } else{
+        //TODO
+        return name => name
+    }
+}
+
+const reversedClassMappingsCache = new MemoryCache<Record<string, string>>();
+
+async function classMappingViaProvider(provider: MappingsProvider, build: string, options: { reverse: boolean }): Promise<MappingMethod> {
+    const mappings = (await getMappingsCached(provider, build)).classes;
+    const mappingsReversed = options.reverse ? reversedClassMappingsCache.get(
+        provider.fromNamespace + provider.toNamespace + build, () => flipRecord(mappings)
+    ) : undefined
+    return name => {
+        const usedMappings = options.reverse ? mappingsReversed! : mappings;
+        return usedMappings[name] ?? name
+    };
+}
+
+async function classMappingViaProviderChain(
+    firstMapProvider: { provider: MappingsProvider, reverse: boolean },
+    secondMapProvider: { provider: MappingsProvider, reverse: boolean },
+    build: string
+): Promise<MappingMethod> {
+    const [firstMap, secondMap] = await Promise.all([
+        classMappingViaProvider(firstMapProvider.provider, build, {reverse: firstMapProvider.reverse}),
+        classMappingViaProvider(secondMapProvider.provider, build, {reverse: secondMapProvider.reverse}),
+    ]);
+
+    return name => secondMap(firstMap(name))
+}
+
+function isIntermediaryClassName(javaClass: JavaClass): boolean {
+    return javaClass.simpleName.startsWith("class_")
+        && javaClass.packageName === "net.minecraft"
+}
+
+function isIntermediaryMethodName(javaMethod: JavaMethod): boolean {
+    return isIntermediaryClassName(javaMethod.class)
+        && javaMethod.name.startsWith("method_")
 }
 
 
@@ -55,23 +131,24 @@ export function remap(name: string, map: StringMap): string {
 export async function buildsOfNoCache(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
     switch (namespace) {
         case "Intermediary":
+        case "Official":
             return [];
         case "Yarn":
             return IntermediaryToYarnMappingsProvider.getBuilds(minecraftVersion)
-        case "Official":
-            return [];
+        default:
+            throw new Error("TODO")
     }
     // return [];
 }
 
-const buildsCache = new MemoryCache<MappingsBuilds>();
+const buildsCache = new PromiseMemoryCache<MappingsBuilds>();
+
 export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
     return buildsCache.get(
         namespace + minecraftVersion,
-        () => buildsOfNoCache(namespace,minecraftVersion)
+        () => buildsOfNoCache(namespace, minecraftVersion)
     );
 }
-
 
 
 //
@@ -82,7 +159,7 @@ export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: s
 //     );
 // }
 
-const mappingsCache = new MemoryCache<Mappings>()
+const mappingsCache = new PromiseMemoryCache<Mappings>()
 
 export async function getMappingsCached(mappingsProvider: MappingsProvider, build: string): Promise<Mappings> {
     return mappingsCache.get(

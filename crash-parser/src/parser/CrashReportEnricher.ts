@@ -45,8 +45,13 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
         stackTrace: enrichStackTrace(report.stacktrace),
         sections: report.sections.map((section) => enrichCrashReportSection(section)),
         context: getCrashContext(report, mods),
-        rawText: report.rawText
+        rawText: report.rawText,
+        deobfuscated: isNecDeobfuscated(report)
     };
+}
+
+function isNecDeobfuscated(report: CrashReport): boolean {
+    return report.stacktrace.trace[0].startsWith("Not Enough Crashes deobfuscated stack trace.(")
 }
 
 const JavaVersionTitle = "Java Version";
@@ -166,7 +171,7 @@ function parseDayMonthYear(rawDate: string): { day: string, month: string, year:
     }
     const [left, right, year] = rawDate.split(rawDate.includes("/") ? "/" : ".");
 
-    const [day, month] = isDayMonthYear(left, right,rawDate) ? [left, right] : [right, left];
+    const [day, month] = isDayMonthYear(left, right, rawDate) ? [left, right] : [right, left];
     return {day, month, year};
 }
 

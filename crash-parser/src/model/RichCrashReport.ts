@@ -7,6 +7,7 @@ export interface RichCrashReport {
     wittyComment: string
     context: CrashContext
     stackTrace: RichStackTrace
+    deobfuscated: boolean
     mods?: Mod[]
     sections: RichCrashReportSection[]
 }
@@ -133,7 +134,8 @@ export function javaClassFullName(javaClass: JavaClass, mappings: Mappings) {
 }
 
 export function javaMethodSimpleName(javaMethod: JavaMethod, mappings: Mappings) {
-    return javaClassFullName(javaMethod.class, mappings).removeBeforeLastExclusive(".") + "." + remap(javaMethod.name, mappings.methods);
+    return javaClassFullName(javaMethod.class, mappings).removeBeforeLastExclusive(".") + "."
+        + remap(javaMethod.name, mappings.methods);
 }
 
 export function javaMethodFullName(javaMethod: JavaMethod, mappings: Mappings) {

@@ -6,6 +6,7 @@ export function removeSuffix(str: string, suffix: string): string {
 }
 
 export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
+    //TODO: check if we need {} at the end of this
     return typedKeys(object).map((key, index) => mapFn(key, object[key], index), {});
 }
 
@@ -24,8 +25,8 @@ export function indexOfOrThrow<T>(arr: T[], element: T): number {
     return index;
 }
 
-export function toRecord<K extends Key,V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
-    const result = {} as Record<K,V>;
+export function toRecord<K extends Key, V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
+    const result = {} as Record<K, V>;
     for (let i = 0; i < arr.length; i++) {
         const [key, value] = mapFn(arr[i], i);
         result[key] = value;
@@ -37,6 +38,22 @@ export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V
     if (!(key in record)) return record;
     const {[key]: value, ...otherProps} = record;
     return otherProps;
+}
+
+/**
+ */
+export function flipRecord<K extends Key, V extends Key>(record: Record<K, V>): Record<V, K> {
+    const flippedRecord: Record<V, K> = {} as Record<V, K>
+    for (const key in record) {
+        const flippedRecordKey: V = record[key];
+        if (flippedRecordKey in flippedRecord) {
+            // newRecord[flippedRecordKey] is the other key with the same value
+            throw new Error(`Found duplicate value '${flippedRecordKey}' when attempting to flip record with keys '${key}',
+             '${flippedRecord[flippedRecordKey]}'`)
+        }
+        flippedRecord[flippedRecordKey] = key;
+    }
+    return flippedRecord;
 }
 
 
