@@ -15,8 +15,8 @@ import {
 } from "crash-parser/src/model/RichCrashReport";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
-import {MappingContext, MappingMethod, useMappingForName} from "../../../mappings/Mappings";
 import {MappingsController, WithMappings} from "./mappings/MappingsUi";
+import {MappingContext, MappingMethod, useMappingFor, useMappingForName} from "../../../mappings/MappingMethod";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
     const causerList = unfoldRichStackTrace(report.stackTrace);

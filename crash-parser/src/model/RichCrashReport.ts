@@ -1,5 +1,5 @@
 import {StringMap} from "./CrashReport";
-import {MappingMethod, Mappings, remap} from "../../../src/mappings/Mappings";
+import {MappingMethod} from "../../../src/mappings/MappingMethod";
 
 export interface RichCrashReport {
     rawText: string

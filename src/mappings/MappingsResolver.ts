@@ -9,6 +9,7 @@ import {toRecord} from "../utils/Javascript";
  * This problem is equivalent to finding a path in a non-directed graph (because if we can map from a to b we can map from b to a), where we try to reach from the 'fromNamespace' node to the 'toNamespace' node.
  */
 export function resolveMappingsChain(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace): MappingsProvider[] | undefined {
+    if(fromNamespace === toNamespace) return [];
     return BFS(fromNamespace, toNamespace, allMappingsProviders);
 }
 
@@ -26,7 +27,7 @@ function BFS(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace, a
     const shortLinks: ShortLinks = {}
 
     while (queue.isNotEmpty()) {
-        let node = queue.dequeue()!;
+        const node = queue.dequeue()!;
         for (const neighbor of graphAdj[node]) {
             const neighborNode = neighbor.node;
             if (visited.has(neighborNode)) continue;

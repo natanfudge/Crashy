@@ -5,9 +5,10 @@ import {Spacer} from "../../../utils/simple/SimpleDiv";
 import React, {useState} from "react";
 import {MappingsSelection} from "./MappingsSelection";
 import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
-import {buildsOf, MappingContext, useAnyMappingsLoading} from "../../../../mappings/Mappings";
 import {usePromise} from "../../../utils/PromiseBuilder";
 import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
+import {MappingContext} from "../../../../mappings/MappingMethod";
+import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/Mappings";
 
 export class MappingsController {
     mappingsState: MappingsState

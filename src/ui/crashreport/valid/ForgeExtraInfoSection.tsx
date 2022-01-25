@@ -16,8 +16,8 @@ import {StackTraceElementUi} from "./StackTraceUi";
 import {LazyColumn} from "../../utils/LazyColumn";
 import {VisibleSelection} from "../../utils/VisibleSelection";
 import {DropdownSelection} from "../../utils/DropdownSelection";
-import {EmptyMappings, MappingContext, Mappings} from "../../../mappings/Mappings";
 import {MappingsController, WithMappings} from "./mappings/MappingsUi";
+import {MappingContext} from "../../../mappings/MappingMethod";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
 
