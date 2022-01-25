@@ -5,11 +5,14 @@ import {
     javaClassFullName,
     JavaMethod,
     javaMethodFullName,
-    javaMethodSimpleName
+    javaMethodSimpleName,
+    LoaderType
 } from "crash-parser/src/model/RichCrashReport";
 import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
 import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
-import {hasNecDeobfuscation} from "../mappings/MappingsDetection";
+import {getYarnMappings2} from "../mappings/providers/YarnMappingsProvider2";
+import {getMappingForName} from "../mappings/MappingMethod";
+//TODO: run all tests
 
 test("Yarn mappings can be retrieved", async () => {
     const versions = await getYarnBuilds("1.18.1");
@@ -18,6 +21,16 @@ test("Yarn mappings can be retrieved", async () => {
     expect(mappings.methods["method_13365"]).toEqual("register")
     // expect(mappings.fields["field_29658"]).toEqual("PI")
 })
+//TODO: when there are multiple methods of the same name in the same class, it's impossible to remap exactly from yarn to intermediary.
+// So, as a best-effort implementation, we will use an arbitrary mapping of same-name methods. A simple way of doing this
+// would be to allow flipRecord() to override keys, but we need to make sure we don't miss any other (bad) cases where a key
+// is duplicated.
+test("Yarn mappings can be retrieved via new method", async () => {
+    const versions = await getYarnBuilds("1.18.1");
+    const mappings = await getYarnMappings2(versions[0].version)
+    expect(mappings.classes["net.minecraft.class_5973"]).toEqual("net.minecraft.util.math.MathConstants")
+    expect(mappings.methods["net.minecraft.class_3060#method_13365"]).toEqual("net.minecraft.server.command.ForceLoadCommand#register")
+}, 25000)
 
 //TODO: test it does the shortest path by adding more providers
 //TODO: restore when we have the other mappings
@@ -34,11 +47,19 @@ test("Yarn mappings can be retrieved", async () => {
 
 test("Remapping works correctly", async () => {
     const versions = await getYarnBuilds("1.18.1");
-    const mappings = await getYarnMappings(versions[0].version)
+    // const mappings = await getYarnMappings(versions[0].version)
     const testClass: JavaClass = {
         packageName: "net.minecraft",
         simpleName: "class_5973"
     }
+
+    const mappings = await getMappingForName(testClass,{
+        desiredNamespace: "Yarn",
+        desiredBuild: versions[0].version,
+        loader: LoaderType.Fabric,
+        isDeobfuscated: false,
+        minecraftVersion: "1.18.1"
+    })
     const remappedClass = javaClassFullName(testClass, mappings);
     expect(remappedClass).toEqual("net.minecraft.util.math.MathConstants")
 

@@ -1,4 +1,4 @@
-import {JavaClass, JavaMethod, Loader, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
+import {JavaClass, JavaMethod, Loader, LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {usePromise} from "../ui/utils/PromiseBuilder";
 import {MappingsProvider} from "./MappingsProvider";
 import {getMappingsCached} from "./Mappings";
@@ -28,7 +28,7 @@ export interface MappingContext {
     //TODO: check if we need this when done
     minecraftVersion: string;
     isDeobfuscated: boolean;
-    loader: Loader;
+    loader: LoaderType;
 }
 
 export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingMethod {
@@ -51,7 +51,7 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
     }
 }
 
-async function getMappingForName(name: Mappable, context: MappingContext): Promise<MappingMethod> {
+export async function getMappingForName(name: Mappable, context: MappingContext): Promise<MappingMethod> {
     if (context.desiredBuild === undefined) return IdentityMapping;
     const originalNamespace = detectMappingNamespace(name, context);
     const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace);

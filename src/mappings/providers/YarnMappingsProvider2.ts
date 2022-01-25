@@ -1,144 +1,129 @@
-import {mcVersionCompare, NO_CORS_BYPASS, profiler, profilerDel } from "./ProviderUtils";
-import {MappingsNamespace} from "../MappingsNamespace";
-import {ClassItem} from "./ClassItem";
+import {extractMappings, profiler, profilerDel, withDotNotation} from "./ProviderUtils";
+import {ClassData} from "./ClassItem";
+import {Mappings} from "../Mappings";
 
-/*
-Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/sections/Projects/MinecraftMappingViewer/App/app.ts
- */
-
-export async function getYarnMappings(version: number, mcVersion: string) {
+export async function getYarnMappings2(build: string): Promise<Mappings> {
     profiler("Downloading Yarn Mappings");
-    let res: Response;
-    if (mcVersionCompare(mcVersion, "1.14") !== -1)
-        res = await fetch(`https://maven.fabricmc.net/net/fabricmc/yarn/${mcVersion}+build.${version}/yarn-${mcVersion}+build.${version}-v2.jar`);
-    else
-        res = await fetch(`${NO_CORS_BYPASS}/https://maven.legacyfabric.net/net/fabricmc/yarn/${mcVersion}+build.${version}/yarn-${mcVersion}+build.${version}-v2.jar`);
+    const domain = /*isOlderMcVersion(mcVersion, "1.14") ?
+        `${NO_CORS_BYPASS}/https://maven.legacyfabric.net`
+        : */"https://maven.fabricmc.net"
+    const res = await fetch(`${domain}/net/fabricmc/yarn/${build}/yarn-${build}-v2.jar`);
+
     profilerDel("Downloading Yarn Mappings");
-    const zip = new JSZip();
-    const zipContent = await zip.loadAsync(await res.arrayBuffer());
-    const mappings = await zipContent.file("mappings/mappings.tiny")?.async("string");
-    if (mappings) {
-        await this.loadYarnMappings(mappings);
-    } else {
-        console.error("ERROR PARSING YARN MAPPINGS ZIP!");
-    }
+
+
+    const unzipped = await extractMappings(res);
+    return loadYarnMappings(unzipped);
 }
 
-async function loadYarnMappings(yarn_mappings: string, mcVersion: string) {
-    // if (this.loadedMappings.has(MappingTypes.YARN)) this.clearMappings(MappingTypes.YARN);
+async function loadYarnMappings(rawMappings: string): Promise<Mappings> {
     profiler("Parsing Yarn Mappings");
-    // if (!this.loadedMappings.has(MappingTypes.INTERMEDIARY)) {
-    //     await this.getIntermediaryMappings();
-    //     if (!this.loadedMappings.has(MappingTypes.INTERMEDIARY)) {
-    //         alert("FAILED TO LOAD INTERMEDIARY DEPENDENCY");
-    //         return;
-    //     }
-    // }
 
-    //yarn v2's are backwards from 1.14-1.14.2
-    const reversed = mcVersionCompare(mcVersion, "1.14.2") < 1 && mcVersionCompare(mcVersion, "1.14") > -1;
+//yarn v2's are backwards from 1.14-1.14.2
+//     const reversed = isSameOrOlderMcVersion(mcVersion, "1.14.2") && isSameOrNewerMcVersion(mcVersion, "1.14");
 
-    await parseTinyFile(yarn_mappings, "Intermediary", "Yarn", reversed);
+    const retval = await parseTinyFile(rawMappings);
 
-    // this.loadedMappings.add("");
     profilerDel("Parsing Yarn Mappings");
+    return retval;
 }
 
-async function parseTinyFile(contents: string, mapping_From: MappingsNamespace, mapping_To: MappingsNamespace, reversed?: boolean) {
+export const ClassMethodSeperator = "#"
+
+async function parseTinyFile(contents: string): Promise<Mappings> {
     const class_mappings = contents.split("\nc").map(e => e.split("\n").map(c => c.split("\t", -1)));
     const first_line = class_mappings.shift();
     if (!first_line) {
-        console.error("ERROR PARSING YARN MAPPINGS FILE!");
-        return;
+        throw new Error("ERROR PARSING YARN MAPPINGS FILE!");
     }
 
-    let current: ClassItem | null = null;
-    let current_param: string | null = null;
+    const mappings : Mappings = {
+        classes: {},
+        methods: {}
+    }
+
 
     for (const clazz of class_mappings) {
         const class_def = clazz[0];
-        const from = class_def?.[reversed ? 2 : 1];
-        const to = class_def?.[reversed ? 1 : 2];
-        if (!from || !to) {
-            console.error("ERROR PARSING YARN MAPPINGS FILE, bad class definition???");
-            continue;
+        const fromClass = class_def?.[1];
+        const toClass = class_def?.[2];
+        if (!fromClass || !toClass) {
+            throw new Error("ERROR PARSING YARN MAPPINGS FILE, bad class definition???");
         }
 
-        let current_class = await this.getOrAddClass(from, mapping_From);
-        if (current_class == null) {
-            console.error("ERROR PARSING YARN MAPPINGS FILE, could not find intermediaries for class: " + from + " " + to);
-            continue;
-        }
-        current_class.addMapping(mapping_To, to);
-    }
-
-    for (const clazz of class_mappings) {
-        const class_def = clazz.shift();
-        const from = class_def?.[reversed ? 2 : 1];
-        const to = class_def?.[reversed ? 1 : 2];
-        if (!from || !to) {
-            console.error("ERROR PARSING YARN MAPPINGS FILE, bad class definition???");
-            continue;
-        }
-
-        let current_class = await this.getOrAddClass(from, mapping_From);
-        if (current_class == null) {
-            continue;
-        }
+        // const classData = new ClassData(from);
+        // classes.set(from, classData);
+        mappings.classes[withDotNotation(fromClass)] = withDotNotation(toClass);
+        // classData.addMapping(to)
+        // let current_class = await this.getOrAddClass(from);
+        // if (current_class == null) {
+        //     console.error("ERROR PARSING YARN MAPPINGS FILE, could not find intermediaries for class: " + from + " " + to);
+        //     continue;
+        // }
+        // current_class.addMapping(to);
 
         for (const item of clazz) {
-            //skip empty line
+            // skip empty line
             if (item.join("").trim() === "") continue;
             switch (item[1]) {
-                // class comment
-                case "c":
-                    current_class.comments.set(mapping_To, item.slice(2).join("\t").replace(/\\n/g, "<br>"));
-                    break;
                 // class method
                 case "m":
-                    current = current_class.getOrAddMethod(item[reversed ? 4 : 3], reversed ? this.transformDesc(this.reverseTransformDesc(item[2], mapping_To), mapping_From) ?? item[2] : item[2], mapping_From);
-                    current?.addMapping(mapping_To, item[reversed ? 3 : 4]);
-                    break;
-                // class field
-                case "f":
-                    current = current_class.getOrAddField(item[reversed ? 4 : 3], reversed ? this.transformDesc(this.reverseTransformDesc(item[2], mapping_To), mapping_From) ?? item[2] : item[2], mapping_From);
-                    current?.addMapping(mapping_To, item[reversed ? 3 : 4]);
-                    break;
-                case "":
-                    switch (item[2]) {
-                        // item comment
-                        case "c":
-                            current?.comments.set(mapping_To, item.slice(3).join("\t").replace(/\\n/g, "<br>"));
-                            break;
-                        // item param
-                        case "p":
-                            if (current && current instanceof MethodData) {
-                                if (!current.params.has(mapping_To)) current.params.set(mapping_To, new Map());
-                                current.params.get(mapping_To)?.set(parseInt(item[3]), current_param = item[5]);
-                            } else {
-                                console.error("ERROR PARSING YARN MAPPINGS FILE, param on field??? " + item.join(","));
-                            }
-                            break;
-                        case "":
-                            switch (item[3]) {
-                                //param comment
-                                case "c":
-                                    current?.comments.set(mapping_To, (current?.comments.get(mapping_To) ?? "") + `<br>@param ${current_param} ${item.slice(4).join("\t").replace(/\\n/g, "<br>")}`);
-                                    break;
-                                default:
-                                    console.error("ERROR PARSING YARN MAPPINGS FILE, unknown item-item element: " + item.join(","));
-                            }
-                            break;
-                        default:
-                            console.error("ERROR PARSING YARN MAPPINGS FILE, unknown class item element: " + item.join(","));
-                    }
+                    const fromMethod = item[3]
+                    const toMethod = item[4]
+                    mappings.methods[withDotNotation(fromClass + ClassMethodSeperator + fromMethod)] =
+                        withDotNotation(toClass + ClassMethodSeperator + toMethod);
                     break;
                 default:
-                    console.error(item);
-                    console.error("ERROR PARSING YARN MAPPINGS FILE, unknown class element: " + item.join(","));
+                // console.error(item);
+                // console.error("ERROR PARSING YARN MAPPINGS FILE, unknown class element: " + item.join(","));
             }
         }
     }
+    return mappings;
+
+// for (const clazz of class_mappings) {
+//     const class_def = clazz.shift();
+//     const from = class_def?.[reversed ? 2 : 1];
+//     const to = class_def?.[reversed ? 1 : 2];
+//     if (!from || !to) {
+//         console.error("ERROR PARSING YARN MAPPINGS FILE, bad class definition???");
+//         continue;
+//     }
+//
+//     let current_class = await this.getOrAddClass(from);
+//     if (current_class == null) {
+//         continue;
+//     }
+//
+//     for (const item of clazz) {
+//         // skip empty line
+//         if (item.join("").trim() === "") continue;
+//         switch (item[1]) {
+//             // class method
+//             case "m":
+//                 current = current_class.getOrAddMethod(item[reversed ? 4 : 3],);
+//                 current?.addMapping(item[reversed ? 3 : 4]);
+//                 break;
+//             default:
+//             // console.error(item);
+//             // console.error("ERROR PARSING YARN MAPPINGS FILE, unknown class element: " + item.join(","));
+//         }
+//     }
+// }
 }
 
 
+// async getOrAddClass(class_name: string) {
+//     // for (const clazz of Array.from(this.classes.values())) {
+//     //     if (clazz.getMapping(mapping) === class_name) {
+//     //         return clazz;
+//     //     }
+//     //     if (clazz.getMapping("Official") === class_name) {
+//     //         return clazz;
+//     //     }
+//     // }
+//      console.log(`adding class: ${class_name}`);
+//     const clazz = new ClassData(this, class_name);
+//     this.classes.set(class_name, clazz);
+//     return clazz;
+// }

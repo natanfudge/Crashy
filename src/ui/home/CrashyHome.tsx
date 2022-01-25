@@ -33,6 +33,7 @@ export default function CrashyHome() {
 
                 <Button onClick={async () => {
                     setUploadState(InitialUploadState.Loading)
+                    //TODO: remove pako dependency and use fflate instead
                     const response = await CrashyServer.uploadCrash(pako.gzip(log));
                     if (isUploadCrashError(response)) {
                         setUploadState(response);

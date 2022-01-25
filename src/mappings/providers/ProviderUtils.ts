@@ -4,46 +4,58 @@ Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/secti
 // type ReleaseVersion = `${number}.${number}` | `${number}.${number}.${number}`;
 // type Snapshot = `${number}w${number}${"a"|"b"|"c"|"d"|"e"}` | `${ReleaseVersion}-pre${number}` | `${ReleaseVersion}-rc${number}`;
 // type MCVersionSlug =  ReleaseVersion | Snapshot;
-import {MappingsNamespace} from "../MappingsNamespace";
+import pako from "pako";
+import {strFromU8, unzip, Unzipped} from "fflate";
 
-type MCVersionSlug = string;
+export type MCVersionSlug = string;
 
 export const NO_CORS_BYPASS = "/Projects/CORS-Bypass/App";
 
-export function mcVersionCompare(a: MCVersionSlug, b: MCVersionSlug) {
-    if (a === b) return 0;
-    // @ts-ignore
-    for (const e of versionSelect.children) {
-        if (e.value === a) return 1;
-        if (e.value === b) return -1;
-    }
-    throw Error("MC version not in list.");
-}
+// export function mcVersionCompare(a: MCVersionSlug, b: MCVersionSlug) {
+//     if (a === b) return 0;
+//     // @ts-ignore
+//     for (const e of versionSelect.children) {
+//         if (e.value === a) return 1;
+//         if (e.value === b) return -1;
+//     }
+//     throw Error("MC version not in list.");
+// }
+//
+// export function isOlderMcVersion(target: MCVersionSlug, compareTo: MCVersionSlug): boolean {
+//     return mcVersionCompare(target, compareTo) === -1;
+// }
+//
+// export function isSameOrOlderMcVersion(target: MCVersionSlug, compareTo: MCVersionSlug): boolean {
+//     return mcVersionCompare(target, compareTo) < 1;
+// }
+//
+// export function isSameOrNewerMcVersion(target: MCVersionSlug, compareTo: MCVersionSlug): boolean {
+//     return mcVersionCompare(target, compareTo) > -1;
+// }
 
 export function profiler(thing: string) {
     // currently no-op
 }
+
 export function profilerDel(thing: string) {
     // currently no-op
 }
 
-// TODO: try to remove this
-const classes: Map<string, ClassData> = new Map();
 
-async function getOrAddClass(class_name: string, mapping: MappingsNamespace) {
-    if (mapping === "Official" && this.classes.has(class_name)) {
-        return this.classes.get(class_name);
-    }
-    for (const clazz of this.classes.values()) {
-        if (clazz.getMapping(mapping) === class_name) {
-            return clazz;
-        }
-        if (clazz.getMapping("Official") === class_name) {
-            return clazz;
-        }
-    }
-    if (mapping !== "Official") console.log(`adding class: ${class_name}`);
-    const clazz = new ClassData(this, class_name);
-    this.classes.set(class_name, clazz);
-    return clazz;
+export async function extractMappings(response: Response): Promise<string> {
+    const byteArray = new Uint8Array(await response.arrayBuffer())
+    const unzipped = await new Promise<Unzipped>((resolve,reject) => {
+        unzip(byteArray, (err,unzipped) =>{
+            if(err !== null) reject(err);
+            else resolve(unzipped);
+        })
+    });
+
+    const mappingsFileU8 = unzipped["mappings/mappings.tiny"]
+    return strFromU8(mappingsFileU8);
+    // return pako.inflate(byteArray, {to: 'string'})
+}
+
+export  function withDotNotation(string: string): string {
+    return string.replace(/\//g, ".")
 }
