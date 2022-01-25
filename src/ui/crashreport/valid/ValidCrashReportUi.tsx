@@ -67,7 +67,7 @@ function ActiveSection({report, section}: { report: RichCrashReport, section: Se
     } else if (section === SpecialSection.JvmInfo) {
         return <JVMDetailsSection details={report.stackTrace.details!}/>
     } else {
-        return <CrashReportSectionUi section={report.sections[section.index]} minecraftVersion={report.context.minecraftVersion}/>
+        return <CrashReportSectionUi section={report.sections[section.index]} report={report}/>
     }
 }
 

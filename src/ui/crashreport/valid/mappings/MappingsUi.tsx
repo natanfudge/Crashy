@@ -5,35 +5,48 @@ import {Spacer} from "../../../utils/simple/SimpleDiv";
 import React, {useState} from "react";
 import {MappingsSelection} from "./MappingsSelection";
 import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
-import {buildsOf, EmptyMappings, getMappingsCached, LoadingMappings, Mappings} from "../../../../mappings/Mappings";
-import {IntermediaryToYarnMappingsProvider} from "../../../../mappings/MappingsProvider";
+import {buildsOf, MappingContext, useAnyMappingsLoading} from "../../../../mappings/Mappings";
 import {usePromise} from "../../../utils/PromiseBuilder";
+import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
 
 export class MappingsController {
     mappingsState: MappingsState
     onMappingsStateChanged: (newState: MappingsState) => void
-    mappings: Mappings
-    minecraftVersion: string
+    // mappings: Mappings
+    // minecraftVersion: string
+    report: RichCrashReport
 
-    constructor(minecraftVersion: string) {
+    constructor(report: RichCrashReport) {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [mappingsState, setMappingsState] = useMappingsState(minecraftVersion);
+        const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
         this.mappingsState = mappingsState
         this.onMappingsStateChanged = setMappingsState;
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        this.mappings = useMappings(this.mappingsState)
-        this.minecraftVersion = minecraftVersion;
+        // this.mappings = useMappings(this.mappingsState)
+        this.report = report;
+    }
+
+    getContext(): MappingContext {
+        return {
+            desiredBuild: this.mappingsState.build,
+            minecraftVersion: this.report.context.minecraftVersion,
+            desiredNamespace: this.mappingsState.namespace,
+            isDeobfuscated: this.report.deobfuscated,
+            loader: this.report.context.loader
+        }
     }
 }
+
 
 export function WithMappings({controller, children}:
                                  { controller: MappingsController }
                                  & WithChildren) {
+    const mappingsLoading = useAnyMappingsLoading();
     return <MappingSelectionLayout selection={
-        <MappingsSelection mappingsLoading={controller.mappings.isLoading === true}
+        <MappingsSelection mappingsLoading={mappingsLoading}
                            mappings={controller.mappingsState}
                            onMappingsChange={controller.onMappingsStateChanged}
-                           minecraftVersion={controller.minecraftVersion}/>
+                           minecraftVersion={controller.report.context.minecraftVersion}/>
     }>
         {children}
     </MappingSelectionLayout>
@@ -67,8 +80,8 @@ export function useMappingsState(minecraftVersion: string): MutableMappingsState
     return [actualState, setState];
 }
 
-export function useMappings(mappingsState: MappingsState): Mappings {
-    const build = mappingsState.build
-    const promise = build !== undefined ? getMappingsCached(IntermediaryToYarnMappingsProvider, build) : EmptyMappings
-    return usePromise(promise, [build]) ?? LoadingMappings;
-}
+// export function useMappings(mappingsState: MappingsState): Mappings {
+//     const build = mappingsState.build
+//     const promise = build !== undefined ? getMappingsCached(IntermediaryToYarnMappingsProvider, build) : EmptyMappings
+//     return usePromise(promise, [build]) ?? LoadingMappings;
+// }

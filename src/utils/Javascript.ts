@@ -40,6 +40,10 @@ export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V
     return otherProps;
 }
 
+export function recordIsEmpty<K extends  Key, V>(record: Record<K,V>): boolean{
+    return Object.keys(record).length === 0;
+}
+
 /**
  */
 export function flipRecord<K extends Key, V extends Key>(record: Record<K, V>): Record<V, K> {

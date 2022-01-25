@@ -16,7 +16,7 @@ import {StackTraceElementUi} from "./StackTraceUi";
 import {LazyColumn} from "../../utils/LazyColumn";
 import {VisibleSelection} from "../../utils/VisibleSelection";
 import {DropdownSelection} from "../../utils/DropdownSelection";
-import {EmptyMappings, Mappings} from "../../../mappings/Mappings";
+import {EmptyMappings, MappingContext, Mappings} from "../../../mappings/Mappings";
 import {MappingsController, WithMappings} from "./mappings/MappingsUi";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
@@ -41,26 +41,26 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
             />}
         </Row>
 
-        {isTraceSection ? <TraceFeiUi minecraftVersion={report.context.minecraftVersion} fei={allFei[currentTrace]}/> : <ModsFei report={report}/>}
+        {isTraceSection ? <TraceFeiUi report={report} fei={allFei[currentTrace]}/> : <ModsFei report={report}/>}
     </Column>
 }
 
 
 
-function TraceFeiUi(props: {minecraftVersion: string, fei: TraceFei}) {
-    const mappingsController = new MappingsController(props.minecraftVersion);
+function TraceFeiUi(props: {report: RichCrashReport, fei: TraceFei}) {
+    const mappingsController = new MappingsController(props.report);
     return <WithMappings controller={mappingsController}>
         <Column>
             <Spacer height={5}/>
             <SimpleDivider height={1}/>
             <Spacer height={5}/>
             {props.fei.metadata.map((element, i) =>
-                <TraceFeiElement key={i} element={element} mappings={mappingsController.mappings}/>)}
+                <TraceFeiElement key={i} element={element} mappings={mappingsController.getContext()}/>)}
         </Column>
     </WithMappings>
 }
 
-function TraceFeiElement({element, mappings}: { element: ElementWithFei, mappings: Mappings }) {
+function TraceFeiElement({element, mappings}: { element: ElementWithFei, mappings: MappingContext }) {
     const metadata = element.forgeMetadata;
     return <Column>
         <StackTraceElementUi withMarginLeft={false} traceElement={element} mappings={mappings}/>

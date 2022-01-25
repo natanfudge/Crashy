@@ -31,8 +31,29 @@ Array.prototype.arrayEquals = function <T>(this: T[], b: T[]): boolean {
         this.every((val, index) => val === b[index]);
 }
 
+Array.prototype.remove = function<T>(this: T[], item: T) : void {
+    const index = this.indexOf(item);
+    if (index !== -1) this.splice(index, 1);
+}
+
 String.prototype.removeAfterFirst = function (this: string, removeAfter: string): string {
     const index = this.indexOf(removeAfter);
+    if (index === -1) {
+        return this;
+    } else {
+        return this.slice(0, index + 1);
+    }
+}
+String.prototype.removeAfterFirstExclusive = function (this: string, removeAfter: string): string {
+    const index = this.indexOf(removeAfter);
+    if (index === -1) {
+        return this;
+    } else {
+        return this.slice(0, index);
+    }
+}
+String.prototype.removeAfterLast = function (this: string, removeAfter: string): string {
+    const index = this.lastIndexOf(removeAfter);
     if (index === -1) {
         return this;
     } else {
@@ -47,4 +68,12 @@ String.prototype.removeBeforeLastExclusive = function (this: string, removeBefor
         return this.slice(index + 1);
     }
 }
+// String.prototype.removeBeforeLast = function (this: string, removeBefore: string): string {
+//     const index = this.lastIndexOf(removeBefore);
+//     if (index === -1) {
+//         return this;
+//     } else {
+//         return this.slice(index);
+//     }
+// }
 

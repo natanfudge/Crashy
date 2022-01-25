@@ -12,12 +12,17 @@ declare global {
         splitToTwo(splitOn: string): [string, string]
 
         removeAfterFirst(removeAfter: string): string
+        // Excludes the removeAfter char
+        removeAfterFirstExclusive(removeAfter: string): string
+        removeAfterLast(removeAfter: string): string
 
+        // Excludes the removeBefore char
         removeBeforeLastExclusive(removeBefore: string): string
     }
 
     interface Array<T> {
         arrayEquals(array: T[]): boolean
+        remove(item : T): void
     }
 }
 

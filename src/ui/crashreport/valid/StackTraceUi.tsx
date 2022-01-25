@@ -15,7 +15,7 @@ import {
 } from "crash-parser/src/model/RichCrashReport";
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
-import {Mappings} from "../../../mappings/Mappings";
+import {MappingContext, MappingMethod, Mappings, useMappingFor, useMappingForName} from "../../../mappings/Mappings";
 import {MappingsController, WithMappings} from "./mappings/MappingsUi";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
@@ -23,15 +23,15 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
     const [currentCauserIndex, setCauserIndex] = useState(0)
     const currentTrace = causerList[currentCauserIndex];
 
-    const mappingsController = new MappingsController(report.context.minecraftVersion)
-    const mappings = mappingsController.mappings;
+    const mappingsController = new MappingsController(report)
+    const mappings = mappingsController.getContext();
 
     return <WithMappings controller={mappingsController}>
         <Column alignSelf={"start"}>
             {CausationButtons(currentCauserIndex, causerList, setCauserIndex)}
 
             <Row flexWrap={"wrap"}>
-                <StackTraceMessageUi title={currentTrace.title} mappings={mappings}/>
+                <StackTraceMessageUi title={currentTrace.title} mappingContext={mappings}/>
             </Row>
 
             <Divider/>
@@ -41,7 +41,7 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
 }
 
 
-export function StackTraceElementsUi(props: { elements: RichStackTraceElement[], mappings: Mappings }) {
+export function StackTraceElementsUi(props: { elements: RichStackTraceElement[], mappings: MappingContext }) {
     return <div>
         {props.elements.map((traceElement, i) =>
             <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}
@@ -73,10 +73,10 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
     </Button>
 }
 
-function StackTraceMessageUi({title, mappings}: { title: StackTraceMessage, mappings: Mappings }) {
+function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage, mappingContext: MappingContext }) {
     const [open, setOpen] = React.useState(false)
-
-    const text = open ? javaClassFullName(title.class, mappings) : title.class.simpleName;
+    const mappingMethod = useMappingForName(title.class, mappingContext);
+    const text = open ? javaClassFullName(title.class, mappingMethod) : title.class.simpleName;
 
     return <TextTheme wordBreak={"break-word"} variant={"h5"}>
         <SimpleSpan text={text} color={open ? undefined : clickableColor}
@@ -91,9 +91,10 @@ export function StackTraceElementUi({
                                         traceElement,
                                         withMarginLeft,
                                         mappings
-                                    }: { traceElement: RichStackTraceElement, withMarginLeft: boolean, mappings: Mappings }) {
+                                    }: { traceElement: RichStackTraceElement, withMarginLeft: boolean, mappings: MappingContext }) {
     const [open, setOpen] = React.useState(false)
-    const text = getTraceElementText(traceElement, open, mappings)
+    const mappingMethod = useMappingFor(traceElement,mappings);
+    const text = getTraceElementText(traceElement, open, mappingMethod)
     const isXMore = typeof traceElement === "number"
 
     return <Row margin={{left: withMarginLeft ? 30 : 0}}>
@@ -106,10 +107,12 @@ export function StackTraceElementUi({
     </Row>;
 }
 
-function getTraceElementText(traceElement: RichStackTraceElement, open: boolean, mappings: Mappings): string {
+function getTraceElementText(traceElement: RichStackTraceElement, open: boolean, mappings: MappingMethod): string {
     if (typeof traceElement === "number") return `${traceElement} more...`
     if (open) {
-        const inBracketText = traceElement.line.number === undefined ? "Native Method" : `${traceElement.line.file}:${traceElement.line.number}`
+        const fileName = javaClassFullName(traceElement.method.class, mappings)
+            .removeBeforeLastExclusive(".").removeAfterFirstExclusive("$")
+        const inBracketText = traceElement.line.number === undefined ? "Native Method" : `${fileName}:${traceElement.line.number}`
         return javaMethodFullName(traceElement.method, mappings) + ` (${inBracketText})`
     } else {
         const inBracketText = traceElement.line.number === undefined ? "Native Method" : `Line ${traceElement.line.number}`

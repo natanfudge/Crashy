@@ -4,16 +4,16 @@ import {StringMap} from "crash-parser/src/model/CrashReport";
 import React from "react";
 import {StackTraceElementsUi,} from "./StackTraceUi";
 import {primaryColor} from "../../Colors";
-import {RichCrashReportSection, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
+import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {objectMap} from "../../../utils/Javascript";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Wrap} from "../../utils/simple/SimpleDiv";
 import {MappingsController, WithMappings} from "./mappings/MappingsUi";
 
 export function CrashReportSectionUi({
+    report,
                                          section,
-                                         minecraftVersion
-                                     }: { section: RichCrashReportSection, minecraftVersion: string }) {
+                                     }: { section: RichCrashReportSection, report: RichCrashReport }) {
     return <Column margin={{top: 10}} width={"max"}>
         <Column width={300} alignSelf={"center"}>
             <Text text={section.name} variant={"h4"} alignSelf={"center"}/>
@@ -22,15 +22,15 @@ export function CrashReportSectionUi({
 
         {section.details !== undefined && <CrashReportSectionDetails details={section.details}/>}
         {section.stackTrace !== undefined &&
-            <CrashReportSectionTrace trace={section.stackTrace} minecraftVersion={minecraftVersion}/>}
+            <CrashReportSectionTrace trace={section.stackTrace} report={report}/>}
     </Column>
 }
 
 function CrashReportSectionTrace({
+    report,
                                      trace,
-                                     minecraftVersion
-                                 }: { trace: RichStackTraceElement[], minecraftVersion: string }) {
-    const mappingsController = new MappingsController(minecraftVersion);
+                                 }: {report: RichCrashReport, trace: RichStackTraceElement[] }) {
+    const mappingsController = new MappingsController(report);
 
     return <Wrap padding={{top: 20}}>
         <WithMappings controller={mappingsController}>
@@ -39,7 +39,7 @@ function CrashReportSectionTrace({
                     <Text text={"Stack Trace"} variant={"h5"}/>
                     <SimpleDivider width={"max"}/>
                 </div>
-                <StackTraceElementsUi elements={trace} mappings={mappingsController.mappings}/>
+                <StackTraceElementsUi elements={trace} mappings={mappingsController.getContext()}/>
             </Column>
         </WithMappings>
     </Wrap>
