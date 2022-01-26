@@ -23,12 +23,11 @@ export function mappingsName(type: MappingsNamespace): string {
 }
 
 export const allMappingNamespaces: MappingsNamespace[] = [
-    //TODO: fill out
     "Yarn",
     "Official",
-    // "MojMap",
+    "MojMap",
     "Intermediary",
-    // "Srg",
-    // "Mcp",
-    // "Quilt"
+    "Srg",
+    "Mcp",
+    "Quilt"
 ];

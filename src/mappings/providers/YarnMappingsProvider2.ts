@@ -33,7 +33,7 @@ export const ClassMethodSeperator = "#"
 async function parseTinyFile(contents: string): Promise<Mappings> {
     const class_mappings = contents.split("\nc").map(e => e.split("\n").map(c => c.split("\t", -1)));
     const first_line = class_mappings.shift();
-    if (!first_line) {
+    if (first_line === undefined) {
         throw new Error("ERROR PARSING YARN MAPPINGS FILE!");
     }
 
@@ -47,7 +47,7 @@ async function parseTinyFile(contents: string): Promise<Mappings> {
         const class_def = clazz[0];
         const fromClass = class_def?.[1];
         const toClass = class_def?.[2];
-        if (!fromClass || !toClass) {
+        if (fromClass === undefined || toClass === undefined) {
             throw new Error("ERROR PARSING YARN MAPPINGS FILE, bad class definition???");
         }
 

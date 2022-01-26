@@ -40,7 +40,7 @@ export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V
     return otherProps;
 }
 
-export function recordIsEmpty<K extends  Key, V>(record: Record<K,V>): boolean{
+export function recordIsEmpty<K extends Key, V>(record: Record<K, V>): boolean {
     return Object.keys(record).length === 0;
 }
 
@@ -50,12 +50,13 @@ export function flipRecord<K extends Key, V extends Key>(record: Record<K, V>): 
     const flippedRecord: Record<V, K> = {} as Record<V, K>
     for (const key in record) {
         const flippedRecordKey: V = record[key];
-        if (flippedRecordKey in flippedRecord) {
-            // newRecord[flippedRecordKey] is the other key with the same value
-            throw new Error(`Found duplicate value '${flippedRecordKey}' when attempting to flip record with keys '${key}',
-             '${flippedRecord[flippedRecordKey]}'`)
-        }
+        // if (flippedRecordKey in flippedRecord) {
+        //     // newRecord[flippedRecordKey] is the other key with the same value
+        //     console.warn(`Found duplicate value '${flippedRecordKey}' when attempting to flip record with keys '${key}',
+        //      '${flippedRecord[flippedRecordKey]}'`)
+        // } else {
         flippedRecord[flippedRecordKey] = key;
+        // }
     }
     return flippedRecord;
 }

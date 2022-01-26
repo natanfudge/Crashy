@@ -25,8 +25,6 @@ export interface MappingContext {
     desiredNamespace: MappingsNamespace;
     // undefined if builds are still loading
     desiredBuild: string | undefined;
-    //TODO: check if we need this when done
-    minecraftVersion: string;
     isDeobfuscated: boolean;
     loader: LoaderType;
 }

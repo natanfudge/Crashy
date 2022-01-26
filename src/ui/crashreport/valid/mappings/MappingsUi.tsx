@@ -30,10 +30,9 @@ export class MappingsController {
     getContext(): MappingContext {
         return {
             desiredBuild: this.mappingsState.build,
-            minecraftVersion: this.report.context.minecraftVersion,
             desiredNamespace: this.mappingsState.namespace,
             isDeobfuscated: this.report.deobfuscated,
-            loader: this.report.context.loader
+            loader: this.report.context.loader.type
         }
     }
 }
@@ -55,7 +54,7 @@ export function WithMappings({controller, children}:
 
 function MappingSelectionLayout({children, selection}: { selection: JSX.Element } & WithChildren) {
     const screen = useScreenSize();
-    return screen.isPortrait ? <Column>{selection}{children}</Column> :
+    return /*screen.isPortrait*/ true ? <Column>{selection}{children}</Column> :
         <Row width={"max"}>
             {children}
             <Spacer flexGrow={1}/>

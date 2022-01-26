@@ -1,6 +1,4 @@
-import { MappingsNamespace } from "../MappingsNamespace";
-import {mcVersionCompare, MCVersionSlug, NO_CORS_BYPASS, profiler, profilerDel} from "./ProviderUtils";
-
+import {MappingsNamespace} from "../MappingsNamespace";
 
 
 export abstract class AbstractData {

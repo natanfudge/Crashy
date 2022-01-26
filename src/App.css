@@ -62,9 +62,9 @@ div[role=dialog]{
     margin-bottom: 150px;
 }
 
-div[role=presentation]{
-    z-index: unset !important;
-}
+/*div[role=presentation]{*/
+/*    z-index: unset !important;*/
+/*}*/
 /*Allows making a div into a link*/
 .link-spanner {
     position:absolute;

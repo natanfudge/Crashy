@@ -8,7 +8,7 @@ export function detectMappingNamespace(name: Mappable, context: MappingContext):
     } else if (context.isDeobfuscated) {
         return "Yarn";
     } else {
-        switch (context.loader.type) {
+        switch (context.loader) {
             case LoaderType.Fabric:
                 return "Intermediary"
             case LoaderType.Forge:

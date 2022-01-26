@@ -42,10 +42,13 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mapping
     </Column>;
 }
 
+//TODO: maybe have the first 2-3 lines have a short width, and then have the rest be full width,
+// and never use that expanding selection stuff?
+
 export function MappingsSelection({mappings, onMappingsChange, minecraftVersion, mappingsLoading}:
                                       MappingsSelectionProps) {
     const screen = useScreenSize();
-    const isPortrait = screen.isPortrait;
+    const isPortrait = /*screen.isPortrait*/ true;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
     return <Row justifyContent={"end"} padding={{top: isPortrait ? 0 : 8, left: isPortrait? 0: 5}}>
         <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
