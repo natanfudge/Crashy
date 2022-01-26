@@ -1,15 +1,7 @@
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import {MappingsNamespace} from "./MappingsNamespace";
-import {
-    IntermediaryToYarnMappingsProvider,
-    MappingsBuilds,
-    MappingsProvider,
-    OfficialToIntermediaryMappingsProvider
-} from "./MappingsProvider";
-import {MemoryCache, PromiseMemoryCache} from "../utils/PromiseMemoryCache";
-import {JavaClass, JavaMethod, Loader, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {usePromise} from "../ui/utils/PromiseBuilder";
-import {flipRecord} from "../utils/Javascript";
+import {IntermediaryToYarnMappingsProvider, MappingsBuilds, MappingsProvider} from "./MappingsProvider";
+import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
 
 
@@ -31,15 +23,7 @@ export function remap(name: string, map: StringMap): string {
 }
 
 
-
-
-
-
-
-
-
-
-export async function buildsOfNoCache(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
+async function buildsOfNoCache(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
     switch (namespace) {
         case "Intermediary":
         case "Official":
@@ -57,9 +41,11 @@ export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: s
     return buildsCache.get(
         namespace + minecraftVersion,
         () => buildsOfNoCache(namespace, minecraftVersion)
-    );
+    ).catch(e => {
+        console.error("Could not get mapping builds", e);
+        return [];
+    })
 }
-
 
 
 const mappingsCache = new PromiseMemoryCache<Mappings>()

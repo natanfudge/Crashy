@@ -54,12 +54,12 @@ export function WithMappings({controller, children}:
 
 function MappingSelectionLayout({children, selection}: { selection: JSX.Element } & WithChildren) {
     const screen = useScreenSize();
-    return /*screen.isPortrait*/ true ? <Column>{selection}{children}</Column> :
-        <Row width={"max"}>
-            {children}
+    return screen.isPortrait ? <Column>{selection}{children}</Column> :
+        <div /*width={"max"}*/>
             <Spacer flexGrow={1}/>
             {selection}
-        </Row>
+            {children}
+        </div>
 }
 
 export type MutableMappingsState = [MappingsState, (newState: MappingsState) => void]

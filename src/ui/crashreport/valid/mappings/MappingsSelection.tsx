@@ -48,9 +48,10 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mapping
 export function MappingsSelection({mappings, onMappingsChange, minecraftVersion, mappingsLoading}:
                                       MappingsSelectionProps) {
     const screen = useScreenSize();
-    const isPortrait = /*screen.isPortrait*/ true;
+    const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
-    return <Row justifyContent={"end"} padding={{top: isPortrait ? 0 : 8, left: isPortrait? 0: 5}}>
+    return <Row style={{float: "right", border: "1px solid rgb(51 51 51)"}} justifyContent={"end"}
+                padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}} margin={{left: isPortrait? 0 : 5}}>
         <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
                        values={allMappingNamespaces.map(type => mappingsName(type))}
                        index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
