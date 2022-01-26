@@ -55,9 +55,10 @@ export function WithMappings({controller, children}:
 function MappingSelectionLayout({children, selection}: { selection: JSX.Element } & WithChildren) {
     const screen = useScreenSize();
     return screen.isPortrait ? <Column>{selection}{children}</Column> :
-        <div /*width={"max"}*/>
-            <Spacer flexGrow={1}/>
+        <div style = {{width: "100%"}} /*width={"max"}*/>
+
             {selection}
+            {/*<Spacer flexGrow={1}/>*/}
             {children}
         </div>
 }

@@ -41,17 +41,13 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mapping
                   text={"Loading Mappings..."}/>}
     </Column>;
 }
-
-//TODO: maybe have the first 2-3 lines have a short width, and then have the rest be full width,
-// and never use that expanding selection stuff?
-
 export function MappingsSelection({mappings, onMappingsChange, minecraftVersion, mappingsLoading}:
                                       MappingsSelectionProps) {
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
-    return <Row style={{float: "right", border: "1px solid rgb(51 51 51)"}} justifyContent={"end"}
-                padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}} margin={{left: isPortrait? 0 : 5}}>
+    return <Row style={{float: "right"}} justifyContent={"end"}
+                padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}} margin={{left: isPortrait? 0 : 15}}>
         <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
                        values={allMappingNamespaces.map(type => mappingsName(type))}
                        index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}

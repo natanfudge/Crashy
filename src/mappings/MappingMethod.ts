@@ -1,6 +1,6 @@
 import {JavaClass, JavaMethod, Loader, LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {usePromise} from "../ui/utils/PromiseBuilder";
-import {MappingsProvider} from "./MappingsProvider";
+import {MappingsProvider, MappingsVersion} from "./MappingsProvider";
 import {getMappingsCached} from "./Mappings";
 import {MemoryCache} from "../utils/PromiseMemoryCache";
 import {flipRecord} from "../utils/Javascript";
@@ -25,6 +25,7 @@ export interface MappingContext {
     desiredNamespace: MappingsNamespace;
     // undefined if builds are still loading
     desiredBuild: string | undefined;
+    minecraftVersion: string
     isDeobfuscated: boolean;
     loader: LoaderType;
 }
@@ -57,7 +58,7 @@ export async function getMappingForName(name: Mappable, context: MappingContext)
         throw new Error(`Cannot find path from namespace '${originalNamespace}' to namespace '${context.desiredNamespace}'`)
     }
     const withDirection = resolveDirectionOfMappings(originalNamespace, mappingChain);
-    return mappingViaProviderChain(withDirection, context.desiredBuild);
+    return mappingViaProviderChain(withDirection, {build: context.desiredBuild, minecraftVersion: context.minecraftVersion});
 }
 
 type DirectionedProvider = { provider: MappingsProvider, reverse: boolean }
@@ -78,16 +79,16 @@ const reversedClassMappingsCache = new MemoryCache<Record<string, string>>();
 const reversedMethodMappingsCache = new MemoryCache<Record<string, string>>();
 
 async function mappingViaProvider(
-    dirProvider: DirectionedProvider, build: string
+    dirProvider: DirectionedProvider, version: MappingsVersion
 ): Promise<MappingMethod> {
     const provider = dirProvider.provider;
-    const mappings = await getMappingsCached(provider, build);
-    const key = provider.fromNamespace + provider.toNamespace + build;
+    const mappings = await getMappingsCached(provider, version);
+    const key = provider.fromNamespace + provider.toNamespace + version.build + version.minecraftVersion;
 
     const usedClassMappings = dirProvider.reverse ? reversedClassMappingsCache.get(key, () => flipRecord(mappings.classes))
         : mappings.classes
-    const usedMethodMappings = dirProvider.reverse ? reversedMethodMappingsCache.get(key, () => flipRecord(mappings.methods))
-        : mappings.methods
+    const usedMethodMappings = dirProvider.reverse ? reversedMethodMappingsCache.get(key, () => flipRecord(mappings.noDescriptorToDescriptorMethods))
+        : mappings.noDescriptorToDescriptorMethods
     return {
         mapMethod: unmapped => usedMethodMappings[unmapped] ?? unmapped,
         mapClass: unmapped => usedClassMappings[unmapped] ?? unmapped
@@ -96,10 +97,10 @@ async function mappingViaProvider(
 
 async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
-    build: string
+    version: MappingsVersion
 ): Promise<MappingMethod> {
     const mappingChain = await Promise.all(
-        providerChain.map(provider => mappingViaProvider(provider, build))
+        providerChain.map(provider => mappingViaProvider(provider, version))
     );
 
     const classMaps = mappingChain.map(strategy => ((name: string) => strategy.mapClass(name)))

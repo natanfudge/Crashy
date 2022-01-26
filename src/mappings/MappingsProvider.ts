@@ -1,10 +1,15 @@
 import {MappingsNamespace} from "./MappingsNamespace";
-import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
+import {getYarnBuilds} from "./YarnMappingsProvider";
 import {Mappings} from "./Mappings";
-import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {getYarnMappings2} from "./providers/YarnMappingsProvider2";
+import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
 
 export type MappingsBuilds = string[];
+
+export interface MappingsVersion {
+    minecraftVersion: string
+    build: string
+}
 
 export interface MappingsProvider {
     fromNamespace: MappingsNamespace
@@ -15,7 +20,7 @@ export interface MappingsProvider {
     /**
      * The build is the full version name of the mappings, e.g. 1.18.1+build.13
      */
-    getMappings(build: string): Promise<Mappings>
+    getMappings(version: MappingsVersion): Promise<Mappings>
 }
 
 
@@ -27,8 +32,8 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
         // await new Promise(resolve => setTimeout(resolve, 3000))
         return builds.map(build => build.version)
     },
-    getMappings(build: string): Promise<Mappings> {
-        return getYarnMappings2(build)
+    getMappings(version: MappingsVersion): Promise<Mappings> {
+        return getYarnMappings2(version.build)
     }
 }
 
@@ -37,22 +42,24 @@ export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
     fromNamespace: "Intermediary",
     toNamespace: "Quilt",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
-        const builds = await getYarnBuilds(minecraftVersion)
-        return builds.map(build => build.version)
+        // const builds = await getYarnBuilds(minecraftVersion)
+        // return builds.map(build => build.version)
+        throw new Error("TODO")
     },
-    getMappings(build: string): Promise<Mappings> {
-        return getYarnMappings(build)
+    getMappings(version: MappingsVersion): Promise<Mappings> {
+        // return getYarnMappings(build)
+        throw new Error("TODO")
     }
 }
 
 export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
     toNamespace: "Intermediary",
-     getBuilds(minecraftVersion: string): Promise<string[]> {
-        throw new Error("TODO")
+    async getBuilds(): Promise<string[]> {
+        return [];
     },
-    getMappings(build: string): Promise<Mappings> {
-        throw new Error("TODO")
+    async getMappings(version: MappingsVersion): Promise<Mappings> {
+        return getIntermediaryMappings(version.minecraftVersion);
     }
 }
 
@@ -62,8 +69,12 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
     async getBuilds(minecraftVersion: string): Promise<string[]> {
         throw new Error("TODO")
     },
-    getMappings(build: string): Promise<Mappings> {
-        throw new Error("TODO")
+    async getMappings(version: MappingsVersion): Promise<Mappings> {
+        return {
+            noDescriptorToDescriptorMethods: {},
+            classes: {}
+        }
+        // throw new Error("TODO")
     }
 }
 
@@ -73,18 +84,30 @@ export const SrgToMcpMappingsProvider: MappingsProvider = {
     async getBuilds(minecraftVersion: string): Promise<string[]> {
         throw new Error("TODO")
     },
-    getMappings(build: string): Promise<Mappings> {
+    getMappings(version: MappingsVersion): Promise<Mappings> {
         throw new Error("TODO")
     }
 }
-// const mappingsProviders: Record<MappingsNamespaceName,MappingsProvider> = {
-//     Intermediary: OfficialToIntermediaryMappingsProvider,
-//     Yarn: IntermediaryToYarnMappingsProvider,
-//     Quilt: IntermediaryToQuiltMappingsProvider,
-//     Official: OfficialToIntermediaryMappingsProvider,
-//     Srg: OfficialToSrgMappingsProvider,
-//     MCP: SrgToMcpMappingsProvider
-// }
+
+export const OfficialToMojmapMappingsProvider: MappingsProvider = {
+    fromNamespace: "Official",
+    toNamespace: "MojMap",
+    async getBuilds(minecraftVersion: string): Promise<string[]> {
+        throw new Error("TODO")
+    },
+    getMappings(version: MappingsVersion): Promise<Mappings> {
+        throw new Error("TODO")
+    }
+}
+const mappingsProvidersForEveryNamespace: Record<MappingsNamespace,MappingsProvider> = {
+    Intermediary: OfficialToIntermediaryMappingsProvider,
+    Yarn: IntermediaryToYarnMappingsProvider,
+    Quilt: IntermediaryToQuiltMappingsProvider,
+    Official: OfficialToIntermediaryMappingsProvider,
+    Srg: OfficialToSrgMappingsProvider,
+    Mcp: SrgToMcpMappingsProvider,
+    MojMap: OfficialToMojmapMappingsProvider
+}
 export const allMappingsProviders: MappingsProvider[] = [
     IntermediaryToYarnMappingsProvider,
     IntermediaryToQuiltMappingsProvider,

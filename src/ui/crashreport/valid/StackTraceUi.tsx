@@ -26,18 +26,18 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
     const mappingsController = new MappingsController(report)
     const mappings = mappingsController.getContext();
 
-    return <Column>
+    return <Column width={"max"}>
         <WithMappings controller={mappingsController}>
-            <div >
+            <div>
                 {causerList.length > 1 && CausationButtons(currentCauserIndex, causerList, setCauserIndex)}
 
-                {/*<Row flexWrap={"wrap"}>*/}
                     <StackTraceMessageUi title={currentTrace.title} mappingContext={mappings}/>
-                {/*</Row>*/}
+
+                <Divider/>
+                <StackTraceElementsUi elements={currentTrace.elements} mappings={mappings}/>
             </div>
         </WithMappings>
-        <Divider/>
-        <StackTraceElementsUi elements={currentTrace.elements} mappings={mappings}/>
+
     </Column>
 }
 

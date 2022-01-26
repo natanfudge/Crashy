@@ -1,20 +1,45 @@
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import {MappingsNamespace} from "./MappingsNamespace";
-import {IntermediaryToYarnMappingsProvider, MappingsBuilds, MappingsProvider} from "./MappingsProvider";
+import {
+    IntermediaryToYarnMappingsProvider,
+    MappingsBuilds,
+    MappingsProvider,
+    MappingsVersion
+} from "./MappingsProvider";
 import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
 
+type SimpleMethodName = string
+type DescriptoredMethodName = string
 
 export interface Mappings {
-    // Must use dot.notation e.g. net.minecraft.gui.GuiThing
+    /**
+     * Must use dot.notation e.g. net.minecraft.gui.GuiThing
+     */
     classes: StringMap
-    methods: StringMap
+    /**
+     * Stack trace lines include method names without the descriptor - so we need a map from these "simple" method names
+     * to the desired namespace
+     */
+    noDescriptorToDescriptorMethods: Record<SimpleMethodName, DescriptoredMethodName>
+    /**
+     * In cases where we go through multiple namespaces to get to the desired namespace, we need to not lose information along the way.
+     * So in that case if you go through namespaces a -> b -> c -> d it will be:
+     * - Stack trace includes SimpleMethodNames from namespace a
+     * - first Mappings maps those names to DescriptoredMethodNames from namespace b (using noDescriptorToDescriptorMethods)
+     * - second Mappings maps those names to DescriptoredMethodNames from namespace c (using descriptorToDescriptorMethods)
+     * - third Mappings maps those names to DescriptoredMethodNames from namespace d (using descriptorToDescriptorMethods)
+     *
+     * Using descriptors as much as possible ensures the mappings are as accurate as possible.
+     */
+    descriptorToDescriptorMethods: Record<DescriptoredMethodName, DescriptoredMethodName>
     // fields: StringMap
 }
 
 export const EmptyMappings: Mappings = {
     classes: {},
-    methods: {},
+    noDescriptorToDescriptorMethods: {},
+    descriptorToDescriptorMethods: {}
 }
 
 export function remap(name: string, map: StringMap): string {
@@ -60,9 +85,9 @@ export function useAnyMappingsLoading(): boolean {
     return loading;
 }
 
-export async function getMappingsCached(mappingsProvider: MappingsProvider, build: string): Promise<Mappings> {
+export async function getMappingsCached(mappingsProvider: MappingsProvider, version: MappingsVersion): Promise<Mappings> {
     return mappingsCache.get(
-        mappingsProvider.fromNamespace + mappingsProvider.toNamespace + build,
-        () => mappingsProvider.getMappings(build)
+        mappingsProvider.fromNamespace + mappingsProvider.toNamespace + version.build + version.minecraftVersion,
+        () => mappingsProvider.getMappings(version)
     );
 }

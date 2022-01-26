@@ -6,8 +6,17 @@ export function removeSuffix(str: string, suffix: string): string {
 }
 
 export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
-    //TODO: check if we need {} at the end of this
-    return typedKeys(object).map((key, index) => mapFn(key, object[key], index), {});
+    return typedKeys(object).map((key, index) => mapFn(key, object[key], index));
+}
+
+export function mapRecord<K extends Key, V, NK extends Key, NV>(
+    record: Record<K, V>, keyMap: (key: K) => NK, valueMap: (value: V) => NV
+): Record<NK, NV> {
+    const newRecord: Record<NK, NV> = {} as Record<NK, NV>
+    for(const key in record){
+        newRecord[keyMap(key)] = valueMap(record[key]);
+    }
+    return newRecord
 }
 
 export function objectFilter<V>(object: Record<string, V>, filter: (key: string, value: V) => boolean): Record<string, V> {

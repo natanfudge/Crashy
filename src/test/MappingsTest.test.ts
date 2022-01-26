@@ -1,4 +1,4 @@
-import {getYarnBuilds, getYarnMappings} from "../mappings/YarnMappingsProvider";
+import {getYarnBuilds} from "../mappings/YarnMappingsProvider";
 import "crash-parser/src/util/Extensions"
 import {
     JavaClass,
@@ -12,35 +12,25 @@ import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher"
 import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
 import {getYarnMappings2} from "../mappings/providers/YarnMappingsProvider2";
 import {getMappingForName} from "../mappings/MappingMethod";
-import { resolveMappingsChain } from "../mappings/MappingsResolver";
+import {resolveMappingsChain} from "../mappings/MappingsResolver";
 import {
     IntermediaryToQuiltMappingsProvider,
     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
     SrgToMcpMappingsProvider
 } from "../mappings/MappingsProvider";
-//TODO: run all tests
 
-test("Yarn mappings can be retrieved", async () => {
-    const versions = await getYarnBuilds("1.18.1");
-    const mappings = await getYarnMappings(versions[0].version)
-    expect(mappings.classes["net.minecraft.class_5973"]).toEqual("net.minecraft.util.math.MathConstants")
-    expect(mappings.methods["method_13365"]).toEqual("register")
-    // expect(mappings.fields["field_29658"]).toEqual("PI")
-}, 15000)
-//TODO: when there are multiple methods of the same name in the same class, it's impossible to remap exactly from yarn to intermediary.
-// So, as a best-effort implementation, we will use an arbitrary mapping of same-name methods. A simple way of doing this
-// would be to allow flipRecord() to override keys, but we need to make sure we don't miss any other (bad) cases where a key
-// is duplicated.
-test("Yarn mappings can be retrieved via new method", async () => {
-    const versions = await getYarnBuilds("1.18.1");
-    const mappings = await getYarnMappings2(versions[0].version)
-    expect(mappings.classes["net.minecraft.class_5973"]).toEqual("net.minecraft.util.math.MathConstants")
-    expect(mappings.methods["net.minecraft.class_3060#method_13365"]).toEqual("net.minecraft.server.command.ForceLoadCommand#register")
-}, 30000)
+// test("Yarn mappings can be retrieved", async () => {
+//     const versions = await getYarnBuilds("1.18.1");
+//     const mappings = await getYarnMappings(versions[0].version)
+//     expect(mappings.classes["net.minecraft.class_5973"]).toEqual("net.minecraft.util.math.MathConstants")
+//     expect(mappings.methods["method_13365"]).toEqual("register")
+//     // expect(mappings.fields["field_29658"]).toEqual("PI")
+// }, 15000)
+
+
 
 //TODO: test it does the shortest path by adding more providers
-//TODO: restore when we have the other mappings
 test("Mappings BFS works correctly", () => {
     const path1 = resolveMappingsChain("Mcp", "Quilt")
     expect(path1).toEqual([SrgToMcpMappingsProvider, OfficialToSrgMappingsProvider, OfficialToIntermediaryMappingsProvider, IntermediaryToQuiltMappingsProvider])
