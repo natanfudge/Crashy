@@ -26,15 +26,6 @@ String.prototype.splitToTwo = function (this: string, splitOn: string): [string,
     return [this.slice(0, index), this.slice(index + 1)]
 }
 
-Array.prototype.arrayEquals = function <T>(this: T[], b: T[]): boolean {
-    return this.length === b.length &&
-        this.every((val, index) => val === b[index]);
-}
-
-Array.prototype.remove = function<T>(this: T[], item: T) : void {
-    const index = this.indexOf(item);
-    if (index !== -1) this.splice(index, 1);
-}
 
 String.prototype.removeAfterFirst = function (this: string, removeAfter: string): string {
     const index = this.indexOf(removeAfter);
@@ -77,3 +68,19 @@ String.prototype.removeBeforeLastExclusive = function (this: string, removeBefor
 //     }
 // }
 
+Array.prototype.arrayEquals = function <T>(this: T[], b: T[]): boolean {
+    return this.length === b.length &&
+        this.every((val, index) => val === b[index]);
+}
+
+Array.prototype.remove = function <T>(this: T[], item: T): void {
+    const index = this.indexOf(item);
+    if (index !== -1) this.splice(index, 1);
+}
+Array.prototype.firstOr = function <T, V>(this: T[], or: () => V): T | V {
+    if (this.length === 0) {
+        return or();
+    } else {
+        return this[0];
+    }
+}

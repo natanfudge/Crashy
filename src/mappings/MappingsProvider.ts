@@ -1,7 +1,6 @@
 import {MappingsNamespace} from "./MappingsNamespace";
-import {getYarnBuilds} from "./YarnMappingsProvider";
 import {EmptyMappings, Mappings} from "./Mappings";
-import {getYarnMappings2} from "./providers/YarnMappingsProvider2";
+import {getYarnBuilds, getYarnMappings2} from "./providers/YarnMappingsProvider";
 import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
 
 export type MappingsBuilds = string[];

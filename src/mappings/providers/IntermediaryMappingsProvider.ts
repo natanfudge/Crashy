@@ -1,4 +1,4 @@
-import {extractMappings, profiler, profilerDel} from "./ProviderUtils";
+import {extractTinyMappings, profiler, profilerDel} from "./ProviderUtils";
 import {Mappings} from "../Mappings";
 import {parseTinyFile} from "./TinyMappings";
 
@@ -6,7 +6,7 @@ export async function getIntermediaryMappings(mcVersion: string): Promise<Mappin
     profiler("Downloading Yarn Intermediary Mappings");
     const res = await fetch(`https://maven.fabricmc.net/net/fabricmc/intermediary/${mcVersion}/intermediary-${mcVersion}-v2.jar`);
     profilerDel("Downloading Yarn Intermediary Mappings");
-    const mappings = await extractMappings(res);
+    const mappings = await extractTinyMappings(res);
 
     return loadIntermediaryMappings(mappings);
 }

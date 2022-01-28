@@ -17,10 +17,10 @@ test("Flip record works correctly", () => {
         }
     )
 
-    const record2 = {
-        ...oldRecord,
-        "amar" :"bar"
-    }
+    // const record2 = {
+    //     ...oldRecord,
+    //     "amar" :"bar"
+    // }
 
-    expect(() => flipRecord(record2)).toThrow()
+    // expect(() => flipRecord(record2)).toThrow()
 })

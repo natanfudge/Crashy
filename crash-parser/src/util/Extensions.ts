@@ -23,6 +23,7 @@ declare global {
     interface Array<T> {
         arrayEquals(array: T[]): boolean
         remove(item : T): void
+        firstOr<V>(or: () => V): T | V
     }
 }
 

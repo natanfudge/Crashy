@@ -7,8 +7,8 @@ import {BiMap} from "../../utils/BiMap";
 export const ClassMethodSeperator = "#"
 
 export async function parseTinyFile(contents: string): Promise<Mappings> {
-    const class_mappings = contents.split("\nc").map(e => e.split("\n").map(c => c.split("\t", -1)));
-    const first_line = class_mappings.shift();
+    const classMappings = contents.split("\nc").map(e => e.split("\n").map(c => c.split("\t", -1)));
+    const first_line = classMappings.shift();
     if (first_line === undefined) {
         throw new Error("ERROR PARSING YARN MAPPINGS FILE!");
     }
@@ -17,43 +17,30 @@ export async function parseTinyFile(contents: string): Promise<Mappings> {
     const classesWithSlashNotation: StringMap = {}
     const noDescriptorToDescriptorMethods: StringMap = {}
     const descriptorToDescriptorMethods: StringMap = {}
-    // const mappings : Mappings = {
-    //     classes: {},
-    //     noDescriptorToDescriptorMethods: {},
-    //     descriptorToDescriptorMethods: {}
-    // }
 
     // We go through all the class mappings first and store them so we can remap descriptors on each individual method below
-    for (const clazz of class_mappings) {
-        const class_def = clazz[0];
-        const fromClass = class_def?.[1];
-        const toClass = class_def?.[2];
-        if (fromClass === undefined || toClass === undefined) {
-            throw new Error("ERROR PARSING YARN MAPPINGS FILE, bad class definition???");
-        }
+    for (const classMapping of classMappings) {
+        const [, fromClass, toClass] = classMapping[0];
         classesWithSlashNotation[fromClass] = toClass;
     }
 
-    for (const clazz of class_mappings) {
-        const class_def = clazz[0];
-        const fromClass = class_def?.[1];
-        const toClass = class_def?.[2];
-        if (fromClass === undefined || toClass === undefined) {
-            throw new Error("ERROR PARSING YARN MAPPINGS FILE, bad class definition???");
-        }
+    for (const clazz of classMappings) {
+        const [,fromClass,toClass] = clazz[0];
+
         for (const item of clazz) {
-            // skip empty line
-            if (item.join("").trim() === "") continue;
-            switch (item[1]) {
+            // Skip anything that can't be a method declaration
+            if (item.length < 5) continue;
+            const [,identifier,descriptor,methodUnmapped,methodMapped] = item;
+            switch (identifier) {
                 // class method
                 case "m":
-                    const descriptor = item[2]
-                    const fromMethod = item[3]
-                    const toMethod = item[4]
+                    // const descriptor = item[2]
+                    // const fromMethod = item[3]
+                    // const toMethod = item[4]
 
-                    const simpleFromMethodName = withDotNotation(fromClass + ClassMethodSeperator + fromMethod)
+                    const simpleFromMethodName = withDotNotation(fromClass + ClassMethodSeperator + methodUnmapped)
                     const fullFromMethodName = simpleFromMethodName + descriptor;
-                    const fullToMethodName = withDotNotation(toClass + ClassMethodSeperator + toMethod)
+                    const fullToMethodName = withDotNotation(toClass + ClassMethodSeperator + methodMapped)
                         + remapDescriptor(descriptor, classesWithSlashNotation)
                     noDescriptorToDescriptorMethods[simpleFromMethodName] = fullToMethodName;
                     descriptorToDescriptorMethods[fullFromMethodName] = fullToMethodName;
@@ -69,6 +56,8 @@ export async function parseTinyFile(contents: string): Promise<Mappings> {
         noDescriptorToDescriptorMethods: new BiMap(noDescriptorToDescriptorMethods)
     };
 }
+
+// function addMethod()
 
 function remapDescriptor(descriptor: string, classMappings: StringMap): string {
     return descriptor.replace(/L(.+?);/g, (match, p1) => `L${classMappings[p1] ?? p1};`);

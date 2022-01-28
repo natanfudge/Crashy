@@ -1,5 +1,6 @@
 import {StringMap} from "./CrashReport";
 import {MappingMethod} from "../../../src/mappings/MappingMethod";
+import {ClassMethodSeperator} from "../../../src/mappings/providers/TinyMappings";
 
 export interface RichCrashReport {
     rawText: string
@@ -130,18 +131,40 @@ export interface JavaClass {
 
 
 export function javaClassFullName(javaClass: JavaClass, mappings: MappingMethod) {
-    return mappings.mapClass(javaClass.packageName + "." + javaClass.simpleName);
+    return mappings.mapClass(javaClassFullUnmappedName(javaClass));
 }
 
+function javaClassFullUnmappedName(javaClass: JavaClass) {
+    return javaClass.packageName + "." + javaClass.simpleName;
+}
+
+// Mystery: net.minecraft.class_846$class_851$class_4578.method_22783 is not getting remapped
+// SOLVED: method_22783 belongs to the superclass of class_4578 - class_4577.
+// Temporary solution: remap class and method separately (problem: no simple method mappings)
+// True solution: resolve that class_4577 is a superclass of class_4578 and that it should search there for a method_22783 method (add todo)
+
+// Mystery: net.minecraft.class_6850#createRegion is not getting remapped.
+// Obviously, createRegion is not an int name and therefore it wouldn't work.
+// However, both a discord query and an intellij search show that method doesn't exist at all - yarn or otherwise.
+// A solution would be to remap class separately, but I want to figure out what is going on.
+
+// TODO: Mappings are taking a lot of memory, which will increase once we have a map for simple method names as well.
+// - Learn how to profile memory and find out if it truely takes a lot of memory.
+//      - If we do need to optimize, consider only saving a small portion of mappings. After all, we are only remapping a few identifiers!
+//      - Maybe do a scan of all Mappables in a crash report at the start? That wouldn't be too hard.
+// - Find out other memory bottlenecks along the way.
+
 export function javaMethodSimpleName(javaMethod: JavaMethod, mappings: MappingMethod) {
-    return javaClassFullName(javaMethod.class, mappings).removeBeforeLastExclusive(".") + "."
-        + mappings.mapMethod(javaMethod.name);
+    return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod)).removeBeforeLastExclusive(".")
 }
 
 export function javaMethodFullName(javaMethod: JavaMethod, mappings: MappingMethod) {
-    return javaClassFullName(javaMethod.class, mappings) + "." + mappings.mapMethod(javaMethod.name);
+    return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod));
 }
 
+function javaMethodFullUnmappedName(javaMethod: JavaMethod) {
+    return javaClassFullUnmappedName(javaMethod.class) + ClassMethodSeperator + javaMethod.name;
+}
 
 export interface CrashContext {
     javaVersion: string

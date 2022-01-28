@@ -24,6 +24,7 @@ export type Mappable = JavaClass | JavaMethod
 export enum DesiredBuildProblem {
     BuildsLoading, NoBuildsForNamespace
 }
+
 export type DesiredBuild = string | DesiredBuildProblem
 
 export function isValidDesiredBuild(desiredBuild: DesiredBuild): desiredBuild is string {
@@ -67,12 +68,14 @@ export async function getMappingForName(name: Mappable, context: MappingContext)
         throw new Error(`Cannot find path from namespace '${originalNamespace}' to namespace '${context.desiredNamespace}'`)
     }
     const withDirection = resolveDirectionOfMappings(originalNamespace, mappingChain);
+    const usedBuild = context.desiredBuild === DesiredBuildProblem.NoBuildsForNamespace
     return mappingViaProviderChain(withDirection, {
         // If there are no builds just pass in "", the mappings provider just ignores it
-        build: context.desiredBuild === DesiredBuildProblem.NoBuildsForNamespace ? "" : context.desiredBuild,
+        targetBuild: context.desiredBuild,
         minecraftVersion: context.minecraftVersion
     });
 }
+
 
 type DirectionedProvider = { provider: MappingsProvider, reverse: boolean }
 // We are given a series of mapping providers from resolveMappingsChain, but in some of them we need the reverse direction,
@@ -94,16 +97,30 @@ function resolveDirectionOfMappings(
 
 // async function middlemanMappingViaProvider
 
+interface DesiredVersion {
+    targetBuild: string | DesiredBuildProblem.NoBuildsForNamespace;
+    minecraftVersion: string
+}
+
 async function mappingViaProviderStep(
-    dirProvider: DirectionedProvider, version: MappingsVersion,
-    /**
-     * See javadoc for Mappings#descriptorToDescriptorMethods.
-     * Initially we map from noDesc to desc, at the middle we map from desc to desc, and at the end we remove the descriptor.
-     */
-    {initial}: { initial: boolean }
+    dirProvider: DirectionedProvider, version: DesiredVersion,
+    {
+        /**
+         * See javadoc for Mappings#descriptorToDescriptorMethods.
+         * Initially we map from noDesc to desc, at the middle we map from desc to desc, and at the end we remove the descriptor.
+         */
+        initial,
+        /**
+         * We only care about the build for the last mapping, because that's the one the user actually chose.
+         */
+        last
+    }: { initial: boolean, last: boolean }
 ): Promise<MappingMethod> {
     const provider = dirProvider.provider;
-    const mappings = await getMappingsCached(provider, version);
+    const mappings = await getMappingsCached(provider, {
+        minecraftVersion: version.minecraftVersion,
+        build: await resolveUsedBuild(last, version, dirProvider)
+    });
     const reverse = dirProvider.reverse;
 
     const usedClassMappings = reverse ? mappings.classes.getReverseMap() : mappings.classes.getNormalMap();
@@ -117,18 +134,36 @@ async function mappingViaProviderStep(
     };
 }
 
+async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvider: DirectionedProvider): Promise<string> {
+    const provider = dirProvider.provider;
+    if (last) {
+        // For the user it may appear there are no builds for the target namespace, however, sometimes we gather mappings by flipping existing providers.
+        // For example, when a user requests to go from yarn to intermediary, intermediary has no builds, however we need to specify a real yarn build to the provider,
+        // because we use the intermediary -> yarn provider (there is no yarn -> intermediary provider)
+        if (version.targetBuild === DesiredBuildProblem.NoBuildsForNamespace) {
+            const targetNamespace = dirProvider.reverse ? provider.fromNamespace : provider.toNamespace;
+            return (await provider.getBuilds(version.minecraftVersion)).firstOr(() => "no-build")
+        } else {
+            return version.targetBuild;
+        }
+    }
+    return (await provider.getBuilds(version.minecraftVersion)).firstOr(() => "no-build")
+}
+
 
 function removeDescriptor(methodName: string): string {
     return methodName.removeAfterFirstExclusive("(")
 }
 
-//TODO: this breaks when we do multiple layers... fetch error...
 async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
-    version: MappingsVersion
+    version: DesiredVersion
 ): Promise<MappingMethod> {
     const mappingChain = await Promise.all(
-        providerChain.map((provider, i) => mappingViaProviderStep(provider, version, {initial: i === 0}))
+        providerChain.map((provider, i) => mappingViaProviderStep(provider, version, {
+            initial: i === 0,
+            last: i === providerChain.length - 1
+        }))
     );
 
     const classMaps = mappingChain.map(strategy => ((name: string) => strategy.mapClass(name)))

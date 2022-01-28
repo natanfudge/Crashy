@@ -42,7 +42,7 @@ export function profilerDel(thing: string) {
 }
 
 
-export async function extractMappings(response: Response): Promise<string> {
+export async function extractFromZip(response: Response, path: string): Promise<string | undefined> {
     const byteArray = new Uint8Array(await response.arrayBuffer())
     const unzipped = await new Promise<Unzipped>((resolve,reject) => {
         unzip(byteArray, (err,unzipped) =>{
@@ -51,10 +51,13 @@ export async function extractMappings(response: Response): Promise<string> {
         })
     });
 
-    const mappingsFileU8 = unzipped["mappings/mappings.tiny"]
+    const mappingsFileU8 = unzipped[path]
     return strFromU8(mappingsFileU8);
-    // return pako.inflate(byteArray, {to: 'string'})
 }
+export async function extractTinyMappings(response: Response): Promise<string> {
+    return (await extractFromZip(response,"mappings/mappings.tiny"))!
+}
+
 
 export  function withDotNotation(string: string): string {
     return string.replace(/\//g, ".")

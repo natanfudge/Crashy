@@ -1,4 +1,3 @@
-import {getYarnBuilds} from "../mappings/YarnMappingsProvider";
 import "crash-parser/src/util/Extensions"
 import {
     JavaClass,
@@ -10,7 +9,7 @@ import {
 } from "crash-parser/src/model/RichCrashReport";
 import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
 import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
-import {getYarnMappings2} from "../mappings/providers/YarnMappingsProvider2";
+import {getYarnBuilds, getYarnMappings2} from "../mappings/providers/YarnMappingsProvider";
 import {getMappingForName} from "../mappings/MappingMethod";
 import {resolveMappingsChain} from "../mappings/MappingsResolver";
 import {
@@ -61,15 +60,18 @@ test("Remapping works correctly", async () => {
     expect(remappedClass).toEqual("net.minecraft.util.math.MathConstants")
 
     const testMethod: JavaMethod = {
-        class: testClass,
+        class: {
+            packageName: "net.minecraft",
+            simpleName: "class_3060"
+        },
         name: "method_13365"
     }
 
     const remappedMethodFull = javaMethodFullName(testMethod, mappings);
     const remappedMethodSimple = javaMethodSimpleName(testMethod, mappings);
 
-    expect(remappedMethodFull).toEqual("net.minecraft.util.math.MathConstants.register")
-    expect(remappedMethodSimple).toEqual("MathConstants.register")
+    expect(remappedMethodFull).toEqual("net.minecraft.server.command.ForceLoadCommand#register")
+    expect(remappedMethodSimple).toEqual("ForceLoadCommand#register")
 }, 30000)
 
 test("Mappings detection works correctly", () => {
