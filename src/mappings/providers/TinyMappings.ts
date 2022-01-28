@@ -2,6 +2,7 @@ import {Mappings} from "../Mappings";
 import {withDotNotation} from "./ProviderUtils";
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import {mapRecord} from "../../utils/Javascript";
+import {BiMap} from "../../utils/BiMap";
 
 export const ClassMethodSeperator = "#"
 
@@ -63,9 +64,9 @@ export async function parseTinyFile(contents: string): Promise<Mappings> {
     }
 
     return {
-        classes: mapRecord(classesWithSlashNotation, k => withDotNotation(k), v => withDotNotation(v)),
-        descriptorToDescriptorMethods,
-        noDescriptorToDescriptorMethods
+        classes: new BiMap(mapRecord(classesWithSlashNotation, k => withDotNotation(k), v => withDotNotation(v))),
+        descriptorToDescriptorMethods: new BiMap(descriptorToDescriptorMethods),
+        noDescriptorToDescriptorMethods: new BiMap(noDescriptorToDescriptorMethods)
     };
 }
 

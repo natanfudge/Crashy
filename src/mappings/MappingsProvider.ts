@@ -1,6 +1,6 @@
 import {MappingsNamespace} from "./MappingsNamespace";
 import {getYarnBuilds} from "./YarnMappingsProvider";
-import {Mappings} from "./Mappings";
+import {EmptyMappings, Mappings} from "./Mappings";
 import {getYarnMappings2} from "./providers/YarnMappingsProvider2";
 import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
 
@@ -70,10 +70,7 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
         throw new Error("TODO")
     },
     async getMappings(version: MappingsVersion): Promise<Mappings> {
-        return {
-            noDescriptorToDescriptorMethods: {},
-            classes: {}
-        }
+        return EmptyMappings;
         // throw new Error("TODO")
     }
 }

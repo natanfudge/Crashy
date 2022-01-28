@@ -1,6 +1,6 @@
 import {allMappingNamespaces, MappingsNamespace} from "./MappingsNamespace";
 import {MappingsProvider, allMappingsProviders} from "./MappingsProvider";
-import {Queue} from "./Queue";
+import {Queue} from "../utils/Queue";
 import {toRecord} from "../utils/Javascript";
 
 /**

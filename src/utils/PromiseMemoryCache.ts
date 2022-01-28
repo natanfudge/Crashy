@@ -31,11 +31,15 @@ export class PromiseMemoryCache<T> {
         // Promise not fulfilled yet - store it
         this.ongoingPromises[key] = promise;
         this.invokeListeners();
-        const value = await promise;
+        const value = await promise.finally(
+            () => {
+                delete this.ongoingPromises[key];
+                this.invokeListeners();
+            }
+        );
         // Promise fulfilled - we can now use the cache instead and we don't need to store the promise anymore.
         this.cache[key] = value;
-        delete this.ongoingPromises[key];
-        this.invokeListeners();
+
         return value;
     }
 

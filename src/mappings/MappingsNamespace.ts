@@ -24,10 +24,24 @@ export function mappingsName(type: MappingsNamespace): string {
 
 export const allMappingNamespaces: MappingsNamespace[] = [
     "Yarn",
-    "Official",
     "MojMap",
+    "Mcp",
+    "Quilt",
     "Intermediary",
     "Srg",
-    "Mcp",
-    "Quilt"
+    "Official"
 ];
+
+export function namespaceHasMultipleBuildsPerMcVersion(namespace: MappingsNamespace): boolean {
+    switch (namespace) {
+        case "Yarn":
+        case "Mcp":
+        case "Quilt":
+            return true;
+        case "Official":
+        case "MojMap":
+        case "Intermediary":
+        case "Srg":
+           return false;
+    }
+}

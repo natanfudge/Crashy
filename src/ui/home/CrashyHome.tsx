@@ -12,6 +12,7 @@ import {Wrap, WrapMultiple} from "../utils/simple/SimpleDiv";
 import {Surface} from "../utils/simple/Surface";
 import {SimpleTextField} from "../utils/simple/SimpleTextField";
 import {useScreenSize} from "../../utils/Gui";
+import {gzipAsync} from "../../utils/fflate";
 
 enum InitialUploadState {
     Start,
@@ -33,8 +34,7 @@ export default function CrashyHome() {
 
                 <Button onClick={async () => {
                     setUploadState(InitialUploadState.Loading)
-                    //TODO: remove pako dependency and use fflate instead
-                    const response = await CrashyServer.uploadCrash(pako.gzip(log));
+                    const response = await CrashyServer.uploadCrash(await gzipAsync(log));
                     if (isUploadCrashError(response)) {
                         setUploadState(response);
                         setDialogOpen(true);

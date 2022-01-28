@@ -7,6 +7,7 @@ import {flipRecord} from "../utils/Javascript";
 import {MappingsNamespace} from "./MappingsNamespace";
 import {detectMappingNamespace} from "./MappingDetector";
 import {resolveMappingsChain} from "./MappingsResolver";
+import {BiMap} from "../utils/BiMap";
 
 export interface MappingMethod {
     mapMethod: (unmapped: string) => string
@@ -20,11 +21,19 @@ export const IdentityMapping: MappingMethod = {
 
 export type Mappable = JavaClass | JavaMethod
 
+export enum DesiredBuildProblem {
+    BuildsLoading, NoBuildsForNamespace
+}
+export type DesiredBuild = string | DesiredBuildProblem
+
+export function isValidDesiredBuild(desiredBuild: DesiredBuild): desiredBuild is string {
+    return typeof desiredBuild === "string";
+}
 
 export interface MappingContext {
     desiredNamespace: MappingsNamespace;
     // undefined if builds are still loading
-    desiredBuild: string | undefined;
+    desiredBuild: DesiredBuild;
     minecraftVersion: string
     isDeobfuscated: boolean;
     loader: LoaderType;
@@ -51,14 +60,18 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
 }
 
 export async function getMappingForName(name: Mappable, context: MappingContext): Promise<MappingMethod> {
-    if (context.desiredBuild === undefined) return IdentityMapping;
+    if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
     const originalNamespace = detectMappingNamespace(name, context);
     const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace);
     if (mappingChain === undefined) {
         throw new Error(`Cannot find path from namespace '${originalNamespace}' to namespace '${context.desiredNamespace}'`)
     }
     const withDirection = resolveDirectionOfMappings(originalNamespace, mappingChain);
-    return mappingViaProviderChain(withDirection, {build: context.desiredBuild, minecraftVersion: context.minecraftVersion});
+    return mappingViaProviderChain(withDirection, {
+        // If there are no builds just pass in "", the mappings provider just ignores it
+        build: context.desiredBuild === DesiredBuildProblem.NoBuildsForNamespace ? "" : context.desiredBuild,
+        minecraftVersion: context.minecraftVersion
+    });
 }
 
 type DirectionedProvider = { provider: MappingsProvider, reverse: boolean }
@@ -75,32 +88,47 @@ function resolveDirectionOfMappings(
     })
 }
 
-const reversedClassMappingsCache = new MemoryCache<Record<string, string>>();
-const reversedMethodMappingsCache = new MemoryCache<Record<string, string>>();
+// const reversedClassMappingsCache = new MemoryCache<Record<string, string>>();
+// const reversedNoDescMethodMappingsCache = new MemoryCache<Record<string, string>>();
+// const reversedDescMethodMappingsCache = new MemoryCache<Record<string, string>>();
 
-async function mappingViaProvider(
-    dirProvider: DirectionedProvider, version: MappingsVersion
+// async function middlemanMappingViaProvider
+
+async function mappingViaProviderStep(
+    dirProvider: DirectionedProvider, version: MappingsVersion,
+    /**
+     * See javadoc for Mappings#descriptorToDescriptorMethods.
+     * Initially we map from noDesc to desc, at the middle we map from desc to desc, and at the end we remove the descriptor.
+     */
+    {initial}: { initial: boolean }
 ): Promise<MappingMethod> {
     const provider = dirProvider.provider;
     const mappings = await getMappingsCached(provider, version);
-    const key = provider.fromNamespace + provider.toNamespace + version.build + version.minecraftVersion;
+    const reverse = dirProvider.reverse;
 
-    const usedClassMappings = dirProvider.reverse ? reversedClassMappingsCache.get(key, () => flipRecord(mappings.classes))
-        : mappings.classes
-    const usedMethodMappings = dirProvider.reverse ? reversedMethodMappingsCache.get(key, () => flipRecord(mappings.noDescriptorToDescriptorMethods))
-        : mappings.noDescriptorToDescriptorMethods
+    const usedClassMappings = reverse ? mappings.classes.getReverseMap() : mappings.classes.getNormalMap();
+    // Initial: no-desc -> desc, middleman: desc -> desc
+    const usedMethodMappingsInTermsOfDesc = initial ? mappings.noDescriptorToDescriptorMethods : mappings.descriptorToDescriptorMethods;
+    const usedMethodMappings = reverse ? usedMethodMappingsInTermsOfDesc.getReverseMap() : usedMethodMappingsInTermsOfDesc.getNormalMap();
+
     return {
         mapMethod: unmapped => usedMethodMappings[unmapped] ?? unmapped,
         mapClass: unmapped => usedClassMappings[unmapped] ?? unmapped
     };
 }
 
+
+function removeDescriptor(methodName: string): string {
+    return methodName.removeAfterFirstExclusive("(")
+}
+
+//TODO: this breaks when we do multiple layers... fetch error...
 async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
     version: MappingsVersion
 ): Promise<MappingMethod> {
     const mappingChain = await Promise.all(
-        providerChain.map(provider => mappingViaProvider(provider, version))
+        providerChain.map((provider, i) => mappingViaProviderStep(provider, version, {initial: i === 0}))
     );
 
     const classMaps = mappingChain.map(strategy => ((name: string) => strategy.mapClass(name)))
@@ -109,7 +137,8 @@ async function mappingViaProviderChain(
     return {
         // Call all the mappings required to go from one namespace to another
         mapClass: unmapped => callAll(unmapped, classMaps),
-        mapMethod: unmapped => callAll(unmapped, methodMaps)
+        // Final step: remove descriptor (since originally the unmapped has no descriptor)
+        mapMethod: unmapped => removeDescriptor(callAll(unmapped, methodMaps))
     };
 }
 

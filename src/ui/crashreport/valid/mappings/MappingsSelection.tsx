@@ -11,6 +11,7 @@ import {useScreenSize} from "../../../../utils/Gui";
 import {ItemSelection, SelectionType} from "../../../utils/Selection";
 import {MappingsBuilds} from "../../../../mappings/MappingsProvider";
 import {Text} from "../../../utils/simple/Text";
+import {DesiredBuildProblem, isValidDesiredBuild} from "../../../../mappings/MappingMethod";
 
 export interface MappingsSelectionProps {
     mappings: MappingsState;
@@ -34,20 +35,21 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mapping
                                // paddingTop: 8
                            }}
                            values={builds}
-                           index={mappings.build === undefined ? 0 : indexOfOrThrow(builds, mappings.build)}
+                           index={isValidDesiredBuild(mappings.build) ? indexOfOrThrow(builds, mappings.build) : 0}
                            onIndexChange={i => onMappingsChange(withBuild(mappings, builds[i]))}/>
         {mappingsLoading &&
             <Text padding={{left: 8, right: 3}} className={"blinking_text"} align={"center"} fontWeight={"bold"}
                   text={"Loading Mappings..."}/>}
     </Column>;
 }
+
 export function MappingsSelection({mappings, onMappingsChange, minecraftVersion, mappingsLoading}:
                                       MappingsSelectionProps) {
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
     return <Row style={{float: "right"}} justifyContent={"end"}
-                padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}} margin={{left: isPortrait? 0 : 15}}>
+                padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}} margin={{left: isPortrait ? 0 : 15}}>
         <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
                        values={allMappingNamespaces.map(type => mappingsName(type))}
                        index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
@@ -57,7 +59,7 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
                            // and since getting what versions are available takes time, we'll set the version to undefined
                            // for now.
                            // If the build is undefined then when all the builds load the first one will be used automatically.
-                           onMappingsChange({namespace: newNamespace, build: undefined})
+                           onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
                        }}/>
         {builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
             {builds.length > 0 &&

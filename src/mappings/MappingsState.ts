@@ -1,11 +1,11 @@
 import {MappingsNamespace} from "./MappingsNamespace";
+import {DesiredBuild} from "./MappingMethod";
 
 export interface MappingsState {
     namespace: MappingsNamespace,
-    // Undefined if still loading available versions
-    build: string | undefined
+    build: DesiredBuild
 }
 
-export function withBuild(state: MappingsState, build: string | undefined): MappingsState {
+export function withBuild(state: MappingsState, build: DesiredBuild): MappingsState {
     return {namespace: state.namespace, build: build}
 }
