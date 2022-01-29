@@ -68,7 +68,6 @@ export async function getMappingForName(name: Mappable, context: MappingContext)
         throw new Error(`Cannot find path from namespace '${originalNamespace}' to namespace '${context.desiredNamespace}'`)
     }
     const withDirection = resolveDirectionOfMappings(originalNamespace, mappingChain);
-    const usedBuild = context.desiredBuild === DesiredBuildProblem.NoBuildsForNamespace
     return mappingViaProviderChain(withDirection, {
         // If there are no builds just pass in "", the mappings provider just ignores it
         targetBuild: context.desiredBuild,

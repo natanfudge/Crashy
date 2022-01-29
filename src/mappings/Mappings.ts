@@ -9,9 +9,33 @@ import {
 import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
 import {BiMap} from "../utils/BiMap";
+import {Mappable} from "./MappingMethod";
+import {JavaClass, JavaMethod} from "crash-parser/src/model/RichCrashReport";
 
 type SimpleMethodName = string
-type DescriptoredMethodName = string
+// type DescriptoredMethodName = string
+
+interface DescriptoredMethodName {
+    method: JavaMethod,
+    descriptor: string
+}
+type ExtendedMappable = Mappable | DescriptoredMethodName
+
+class Mappings {
+
+
+     mapClass(reverse: boolean): JavaClass {
+
+    }
+
+     mapSimpleMethod(reverse: boolean): DescriptoredMethodName {
+
+    }
+
+     mapDesriptoredMethod(reverse: boolean) : DescriptoredMethodName {
+
+    }
+}
 
 
 export interface Mappings {

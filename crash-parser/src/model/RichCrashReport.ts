@@ -148,11 +148,16 @@ function javaClassFullUnmappedName(javaClass: JavaClass) {
 // However, both a discord query and an intellij search show that method doesn't exist at all - yarn or otherwise.
 // A solution would be to remap class separately, but I want to figure out what is going on.
 
+// Add tests for both of these mysteries.
+
 // TODO: Mappings are taking a lot of memory, which will increase once we have a map for simple method names as well.
 // - Learn how to profile memory and find out if it truely takes a lot of memory.
 //      - If we do need to optimize, consider only saving a small portion of mappings. After all, we are only remapping a few identifiers!
 //      - Maybe do a scan of all Mappables in a crash report at the start? That wouldn't be too hard.
 // - Find out other memory bottlenecks along the way.
+
+
+//TODO: cache build getters for 1 day, cache mappings forever
 
 export function javaMethodSimpleName(javaMethod: JavaMethod, mappings: MappingMethod) {
     return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod)).removeBeforeLastExclusive(".")

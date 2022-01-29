@@ -1,7 +1,7 @@
 import {flipRecord} from "./Javascript";
 
 export type Key = string | number
-
+// Debug 22 -> 21 -> 20: 86MB
 export class BiMap<K extends Key, V extends Key> {
     private readonly forwards: Record<K, V>
     private backwards: Record<V, K> | undefined = undefined;
