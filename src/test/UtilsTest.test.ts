@@ -24,3 +24,8 @@ test("Flip record works correctly", () => {
 
     // expect(() => flipRecord(record2)).toThrow()
 })
+
+test("science", () => {
+    const arr = new Array(5);
+    console.log(arr[2])
+})
