@@ -51,7 +51,7 @@ export async function parseTinyFile(contents: string): Promise<Mappings> {
     }
 
     return {
-        classes: new BiMap(mapRecord(classesWithSlashNotation, k => withDotNotation(k), v => withDotNotation(v))),
+        classes: new BiMap(mapRecord(classesWithSlashNotation, k => withDotNotation(k),( k, v )=> withDotNotation(v))),
         descriptorToDescriptorMethods: new BiMap(descriptorToDescriptorMethods),
         noDescriptorToDescriptorMethods: new BiMap(noDescriptorToDescriptorMethods)
     };

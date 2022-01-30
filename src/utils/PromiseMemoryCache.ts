@@ -8,10 +8,10 @@ export class PromiseMemoryCache<T> {
     // we tell it to use the first promise's result instead of executing an entirely new one.
     private ongoingPromises: Record<string, Promise<T>> = {}
 
-    private promisesListeners: (() => void)[]  = []
+    private promisesListeners: (() => void)[] = []
 
     private invokeListeners() {
-        for(const listener of this.promisesListeners) listener();
+        for (const listener of this.promisesListeners) listener();
     }
 
     async get(key: string, orProduce: () => Promise<T>): Promise<T> {
@@ -51,6 +51,7 @@ export class PromiseMemoryCache<T> {
     onOngoingPromisesChange(callback: () => void) {
         this.promisesListeners.push(callback)
     }
+
     unsubscribeToOngoingPromisesChange(callback: () => void) {
         this.promisesListeners.remove(callback);
     }
@@ -69,5 +70,21 @@ export class MemoryCache<T> {
             this.cache[key] = value;
             return value;
         }
+    }
+}
+
+export class Lazy<T> {
+    private value: T | undefined
+    private readonly init: () => T
+
+    constructor(init: () => T) {
+        this.init = init;
+    }
+
+    get(): T {
+        if (this.value === undefined) {
+            this.value = this.init();
+        }
+        return this.value;
     }
 }

@@ -9,7 +9,10 @@ declare global {
 
         removeExpectedSuffix(prefix: string): string
 
+        // Splits on the first occurrence
         splitToTwo(splitOn: string): [string, string]
+        // Splits on the last occurrence
+        splitToTwoOnLast(splitOn: string): [string, string]
 
         removeAfterFirst(removeAfter: string): string
         // Excludes the removeAfter char

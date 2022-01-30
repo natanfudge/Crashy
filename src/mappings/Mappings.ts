@@ -6,33 +6,103 @@ import {
     MappingsProvider,
     MappingsVersion
 } from "./MappingsProvider";
-import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
+import {Lazy, PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
 import {BiMap} from "../utils/BiMap";
-import {Mappable} from "./MappingMethod";
-import {JavaClass, JavaMethod} from "crash-parser/src/model/RichCrashReport";
+import {
+    JavaClass,
+    javaClassFullUnmappedName,
+    JavaMethod,
+    javaMethodFullUnmappedName
+} from "crash-parser/src/model/RichCrashReport";
+import {mapRecord} from "../utils/Javascript";
 
 type SimpleMethodName = string
+
 // type DescriptoredMethodName = string
 
 interface DescriptoredMethodName {
     method: JavaMethod,
     descriptor: string
 }
-type ExtendedMappable = Mappable | DescriptoredMethodName
+
+function descriptoredMethodNameAsKey(name: DescriptoredMethodName): string {
+    return javaMethodFullUnmappedName(name.method) + name.descriptor;
+}
+
+function parseDescriptoredMethodName(name: string): DescriptoredMethodName {
+    const [simpleMethodNameWithClass, descriptorWithoutLeadingBrace] = name.splitToTwo("(")
+    const [fullClassName, simpleMethodName] = simpleMethodNameWithClass.splitToTwo("#")
+    return {
+        method: {
+            name: simpleMethodName,
+            class: parseJavaClass(fullClassName)
+        },
+        descriptor: "(" + descriptorWithoutLeadingBrace
+    }
+}
+
+// function javaClassAsKey(javaClass: JavaClass) : string {}
+
+function parseJavaClass(name: string) : JavaClass {
+    const [packageName, simpleName] = name.splitToTwoOnLast(".")
+    return {packageName,simpleName}
+}
+
+// type ExtendedMappable = Mappable | DescriptoredMethodName
+// type PossibleDescriptors =
+// interface ClassMapping
+
+// Key is class name stored as dot.qualified.names
+type SingleDirectionMappings = Record<string, ClassMappings>
+
+interface ClassMappings {
+    mappedClassName: JavaClass
+    // Key is method name stored as ${className}#{methodName}${descriptor}
+    methods: Record<string, DescriptoredMethodName>;
+}
 
 class Mappings {
 
+    private readonly mappings: SingleDirectionMappings
+    private readonly mappingsReversed = new Lazy(() => this.reverseMappings());
 
-     mapClass(reverse: boolean): JavaClass {
+    private getMappings(reversed: boolean): SingleDirectionMappings {
+        return reversed? this.mappingsReversed.get(): this.mappings;
+    }
+
+    private reverseMappings(): SingleDirectionMappings {
+        return mapRecord(
+            this.mappings,
+            (_, mappings) => javaClassFullUnmappedName(mappings.mappedClassName),
+            (unmappedClass, mappings) => {
+                return {
+                    mappedClassName: parseJavaClass(unmappedClass),
+                    methods: mapRecord(
+                        mappings.methods,
+                        (_, mappedName) => descriptoredMethodNameAsKey(mappedName),
+                        (unmappedName) => parseDescriptoredMethodName(unmappedName)
+                    )
+                }
+            }
+        )
+    }
+
+
+    constructor(mappings: Record<string, ClassMappings>) {
+        this.mappings = mappings;
+    }
+
+    mapClass(className: JavaClass, reverse: boolean): JavaClass {
+        const maps = this.getMappings(reverse);
+        return maps
+    }
+
+    mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethodName {
 
     }
 
-     mapSimpleMethod(reverse: boolean): DescriptoredMethodName {
-
-    }
-
-     mapDesriptoredMethod(reverse: boolean) : DescriptoredMethodName {
+    mapDescriptoredMethod(methodName: DescriptoredMethodName, reverse: boolean): DescriptoredMethodName {
 
     }
 }

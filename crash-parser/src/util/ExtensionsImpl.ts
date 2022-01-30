@@ -25,6 +25,11 @@ String.prototype.splitToTwo = function (this: string, splitOn: string): [string,
     if (index === -1) throw new Error(`Could not split to two because split string '${splitOn}' does not exist in target string '${this}'`)
     return [this.slice(0, index), this.slice(index + 1)]
 }
+String.prototype.splitToTwoOnLast = function (this: string, splitOn: string): [string, string] {
+    const index = this.lastIndexOf(splitOn);
+    if (index === -1) throw new Error(`Could not split to two because split string '${splitOn}' does not exist in target string '${this}'`)
+    return [this.slice(0, index), this.slice(index + 1)]
+}
 
 
 String.prototype.removeAfterFirst = function (this: string, removeAfter: string): string {

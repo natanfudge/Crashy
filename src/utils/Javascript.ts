@@ -10,11 +10,12 @@ export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, 
 }
 
 export function mapRecord<K extends Key, V, NK extends Key, NV>(
-    record: Record<K, V>, keyMap: (key: K) => NK, valueMap: (value: V) => NV
+    record: Record<K, V>, keyMap: (key: K, value: V) => NK, valueMap: (key: K, value: V) => NV
 ): Record<NK, NV> {
     const newRecord: Record<NK, NV> = {} as Record<NK, NV>
-    for(const key in record){
-        newRecord[keyMap(key)] = valueMap(record[key]);
+    for (const key in record) {
+        const value = record[key]
+        newRecord[keyMap(key, value)] = valueMap(key, value);
     }
     return newRecord
 }

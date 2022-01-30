@@ -134,7 +134,7 @@ export function javaClassFullName(javaClass: JavaClass, mappings: MappingMethod)
     return mappings.mapClass(javaClassFullUnmappedName(javaClass));
 }
 
-function javaClassFullUnmappedName(javaClass: JavaClass) {
+export function javaClassFullUnmappedName(javaClass: JavaClass) {
     return javaClass.packageName + "." + javaClass.simpleName;
 }
 
@@ -167,7 +167,7 @@ export function javaMethodFullName(javaMethod: JavaMethod, mappings: MappingMeth
     return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod));
 }
 
-function javaMethodFullUnmappedName(javaMethod: JavaMethod) {
+export function javaMethodFullUnmappedName(javaMethod: JavaMethod) {
     return javaClassFullUnmappedName(javaMethod.class) + ClassMethodSeperator + javaMethod.name;
 }
 
