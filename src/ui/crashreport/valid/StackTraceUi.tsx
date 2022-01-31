@@ -111,7 +111,7 @@ export function StackTraceElementUi({
 function getTraceElementText(traceElement: RichStackTraceElement, open: boolean, mappings: MappingMethod): string {
     if (typeof traceElement === "number") return `${traceElement} more...`
     if (open) {
-        const fileName = javaClassFullName(traceElement.method.class, mappings)
+        const fileName = javaClassFullName(traceElement.method.classIn, mappings)
             .removeBeforeLastExclusive(".").removeAfterFirstExclusive("$")
         const inBracketText = traceElement.line.number === undefined ? "Native Method" : `${fileName}:${traceElement.line.number}`
         return javaMethodFullName(traceElement.method, mappings) + ` (${inBracketText})`

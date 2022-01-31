@@ -60,7 +60,7 @@ test("Remapping works correctly", async () => {
     expect(remappedClass).toEqual("net.minecraft.util.math.MathConstants")
 
     const testMethod: JavaMethod = {
-        class: {
+        classIn: {
             packageName: "net.minecraft",
             simpleName: "class_3060"
         },

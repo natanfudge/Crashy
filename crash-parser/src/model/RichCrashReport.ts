@@ -119,24 +119,64 @@ export interface TraceLine {
     number?: number
 }
 
-export interface JavaMethod {
-    class: JavaClass
+export class JavaMethod {
+    classIn: JavaClass
     name: string
+
+    constructor(classIn: JavaClass, name: string) {
+        this.classIn = classIn;
+        this.name = name;
+    }
+
+     simpleName( mappings: MappingMethod) {
+        return mappings.mapMethod(this.fullUnmappedName()).removeBeforeLastExclusive(".")
+    }
+
+     fullName( mappings: MappingMethod) {
+        return mappings.mapMethod(this.fullUnmappedName());
+    }
+
+     fullUnmappedName() {
+        return this.classIn.fullUnmappedName() + ClassMethodSeperator + this.name;
+    }
+    equals(other: JavaMethod) {
+        return other.name === this.name && other.classIn.equals(this.classIn);
+    }
+
 }
 
-export interface JavaClass {
+export class JavaClass {
     packageName: string
     simpleName: string
+
+    constructor(packageName: string, simpleName: string) {
+        this.packageName = packageName;
+        this.simpleName = simpleName;
+    }
+
+    fullName(mappings: MappingMethod){
+        return mappings.mapClass(this.fullUnmappedName());
+    }
+
+    fullUnmappedName() {
+        return this.packageName + "." + this.simpleName;
+    }
+
+    equals(other: JavaClass){
+        return other.simpleName === this.simpleName && other.packageName === this.packageName;
+    }
 }
 
 
-export function javaClassFullName(javaClass: JavaClass, mappings: MappingMethod) {
-    return mappings.mapClass(javaClassFullUnmappedName(javaClass));
-}
+// export function javaClassFullName(javaClass: JavaClass, mappings: MappingMethod) {
+//     return mappings.mapClass(javaClassFullUnmappedName(javaClass));
+// }
+//
+// export function javaClassFullUnmappedName(javaClass: JavaClass) {
+//     return javaClass.packageName + "." + javaClass.simpleName;
+// }
 
-export function javaClassFullUnmappedName(javaClass: JavaClass) {
-    return javaClass.packageName + "." + javaClass.simpleName;
-}
+// export function javaClassEquals(javaClassA: JavaClass)
 
 // Mystery: net.minecraft.class_846$class_851$class_4578.method_22783 is not getting remapped
 // SOLVED: method_22783 belongs to the superclass of class_4578 - class_4577.
@@ -159,17 +199,20 @@ export function javaClassFullUnmappedName(javaClass: JavaClass) {
 
 //TODO: cache build getters for 1 day, cache mappings forever
 
-export function javaMethodSimpleName(javaMethod: JavaMethod, mappings: MappingMethod) {
-    return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod)).removeBeforeLastExclusive(".")
-}
-
-export function javaMethodFullName(javaMethod: JavaMethod, mappings: MappingMethod) {
-    return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod));
-}
-
-export function javaMethodFullUnmappedName(javaMethod: JavaMethod) {
-    return javaClassFullUnmappedName(javaMethod.class) + ClassMethodSeperator + javaMethod.name;
-}
+// export function javaMethodSimpleName(javaMethod: JavaMethod, mappings: MappingMethod) {
+//     return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod)).removeBeforeLastExclusive(".")
+// }
+//
+// export function javaMethodFullName(javaMethod: JavaMethod, mappings: MappingMethod) {
+//     return mappings.mapMethod(javaMethodFullUnmappedName(javaMethod));
+// }
+//
+// export function javaMethodFullUnmappedName(javaMethod: JavaMethod) {
+//     return javaClassFullUnmappedName(javaMethod.classIn) + ClassMethodSeperator + javaMethod.name;
+// }
+// export function javaMethodEquals(javaMethodA: JavaMethod, javaMethodB: JavaMethod) {
+//     return javacl
+// }
 
 export interface CrashContext {
     javaVersion: string

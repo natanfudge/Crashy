@@ -1,3 +1,4 @@
+
 export function hashCodeOfAnything<T>(thing: unknown): number {
     switch (typeof thing) {
         case "object":
@@ -33,6 +34,17 @@ function hashObject(obj: object | null): number {
     if (obj === null) return 0;
     return hashArray(Object.values(obj));
 }
+//function hashObjectByValue(obj: object | null): number {
+//     if (obj === null) return 0;
+//     return hashArray(Object.values(obj));
+// }
+// function hashObject(obj: object | null): number {
+//     if(objectIsValueObject(obj)) return hashObjectByValue(obj)
+//     else
+//     if (obj === null) return 0;
+//     return hashArray(Object.values(obj));
+// }
+
 
 function hashString(str: string): number {
     return cyrb53(str);

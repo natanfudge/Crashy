@@ -37,6 +37,6 @@ function isIntermediaryClassName(javaClass: JavaClass): boolean {
 }
 
 function isIntermediaryMethodName(javaMethod: JavaMethod): boolean {
-    return isIntermediaryClassName(javaMethod.class)
+    return isIntermediaryClassName(javaMethod.classIn)
         || javaMethod.name.startsWith("method_")
 }

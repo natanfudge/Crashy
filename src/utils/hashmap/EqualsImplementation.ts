@@ -18,16 +18,36 @@ export function equalsOfAnything(thingA: unknown, thingB: unknown): boolean {
     }
 }
 
+//export function objectIsValueObject(obj: object | null) : boolean{
+//     // @ts-ignore
+//     const isValueClass = obj[ValueClassMarker];
+//     return isValueClass === true
+// }
+//
+// function objectEquals(objectA: object | null, objectB: object | null): boolean {
+//     // @ts-ignore
+//     if (objectIsValueObject(objectA)) {
+//         return objectValueEquals(objectA, objectB)
+//     } else {
+//         return objectA === objectB;
+//     }
+// }
 function objectEquals(objectA: object | null, objectB: object | null): boolean {
     if (objectA === null) return objectB === null;
     if (objectB === null) return false;
     const keysA = Object.keys(objectA);
     const keysB = Object.keys(objectB);
     if (keysA.length !== keysB.length) return false;
-    for(const keyA of keysA){
-        // Using keyA on both is intentional
+    for (const keyA of keysA) {
         // @ts-ignore
-        if(!equalsOfAnything(objectA[keyA],objectB[keyA])) return false;
+        const valueA = objectA[keyA]
+        if (typeof valueA !== "function") {
+            // Using keyA on both is intentional
+            // @ts-ignore
+            if (!equalsOfAnything(valueA, objectB[keyA])) return false;
+        }
+
     }
     return true;
 }
+

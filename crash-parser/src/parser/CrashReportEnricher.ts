@@ -412,7 +412,7 @@ function parseJavaMethod(methodString: string): JavaMethod {
     const methodName = last(parts);
     return {
         name: methodName,
-        class: parseJavaClass(javaClass)
+        classIn: parseJavaClass(javaClass)
     };
 }
 

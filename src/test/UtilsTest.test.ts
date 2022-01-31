@@ -26,31 +26,3 @@ test("Flip record works correctly", () => {
     // expect(() => flipRecord(record2)).toThrow()
 })
 
-test("HashMap works correctly", () => {
-    const stringMap = new HashMap<string,string>(100);
-    stringMap.put("Foo","Bar")
-    stringMap.put("Biz","Baz")
-    stringMap.put("Boz","Booz")
-
-    expect(stringMap.get("Foo")).toEqual("Bar")
-    expect(stringMap.get("Biz")).toEqual("Baz")
-    expect(stringMap.get("Boz")).toEqual("Booz")
-
-    stringMap.put("Foo","Hola")
-    expect(stringMap.get("Foo")).toEqual("Hola")
-
-    const numberMap = new HashMap<number,string>(100);
-
-    numberMap.put(1,"Bar")
-    numberMap.put(-70,"Baz")
-    numberMap.put(12312414,"Booz")
-
-    expect(numberMap.get(1)).toEqual("Bar")
-    expect(numberMap.get(-70)).toEqual("Baz")
-    expect(numberMap.get(12312414)).toEqual("Booz")
-
-    numberMap.put(1,"Hola")
-    expect(numberMap.get(1)).toEqual("Hola")
-
-    //TODO: test all other types and a large amount of stuff
-})

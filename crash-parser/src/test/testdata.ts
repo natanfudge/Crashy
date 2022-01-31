@@ -90,7 +90,7 @@ const testRichStackTrace: RichCrashReport = {
                 },
                 method: {
                     name: "wrapSink",
-                    class: {
+                    classIn: {
                         packageName: "java.util.streamffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                         simpleName: "AbstractPipeline"
                     }
@@ -109,7 +109,7 @@ const testRichStackTrace: RichCrashReport = {
                 },
                 method: {
                     name: "doStuff",
-                    class: {
+                    classIn: {
                         packageName: "io.natanfudge.github.greatshit",
                         simpleName: "MiencraftFixer"
                     }
@@ -136,7 +136,7 @@ const testRichStackTrace: RichCrashReport = {
                     },
                     method: {
                         name: "kill",
-                        class: {
+                        classIn: {
                             packageName: "java.util.stream",
                             simpleName: "ForgeStuff"
                         }
@@ -163,7 +163,7 @@ const testRichStackTrace: RichCrashReport = {
                         },
                         method: {
                             name: "kill",
-                            class: {
+                            classIn: {
                                 packageName: "java.util.stream",
                                 simpleName: "ForgeStuff"
                             }
@@ -228,7 +228,7 @@ const testRichStackTrace: RichCrashReport = {
                 },
                 method: {
                     name: "wrapSink",
-                    class: {
+                    classIn: {
                         packageName: "java.util.stream",
                         simpleName: "AbstractPipeline"
                     }
@@ -256,7 +256,7 @@ const testRichStackTrace: RichCrashReport = {
                 },
                 method: {
                     name: "wrapSink",
-                    class: {
+                    classIn: {
                         packageName: "java.util.stream",
                         simpleName: "AbstractPipeline"
                     }
@@ -284,7 +284,7 @@ const testRichStackTrace: RichCrashReport = {
                 },
                 method: {
                     name: "wrapSink",
-                    class: {
+                    classIn: {
                         packageName: "java.util.stream",
                         simpleName: "AbstractPipeline"
                     }

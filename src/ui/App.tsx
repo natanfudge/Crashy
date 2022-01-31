@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, {Suspense, useEffect} from 'react';
 import '../App.css';
 
 import {createTheme, CssBaseline, LinearProgress, Link} from "@mui/material";
@@ -58,7 +58,9 @@ export default function App() {
 //     </Row>
 // }
 
+
 function CrashyUi() {
+
     if (getUrlIsRaw()) {
         return <CrashyRawUi/>
     } else if (window.location.pathname === "/") {

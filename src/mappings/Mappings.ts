@@ -13,9 +13,10 @@ import {
     JavaClass,
     javaClassFullUnmappedName,
     JavaMethod,
-    javaMethodFullUnmappedName
+    javaMethodFullUnmappedName, javaMethodSimpleName
 } from "crash-parser/src/model/RichCrashReport";
 import {mapRecord} from "../utils/Javascript";
+import {HashMap} from "../utils/hashmap/HashMap";
 
 type SimpleMethodName = string
 
@@ -36,7 +37,7 @@ function parseDescriptoredMethodName(name: string): DescriptoredMethodName {
     return {
         method: {
             name: simpleMethodName,
-            class: parseJavaClass(fullClassName)
+            classIn: parseJavaClass(fullClassName)
         },
         descriptor: "(" + descriptorWithoutLeadingBrace
     }
@@ -44,9 +45,9 @@ function parseDescriptoredMethodName(name: string): DescriptoredMethodName {
 
 // function javaClassAsKey(javaClass: JavaClass) : string {}
 
-function parseJavaClass(name: string) : JavaClass {
+function parseJavaClass(name: string): JavaClass {
     const [packageName, simpleName] = name.splitToTwoOnLast(".")
-    return {packageName,simpleName}
+    return {packageName, simpleName}
 }
 
 // type ExtendedMappable = Mappable | DescriptoredMethodName
@@ -54,13 +55,18 @@ function parseJavaClass(name: string) : JavaClass {
 // interface ClassMapping
 
 // Key is class name stored as dot.qualified.names
-type SingleDirectionMappings = Record<string, ClassMappings>
+type SingleDirectionMappings = HashMap<JavaClass, ClassMappings>
 
 interface ClassMappings {
     mappedClassName: JavaClass
     // Key is method name stored as ${className}#{methodName}${descriptor}
-    methods: Record<string, DescriptoredMethodName>;
+    methods: HashMap<DescriptoredMethodName, DescriptoredMethodName>;
 }
+
+//TODO: this is the way i want to resolve methods with no class, need to think how this works out with reversed
+// Probably: make SingleDirectionMappings a class and give it a lazy .getClasslessMethods(), .getDescriptorlessMethods()
+type ClasslessMethodsToPossibleClasses = HashMap<string, DescriptorlessMethodsToPossibleDescriptors>;
+type DescriptorlessMethodsToPossibleDescriptors = HashMap<JavaMethod, DescriptoredMethodName>
 
 class Mappings {
 
@@ -68,37 +74,44 @@ class Mappings {
     private readonly mappingsReversed = new Lazy(() => this.reverseMappings());
 
     private getMappings(reversed: boolean): SingleDirectionMappings {
-        return reversed? this.mappingsReversed.get(): this.mappings;
+        return reversed ? this.mappingsReversed.get() : this.mappings;
     }
 
     private reverseMappings(): SingleDirectionMappings {
-        return mapRecord(
-            this.mappings,
-            (_, mappings) => javaClassFullUnmappedName(mappings.mappedClassName),
+        return this.mappings.map(
+            (_, mappings) => mappings.mappedClassName,
             (unmappedClass, mappings) => {
-                return {
-                    mappedClassName: parseJavaClass(unmappedClass),
-                    methods: mapRecord(
-                        mappings.methods,
-                        (_, mappedName) => descriptoredMethodNameAsKey(mappedName),
-                        (unmappedName) => parseDescriptoredMethodName(unmappedName)
+                const reversed: ClassMappings = {
+                    mappedClassName: unmappedClass,
+                    methods: mappings.methods.map(
+                        (_, mappedName) => mappedName,
+                        (unmappedName) => unmappedName
                     )
                 }
+                return reversed
             }
         )
     }
 
 
-    constructor(mappings: Record<string, ClassMappings>) {
+    constructor(mappings: SingleDirectionMappings) {
         this.mappings = mappings;
     }
 
     mapClass(className: JavaClass, reverse: boolean): JavaClass {
         const maps = this.getMappings(reverse);
-        return maps
+        return maps.get(className)?.mappedClassName ?? className;
     }
 
     mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethodName {
+        const classMappings = this.getMappings(reverse).get(methodName.classIn);
+        // Class mappings are almost always present, so if we can't find mappings just for the class name we give up and keep the method unmapped with a BS descriptor
+        if (classMappings === undefined) return {method: methodName, descriptor: ""};
+
+        // We expect a low amount of methods per class, especially with filtering so this is fine
+        return classMappings.methods.linearSearch((key) => javaMethodSimpleName()
+        key.method
+    )
 
     }
 
