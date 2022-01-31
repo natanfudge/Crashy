@@ -1,7 +1,7 @@
 // const Capacity = 10;
 
 
-
+// TODO: Using an array instead of a LinkedList may have a serious performance penalty - find out how many slots does a js array allocate initially.
 
 // Note: only use keys for simple interfaces, or it won't work well because of functions and such
 // Ignoring functions is possible but not implemented
