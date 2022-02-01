@@ -1,15 +1,12 @@
 import "crash-parser/src/util/Extensions"
 import {
     JavaClass,
-    javaClassFullName,
     JavaMethod,
-    javaMethodFullName,
-    javaMethodSimpleName,
     LoaderType
 } from "crash-parser/src/model/RichCrashReport";
 import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
 import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
-import {getYarnBuilds, getYarnMappings2} from "../mappings/providers/YarnMappingsProvider";
+import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
 import {getMappingForName} from "../mappings/MappingMethod";
 import {resolveMappingsChain} from "../mappings/MappingsResolver";
 import {
@@ -19,14 +16,7 @@ import {
     SrgToMcpMappingsProvider
 } from "../mappings/MappingsProvider";
 
-// test("Yarn mappings can be retrieved", async () => {
-//     const versions = await getYarnBuilds("1.18.1");
-//     const mappings = await getYarnMappings(versions[0].version)
-//     expect(mappings.classes["net.minecraft.class_5973"]).toEqual("net.minecraft.util.math.MathConstants")
-//     expect(mappings.methods["method_13365"]).toEqual("register")
-//     // expect(mappings.fields["field_29658"]).toEqual("PI")
-// }, 15000)
-
+import "crash-parser/src/util/ExtensionsImpl"
 
 
 //TODO: test it does the shortest path by adding more providers
@@ -44,36 +34,24 @@ test("Mappings BFS works correctly", () => {
 test("Remapping works correctly", async () => {
     const versions = await getYarnBuilds("1.18.1");
     // const mappings = await getYarnMappings(versions[0].version)
-    const testClass: JavaClass = {
-        packageName: "net.minecraft",
-        simpleName: "class_5973"
-    }
+    const testClass: JavaClass = new JavaClass("net.minecraft.class_5973", false)
 
-    const mappings = await getMappingForName(testClass,{
+    const mappings = await getMappingForName(testClass, {
         desiredNamespace: "Yarn",
         desiredBuild: versions[0].version,
         loader: LoaderType.Fabric,
         isDeobfuscated: false,
         minecraftVersion: "1.18.1"
     })
-    const remappedClass = javaClassFullName(testClass, mappings);
+    const remappedClass = testClass.fullName(mappings)
     expect(remappedClass).toEqual("net.minecraft.util.math.MathConstants")
 
-    const testMethod: JavaMethod = {
-        classIn: {
-            packageName: "net.minecraft",
-            simpleName: "class_3060"
-        },
-        name: "method_13365"
-    }
+    const testMethod: JavaMethod = new JavaMethod(new JavaClass("net.minecraft.class_3060",false), "method_13365")
 
-    const remappedMethodFull = javaMethodFullName(testMethod, mappings);
-    const remappedMethodSimple = javaMethodSimpleName(testMethod, mappings);
+    const remappedMethodFull = testMethod.fullName(mappings)
+    const remappedMethodSimple = testMethod.simpleName(mappings)
 
     expect(remappedMethodFull).toEqual("net.minecraft.server.command.ForceLoadCommand#register")
     expect(remappedMethodSimple).toEqual("ForceLoadCommand#register")
 }, 30000)
 
-test("Mappings detection works correctly", () => {
-    const report = parseCrashReportRich(testFabricCrashReport);
-})

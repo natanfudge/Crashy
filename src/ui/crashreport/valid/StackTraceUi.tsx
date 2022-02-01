@@ -4,9 +4,6 @@ import React, {Fragment, useState} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {clickableColor, fadedOutColor} from "../../Colors";
 import {
-    javaClassFullName,
-    javaMethodFullName,
-    javaMethodSimpleName,
     RichCrashReport,
     RichStackTrace,
     RichStackTraceElement,
@@ -77,7 +74,7 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
 function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage, mappingContext: MappingContext }) {
     const [open, setOpen] = React.useState(false)
     const mappingMethod = useMappingForName(title.class, mappingContext);
-    const text = open ? javaClassFullName(title.class, mappingMethod) : title.class.simpleName;
+    const text = open ? title.class.fullName(mappingMethod) : title.class.simpleName;
 
     return <TextTheme wordBreak={"break-word"} variant={"h5"}>
         <SimpleSpan text={text} color={open ? undefined : clickableColor}
@@ -111,13 +108,13 @@ export function StackTraceElementUi({
 function getTraceElementText(traceElement: RichStackTraceElement, open: boolean, mappings: MappingMethod): string {
     if (typeof traceElement === "number") return `${traceElement} more...`
     if (open) {
-        const fileName = javaClassFullName(traceElement.method.classIn, mappings)
+        const fileName = traceElement.method.classIn.fullName(mappings)
             .removeBeforeLastExclusive(".").removeAfterFirstExclusive("$")
         const inBracketText = traceElement.line.number === undefined ? "Native Method" : `${fileName}:${traceElement.line.number}`
-        return javaMethodFullName(traceElement.method, mappings) + ` (${inBracketText})`
+        return traceElement.method.fullName(mappings) + ` (${inBracketText})`
     } else {
         const inBracketText = traceElement.line.number === undefined ? "Native Method" : `Line ${traceElement.line.number}`
-        return javaMethodSimpleName(traceElement.method, mappings) + ` (${inBracketText})`
+        return traceElement.method.simpleName(mappings)+ ` (${inBracketText})`
     }
 }
 

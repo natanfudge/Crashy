@@ -410,17 +410,14 @@ function parseJavaMethod(methodString: string): JavaMethod {
     const parts = methodString.split(".");
     const javaClass = withoutLast(parts).join(".");
     const methodName = last(parts);
-    return {
-        name: methodName,
-        classIn: parseJavaClass(javaClass)
-    };
+    return new JavaMethod(parseJavaClass(javaClass),methodName)
 }
 
 function parseJavaClass(classString: string): JavaClass {
     const parts = classString.split(".");
     const packageName = withoutLast(parts).join(".");
     const simpleName = last(parts);
-    return {simpleName, packageName};
+    return new JavaClass(packageName,simpleName);
 }
 
 const SystemDetailsTitle = "System Details";

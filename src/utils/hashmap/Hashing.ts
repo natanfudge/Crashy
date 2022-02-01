@@ -1,14 +1,15 @@
+import {TsObject} from "../Javascript";
 
 export function hashCodeOfAnything<T>(thing: unknown): number {
     switch (typeof thing) {
         case "object":
-            return hashObject(thing)
+            return hashObject(thing as TsObject)
         case "string":
             return hashString(thing)
         case "undefined":
             return 1;
         case "boolean":
-            return thing? 2 : 3
+            return thing ? 2 : 3
         case "number":
             return thing;
         case "symbol":
@@ -21,7 +22,7 @@ export function hashCodeOfAnything<T>(thing: unknown): number {
 
 
 // Taken from the JDK Arrays.hashCode() implementation
-function hashArray(arr: unknown[]): number {
+export function hashArray(arr: unknown[]): number {
     let result = 1;
     for (const element of arr) {
         result = 31 * result + hashCodeOfAnything(element);
@@ -30,10 +31,16 @@ function hashArray(arr: unknown[]): number {
     return result;
 }
 
-function hashObject(obj: object | null): number {
+function hashObject(obj: TsObject | null): number {
     if (obj === null) return 0;
-    return hashArray(Object.values(obj));
+    const customHashFunction = obj["hashCode"]
+    if (customHashFunction !== undefined && typeof customHashFunction === "function") {
+        return customHashFunction.bind(obj)() as number
+    } else {
+        return hashArray(Object.values(obj));
+    }
 }
+
 //function hashObjectByValue(obj: object | null): number {
 //     if (obj === null) return 0;
 //     return hashArray(Object.values(obj));
@@ -46,12 +53,12 @@ function hashObject(obj: object | null): number {
 // }
 
 
-function hashString(str: string): number {
+export function hashString(str: string): number {
     return cyrb53(str);
 }
 
 // Taken from https://stackoverflow.com/a/52171480/7773885
-function cyrb53(str: string, seed: number = 0): number {
+function cyrb53(str: string, seed = 0): number {
     let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
     for (let i = 0; i < str.length; i++) {
         const ch = str.charCodeAt(i);

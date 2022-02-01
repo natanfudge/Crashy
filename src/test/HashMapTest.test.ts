@@ -26,7 +26,6 @@ test("HashMap works with strings", () => {
     expect(stringMap.get("Foo")).toEqual("Hola")
 
 
-    //TODO: test all other types and a large amount of stuff
 })
 
 test("HashMap works with numbers", () => {

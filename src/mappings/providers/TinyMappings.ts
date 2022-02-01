@@ -1,4 +1,4 @@
-import {Mappings} from "../Mappings";
+import {Mappings, MappingsBuilder} from "../Mappings";
 import {withDotNotation} from "./ProviderUtils";
 import {StringMap} from "crash-parser/src/model/CrashReport";
 import {mapRecord} from "../../utils/Javascript";
@@ -14,14 +14,16 @@ export async function parseTinyFile(contents: string): Promise<Mappings> {
     }
 
     // We keep the slash notation at the start because that's what descriptors use
-    const classesWithSlashNotation: StringMap = {}
-    const noDescriptorToDescriptorMethods: StringMap = {}
-    const descriptorToDescriptorMethods: StringMap = {}
+    // const classesWithSlashNotation: StringMap = {}
+    // const noDescriptorToDescriptorMethods: StringMap = {}
+    // const descriptorToDescriptorMethods: StringMap = {}
+
+    const mappings = new MappingsBuilder()
 
     // We go through all the class mappings first and store them so we can remap descriptors on each individual method below
     for (const classMapping of classMappings) {
         const [, fromClass, toClass] = classMapping[0];
-        classesWithSlashNotation[fromClass] = toClass;
+        mappings.addClass(fromClass,toClass)
     }
 
     for (const clazz of classMappings) {
@@ -38,27 +40,23 @@ export async function parseTinyFile(contents: string): Promise<Mappings> {
                     // const fromMethod = item[3]
                     // const toMethod = item[4]
 
-                    const simpleFromMethodName = withDotNotation(fromClass + ClassMethodSeperator + methodUnmapped)
-                    const fullFromMethodName = simpleFromMethodName + descriptor;
-                    const fullToMethodName = withDotNotation(toClass + ClassMethodSeperator + methodMapped)
-                        + remapDescriptor(descriptor, classesWithSlashNotation)
-                    noDescriptorToDescriptorMethods[simpleFromMethodName] = fullToMethodName;
-                    descriptorToDescriptorMethods[fullFromMethodName] = fullToMethodName;
+                    mappings.addMethod(fromClass,methodUnmapped,descriptor,methodMapped)
+
+                    // const simpleFromMethodName = withDotNotation(fromClass + ClassMethodSeperator + methodUnmapped)
+                    // const fullFromMethodName = simpleFromMethodName + descriptor;
+                    // const fullToMethodName = withDotNotation(toClass + ClassMethodSeperator + methodMapped)
+                    //     + remapDescriptor(descriptor, classesWithSlashNotation)
+                    // noDescriptorToDescriptorMethods[simpleFromMethodName] = fullToMethodName;
+                    // descriptorToDescriptorMethods[fullFromMethodName] = fullToMethodName;
                     break;
                 default:
             }
         }
     }
 
-    return {
-        classes: new BiMap(mapRecord(classesWithSlashNotation, k => withDotNotation(k),( k, v )=> withDotNotation(v))),
-        descriptorToDescriptorMethods: new BiMap(descriptorToDescriptorMethods),
-        noDescriptorToDescriptorMethods: new BiMap(noDescriptorToDescriptorMethods)
-    };
+    return mappings.build()
 }
 
 // function addMethod()
 
-function remapDescriptor(descriptor: string, classMappings: StringMap): string {
-    return descriptor.replace(/L(.+?);/g, (match, p1) => `L${classMappings[p1] ?? p1};`);
-}
+

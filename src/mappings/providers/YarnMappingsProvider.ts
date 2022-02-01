@@ -4,7 +4,7 @@ import {parseTinyFile} from "./TinyMappings";
 import {httpGet} from "../../utils/Http";
 import {HttpStatusCode} from "../../server/CrashyServer";
 
-export async function getYarnMappings2(build: string): Promise<Mappings> {
+export async function getYarnMappings(build: string): Promise<Mappings> {
     profiler("Downloading Yarn Mappings");
     const domain = "https://maven.fabricmc.net"
     const res = await fetch(`${domain}/net/fabricmc/yarn/${build}/yarn-${build}-v2.jar`);

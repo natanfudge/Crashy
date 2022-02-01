@@ -1,10 +1,13 @@
+import {TsObject} from "../Javascript";
+
+
 export function equalsOfAnything(thingA: unknown, thingB: unknown): boolean {
     const typeA = typeof thingA;
     const typeB = typeof thingB;
     if (typeA !== typeB) return false;
     switch (typeA) {
         case "object":
-            return objectEquals(thingA as object | null, thingB as object | null)
+            return objectEquals(thingA as TsObject | null, thingB as TsObject | null)
         case "string":
         case "undefined":
         case "boolean":
@@ -12,38 +15,37 @@ export function equalsOfAnything(thingA: unknown, thingB: unknown): boolean {
             return thingA === thingB
         case "symbol":
         case "bigint":
-            return (thingA as Symbol).toString() === (thingB as Symbol).toString()
+            return (thingA as symbol).toString() === (thingB as symbol).toString()
         case "function":
             throw new Error("Very unrecommended")
     }
 }
 
-//export function objectIsValueObject(obj: object | null) : boolean{
-//     // @ts-ignore
-//     const isValueClass = obj[ValueClassMarker];
-//     return isValueClass === true
-// }
-//
-// function objectEquals(objectA: object | null, objectB: object | null): boolean {
-//     // @ts-ignore
-//     if (objectIsValueObject(objectA)) {
-//         return objectValueEquals(objectA, objectB)
-//     } else {
-//         return objectA === objectB;
-//     }
-// }
-function objectEquals(objectA: object | null, objectB: object | null): boolean {
+const EqualsFunction = "equals"
+
+
+//TODO: test new equals stuff with javamethods and javaclasses
+function objectEquals(objectA: TsObject | null, objectB: TsObject | null): boolean {
     if (objectA === null) return objectB === null;
     if (objectB === null) return false;
+    const equalsA = objectA[EqualsFunction]
+    if (equalsA !== undefined && typeof equalsA === "function") {
+        // This should check they are of the same type
+        if (objectB[EqualsFunction] !== equalsA) return false;
+        return equalsA.bind(objectA)(objectB) === true
+    } else {
+        return defaultObjectEquals(objectA, objectB)
+    }
+}
+
+function defaultObjectEquals(objectA: TsObject, objectB: TsObject): boolean {
     const keysA = Object.keys(objectA);
     const keysB = Object.keys(objectB);
     if (keysA.length !== keysB.length) return false;
     for (const keyA of keysA) {
-        // @ts-ignore
         const valueA = objectA[keyA]
         if (typeof valueA !== "function") {
             // Using keyA on both is intentional
-            // @ts-ignore
             if (!equalsOfAnything(valueA, objectB[keyA])) return false;
         }
 

@@ -11,51 +11,121 @@ import {useEffect, useState} from "react";
 import {BiMap} from "../utils/BiMap";
 import {
     JavaClass,
-    javaClassFullUnmappedName,
     JavaMethod,
-    javaMethodFullUnmappedName, javaMethodSimpleName
 } from "crash-parser/src/model/RichCrashReport";
 import {mapRecord} from "../utils/Javascript";
-import {HashMap} from "../utils/hashmap/HashMap";
+import {Entry, HashMap, Dict, MutableDict} from "../utils/hashmap/HashMap";
 
 type SimpleMethodName = string
 
 // type DescriptoredMethodName = string
 
-interface DescriptoredMethodName {
+export interface DescriptoredMethodName {
     method: JavaMethod,
     descriptor: string
 }
 
-function descriptoredMethodNameAsKey(name: DescriptoredMethodName): string {
-    return javaMethodFullUnmappedName(name.method) + name.descriptor;
-}
-
-function parseDescriptoredMethodName(name: string): DescriptoredMethodName {
-    const [simpleMethodNameWithClass, descriptorWithoutLeadingBrace] = name.splitToTwo("(")
-    const [fullClassName, simpleMethodName] = simpleMethodNameWithClass.splitToTwo("#")
-    return {
-        method: {
-            name: simpleMethodName,
-            classIn: parseJavaClass(fullClassName)
-        },
-        descriptor: "(" + descriptorWithoutLeadingBrace
-    }
-}
-
-// function javaClassAsKey(javaClass: JavaClass) : string {}
-
-function parseJavaClass(name: string): JavaClass {
-    const [packageName, simpleName] = name.splitToTwoOnLast(".")
-    return {packageName, simpleName}
-}
-
-// type ExtendedMappable = Mappable | DescriptoredMethodName
+// function descriptoredMethodNameAsKey(name: DescriptoredMethodName): string {
+//     return javaMethodFullUnmappedName(name.method) + name.descriptor;
+// }
+//
+// function parseDescriptoredMethodName(name: string): DescriptoredMethodName {
+//     const [simpleMethodNameWithClass, descriptorWithoutLeadingBrace] = name.splitToTwo("(")
+//     const [fullClassName, simpleMethodName] = simpleMethodNameWithClass.splitToTwo("#")
+//     return {
+//         method: {
+//             name: simpleMethodName,
+//             classIn: parseJavaClass(fullClassName)
+//         },
+//         descriptor: "(" + descriptorWithoutLeadingBrace
+//     }
+// }
+//
+// // function javaClassAsKey(javaClass: JavaClass) : string {}
+//
+// function parseJavaClass(name: string): JavaClass {
+//     const [packageName, simpleName] = name.splitToTwoOnLast(".")
+//     return {packageName, simpleName}
+// }
+//
+// // type ExtendedMappable = Mappable | DescriptoredMethodName
 // type PossibleDescriptors =
 // interface ClassMapping
 
 // Key is class name stored as dot.qualified.names
-type SingleDirectionMappings = HashMap<JavaClass, ClassMappings>
+// type SingleDirectionMappings = HashMap<JavaClass, ClassMappings>
+
+type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
+
+function reverseMappingData(data: SingleDirectionMappingData): SingleDirectionMappingData {
+    return data.map(
+        (_, mappings) => mappings.mappedClassName,
+        (unmappedClass, mappings) => {
+            const reversed: ClassMappings = {
+                mappedClassName: unmappedClass,
+                methods: mappings.methods.map(
+                    (_, mappedName) => mappedName,
+                    (unmappedName) => unmappedName
+                )
+            }
+            return reversed
+        }
+    )
+}
+
+// {
+//     private readonly mappings: HashMap<JavaClass, ClassMappings>
+//     // We need a way to resolve methods that don't have any class or descriptor associated with them
+//     private readonly classlessMethodsMap = this.gatherMethodInfo();
+//     constructor(mappings: HashMap<JavaClass, ClassMappings>) {
+//         this.mappings = mappings;
+//     }
+//
+//     private gatherMethodInfo(): ClasslessMethodsToPossibleClasses {
+//         const map : ClasslessMethodsToPossibleClasses = new HashMap(this.mappings.size);
+//         this.mappings.forEach((classIn, classMappings) => {
+//             classMappings.methods.forEach(descriptored => {
+//                 const newEntry = {key: descriptored.method,value: [descriptored]}
+//
+//                 // If the method name has not been inputted to the map yet
+//                 map.putIfAbsent(descriptored.method.name,  HashMap.fromArray([newEntry]))
+//                     // If the method name was inputted but a descriptor has not
+//                     ?.putIfAbsent(descriptored.method,[descriptored])
+//                     // If a previous descriptor was added already
+//                     ?.push(descriptored)
+//             })
+//         })
+//         return map;
+//     }
+//
+//     get(className: JavaClass): ClassMappings | undefined {
+//         return this.mappings.get(className)
+//     }
+//
+//     // Returns undefined if method does not exist
+//     possibleDescriptorsFor(method: JavaMethod): DescriptoredMethodName[]  | undefined {
+//         return this.classlessMethodsMap.get(method.name)?.get(method);
+//     }
+//
+//     toReversed(): SingleDirectionMappingData {
+//          return new SingleDirectionMappingData(
+//              this.mappings.map(
+//                  (_, mappings) => mappings.mappedClassName,
+//                  (unmappedClass, mappings) => {
+//                      const reversed: ClassMappings = {
+//                          mappedClassName: unmappedClass,
+//                          methods: mappings.methods.map(
+//                              (_, mappedName) => mappedName,
+//                              (unmappedName) => unmappedName
+//                          )
+//                      }
+//                      return reversed
+//                  }
+//              )
+//          )
+//     }
+//
+// }
 
 interface ClassMappings {
     mappedClassName: JavaClass
@@ -63,38 +133,23 @@ interface ClassMappings {
     methods: HashMap<DescriptoredMethodName, DescriptoredMethodName>;
 }
 
-//TODO: this is the way i want to resolve methods with no class, need to think how this works out with reversed
-// Probably: make SingleDirectionMappings a class and give it a lazy .getClasslessMethods(), .getDescriptorlessMethods()
-type ClasslessMethodsToPossibleClasses = HashMap<string, DescriptorlessMethodsToPossibleDescriptors>;
-type DescriptorlessMethodsToPossibleDescriptors = HashMap<JavaMethod, DescriptoredMethodName>
+// // Probably: make SingleDirectionMappings a class and give it a lazy .getClasslessMethods(), .getDescriptorlessMethods()
+// type ClasslessMethodsToPossibleClasses = HashMap<string, DescriptorlessMethodsToPossibleDescriptors>;
+// type DescriptorlessMethodsToPossibleDescriptors = HashMap<JavaMethod, DescriptoredMethodName[]>
 
-class Mappings {
+export class Mappings {
+    private readonly mappings: SingleDirectionMappingData
 
-    private readonly mappings: SingleDirectionMappings
-    private readonly mappingsReversed = new Lazy(() => this.reverseMappings());
 
-    private getMappings(reversed: boolean): SingleDirectionMappings {
+    // eslint-disable-next-line no-invalid-this
+    private readonly mappingsReversed = new Lazy(() => reverseMappingData(this.mappings));
+
+
+    private getMappings(reversed: boolean): SingleDirectionMappingData {
         return reversed ? this.mappingsReversed.get() : this.mappings;
     }
 
-    private reverseMappings(): SingleDirectionMappings {
-        return this.mappings.map(
-            (_, mappings) => mappings.mappedClassName,
-            (unmappedClass, mappings) => {
-                const reversed: ClassMappings = {
-                    mappedClassName: unmappedClass,
-                    methods: mappings.methods.map(
-                        (_, mappedName) => mappedName,
-                        (unmappedName) => unmappedName
-                    )
-                }
-                return reversed
-            }
-        )
-    }
-
-
-    constructor(mappings: SingleDirectionMappings) {
+    constructor(mappings: SingleDirectionMappingData) {
         this.mappings = mappings;
     }
 
@@ -105,55 +160,91 @@ class Mappings {
 
     mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethodName {
         const classMappings = this.getMappings(reverse).get(methodName.classIn);
-        // Class mappings are almost always present, so if we can't find mappings just for the class name we give up and keep the method unmapped with a BS descriptor
-        if (classMappings === undefined) return {method: methodName, descriptor: ""};
-
-        // We expect a low amount of methods per class, especially with filtering so this is fine
-        return classMappings.methods.linearSearch((key) => javaMethodSimpleName()
-        key.method
-    )
-
+        if (classMappings !== undefined) {
+            // Linear search is fine because we filter down only to the methods we use
+            return classMappings.methods.linearSearch(unmapped => unmapped.method.equals(methodName)) ?? methodName.withEmptyDescriptor()
+        } else {
+            // If the class name is not found - don't map this method. Mapping just by method name can create very incorrect results, e.g. if a method is called run
+            // it would be remapped into something almost completely random.
+            // Remapping without descriptor is ok because at worst case the wrong method is in the same class and has the same name.
+            return methodName.withEmptyDescriptor();
+        }
     }
 
     mapDescriptoredMethod(methodName: DescriptoredMethodName, reverse: boolean): DescriptoredMethodName {
+        return this.getMappings(reverse).get(methodName.method.classIn)?.methods?.get(methodName) ?? methodName;
+    }
+}
 
+export class MappingsBuilder {
+    private readonly mappings: MutableDict<JavaClass, ClassMappings>
+    constructor() {
+        this.mappings = new HashMap(undefined)
+    }
+
+    addClass(unmapped: string, mapped: string) {
+        this.mappings.put(new JavaClass(unmapped,true), {
+            methods: new HashMap(undefined),
+            mappedClassName: new JavaClass(mapped,true)
+        })
+    }
+
+    addMethod(unmappedClassName: string, unmappedMethodName: string, unmappedDescriptor: string, mappedMethodName: string) {
+        const classKey = new JavaClass(unmappedClassName,true)
+        const classEntry = this.mappings.get(classKey)
+        if(classEntry === undefined) throw new Error(`Class ${unmappedClassName} not found in mappings`)
+        classEntry.methods.put({
+            method: new JavaMethod(classKey,unmappedMethodName),
+            descriptor: unmappedDescriptor
+        },{
+            method: new JavaMethod(classEntry.mappedClassName,mappedMethodName),
+            // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
+            // based off of the class mappings
+            descriptor: this.remapDescriptor(unmappedDescriptor)
+        })
+    }
+
+     remapDescriptor(descriptor: string): string {
+        return descriptor.replace(/L(.+?);/g, (match, p1) => `L${this.mappings.get(new JavaClass(p1,true)) ?? p1};`);
+    }
+
+    build() : Mappings {
+        return new Mappings(this.mappings);
     }
 }
 
 
-export interface Mappings {
-    /**
-     * Must use dot.notation e.g. net.minecraft.gui.GuiThing
-     */
-    classes: BiMap<string, string>
-    /**
-     * Stack trace lines include method names without the descriptor - so we need a map from these "simple" method names
-     * to the desired namespace
-     *
-     * Descriptors use slashes/in/package/names
-     */
-    noDescriptorToDescriptorMethods: BiMap<SimpleMethodName, DescriptoredMethodName>
-    /**
-     * In cases where we go through multiple namespaces to get to the desired namespace, we need to not lose information along the way.
-     * So in that case if you go through namespaces a -> b -> c -> d it will be:
-     * - Stack trace includes SimpleMethodNames from namespace a
-     * - first Mappings maps those names to DescriptoredMethodNames from namespace b (using noDescriptorToDescriptorMethods)
-     * - second Mappings maps those names to DescriptoredMethodNames from namespace c (using descriptorToDescriptorMethods)
-     * - third Mappings maps those names to DescriptoredMethodNames from namespace d (using descriptorToDescriptorMethods)
-     *
-     * Using descriptors as much as possible ensures the mappings are as accurate as possible.
-     *
-     * Descriptors use slashes/in/package/names
-     */
-    descriptorToDescriptorMethods: BiMap<DescriptoredMethodName, DescriptoredMethodName>
-    // fields: StringMap
-}
 
-export const EmptyMappings: Mappings = {
-    classes: BiMap.Empty,
-    noDescriptorToDescriptorMethods: BiMap.Empty,
-    descriptorToDescriptorMethods: BiMap.Empty
-}
+//
+// export interface Mappings {
+//     /**
+//      * Must use dot.notation e.g. net.minecraft.gui.GuiThing
+//      */
+//     classes: BiMap<string, string>
+//     /**
+//      * Stack trace lines include method names without the descriptor - so we need a map from these "simple" method names
+//      * to the desired namespace
+//      *
+//      * Descriptors use slashes/in/package/names
+//      */
+//     noDescriptorToDescriptorMethods: BiMap<SimpleMethodName, DescriptoredMethodName>
+//     /**
+//      * In cases where we go through multiple namespaces to get to the desired namespace, we need to not lose information along the way.
+//      * So in that case if you go through namespaces a -> b -> c -> d it will be:
+//      * - Stack trace includes SimpleMethodNames from namespace a
+//      * - first Mappings maps those names to DescriptoredMethodNames from namespace b (using noDescriptorToDescriptorMethods)
+//      * - second Mappings maps those names to DescriptoredMethodNames from namespace c (using descriptorToDescriptorMethods)
+//      * - third Mappings maps those names to DescriptoredMethodNames from namespace d (using descriptorToDescriptorMethods)
+//      *
+//      * Using descriptors as much as possible ensures the mappings are as accurate as possible.
+//      *
+//      * Descriptors use slashes/in/package/names
+//      */
+//     descriptorToDescriptorMethods: BiMap<DescriptoredMethodName, DescriptoredMethodName>
+//     // fields: StringMap
+// }
+
+export const EmptyMappings: Mappings = new Mappings(HashMap.empty());
 
 export function remap(name: string, map: StringMap): string {
     const mapped = map[name];

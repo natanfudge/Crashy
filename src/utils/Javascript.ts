@@ -1,4 +1,4 @@
-import {Key, typedKeys} from "crash-parser/src/util/Utils";
+import {Key, Optional, typedKeys} from "crash-parser/src/util/Utils";
 import {Rect} from "./Gui";
 
 export function removeSuffix(str: string, suffix: string): string {
@@ -117,3 +117,5 @@ export function getDocumentRelativeRect(element?: Element | null): Rect { // cro
 // export function isPortrait(): boolean {
 //     return window.innerWidth < window.innerHeight;
 // }
+
+export type TsObject = Record<string,unknown>

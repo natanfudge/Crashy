@@ -1,6 +1,6 @@
 import {MappingsNamespace} from "./MappingsNamespace";
 import {EmptyMappings, Mappings} from "./Mappings";
-import {getYarnBuilds, getYarnMappings2} from "./providers/YarnMappingsProvider";
+import {getYarnBuilds, getYarnMappings} from "./providers/YarnMappingsProvider";
 import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
 
 export type MappingsBuilds = string[];
@@ -32,7 +32,7 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
         return builds.map(build => build.version)
     },
     getMappings(version: MappingsVersion): Promise<Mappings> {
-        return getYarnMappings2(version.build)
+        return getYarnMappings(version.build)
     }
 }
 

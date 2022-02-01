@@ -27,6 +27,7 @@ declare global {
         arrayEquals(array: T[]): boolean
         remove(item : T): void
         firstOr<V>(or: () => V): T | V
+        drop(amount: number) : Array<T>
     }
 }
 

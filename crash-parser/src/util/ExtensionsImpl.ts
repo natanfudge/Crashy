@@ -89,3 +89,10 @@ Array.prototype.firstOr = function <T, V>(this: T[], or: () => V): T | V {
         return this[0];
     }
 }
+Array.prototype.drop = function <T>(this: T[], amount: number): Array<T> {
+    const newArr = new Array(this.length - amount);
+    for (let i = amount; i < this.length; i++) {
+        newArr[i - amount] = this[i];
+    }
+    return newArr;
+}

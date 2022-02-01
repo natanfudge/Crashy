@@ -1,6 +1,8 @@
 import {StringMap} from "./CrashReport";
 import {MappingMethod} from "../../../src/mappings/MappingMethod";
 import {ClassMethodSeperator} from "../../../src/mappings/providers/TinyMappings";
+import {DescriptoredMethodName} from "../../../src/mappings/Mappings";
+import {hashArray, hashString} from "../../../src/utils/hashmap/Hashing";
 
 export interface RichCrashReport {
     rawText: string
@@ -128,42 +130,88 @@ export class JavaMethod {
         this.name = name;
     }
 
-     simpleName( mappings: MappingMethod) {
-        return mappings.mapMethod(this.fullUnmappedName()).removeBeforeLastExclusive(".")
+    simpleName(mappings: MappingMethod): string {
+        const mapped = mappings.mapMethod(this)
+        return mapped.classIn.simpleName + ClassMethodSeperator + mapped.name
     }
 
-     fullName( mappings: MappingMethod) {
-        return mappings.mapMethod(this.fullUnmappedName());
+    fullName(mappings: MappingMethod): string {
+        return mappings.mapMethod(this).fullUnmappedName();
     }
 
-     fullUnmappedName() {
-        return this.classIn.fullUnmappedName() + ClassMethodSeperator + this.name;
+    withEmptyDescriptor(): DescriptoredMethodName {
+        return {
+            method: this,
+            descriptor: ""
+        }
     }
-    equals(other: JavaMethod) {
+
+    fullUnmappedName(): string {
+        return this.classIn.fullUnmappedName + ClassMethodSeperator + this.name;
+    }
+
+    equals(other: JavaMethod): boolean {
         return other.name === this.name && other.classIn.equals(this.classIn);
     }
 
+    // hashCode(): number {
+    //     return hashArray()
+    // }
+
 }
+//TODO: disable
+const EnableAssertions = true
 
 export class JavaClass {
-    packageName: string
-    simpleName: string
+    // Stored in dot.qualified.names
+    readonly fullUnmappedName: string
+    private _packageName?: string
+    private _simpleName?: string
 
-    constructor(packageName: string, simpleName: string) {
-        this.packageName = packageName;
-        this.simpleName = simpleName;
+    get packageName(): string {
+        if (this._packageName === undefined) this.populatePackageSplit()
+        return this._packageName!;
     }
 
-    fullName(mappings: MappingMethod){
-        return mappings.mapClass(this.fullUnmappedName());
+    get simpleName(): string {
+        if (this._simpleName === undefined) this.populatePackageSplit()
+        return this._simpleName!;
     }
 
-    fullUnmappedName() {
-        return this.packageName + "." + this.simpleName;
+    private populatePackageSplit() {
+        const [packageName, className] = this.fullUnmappedName.splitToTwoOnLast(".")
+        this._packageName = packageName;
+        this._simpleName = className;
     }
 
-    equals(other: JavaClass){
-        return other.simpleName === this.simpleName && other.packageName === this.packageName;
+    constructor(fullName: string, slashSeperated: boolean) {
+        if (EnableAssertions && fullName.includes("/") !== slashSeperated) {
+            throw new Error("Unexpected slash/period when defined otherwise")
+        }
+        this.fullUnmappedName = slashSeperated ? fullName.replace(/\//g, ".") : fullName;
+    }
+
+    // constructor(packageName: string, simpleName: string) {
+    //     this.packageName = packageName;
+    //     this.simpleName = simpleName;
+    // }
+
+
+    fullName(mappings: MappingMethod) {
+        return mappings.mapClass(this).fullUnmappedName;
+    }
+
+    // fullUnmappedName() {
+    //     return this.packageName + "." + this.simpleName;
+    // }
+
+    equals(other: JavaClass) {
+        return other.fullUnmappedName === this.fullUnmappedName;
+    }
+
+    // We have a lot of extra fields so we override hashCode()
+    hashCode(): number {
+        return hashString(this.fullUnmappedName)
     }
 }
 

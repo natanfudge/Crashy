@@ -1,7 +1,7 @@
 import {JavaClass, JavaMethod, Loader, LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {usePromise} from "../ui/utils/PromiseBuilder";
 import {MappingsProvider, MappingsVersion} from "./MappingsProvider";
-import {getMappingsCached} from "./Mappings";
+import {DescriptoredMethodName, getMappingsCached} from "./Mappings";
 import {MemoryCache} from "../utils/PromiseMemoryCache";
 import {flipRecord} from "../utils/Javascript";
 import {MappingsNamespace} from "./MappingsNamespace";
@@ -10,8 +10,8 @@ import {resolveMappingsChain} from "./MappingsResolver";
 import {BiMap} from "../utils/BiMap";
 
 export interface MappingMethod {
-    mapMethod: (unmapped: string) => string
-    mapClass: (unmapped: string) => string
+    mapMethod: (unmapped: JavaMethod) => JavaMethod
+    mapClass: (unmapped: JavaClass) => JavaClass
 }
 
 export const IdentityMapping: MappingMethod = {
@@ -101,7 +101,7 @@ interface DesiredVersion {
     minecraftVersion: string
 }
 
-async function mappingViaProviderStep(
+async function mappingViaProviderStep<T extends boolean>(
     dirProvider: DirectionedProvider, version: DesiredVersion,
     {
         /**
@@ -113,8 +113,8 @@ async function mappingViaProviderStep(
          * We only care about the build for the last mapping, because that's the one the user actually chose.
          */
         last
-    }: { initial: boolean, last: boolean }
-): Promise<MappingMethod> {
+    }: { initial: T, last: boolean }
+): Promise<InternalMappingMethod<T>> {
     const provider = dirProvider.provider;
     const mappings = await getMappingsCached(provider, {
         minecraftVersion: version.minecraftVersion,
@@ -122,16 +122,28 @@ async function mappingViaProviderStep(
     });
     const reverse = dirProvider.reverse;
 
-    const usedClassMappings = reverse ? mappings.classes.getReverseMap() : mappings.classes.getNormalMap();
-    // Initial: no-desc -> desc, middleman: desc -> desc
-    const usedMethodMappingsInTermsOfDesc = initial ? mappings.noDescriptorToDescriptorMethods : mappings.descriptorToDescriptorMethods;
-    const usedMethodMappings = reverse ? usedMethodMappingsInTermsOfDesc.getReverseMap() : usedMethodMappingsInTermsOfDesc.getNormalMap();
-
     return {
-        mapMethod: unmapped => usedMethodMappings[unmapped] ?? unmapped,
-        mapClass: unmapped => usedClassMappings[unmapped] ?? unmapped
+        mapMethod: (unmapped: DescriptoredMethodName | JavaMethod) => {
+            return initial ? mappings.mapSimpleMethod(unmapped as JavaMethod, reverse) : mappings.mapDescriptoredMethod(unmapped as DescriptoredMethodName, reverse);
+        },
+        mapClass: unmapped => mappings.mapClass(unmapped, reverse)
     };
 }
+
+export interface InitialMappingMethod {
+    mapMethod: (unmapped: JavaMethod) => DescriptoredMethodName
+    mapClass: (unmapped: JavaClass) => JavaClass
+}
+
+export interface IntermediateMappingMethod {
+    mapMethod: (unmapped: DescriptoredMethodName) => DescriptoredMethodName
+    mapClass: (unmapped: JavaClass) => JavaClass
+}
+
+// type InitialMappingMethod = (unmapped: JavaMethod) => DescriptoredMethodName
+// type IntermediateMappingMethod = (partiallyMapped: DescriptoredMethodName) => DescriptoredMethodName
+
+type InternalMappingMethod<Initial extends boolean> = Initial extends true ? InitialMappingMethod : IntermediateMappingMethod
 
 async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvider: DirectionedProvider): Promise<string> {
     const provider = dirProvider.provider;
@@ -158,21 +170,32 @@ async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
     version: DesiredVersion
 ): Promise<MappingMethod> {
-    const mappingChain = await Promise.all(
-        providerChain.map((provider, i) => mappingViaProviderStep(provider, version, {
-            initial: i === 0,
-            last: i === providerChain.length - 1
-        }))
-    );
+    const firstStepPromise = mappingViaProviderStep(providerChain[0], version, {
+        last: providerChain.length === 1,
+        initial: true
+    })
+    const intermediaryProviders = providerChain.drop(1);
+    const otherStepsPromise = Promise.all(intermediaryProviders.map(
+        (provider, i) => mappingViaProviderStep(provider, version, {
+            last: i === intermediaryProviders.length - 1,
+            initial: false
+        })
+    ))
 
-    const classMaps = mappingChain.map(strategy => ((name: string) => strategy.mapClass(name)))
-    const methodMaps = mappingChain.map(strategy => ((name: string) => strategy.mapMethod(name)))
+    const [firstStep, otherSteps] = await Promise.all([firstStepPromise, otherStepsPromise]);
+
+    const classMaps = [firstStep, ...otherSteps].map(strategy => ((name: JavaClass) => strategy.mapClass(name)))
+    const intermediaryMethodMaps = otherSteps.map(strategy => ((name: DescriptoredMethodName) => strategy.mapMethod(name)))
 
     return {
         // Call all the mappings required to go from one namespace to another
         mapClass: unmapped => callAll(unmapped, classMaps),
         // Final step: remove descriptor (since originally the unmapped has no descriptor)
-        mapMethod: unmapped => removeDescriptor(callAll(unmapped, methodMaps))
+        mapMethod: unmapped => {
+            const mappedOnce = firstStep.mapMethod(unmapped);
+            const completelyMapped = callAll(mappedOnce, intermediaryMethodMaps);
+            return completelyMapped.method;
+        }
     };
 }
 
