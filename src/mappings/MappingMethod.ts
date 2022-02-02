@@ -1,7 +1,7 @@
 import {JavaClass, JavaMethod, Loader, LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {usePromise} from "../ui/utils/PromiseBuilder";
 import {MappingsProvider, MappingsVersion} from "./MappingsProvider";
-import {DescriptoredMethodName, getMappingsCached} from "./Mappings";
+import {DescriptoredMethodName, getMappingsCached, MappingsFilter} from "./Mappings";
 import {MemoryCache} from "../utils/PromiseMemoryCache";
 import {flipRecord} from "../utils/Javascript";
 import {MappingsNamespace} from "./MappingsNamespace";
@@ -102,7 +102,9 @@ interface DesiredVersion {
 }
 
 async function mappingViaProviderStep<T extends boolean>(
-    dirProvider: DirectionedProvider, version: DesiredVersion,
+    //TODO: FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
+    //  how do we need if an intermediate mapping should be filtered in?
+    dirProvider: DirectionedProvider, version: DesiredVersion,filter: MappingsFilter,
     {
         /**
          * See javadoc for Mappings#descriptorToDescriptorMethods.

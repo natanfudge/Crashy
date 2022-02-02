@@ -1,10 +1,10 @@
 import {extractTinyMappings, profiler, profilerDel} from "./ProviderUtils";
-import {Mappings} from "../Mappings";
+import {Mappings, MappingsFilter} from "../Mappings";
 import {parseTinyFile} from "./TinyMappings";
 import {httpGet} from "../../utils/Http";
 import {HttpStatusCode} from "../../server/CrashyServer";
 
-export async function getYarnMappings(build: string): Promise<Mappings> {
+export async function getYarnMappings(build: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading Yarn Mappings");
     const domain = "https://maven.fabricmc.net"
     const res = await fetch(`${domain}/net/fabricmc/yarn/${build}/yarn-${build}-v2.jar`);
@@ -12,18 +12,8 @@ export async function getYarnMappings(build: string): Promise<Mappings> {
     profilerDel("Downloading Yarn Mappings");
 
     const unzipped = await extractTinyMappings(res);
-    return loadYarnMappings(unzipped);
+    return parseTinyFile(unzipped, filter);
 }
-
-async function loadYarnMappings(rawMappings: string): Promise<Mappings> {
-    profiler("Parsing Yarn Mappings");
-
-    const retval = await parseTinyFile(rawMappings);
-
-    profilerDel("Parsing Yarn Mappings");
-    return retval;
-}
-
 
 export interface YarnBuild {
     gameVersion: string;

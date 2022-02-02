@@ -28,12 +28,12 @@ function isIntermediaryName(mappable: Mappable): boolean {
 }
 
 function isJavaMethod(mappable: Mappable): mappable is JavaMethod {
-    return "class" in mappable;
+    return "classIn" in mappable;
 }
 
 function isIntermediaryClassName(javaClass: JavaClass): boolean {
-    return javaClass.simpleName.startsWith("class_")
-        && javaClass.packageName === "net.minecraft"
+    return javaClass.getSimpleName().startsWith("class_")
+        && javaClass.getPackageName() === "net.minecraft"
 }
 
 function isIntermediaryMethodName(javaMethod: JavaMethod): boolean {

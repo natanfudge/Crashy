@@ -32,32 +32,6 @@ export default function App() {
     </ThemeProvider>
 
 }
-//
-// function CrashyUi2() {
-//     // return <div>
-//     //     <div  style={{float: "left", width: "400px", height: "150px", marginRight: "50px", backgroundColor: "#ff0000"}}>
-//     //         {/*<Spacer margin={{right: 50}} width = {400} height={150} backgroundColor = "red"/>*/}
-//     //     </div>
-//     //     <p>But I must explain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of thxplain to you how all this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?</p>
-//     // </div>
-//     const text =
-// "        Lorem ipsum dolor sit amet,um dolor sit amet,um dolor sit amet, ,um dolor sit amet,um dolor sit amet, ,um dolor sit amet,um dolor sit amet, ,um dolor sit amet,um dolor sit amet, co dolor sit amet, co dolor sit amet, consectetuasdfasefawefawefawefawefawefawefawefawf awef awef awef awef awef awef awr adique swef awef awef awef awef awr adique swef awef awef awef awef awr adique swef awef awef awef awef awr adique swef awef awef awef awef awr adique sint susat l nobis, quibusdam reprehenderit sunt vel, voluptates."
-//
-//     const breakpoint = 200;
-//     const textPart1 = text.substring(0, breakpoint)
-//     const textPart2 = text.substring(breakpoint)
-//
-//     return <Row>
-//         <Text text={"Halo stuff"}/>
-//         <div>
-//             <Spacer flexGrow = {1}/>
-//             <Spacer style={{float: "right"}} margin={{right: 50}} width = {400} height={150} backgroundColor = "red"/>
-//             <Text padding={70} variant={"h5"} text = {text}/>
-//         </div>
-//         <Text text={"Halo stuff 123"}/>
-//     </Row>
-// }
-
 
 function CrashyUi() {
 

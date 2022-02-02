@@ -162,7 +162,7 @@ export class Mappings {
         const classMappings = this.getMappings(reverse).get(methodName.classIn);
         if (classMappings !== undefined) {
             // Linear search is fine because we filter down only to the methods we use
-            return classMappings.methods.linearSearch(unmapped => unmapped.method.equals(methodName)) ?? methodName.withEmptyDescriptor()
+            return classMappings.methods.linearSearch(unmapped => unmapped.method.equals(methodName)) ?? methodName.withClass(classMappings.mappedClassName).withEmptyDescriptor()
         } else {
             // If the class name is not found - don't map this method. Mapping just by method name can create very incorrect results, e.g. if a method is called run
             // it would be remapped into something almost completely random.
@@ -176,43 +176,72 @@ export class Mappings {
     }
 }
 
+export interface MappingsFilter {
+    classFilter(name: string): boolean
+
+    methodFilter(className: string, methodName: string, descriptor: string): boolean
+}
+
+export const AllowAllMappings: MappingsFilter = {
+    classFilter(name: string): boolean {
+        return true
+    },
+    methodFilter(className: string, methodName: string, descriptor: string): boolean {
+        return true
+    }
+}
+
 export class MappingsBuilder {
     private readonly mappings: MutableDict<JavaClass, ClassMappings>
-    constructor() {
+    private readonly filter: MappingsFilter
+
+    constructor(filter: MappingsFilter) {
         this.mappings = new HashMap(undefined)
+        this.filter = filter;
     }
 
     addClass(unmapped: string, mapped: string) {
-        this.mappings.put(new JavaClass(unmapped,true), {
+        // zj Initial hash: 1205
+        // zj Initial capacity: 3079
+        this.mappings.put(new JavaClass(unmapped, true), {
             methods: new HashMap(undefined),
-            mappedClassName: new JavaClass(mapped,true)
+            mappedClassName: new JavaClass(mapped, true)
         })
     }
 
     addMethod(unmappedClassName: string, unmappedMethodName: string, unmappedDescriptor: string, mappedMethodName: string) {
-        const classKey = new JavaClass(unmappedClassName,true)
+        const classKey = new JavaClass(unmappedClassName, true)
+        // zj get hash: 3477
+        // zj get capacity: 4618
         const classEntry = this.mappings.get(classKey)
-        if(classEntry === undefined) throw new Error(`Class ${unmappedClassName} not found in mappings`)
+        if (classEntry === undefined) {
+            const linearFind = this.mappings.linearSearch(k => k.equals(classKey))
+            if (linearFind !== undefined) {
+                throw new Error(`Bug in hashmap! item ${unmappedClassName} exists but map is not finding it`)
+            } else {
+                throw new Error(`Class ${unmappedClassName} not found in mappings`)
+            }
+
+        }
         classEntry.methods.put({
-            method: new JavaMethod(classKey,unmappedMethodName),
+            method: new JavaMethod(classKey, unmappedMethodName),
             descriptor: unmappedDescriptor
-        },{
-            method: new JavaMethod(classEntry.mappedClassName,mappedMethodName),
+        }, {
+            method: new JavaMethod(classEntry.mappedClassName, mappedMethodName),
             // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
             // based off of the class mappings
             descriptor: this.remapDescriptor(unmappedDescriptor)
         })
     }
 
-     remapDescriptor(descriptor: string): string {
-        return descriptor.replace(/L(.+?);/g, (match, p1) => `L${this.mappings.get(new JavaClass(p1,true)) ?? p1};`);
+    remapDescriptor(descriptor: string): string {
+        return descriptor.replace(/L(.+?);/g, (match, p1) => `L${this.mappings.get(new JavaClass(p1, true)) ?? p1};`);
     }
 
-    build() : Mappings {
+    build(): Mappings {
         return new Mappings(this.mappings);
     }
 }
-
 
 
 //
@@ -289,10 +318,10 @@ export function useAnyMappingsLoading(): boolean {
     return loading;
 }
 
-export async function getMappingsCached(mappingsProvider: MappingsProvider, version: MappingsVersion): Promise<Mappings> {
+export async function getMappingsCached(mappingsProvider: MappingsProvider, version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
     return mappingsCache.get(
         mappingsProvider.fromNamespace + mappingsProvider.toNamespace + version.build + version.minecraftVersion,
-        () => mappingsProvider.getMappings(version)
+        () => mappingsProvider.getMappings(version,filter)
     ).catch(e => {
         console.error("Could not get mappings", e);
         return EmptyMappings;

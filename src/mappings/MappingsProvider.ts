@@ -1,5 +1,5 @@
 import {MappingsNamespace} from "./MappingsNamespace";
-import {EmptyMappings, Mappings} from "./Mappings";
+import {EmptyMappings, Mappings, MappingsFilter} from "./Mappings";
 import {getYarnBuilds, getYarnMappings} from "./providers/YarnMappingsProvider";
 import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
 
@@ -19,7 +19,7 @@ export interface MappingsProvider {
     /**
      * The build is the full version name of the mappings, e.g. 1.18.1+build.13
      */
-    getMappings(version: MappingsVersion): Promise<Mappings>
+    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings>
 }
 
 
@@ -31,8 +31,8 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
         // await new Promise(resolve => setTimeout(resolve, 3000))
         return builds.map(build => build.version)
     },
-    getMappings(version: MappingsVersion): Promise<Mappings> {
-        return getYarnMappings(version.build)
+    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
+        return getYarnMappings(version.build,filter)
     }
 }
 
@@ -45,7 +45,7 @@ export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
         // return builds.map(build => build.version)
         throw new Error("TODO")
     },
-    getMappings(version: MappingsVersion): Promise<Mappings> {
+    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
         // return getYarnMappings(build)
         throw new Error("TODO")
     }
@@ -57,8 +57,8 @@ export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     async getBuilds(): Promise<string[]> {
         return [];
     },
-    async getMappings(version: MappingsVersion): Promise<Mappings> {
-        return getIntermediaryMappings(version.minecraftVersion);
+    async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
+        return getIntermediaryMappings(version.minecraftVersion,filter);
     }
 }
 
@@ -68,7 +68,7 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
     async getBuilds(minecraftVersion: string): Promise<string[]> {
         throw new Error("TODO")
     },
-    async getMappings(version: MappingsVersion): Promise<Mappings> {
+    async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
         return EmptyMappings;
         // throw new Error("TODO")
     }
@@ -80,7 +80,7 @@ export const SrgToMcpMappingsProvider: MappingsProvider = {
     async getBuilds(minecraftVersion: string): Promise<string[]> {
         throw new Error("TODO")
     },
-    getMappings(version: MappingsVersion): Promise<Mappings> {
+    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
         throw new Error("TODO")
     }
 }
@@ -91,7 +91,7 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
     async getBuilds(minecraftVersion: string): Promise<string[]> {
         throw new Error("TODO")
     },
-    getMappings(version: MappingsVersion): Promise<Mappings> {
+    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
         throw new Error("TODO")
     }
 }

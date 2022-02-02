@@ -65,6 +65,8 @@ export function InvalidCrashAttempt({attempt}: { attempt: Exclude<GetCrashAttemp
     } else if (attempt === undefined) {
         return <LinearProgress/>
     } else {
+        // console.log("ALO")
+        console.error(attempt)
         return <CrashErroredScreen/>
     }
 }

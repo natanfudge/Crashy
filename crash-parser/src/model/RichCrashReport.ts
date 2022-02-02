@@ -130,9 +130,13 @@ export class JavaMethod {
         this.name = name;
     }
 
+    static dotSeperated(classIn: string, name: string) {
+        return new JavaMethod(JavaClass.dotSeperated(classIn), name)
+    }
+
     simpleName(mappings: MappingMethod): string {
         const mapped = mappings.mapMethod(this)
-        return mapped.classIn.simpleName + ClassMethodSeperator + mapped.name
+        return mapped.classIn.getSimpleName() + ClassMethodSeperator + mapped.name
     }
 
     fullName(mappings: MappingMethod): string {
@@ -144,6 +148,10 @@ export class JavaMethod {
             method: this,
             descriptor: ""
         }
+    }
+
+    withClass(classIn: JavaClass): JavaMethod {
+        return new JavaMethod(classIn, this.name)
     }
 
     fullUnmappedName(): string {
@@ -159,6 +167,7 @@ export class JavaMethod {
     // }
 
 }
+
 //TODO: disable
 const EnableAssertions = true
 
@@ -168,12 +177,12 @@ export class JavaClass {
     private _packageName?: string
     private _simpleName?: string
 
-    get packageName(): string {
+    getPackageName(): string {
         if (this._packageName === undefined) this.populatePackageSplit()
         return this._packageName!;
     }
 
-    get simpleName(): string {
+    getSimpleName(): string {
         if (this._simpleName === undefined) this.populatePackageSplit()
         return this._simpleName!;
     }
@@ -185,10 +194,14 @@ export class JavaClass {
     }
 
     constructor(fullName: string, slashSeperated: boolean) {
-        if (EnableAssertions && fullName.includes("/") !== slashSeperated) {
+        if (EnableAssertions && ((fullName.includes("/") && !slashSeperated) || (fullName.includes(".") && slashSeperated)) && (!fullName.startsWith("java.base"))) {
             throw new Error("Unexpected slash/period when defined otherwise")
         }
         this.fullUnmappedName = slashSeperated ? fullName.replace(/\//g, ".") : fullName;
+    }
+
+    static dotSeperated(fullName: string) {
+        return new JavaClass(fullName, false)
     }
 
     // constructor(packageName: string, simpleName: string) {

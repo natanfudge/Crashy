@@ -52,12 +52,12 @@ function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace
     return <Row>
         <Spacer width={5}/>
         {currentCauserIndex > 0 && <CausationButton
-            text={`Caused: ${causerList[currentCauserIndex - 1].title.class.simpleName}`}
+            text={`Caused: ${causerList[currentCauserIndex - 1].title.class.getSimpleName()}`}
             onClick={() => onCauserIndexChanged(currentCauserIndex - 1)}
         />}
         {currentCauserIndex > 0 && <Spacer width={20}/>}
         {currentCauserIndex < causerList.length - 1 && <CausationButton
-            text={`Caused By: ${causerList[currentCauserIndex + 1].title.class.simpleName}`}
+            text={`Caused By: ${causerList[currentCauserIndex + 1].title.class.getSimpleName()}`}
             onClick={() => onCauserIndexChanged(currentCauserIndex + 1)}
         />}
     </Row>;
@@ -74,7 +74,7 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
 function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage, mappingContext: MappingContext }) {
     const [open, setOpen] = React.useState(false)
     const mappingMethod = useMappingForName(title.class, mappingContext);
-    const text = open ? title.class.fullName(mappingMethod) : title.class.simpleName;
+    const text = open ? title.class.fullName(mappingMethod) : title.class.getSimpleName();
 
     return <TextTheme wordBreak={"break-word"} variant={"h5"}>
         <SimpleSpan text={text} color={open ? undefined : clickableColor}

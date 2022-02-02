@@ -4,7 +4,8 @@
 import {hashCodeOfAnything} from "./Hashing";
 import {equalsOfAnything} from "./EqualsImplementation";
 import {LinkedList} from "../LinkedList";
-
+//// Debug 22 -> 21 -> 20: 86MB
+//// Now its 115MB and 121MB...
 const InitialCapacityPadding = 1.35;
 const DefaultCapacity = 16;
 const LoadFactor = 0.75;
@@ -123,16 +124,15 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         if (entry !== undefined) {
             entry.value = newEntry.value;
         } else {
-            // If the map is starting to get too full we should expand it
-            if (this._bucketsFilled + 1 > this.capacity * LoadFactor) this.expand();
-
             if (this.buckets[hash] === undefined) {
                 this.buckets[hash] = new LinkedList();
                 this._bucketsFilled++;
             }
             this.buckets[hash].prepend(newEntry);
-            //TODO: something  SUPER funky is going on. size and bucketsFilled are getting increased without items being inserted.
             this._size++;
+
+            // If the map is starting to get too full we should expand it
+            if (this._bucketsFilled > this.capacity * LoadFactor) this.expand();
         }
     }
 
