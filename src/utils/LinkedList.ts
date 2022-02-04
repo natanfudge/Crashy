@@ -22,6 +22,12 @@ export class LinkedList<T> {
             value
         };
     }
+
+    copyReversed() : LinkedList<T>{
+        const newList = new LinkedList<T>();
+        this.forEach(element => newList.prepend(element))
+        return newList
+    }
 }
 
 interface Node<T> {

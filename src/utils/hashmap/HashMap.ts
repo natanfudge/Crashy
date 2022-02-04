@@ -101,6 +101,15 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         return undefined;
     }
 
+    copy() : HashMap<K, V> {
+        const newMap = new HashMap<K,V>(this.capacity);
+        for (let i = 0; i < this.buckets.length; i++) {
+            const bucket = this.buckets[i];
+            newMap.buckets[i] = bucket.copyReversed();
+        }
+        return newMap;
+    }
+
     /**
      * If contains `key`, returns its value and does not mutate the map
      * If doesn't contain `key`, sets map[key] = value and returns undefined

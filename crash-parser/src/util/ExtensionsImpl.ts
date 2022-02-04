@@ -25,9 +25,10 @@ String.prototype.splitToTwo = function (this: string, splitOn: string): [string,
     if (index === -1) throw new Error(`Could not split to two because split string '${splitOn}' does not exist in target string '${this}'`)
     return [this.slice(0, index), this.slice(index + 1)]
 }
-String.prototype.splitToTwoOnLast = function (this: string, splitOn: string): [string, string] {
+String.prototype.splitToTwoOnLast = function (this: string, splitOn: string): [string, string] | undefined {
     const index = this.lastIndexOf(splitOn);
-    if (index === -1) throw new Error(`Could not split to two because split string '${splitOn}' does not exist in target string '${this}'`)
+    // if (index === -1) throw new Error(`Could not split to two because split string '${splitOn}' does not exist in target string '${this}'`)
+    if (index === -1) return undefined
     return [this.slice(0, index), this.slice(index + 1)]
 }
 
@@ -93,6 +94,13 @@ Array.prototype.drop = function <T>(this: T[], amount: number): Array<T> {
     const newArr = new Array(this.length - amount);
     for (let i = amount; i < this.length; i++) {
         newArr[i - amount] = this[i];
+    }
+    return newArr;
+}
+Array.prototype.mapSync = async function <T, NT>(this: T[], map: (item: T, index: number) => Promise<NT>): Promise<Array<NT>> {
+    const newArr = new Array<NT>(this.length);
+    for (let i = 0; i < this.length; i++) {
+        newArr[i] = await map(this[i], i);
     }
     return newArr;
 }

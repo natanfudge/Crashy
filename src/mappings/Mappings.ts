@@ -8,52 +8,8 @@ import {
 } from "./MappingsProvider";
 import {Lazy, PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
-import {BiMap} from "../utils/BiMap";
-import {
-    JavaClass,
-    JavaMethod,
-} from "crash-parser/src/model/RichCrashReport";
-import {mapRecord} from "../utils/Javascript";
-import {Entry, HashMap, Dict, MutableDict} from "../utils/hashmap/HashMap";
-
-type SimpleMethodName = string
-
-// type DescriptoredMethodName = string
-
-export interface DescriptoredMethodName {
-    method: JavaMethod,
-    descriptor: string
-}
-
-// function descriptoredMethodNameAsKey(name: DescriptoredMethodName): string {
-//     return javaMethodFullUnmappedName(name.method) + name.descriptor;
-// }
-//
-// function parseDescriptoredMethodName(name: string): DescriptoredMethodName {
-//     const [simpleMethodNameWithClass, descriptorWithoutLeadingBrace] = name.splitToTwo("(")
-//     const [fullClassName, simpleMethodName] = simpleMethodNameWithClass.splitToTwo("#")
-//     return {
-//         method: {
-//             name: simpleMethodName,
-//             classIn: parseJavaClass(fullClassName)
-//         },
-//         descriptor: "(" + descriptorWithoutLeadingBrace
-//     }
-// }
-//
-// // function javaClassAsKey(javaClass: JavaClass) : string {}
-//
-// function parseJavaClass(name: string): JavaClass {
-//     const [packageName, simpleName] = name.splitToTwoOnLast(".")
-//     return {packageName, simpleName}
-// }
-//
-// // type ExtendedMappable = Mappable | DescriptoredMethodName
-// type PossibleDescriptors =
-// interface ClassMapping
-
-// Key is class name stored as dot.qualified.names
-// type SingleDirectionMappings = HashMap<JavaClass, ClassMappings>
+import {Dict, HashMap, MutableDict} from "../utils/hashmap/HashMap";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "./Mappable";
 
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
 
@@ -73,69 +29,13 @@ function reverseMappingData(data: SingleDirectionMappingData): SingleDirectionMa
     )
 }
 
-// {
-//     private readonly mappings: HashMap<JavaClass, ClassMappings>
-//     // We need a way to resolve methods that don't have any class or descriptor associated with them
-//     private readonly classlessMethodsMap = this.gatherMethodInfo();
-//     constructor(mappings: HashMap<JavaClass, ClassMappings>) {
-//         this.mappings = mappings;
-//     }
-//
-//     private gatherMethodInfo(): ClasslessMethodsToPossibleClasses {
-//         const map : ClasslessMethodsToPossibleClasses = new HashMap(this.mappings.size);
-//         this.mappings.forEach((classIn, classMappings) => {
-//             classMappings.methods.forEach(descriptored => {
-//                 const newEntry = {key: descriptored.method,value: [descriptored]}
-//
-//                 // If the method name has not been inputted to the map yet
-//                 map.putIfAbsent(descriptored.method.name,  HashMap.fromArray([newEntry]))
-//                     // If the method name was inputted but a descriptor has not
-//                     ?.putIfAbsent(descriptored.method,[descriptored])
-//                     // If a previous descriptor was added already
-//                     ?.push(descriptored)
-//             })
-//         })
-//         return map;
-//     }
-//
-//     get(className: JavaClass): ClassMappings | undefined {
-//         return this.mappings.get(className)
-//     }
-//
-//     // Returns undefined if method does not exist
-//     possibleDescriptorsFor(method: JavaMethod): DescriptoredMethodName[]  | undefined {
-//         return this.classlessMethodsMap.get(method.name)?.get(method);
-//     }
-//
-//     toReversed(): SingleDirectionMappingData {
-//          return new SingleDirectionMappingData(
-//              this.mappings.map(
-//                  (_, mappings) => mappings.mappedClassName,
-//                  (unmappedClass, mappings) => {
-//                      const reversed: ClassMappings = {
-//                          mappedClassName: unmappedClass,
-//                          methods: mappings.methods.map(
-//                              (_, mappedName) => mappedName,
-//                              (unmappedName) => unmappedName
-//                          )
-//                      }
-//                      return reversed
-//                  }
-//              )
-//          )
-//     }
-//
-// }
 
 interface ClassMappings {
     mappedClassName: JavaClass
     // Key is method name stored as ${className}#{methodName}${descriptor}
-    methods: HashMap<DescriptoredMethodName, DescriptoredMethodName>;
+    methods: HashMap<DescriptoredMethod, DescriptoredMethod>;
 }
 
-// // Probably: make SingleDirectionMappings a class and give it a lazy .getClasslessMethods(), .getDescriptorlessMethods()
-// type ClasslessMethodsToPossibleClasses = HashMap<string, DescriptorlessMethodsToPossibleDescriptors>;
-// type DescriptorlessMethodsToPossibleDescriptors = HashMap<JavaMethod, DescriptoredMethodName[]>
 
 export class Mappings {
     private readonly mappings: SingleDirectionMappingData
@@ -158,7 +58,7 @@ export class Mappings {
         return maps.get(className)?.mappedClassName ?? className;
     }
 
-    mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethodName {
+    mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethod {
         const classMappings = this.getMappings(reverse).get(methodName.classIn);
         if (classMappings !== undefined) {
             // Linear search is fine because we filter down only to the methods we use
@@ -171,107 +71,92 @@ export class Mappings {
         }
     }
 
-    mapDescriptoredMethod(methodName: DescriptoredMethodName, reverse: boolean): DescriptoredMethodName {
+    mapDescriptoredMethod(methodName: DescriptoredMethod, reverse: boolean): DescriptoredMethod {
         return this.getMappings(reverse).get(methodName.method.classIn)?.methods?.get(methodName) ?? methodName;
     }
 }
 
 export interface MappingsFilter {
-    classFilter(name: string): boolean
+    needClass(javaClass: JavaClass): boolean
 
-    methodFilter(className: string, methodName: string, descriptor: string): boolean
+    needMethod(method: JavaMethod): boolean
+
+    usingReverse: boolean
 }
 
 export const AllowAllMappings: MappingsFilter = {
-    classFilter(name: string): boolean {
+    needClass(name: JavaClass): boolean {
         return true
     },
-    methodFilter(className: string, methodName: string, descriptor: string): boolean {
+    needMethod(method: JavaMethod): boolean {
         return true
-    }
+    },
+    usingReverse: false
 }
 
 export class MappingsBuilder {
-    private readonly mappings: MutableDict<JavaClass, ClassMappings>
+    private readonly classMappings: MutableDict<JavaClass, JavaClass>
+    // private readonly mappings: MutableDict<JavaClass, ClassMappings>
     private readonly filter: MappingsFilter
 
+    private readonly methodsToAdd: { unmapped: DescriptoredMethod, mappedName: string }[] = [];
+
     constructor(filter: MappingsFilter) {
-        this.mappings = new HashMap(undefined)
+        this.classMappings = new HashMap(undefined)
         this.filter = filter;
     }
 
-    addClass(unmapped: string, mapped: string) {
-        // zj Initial hash: 1205
-        // zj Initial capacity: 3079
-        this.mappings.put(new JavaClass(unmapped, true), {
-            methods: new HashMap(undefined),
-            mappedClassName: new JavaClass(mapped, true)
-        })
+    // Returns undefined if this class's  methods are not needed (it's still put in the Dict for remapping)
+    addClass(unmapped: string, mapped: string): JavaClass | undefined {
+        const unmappedClass = new JavaClass(unmapped, true)
+        const mappedClass = new JavaClass(mapped, true);
+        this.classMappings.put(unmappedClass, mappedClass)
+
+        return this.filter.needClass(this.filter.usingReverse ? mappedClass : unmappedClass) ? unmappedClass : undefined;
     }
 
-    addMethod(unmappedClassName: string, unmappedMethodName: string, unmappedDescriptor: string, mappedMethodName: string) {
-        const classKey = new JavaClass(unmappedClassName, true)
-        // zj get hash: 3477
-        // zj get capacity: 4618
-        const classEntry = this.mappings.get(classKey)
-        if (classEntry === undefined) {
-            const linearFind = this.mappings.linearSearch(k => k.equals(classKey))
-            if (linearFind !== undefined) {
-                throw new Error(`Bug in hashmap! item ${unmappedClassName} exists but map is not finding it`)
-            } else {
-                throw new Error(`Class ${unmappedClassName} not found in mappings`)
-            }
+    //VERY IMPORTANT TODO: WE NEED THE MAPPINGS OF CLASSES THAT EXIST IN DESCRIPTORS!
 
-        }
-        classEntry.methods.put({
-            method: new JavaMethod(classKey, unmappedMethodName),
-            descriptor: unmappedDescriptor
-        }, {
-            method: new JavaMethod(classEntry.mappedClassName, mappedMethodName),
-            // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
-            // based off of the class mappings
-            descriptor: this.remapDescriptor(unmappedDescriptor)
-        })
+    addMethod(unmappedClassName: JavaClass, unmappedMethodName: string, unmappedDescriptor: string, mappedMethodName: string) {
+        const method = unmappedClassName.method(unmappedMethodName)
+
+        this.methodsToAdd.push({unmapped: method.withDescriptor(unmappedDescriptor), mappedName: mappedMethodName})
     }
 
     remapDescriptor(descriptor: string): string {
-        return descriptor.replace(/L(.+?);/g, (match, p1) => `L${this.mappings.get(new JavaClass(p1, true)) ?? p1};`);
+        return descriptor.replace(/L(.+?);/g, (match, p1) =>
+            `L${this.classMappings.get(new JavaClass(p1, true))?.fullUnmappedName?.replaceAll(".", "/") ?? p1};`
+        );
     }
 
     build(): Mappings {
-        return new Mappings(this.mappings);
+        const finalMappings = new HashMap<JavaClass, ClassMappings>(undefined)
+        this.classMappings.forEach((unmapped, mapped) => {
+            if (this.filter.needClass(this.filter.usingReverse ? mapped : unmapped)) {
+                finalMappings.put(unmapped, {
+                    mappedClassName: mapped,
+                    methods: new HashMap(undefined)
+                })
+            }
+        })
+        // We only add the methods once we are done with everything, so we have all the classes ready for remapping method descriptors
+        for (const {unmapped, mappedName} of this.methodsToAdd) {
+            const classEntry = finalMappings.get(unmapped.method.classIn)
+            if (classEntry === undefined) {
+                throw new Error(`Class ${unmapped.method.classIn} not found in mappings`)
+            }
+
+            // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
+            // based off of the class mappings
+            const mapped = classEntry.mappedClassName.descriptoredMethod(mappedName, this.remapDescriptor(unmapped.descriptor));
+            if (this.filter.needMethod(this.filter.usingReverse ? mapped.method : unmapped.method)){
+                classEntry.methods.put(unmapped, mapped)
+            }
+
+        }
+        return new Mappings(finalMappings);
     }
 }
-
-
-//
-// export interface Mappings {
-//     /**
-//      * Must use dot.notation e.g. net.minecraft.gui.GuiThing
-//      */
-//     classes: BiMap<string, string>
-//     /**
-//      * Stack trace lines include method names without the descriptor - so we need a map from these "simple" method names
-//      * to the desired namespace
-//      *
-//      * Descriptors use slashes/in/package/names
-//      */
-//     noDescriptorToDescriptorMethods: BiMap<SimpleMethodName, DescriptoredMethodName>
-//     /**
-//      * In cases where we go through multiple namespaces to get to the desired namespace, we need to not lose information along the way.
-//      * So in that case if you go through namespaces a -> b -> c -> d it will be:
-//      * - Stack trace includes SimpleMethodNames from namespace a
-//      * - first Mappings maps those names to DescriptoredMethodNames from namespace b (using noDescriptorToDescriptorMethods)
-//      * - second Mappings maps those names to DescriptoredMethodNames from namespace c (using descriptorToDescriptorMethods)
-//      * - third Mappings maps those names to DescriptoredMethodNames from namespace d (using descriptorToDescriptorMethods)
-//      *
-//      * Using descriptors as much as possible ensures the mappings are as accurate as possible.
-//      *
-//      * Descriptors use slashes/in/package/names
-//      */
-//     descriptorToDescriptorMethods: BiMap<DescriptoredMethodName, DescriptoredMethodName>
-//     // fields: StringMap
-// }
 
 export const EmptyMappings: Mappings = new Mappings(HashMap.empty());
 
@@ -321,7 +206,7 @@ export function useAnyMappingsLoading(): boolean {
 export async function getMappingsCached(mappingsProvider: MappingsProvider, version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
     return mappingsCache.get(
         mappingsProvider.fromNamespace + mappingsProvider.toNamespace + version.build + version.minecraftVersion,
-        () => mappingsProvider.getMappings(version,filter)
+        () => mappingsProvider.getMappings(version, filter)
     ).catch(e => {
         console.error("Could not get mappings", e);
         return EmptyMappings;

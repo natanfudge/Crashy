@@ -13,8 +13,6 @@ import {
     ExceptionLocation,
     ExceptionStackmapTable,
     ForgeTraceMetadata,
-    JavaClass,
-    JavaMethod,
     Loader,
     LoaderType,
     Mod,
@@ -31,6 +29,7 @@ import {
 import {parseCrashReport} from "./CrashReportParser";
 import {typedKeys} from "../util/Utils";
 import "../util/Extensions"
+import {JavaClass, JavaMethod} from "../../../src/mappings/Mappable";
 
 export function parseCrashReportRich(rawReport: string): RichCrashReport {
     return enrichCrashReport(parseCrashReport(rawReport));
@@ -410,11 +409,11 @@ function parseJavaMethod(methodString: string): JavaMethod {
     const parts = methodString.split(".");
     const javaClass = withoutLast(parts).join(".");
     const methodName = last(parts);
-    return new JavaMethod(parseJavaClass(javaClass),methodName)
+    return new JavaMethod(parseJavaClass(javaClass), methodName)
 }
 
 function parseJavaClass(classString: string): JavaClass {
-    return  JavaClass.dotSeperated(classString);
+    return JavaClass.dotSeperated(classString);
 }
 
 const SystemDetailsTitle = "System Details";

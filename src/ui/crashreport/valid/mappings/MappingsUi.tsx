@@ -1,20 +1,20 @@
 import {WithChildren} from "../../../utils/simple/SimpleElementProps";
 import {useScreenSize} from "../../../../utils/Gui";
 import {Column} from "../../../utils/simple/Flex";
-import React, {useState} from "react";
+import React, {useMemo, useState} from "react";
 import {MappingsSelection} from "./MappingsSelection";
 import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
 import {usePromise} from "../../../utils/PromiseBuilder";
-import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
+import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {DesiredBuild, DesiredBuildProblem, MappingContext} from "../../../../mappings/MappingMethod";
 import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/Mappings";
 import {namespaceHasMultipleBuildsPerMcVersion} from "../../../../mappings/MappingsNamespace";
+import {HashSet} from "../../../../utils/hashmap/HashSet";
+import {AnyMappable, BasicMappable} from "../../../../mappings/Mappable";
 
 export class MappingsController {
     mappingsState: MappingsState
     onMappingsStateChanged: (newState: MappingsState) => void
-    // mappings: Mappings
-    // minecraftVersion: string
     report: RichCrashReport
 
     constructor(report: RichCrashReport) {
@@ -28,7 +28,10 @@ export class MappingsController {
     }
 
     getContext(): MappingContext {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const mappables = useMemo(() => findAllMappablesInReport(this.report),[this.report])
         return {
+            relevantMappables: mappables,
             desiredBuild: this.mappingsState.build,
             desiredNamespace: this.mappingsState.namespace,
             isDeobfuscated: this.report.deobfuscated,
@@ -36,6 +39,32 @@ export class MappingsController {
             minecraftVersion: this.report.context.minecraftVersion
         }
     }
+}
+
+function findAllMappablesInReport(report: RichCrashReport): HashSet<BasicMappable> {
+    const all = HashSet.ofCapacity<BasicMappable>(50)
+    visitStackTrace(all, report.stackTrace)
+    report.sections.forEach(section => {
+        if (section.stackTrace !== undefined) visitElements(all, section.stackTrace)
+    })
+    return all
+}
+
+function visitStackTrace(all: HashSet<BasicMappable>, stackTrace: RichStackTrace) {
+    visitElements(all, stackTrace.elements)
+    all.put(stackTrace.title.class)
+    if (stackTrace.causedBy !== undefined) {
+        visitStackTrace(all, stackTrace.causedBy)
+    }
+}
+
+function visitElements(all: HashSet<BasicMappable>, elements: RichStackTraceElement[]) {
+    elements.forEach(element => {
+        if (typeof element !== "number") {
+            all.put(element.method)
+            all.put(element.method.classIn)
+        }
+    })
 }
 
 

@@ -1,8 +1,4 @@
 import {Mappings, MappingsBuilder, MappingsFilter} from "../Mappings";
-import {withDotNotation} from "./ProviderUtils";
-import {StringMap} from "crash-parser/src/model/CrashReport";
-import {mapRecord} from "../../utils/Javascript";
-import {BiMap} from "../../utils/BiMap";
 
 export const ClassMethodSeperator = "#"
 
@@ -20,19 +16,22 @@ export async function parseTinyFile(contents: string, filter: MappingsFilter): P
 
     const mappings = new MappingsBuilder(filter)
 
-    // We go through all the class mappings first and store them so we can remap descriptors on each individual method below
-    for (const classMapping of classMappings) {
-        const [, fromClass, toClass] = classMapping[0];
-        mappings.addClass(fromClass,toClass)
-    }
+    // // We go through all the class mappings first and store them so we can remap descriptors on each individual method below
+    // for (const classMapping of classMappings) {
+    //     const [, fromClass, toClass] = classMapping[0];
+    //     mappings.addClass(fromClass,toClass)
+    // }
 
     for (const clazz of classMappings) {
-        const [,fromClass,toClass] = clazz[0];
+        const [, fromClass, toClass] = clazz[0];
+        const javaClass = mappings.addClass(fromClass, toClass)
+        // Class's contents are not needed
+        if (javaClass === undefined) continue;
 
         for (const item of clazz) {
             // Skip anything that can't be a method declaration
             if (item.length < 5) continue;
-            const [,identifier,descriptor,methodUnmapped,methodMapped] = item;
+            const [, identifier, descriptor, methodUnmapped, methodMapped] = item;
             switch (identifier) {
                 // class method
                 case "m":
@@ -40,7 +39,7 @@ export async function parseTinyFile(contents: string, filter: MappingsFilter): P
                     // const fromMethod = item[3]
                     // const toMethod = item[4]
 
-                    mappings.addMethod(fromClass,methodUnmapped,descriptor,methodMapped)
+                    mappings.addMethod(javaClass, methodUnmapped, descriptor, methodMapped)
 
                     // const simpleFromMethodName = withDotNotation(fromClass + ClassMethodSeperator + methodUnmapped)
                     // const fullFromMethodName = simpleFromMethodName + descriptor;

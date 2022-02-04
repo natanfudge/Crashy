@@ -1,13 +1,12 @@
-import {JavaClass, JavaMethod, Loader, LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
+import {LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {usePromise} from "../ui/utils/PromiseBuilder";
-import {MappingsProvider, MappingsVersion} from "./MappingsProvider";
-import {DescriptoredMethodName, getMappingsCached, MappingsFilter} from "./Mappings";
-import {MemoryCache} from "../utils/PromiseMemoryCache";
-import {flipRecord} from "../utils/Javascript";
+import {MappingsProvider} from "./MappingsProvider";
+import {getMappingsCached, MappingsFilter} from "./Mappings";
 import {MappingsNamespace} from "./MappingsNamespace";
 import {detectMappingNamespace} from "./MappingDetector";
 import {resolveMappingsChain} from "./MappingsResolver";
-import {BiMap} from "../utils/BiMap";
+import {HashSet} from "../utils/hashmap/HashSet";
+import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "./Mappable";
 
 export interface MappingMethod {
     mapMethod: (unmapped: JavaMethod) => JavaMethod
@@ -19,7 +18,9 @@ export const IdentityMapping: MappingMethod = {
     mapMethod: unmapped => unmapped
 }
 
-export type Mappable = JavaClass | JavaMethod
+// export interface Mappable {
+//     isJavaMethod(): this is JavaMethod
+// }
 
 export enum DesiredBuildProblem {
     BuildsLoading, NoBuildsForNamespace
@@ -38,6 +39,7 @@ export interface MappingContext {
     minecraftVersion: string
     isDeobfuscated: boolean;
     loader: LoaderType;
+    relevantMappables: HashSet<BasicMappable>
 }
 
 export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingMethod {
@@ -46,7 +48,7 @@ export function useMappingFor(element: RichStackTraceElement, context: MappingCo
     ) ?? IdentityMapping
 }
 
-export function useMappingForName(name: Mappable, context: MappingContext): MappingMethod {
+export function useMappingForName(name: BasicMappable, context: MappingContext): MappingMethod {
     return usePromise(
         getMappingForName(name, context), [context.desiredBuild, context.desiredNamespace]
     ) ?? IdentityMapping; // When mappings have not loaded yet keep name as-is
@@ -60,7 +62,7 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
     }
 }
 
-export async function getMappingForName(name: Mappable, context: MappingContext): Promise<MappingMethod> {
+export async function getMappingForName(name: BasicMappable, context: MappingContext): Promise<MappingMethod> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
     const originalNamespace = detectMappingNamespace(name, context);
     const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace);
@@ -68,7 +70,7 @@ export async function getMappingForName(name: Mappable, context: MappingContext)
         throw new Error(`Cannot find path from namespace '${originalNamespace}' to namespace '${context.desiredNamespace}'`)
     }
     const withDirection = resolveDirectionOfMappings(originalNamespace, mappingChain);
-    return mappingViaProviderChain(withDirection, {
+    return mappingViaProviderChain(withDirection, context.relevantMappables, {
         // If there are no builds just pass in "", the mappings provider just ignores it
         targetBuild: context.desiredBuild,
         minecraftVersion: context.minecraftVersion
@@ -90,121 +92,101 @@ function resolveDirectionOfMappings(
     })
 }
 
-// const reversedClassMappingsCache = new MemoryCache<Record<string, string>>();
-// const reversedNoDescMethodMappingsCache = new MemoryCache<Record<string, string>>();
-// const reversedDescMethodMappingsCache = new MemoryCache<Record<string, string>>();
-
-// async function middlemanMappingViaProvider
-
 interface DesiredVersion {
     targetBuild: string | DesiredBuildProblem.NoBuildsForNamespace;
     minecraftVersion: string
 }
 
 async function mappingViaProviderStep<T extends boolean>(
-    //TODO: FUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU
-    //  how do we need if an intermediate mapping should be filtered in?
-    dirProvider: DirectionedProvider, version: DesiredVersion,filter: MappingsFilter,
-    {
-        /**
-         * See javadoc for Mappings#descriptorToDescriptorMethods.
-         * Initially we map from noDesc to desc, at the middle we map from desc to desc, and at the end we remove the descriptor.
-         */
-        initial,
-        /**
-         * We only care about the build for the last mapping, because that's the one the user actually chose.
-         */
-        last
-    }: { initial: T, last: boolean }
-): Promise<InternalMappingMethod<T>> {
+    dirProvider: DirectionedProvider, version: DesiredVersion, filter: MappingsFilter,
+    //We only care about the build for the last mapping, because that's the one the user actually chose.
+    last: boolean): Promise<InternalMappingMethod> {
     const provider = dirProvider.provider;
     const mappings = await getMappingsCached(provider, {
         minecraftVersion: version.minecraftVersion,
-        build: await resolveUsedBuild(last, version, dirProvider)
-    });
+        build: await resolveUsedBuild(last, version, dirProvider),
+    }, filter);
     const reverse = dirProvider.reverse;
 
-    return {
-        mapMethod: (unmapped: DescriptoredMethodName | JavaMethod) => {
-            return initial ? mappings.mapSimpleMethod(unmapped as JavaMethod, reverse) : mappings.mapDescriptoredMethod(unmapped as DescriptoredMethodName, reverse);
-        },
-        mapClass: unmapped => mappings.mapClass(unmapped, reverse)
-    };
+    return unmapped => unmapped.remap(mappings, reverse)
 }
 
-export interface InitialMappingMethod {
-    mapMethod: (unmapped: JavaMethod) => DescriptoredMethodName
-    mapClass: (unmapped: JavaClass) => JavaClass
-}
 
-export interface IntermediateMappingMethod {
-    mapMethod: (unmapped: DescriptoredMethodName) => DescriptoredMethodName
-    mapClass: (unmapped: JavaClass) => JavaClass
-}
-
-// type InitialMappingMethod = (unmapped: JavaMethod) => DescriptoredMethodName
-// type IntermediateMappingMethod = (partiallyMapped: DescriptoredMethodName) => DescriptoredMethodName
-
-type InternalMappingMethod<Initial extends boolean> = Initial extends true ? InitialMappingMethod : IntermediateMappingMethod
+type InternalMappingMethod = <T extends AnyMappable>(unmapped: Mappable<T>) => T
 
 async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvider: DirectionedProvider): Promise<string> {
     const provider = dirProvider.provider;
-    if (last) {
-        // For the user it may appear there are no builds for the target namespace, however, sometimes we gather mappings by flipping existing providers.
-        // For example, when a user requests to go from yarn to intermediary, intermediary has no builds, however we need to specify a real yarn build to the provider,
-        // because we use the intermediary -> yarn provider (there is no yarn -> intermediary provider)
-        if (version.targetBuild === DesiredBuildProblem.NoBuildsForNamespace) {
-            const targetNamespace = dirProvider.reverse ? provider.fromNamespace : provider.toNamespace;
-            return (await provider.getBuilds(version.minecraftVersion)).firstOr(() => "no-build")
-        } else {
-            return version.targetBuild;
-        }
+    if (last && version.targetBuild !== DesiredBuildProblem.NoBuildsForNamespace) {
+        return version.targetBuild;
     }
     return (await provider.getBuilds(version.minecraftVersion)).firstOr(() => "no-build")
 }
 
 
-function removeDescriptor(methodName: string): string {
-    return methodName.removeAfterFirstExclusive("(")
-}
-
 async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
-    version: DesiredVersion
+    relevantMappables: HashSet<BasicMappable>,
+    version: DesiredVersion,
 ): Promise<MappingMethod> {
-    const firstStepPromise = mappingViaProviderStep(providerChain[0], version, {
-        last: providerChain.length === 1,
-        initial: true
+    // Say the relevant mappables are the following:
+    // - d#b
+    // - abb#d
+    // - aqx
+    // And we map official => intermediary => yarn.
+    // When it comes to the official => intermediary mappings (firstStep), we only want to save mappings that map these 3.
+    // When it comes to the intermediary => yarn mappings (currentStep), we only want the mappings that map these IN INTERMEDIARY,
+    // as in, we need to compute the following set:
+    // - d#b becomes net.minecraft.class_123#method_1234
+    // - abb#d becomes net.minecraft.class_523#method_1434
+    // - aqx becomes net.minecraft.class_11123#method_14434
+    // And filter to only use relevant mappables MAPPED TO NAMESPACE OF STEP (in this case mapped to intermediary)
+    let relevantMappablesOfNamespaceOfStep = relevantMappables
+
+    const steps = await providerChain.mapSync(async (provider, i) => {
+        const last = i === providerChain.length - 1
+        const filter = mappingFilterForMappables(relevantMappablesOfNamespaceOfStep, provider.reverse)
+        const currentStrategy = await mappingViaProviderStep(providerChain[0], version, filter, last)
+        // Map the relevant mappables to be relevant for the next step
+        if (!last) {
+            relevantMappablesOfNamespaceOfStep = relevantMappablesOfNamespaceOfStep.map(mappable => {
+                const mapped = currentStrategy<JavaClass | DescriptoredMethod>(mappable);
+                // Technically we could only keep mappings that apply to the EXACT methods that we use (by descriptor)
+                // but that complicates things a little, so we keep all methods that have the same name (and class) as the ones we use.
+                return mapped instanceof JavaClass ? mapped : mapped.method;
+            })
+        }
+        return currentStrategy;
     })
-    const intermediaryProviders = providerChain.drop(1);
-    const otherStepsPromise = Promise.all(intermediaryProviders.map(
-        (provider, i) => mappingViaProviderStep(provider, version, {
-            last: i === intermediaryProviders.length - 1,
-            initial: false
-        })
-    ))
-
-    const [firstStep, otherSteps] = await Promise.all([firstStepPromise, otherStepsPromise]);
-
-    const classMaps = [firstStep, ...otherSteps].map(strategy => ((name: JavaClass) => strategy.mapClass(name)))
-    const intermediaryMethodMaps = otherSteps.map(strategy => ((name: DescriptoredMethodName) => strategy.mapMethod(name)))
 
     return {
         // Call all the mappings required to go from one namespace to another
-        mapClass: unmapped => callAll(unmapped, classMaps),
-        // Final step: remove descriptor (since originally the unmapped has no descriptor)
+        mapClass: unmapped => keepOnMappin<JavaClass>(unmapped, steps),
         mapMethod: unmapped => {
-            const mappedOnce = firstStep.mapMethod(unmapped);
-            const completelyMapped = callAll(mappedOnce, intermediaryMethodMaps);
+            if (providerChain.length === 0) return unmapped;
+            const completelyMapped = keepOnMappin<DescriptoredMethod>(unmapped, steps);
+            // Final step: remove descriptor (since originally the unmapped has no descriptor)
             return completelyMapped.method;
         }
     };
 }
 
-function callAll<T>(target: T, calls: ((value: T) => T)[]): T {
+function mappingFilterForMappables(mappables: HashSet<BasicMappable>, reverse: boolean): MappingsFilter {
+    return {
+        needClass(javaClass: JavaClass): boolean {
+            return mappables.contains(javaClass)
+        },
+        needMethod(method: JavaMethod): boolean {
+            return mappables.contains(method)
+        },
+        usingReverse: reverse
+    }
+}
+
+function keepOnMappin<Out extends AnyMappable>(target: Mappable<Out>, calls: ((value: Mappable<Out>) => Out)[]): Out {
+    if (calls.length === 0) throw new Error("Expected to map at least once!")
     let current = target;
     for (const call of calls) {
         current = call(current)
     }
-    return current;
+    return current as Out;
 }
