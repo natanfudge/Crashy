@@ -81,6 +81,10 @@ export class JavaClass implements Mappable<JavaClass> {
     hashCode(): number {
         return hashString(this.fullUnmappedName)
     }
+
+    toString() {
+        return this.fullUnmappedName;
+    }
 }
 
 export class JavaMethod implements Mappable<DescriptoredMethod> {
@@ -128,6 +132,10 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
     equals(other: JavaMethod): boolean {
         return other.name === this.name && other.classIn.equals(this.classIn);
     }
+
+    toString() {
+        return this.fullUnmappedName();
+    }
 }
 
 export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
@@ -141,5 +149,9 @@ export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
 
     remap(mappings: Mappings, reverse: boolean): DescriptoredMethod {
         return mappings.mapDescriptoredMethod(this, reverse);
+    }
+
+    withClass(classIn: JavaClass): DescriptoredMethod {
+        return new DescriptoredMethod(this.method.withClass(classIn), this.descriptor)
     }
 }

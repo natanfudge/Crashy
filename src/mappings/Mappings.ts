@@ -62,7 +62,9 @@ export class Mappings {
         const classMappings = this.getMappings(reverse).get(methodName.classIn);
         if (classMappings !== undefined) {
             // Linear search is fine because we filter down only to the methods we use
-            return classMappings.methods.linearSearch(unmapped => unmapped.method.equals(methodName)) ?? methodName.withClass(classMappings.mappedClassName).withEmptyDescriptor()
+            return classMappings.methods.linearSearch(unmapped => unmapped.method.equals(methodName))
+                // If class is found but method is not - map just the class
+                ?? methodName.withClass(classMappings.mappedClassName).withEmptyDescriptor()
         } else {
             // If the class name is not found - don't map this method. Mapping just by method name can create very incorrect results, e.g. if a method is called run
             // it would be remapped into something almost completely random.
@@ -72,7 +74,13 @@ export class Mappings {
     }
 
     mapDescriptoredMethod(methodName: DescriptoredMethod, reverse: boolean): DescriptoredMethod {
-        return this.getMappings(reverse).get(methodName.method.classIn)?.methods?.get(methodName) ?? methodName;
+        // Same logic as mapSimpleMethod when it comes to mapping / not mapping
+        const classMappings = this.getMappings(reverse).get(methodName.method.classIn);
+        if (classMappings !== undefined) {
+            return classMappings?.methods.get(methodName) ?? methodName.withClass(classMappings.mappedClassName)
+        } else {
+            return methodName;
+        }
     }
 }
 
@@ -149,7 +157,7 @@ export class MappingsBuilder {
             // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
             // based off of the class mappings
             const mapped = classEntry.mappedClassName.descriptoredMethod(mappedName, this.remapDescriptor(unmapped.descriptor));
-            if (this.filter.needMethod(this.filter.usingReverse ? mapped.method : unmapped.method)){
+            if (this.filter.needMethod(this.filter.usingReverse ? mapped.method : unmapped.method)) {
                 classEntry.methods.put(unmapped, mapped)
             }
 
@@ -166,24 +174,26 @@ export function remap(name: string, map: StringMap): string {
 }
 
 
-async function buildsOfNoCache(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
+export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
     switch (namespace) {
         case "Intermediary":
         case "Official":
             return [];
         case "Yarn":
-            return IntermediaryToYarnMappingsProvider.getBuilds(minecraftVersion)
+            return getBuildsCached(IntermediaryToYarnMappingsProvider, minecraftVersion)
         default:
             throw new Error("TODO")
     }
 }
 
+
 const buildsCache = new PromiseMemoryCache<MappingsBuilds>();
 
-export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
+export async function getBuildsCached(provider: MappingsProvider, minecraftVersion: string): Promise<MappingsBuilds> {
+    // noinspection JSDeprecatedSymbols
     return buildsCache.get(
-        namespace + minecraftVersion,
-        () => buildsOfNoCache(namespace, minecraftVersion)
+        provider.fromNamespace + provider.toNamespace + minecraftVersion,
+        () => provider.getBuilds(minecraftVersion)
     ).catch(e => {
         console.error("Could not get mapping builds", e);
         return [];

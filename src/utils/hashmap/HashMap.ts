@@ -110,6 +110,16 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         return newMap;
     }
 
+    toArray(): [K,V][] {
+        const arr = new Array<[K,V]>()
+        let i = 0;
+        this.forEach((k,v) => {
+            arr[i] = [k,v]
+            i++;
+        })
+        return arr;
+    }
+
     /**
      * If contains `key`, returns its value and does not mutate the map
      * If doesn't contain `key`, sets map[key] = value and returns undefined

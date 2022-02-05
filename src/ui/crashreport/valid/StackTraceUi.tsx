@@ -1,6 +1,6 @@
 import {Column, Row} from "../../utils/simple/Flex";
 import {SimpleSpan, Text, TextTheme} from "../../utils/simple/Text";
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useRef, useState} from "react";
 import {Button, Divider, Typography} from "@mui/material";
 import {clickableColor, fadedOutColor} from "../../Colors";
 import {
@@ -84,7 +84,21 @@ function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage
         </Fragment>}
     </TextTheme>
 }
-
+function useTraceUpdate(props: Record<string,unknown>) {
+    const prev = useRef(props);
+    useEffect(() => {
+        const changedProps = Object.entries(props).reduce((ps: Record<string, unknown>, [k, v]) => {
+            if (prev.current[k] !== v) {
+                ps[k] = [prev.current[k], v];
+            }
+            return ps;
+        }, {});
+        if (Object.keys(changedProps).length > 0) {
+            console.log('Changed props:', changedProps);
+        }
+        prev.current = props;
+    });
+}
 export function StackTraceElementUi({
                                         traceElement,
                                         withMarginLeft,

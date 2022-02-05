@@ -2,6 +2,7 @@ import {MappingsNamespace} from "./MappingsNamespace";
 import {EmptyMappings, Mappings, MappingsFilter} from "./Mappings";
 import {getYarnBuilds, getYarnMappings} from "./providers/YarnMappingsProvider";
 import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
+import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 
 export type MappingsBuilds = string[];
 
@@ -14,6 +15,9 @@ export interface MappingsProvider {
     fromNamespace: MappingsNamespace
     toNamespace: MappingsNamespace
 
+    /**
+     * @deprecated Use getBuildsCached
+     */
     getBuilds(minecraftVersion: string): Promise<MappingsBuilds>
 
     /**
@@ -21,6 +25,8 @@ export interface MappingsProvider {
      */
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings>
 }
+
+
 
 
 export const IntermediaryToYarnMappingsProvider: MappingsProvider = {

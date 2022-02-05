@@ -1,7 +1,7 @@
 import {LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {usePromise} from "../ui/utils/PromiseBuilder";
 import {MappingsProvider} from "./MappingsProvider";
-import {getMappingsCached, MappingsFilter} from "./Mappings";
+import {getBuildsCached, getMappingsCached, MappingsFilter} from "./Mappings";
 import {MappingsNamespace} from "./MappingsNamespace";
 import {detectMappingNamespace} from "./MappingDetector";
 import {resolveMappingsChain} from "./MappingsResolver";
@@ -18,9 +18,6 @@ export const IdentityMapping: MappingMethod = {
     mapMethod: unmapped => unmapped
 }
 
-// export interface Mappable {
-//     isJavaMethod(): this is JavaMethod
-// }
 
 export enum DesiredBuildProblem {
     BuildsLoading, NoBuildsForNamespace
@@ -44,7 +41,7 @@ export interface MappingContext {
 
 export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingMethod {
     return usePromise(
-        getMappingFor(element, context), [context.desiredBuild, context.desiredNamespace]
+         getMappingFor(element, context), [context.desiredBuild, context.desiredNamespace]
     ) ?? IdentityMapping
 }
 
@@ -61,7 +58,7 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
         return getMappingForName(element.method, context);
     }
 }
-
+// export for testing
 export async function getMappingForName(name: BasicMappable, context: MappingContext): Promise<MappingMethod> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
     const originalNamespace = detectMappingNamespace(name, context);
@@ -87,6 +84,7 @@ function resolveDirectionOfMappings(
     let currentNamespace = fromNamespace;
     return providerChain.map(provider => {
         const reverse = currentNamespace !== provider.fromNamespace;
+        // noinspection ReuseOfLocalVariableJS
         currentNamespace = reverse ? provider.fromNamespace : provider.toNamespace;
         return {provider, reverse}
     })
@@ -96,32 +94,6 @@ interface DesiredVersion {
     targetBuild: string | DesiredBuildProblem.NoBuildsForNamespace;
     minecraftVersion: string
 }
-
-async function mappingViaProviderStep<T extends boolean>(
-    dirProvider: DirectionedProvider, version: DesiredVersion, filter: MappingsFilter,
-    //We only care about the build for the last mapping, because that's the one the user actually chose.
-    last: boolean): Promise<InternalMappingMethod> {
-    const provider = dirProvider.provider;
-    const mappings = await getMappingsCached(provider, {
-        minecraftVersion: version.minecraftVersion,
-        build: await resolveUsedBuild(last, version, dirProvider),
-    }, filter);
-    const reverse = dirProvider.reverse;
-
-    return unmapped => unmapped.remap(mappings, reverse)
-}
-
-
-type InternalMappingMethod = <T extends AnyMappable>(unmapped: Mappable<T>) => T
-
-async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvider: DirectionedProvider): Promise<string> {
-    const provider = dirProvider.provider;
-    if (last && version.targetBuild !== DesiredBuildProblem.NoBuildsForNamespace) {
-        return version.targetBuild;
-    }
-    return (await provider.getBuilds(version.minecraftVersion)).firstOr(() => "no-build")
-}
-
 
 async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
@@ -145,7 +117,7 @@ async function mappingViaProviderChain(
     const steps = await providerChain.mapSync(async (provider, i) => {
         const last = i === providerChain.length - 1
         const filter = mappingFilterForMappables(relevantMappablesOfNamespaceOfStep, provider.reverse)
-        const currentStrategy = await mappingViaProviderStep(providerChain[0], version, filter, last)
+        const currentStrategy = await mappingViaProviderStep(providerChain[i], version, filter, last)
         // Map the relevant mappables to be relevant for the next step
         if (!last) {
             relevantMappablesOfNamespaceOfStep = relevantMappablesOfNamespaceOfStep.map(mappable => {
@@ -169,6 +141,29 @@ async function mappingViaProviderChain(
         }
     };
 }
+type MappingStep = <T extends AnyMappable>(unmapped: Mappable<T>) => T
+
+async function mappingViaProviderStep<T extends boolean>(
+    dirProvider: DirectionedProvider, version: DesiredVersion, filter: MappingsFilter,
+    //We only care about the build for the last mapping, because that's the one the user actually chose.
+    last: boolean): Promise<MappingStep> {
+    const provider = dirProvider.provider;
+    const mappings = await getMappingsCached(provider, {
+        minecraftVersion: version.minecraftVersion,
+        build: await resolveUsedBuild(last, version, dirProvider),
+    }, filter);
+    const reverse = dirProvider.reverse;
+
+    return unmapped => unmapped.remap(mappings, reverse)
+}
+
+async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvider: DirectionedProvider): Promise<string> {
+    const provider = dirProvider.provider;
+    if (last && version.targetBuild !== DesiredBuildProblem.NoBuildsForNamespace) {
+        return version.targetBuild;
+    }
+    return (await getBuildsCached(provider,version.minecraftVersion)).firstOr(() => "no-build")
+}
 
 function mappingFilterForMappables(mappables: HashSet<BasicMappable>, reverse: boolean): MappingsFilter {
     return {
@@ -190,3 +185,25 @@ function keepOnMappin<Out extends AnyMappable>(target: Mappable<Out>, calls: ((v
     }
     return current as Out;
 }
+
+// Need to remap: {
+//   "method": {
+//     "classIn": {
+//       "_fullUnmappedName": "net.minecraft.class_711$class_712",
+//       "_packageName": "net.minecraft",
+//       "_simpleName": "class_711$class_712"
+//     },
+//     "name": "method_3096"
+//   },
+//   "descriptor": "(Lnet/minecraft/class_2400;Lnet/minecraft/class_638;DDDDDD)Lnet/minecraft/class_703;"
+// }
+//
+// Which was originally:
+//{
+//   "classIn": {
+//     "_fullUnmappedName": "net.minecraft.client.particle.SpellParticle$EntityAmbientFactory",
+//     "_packageName": "net.minecraft.client.particle",
+//     "_simpleName": "SpellParticle$EntityAmbientFactory"
+//   },
+//   "name": "createParticle"
+// }

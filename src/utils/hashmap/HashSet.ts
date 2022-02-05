@@ -7,7 +7,7 @@ export class HashSet<T> {
         return new HashSet(new HashMap<T, 1>(capacity));
     }
 
-   private constructor(map: HashMap<T, 1>) {
+    private constructor(map: HashMap<T, 1>) {
         this._map = map;
     }
 
@@ -25,5 +25,31 @@ export class HashSet<T> {
 
     map<NT>(mapper: (value: T) => NT): HashSet<NT> {
         return new HashSet<NT>(this._map.map(mapper, _ => 1))
+    }
+
+    forEach(iterator: (value: T) => void): void {
+        this._map.forEach(iterator);
+    }
+
+    get isEmpty(): boolean {
+        return this.size === 0;
+    }
+
+    get size(): number {
+        return this._map.size;
+    }
+
+    toString() {
+        return "{" + this.toArray().join(", ") + "}"
+    }
+
+    toArray(): T[] {
+        const arr = new Array<T>(this.size)
+        let i = 0;
+        this.forEach(v => {
+            arr[i] = v;
+            i++;
+        })
+        return arr;
     }
 }
