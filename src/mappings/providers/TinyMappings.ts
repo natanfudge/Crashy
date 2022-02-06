@@ -33,7 +33,3 @@ export async function parseTinyFile(contents: string, filter: MappingsFilter): P
 
     return mappings.build()
 }
-
-// function addMethod()
-
-

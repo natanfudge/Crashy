@@ -15,48 +15,10 @@ export interface Mappable<To extends AnyMappable> {
 const EnableAssertions = false;
 
 export class JavaClass implements Mappable<JavaClass> {
-    remap(mappings: Mappings, reverse: boolean): JavaClass {
-        return mappings.mapClass(this, reverse)
-    }
-
-    // Stored in dot.qualified.names
+    // Stored in dot.qualified.format
     private readonly _fullUnmappedName: string
     private _packageName?: string
     private _simpleName?: string
-
-
-    get fullUnmappedName() {
-        return this._fullUnmappedName;
-    }
-
-    getPackageName(): string {
-        if (this._packageName === undefined) this.populatePackageSplit()
-        return this._packageName!;
-    }
-
-    getSimpleName(): string {
-        if (this._simpleName === undefined) this.populatePackageSplit()
-        return this._simpleName!;
-    }
-
-    method(methodName: string): JavaMethod {
-        return new JavaMethod(this, methodName)
-    }
-
-    descriptoredMethod(methodName: string, descriptor: string): DescriptoredMethod {
-        return new JavaMethod(this, methodName).withDescriptor(descriptor)
-    }
-
-    private populatePackageSplit() {
-        const split = this.fullUnmappedName.splitToTwoOnLast(".")
-        if (split === undefined) {
-            this._packageName = "";
-            this._simpleName = this.fullUnmappedName;
-        } else {
-            this._packageName = split[0]
-            this._simpleName = split[1]
-        }
-    }
 
     constructor(fullName: string, slashSeperated: boolean) {
         if (EnableAssertions && ((fullName.includes("/") && !slashSeperated) || (fullName.includes(".") && slashSeperated)) && (!fullName.startsWith("java.base"))) {
@@ -69,48 +31,98 @@ export class JavaClass implements Mappable<JavaClass> {
         return new JavaClass(fullName, false)
     }
 
+     getUnmappedFullName() {
+        return this._fullUnmappedName;
+    }
+
     fullName(mappings: MappingMethod) {
-        return mappings.mapClass(this).fullUnmappedName;
+        return mappings.mapClass(this)._fullUnmappedName;
+    }
+
+    getUnmappedPackageName(): string {
+        if (this._packageName === undefined) this.populatePackageSplit()
+        return this._packageName!;
+    }
+
+    getUnmappedSimpleName(): string {
+        if (this._simpleName === undefined) this.populatePackageSplit()
+        return this._simpleName!;
+    }
+
+    simpleName(mappings: MappingMethod){
+        return mappings.mapClass(this).getUnmappedSimpleName();
+    }
+
+    withMethod(methodName: string): JavaMethod {
+        return new JavaMethod(this, methodName)
+    }
+
+    withDescMethod(methodName: string, descriptor: string): DescriptoredMethod {
+        return new JavaMethod(this, methodName).withDescriptor(descriptor)
+    }
+
+    private populatePackageSplit() {
+        const split = this._fullUnmappedName.splitToTwoOnLast(".")
+        if (split === undefined) {
+            this._packageName = "";
+            this._simpleName = this._fullUnmappedName;
+        } else {
+            this._packageName = split[0]
+            this._simpleName = split[1]
+        }
+    }
+
+    remap(mappings: Mappings, reverse: boolean): JavaClass {
+        return mappings.mapClass(this, reverse)
     }
 
     equals(other: JavaClass) {
-        return other.fullUnmappedName === this.fullUnmappedName;
+        return other._fullUnmappedName === this._fullUnmappedName;
     }
 
     // We have a lot of extra fields so we override hashCode()
     hashCode(): number {
-        return hashString(this.fullUnmappedName)
+        return hashString(this._fullUnmappedName)
     }
 
     toString() {
-        return this.fullUnmappedName;
+        return this._fullUnmappedName;
     }
 }
 
+/**
+ * Full Name: package.class#method
+ * Simple Name: class#method
+ * Method Name: method
+ */
 export class JavaMethod implements Mappable<DescriptoredMethod> {
-    classIn: JavaClass
-    name: string
+    readonly classIn: JavaClass
+    private readonly _name: string
 
     constructor(classIn: JavaClass, name: string) {
         this.classIn = classIn;
-        this.name = name;
-    }
-
-    remap(mappings: Mappings, reverse: boolean): DescriptoredMethod {
-        return mappings.mapSimpleMethod(this, reverse);
+        this._name = name;
     }
 
     static dotSeperated(classIn: string, name: string) {
         return new JavaMethod(JavaClass.dotSeperated(classIn), name)
     }
 
+    getUnmappedMethodName() : string {
+        return this._name;
+    }
+
     simpleName(mappings: MappingMethod): string {
         const mapped = mappings.mapMethod(this)
-        return mapped.classIn.getSimpleName() + ClassMethodSeperator + mapped.name
+        return mapped.classIn.getUnmappedSimpleName() + ClassMethodSeperator + mapped.getUnmappedMethodName()
+    }
+
+    getUnmappedFullName(): string {
+        return this.classIn.getUnmappedFullName() + ClassMethodSeperator + this.getUnmappedMethodName();
     }
 
     fullName(mappings: MappingMethod): string {
-        return mappings.mapMethod(this).fullUnmappedName();
+        return mappings.mapMethod(this).getUnmappedFullName();
     }
 
     withEmptyDescriptor(): DescriptoredMethod {
@@ -122,19 +134,20 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
     }
 
     withClass(classIn: JavaClass): JavaMethod {
-        return new JavaMethod(classIn, this.name)
+        return new JavaMethod(classIn, this.getUnmappedMethodName())
     }
 
-    fullUnmappedName(): string {
-        return this.classIn.fullUnmappedName + ClassMethodSeperator + this.name;
+
+    remap(mappings: Mappings, reverse: boolean): DescriptoredMethod {
+        return mappings.mapSimpleMethod(this, reverse);
     }
 
     equals(other: JavaMethod): boolean {
-        return other.name === this.name && other.classIn.equals(this.classIn);
+        return other.getUnmappedMethodName() === this.getUnmappedMethodName() && other.classIn.equals(this.classIn);
     }
 
     toString() {
-        return this.fullUnmappedName();
+        return this.getUnmappedFullName();
     }
 }
 

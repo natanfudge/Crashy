@@ -126,14 +126,14 @@ export class MappingsBuilder {
     //VERY IMPORTANT TODO: WE NEED THE MAPPINGS OF CLASSES THAT EXIST IN DESCRIPTORS!
 
     addMethod(unmappedClassName: JavaClass, unmappedMethodName: string, unmappedDescriptor: string, mappedMethodName: string) {
-        const method = unmappedClassName.method(unmappedMethodName)
+        const method = unmappedClassName.withMethod(unmappedMethodName)
 
         this.methodsToAdd.push({unmapped: method.withDescriptor(unmappedDescriptor), mappedName: mappedMethodName})
     }
 
     remapDescriptor(descriptor: string): string {
         return descriptor.replace(/L(.+?);/g, (match, p1) =>
-            `L${this.classMappings.get(new JavaClass(p1, true))?.fullUnmappedName?.replaceAll(".", "/") ?? p1};`
+            `L${this.classMappings.get(new JavaClass(p1, true))?.getUnmappedFullName()?.replaceAll(".", "/") ?? p1};`
         );
     }
 
@@ -156,7 +156,7 @@ export class MappingsBuilder {
 
             // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
             // based off of the class mappings
-            const mapped = classEntry.mappedClassName.descriptoredMethod(mappedName, this.remapDescriptor(unmapped.descriptor));
+            const mapped = classEntry.mappedClassName.withDescMethod(mappedName, this.remapDescriptor(unmapped.descriptor));
             if (this.filter.needMethod(this.filter.usingReverse ? mapped.method : unmapped.method)) {
                 classEntry.methods.put(unmapped, mapped)
             }

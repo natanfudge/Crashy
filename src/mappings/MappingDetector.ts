@@ -33,11 +33,11 @@ function isJavaMethod(mappable: BasicMappable): mappable is JavaMethod {
 }
 
 function isIntermediaryClassName(javaClass: JavaClass): boolean {
-    return javaClass.getSimpleName().startsWith("class_")
-        && javaClass.getPackageName() === "net.minecraft"
+    return javaClass.getUnmappedSimpleName().startsWith("class_")
+        && javaClass.getUnmappedPackageName() === "net.minecraft"
 }
 
 function isIntermediaryMethodName(javaMethod: JavaMethod): boolean {
     return isIntermediaryClassName(javaMethod.classIn)
-        || javaMethod.name.startsWith("method_")
+        || javaMethod.getUnmappedMethodName().startsWith("method_")
 }
