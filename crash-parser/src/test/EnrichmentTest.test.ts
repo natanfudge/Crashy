@@ -2,10 +2,11 @@ import {LoaderType, OperatingSystemType, RichCrashReport} from "../model/RichCra
 import {enrichCrashReport} from "../parser/CrashReportEnricher";
 import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 import {parseCrashReport} from "../parser/CrashReportParser";
+import {JavaClass, JavaMethod} from "../model/Mappable";
 
 
 export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
-    if(enriched.mods === undefined) throw new Error("Unexpected");
+    if (enriched.mods === undefined) throw new Error("Unexpected");
     expect(enriched.mods.length).toEqual(116)
     expect(enriched.mods[0]).toEqual(
         {id: "architectury", name: "Architectury", version: "2.0.7", isSuspected: false}
@@ -29,10 +30,7 @@ export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
 
     //	at org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:363)
     expect(enriched.stackTrace.elements[0]).toEqual({
-        method: {
-            class: {packageName: "org.spongepowered.asm.mixin.transformer", simpleName: "MixinProcessor",},
-            name: "applyMixins"
-        },
+        method: JavaMethod.dotSeperated("org.spongepowered.asm.mixin.transformer.MixinProcessor","applyMixins"),
         line: {file: "MixinProcessor.java", number: 363},
         forgeMetadata: undefined
     })
@@ -41,18 +39,12 @@ export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
     const cause = enriched.stackTrace.causedBy!;
     expect(cause.title).toEqual({
         message: "Mixin [screenshotclipboard.mixins.json:ScreenshotMixin] from phase [DEFAULT] in config [screenshotclipboard.mixins.json] FAILED during APPLY",
-        class: {
-            packageName: "org.spongepowered.asm.mixin.throwables",
-            simpleName: "MixinApplyError",
-        }
+        class: JavaClass.dotSeperated("org.spongepowered.asm.mixin.throwables.MixinApplyError")
     })
     // 	at org.spongepowered.asm.mixin.transformer.MixinProcessor.handleMixinError(MixinProcessor.java:642)
 
     expect(cause.elements[0]).toEqual({
-            method: {
-                class: {packageName: "org.spongepowered.asm.mixin.transformer", simpleName: "MixinProcessor",},
-                name: "handleMixinError"
-            },
+            method: JavaMethod.dotSeperated("org.spongepowered.asm.mixin.transformer.MixinProcessor", "handleMixinError"),
             line: {file: "MixinProcessor.java", number: 642},
             forgeMetadata: undefined
         }
@@ -142,10 +134,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
 
     expect(enriched.stackTrace.title).toEqual({
         message: "Unexpected error",
-        class: {
-            packageName: "java.lang",
-            simpleName: "NullPointerException",
-        }
+        class: JavaClass.dotSeperated("java.lang.NullPointerException")
     })
 
     //	at net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344)
@@ -153,10 +142,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
     //	pl:mixin:APP:cameraoverhaul.mixins.json:modern.GameRendererMixin,pl:mixin:A}
     expect(enriched.stackTrace.elements[0]).toEqual(
         {
-            method: {
-                class: {packageName: "net.minecraft.client.renderer", simpleName: "GameRenderer",},
-                name: "func_78473_a"
-            },
+            method: JavaMethod.dotSeperated("net.minecraft.client.renderer.GameRenderer","func_78473_a"),
             line: {file: "GameRenderer.java", number: 344},
             forgeMetadata: {
                 jarFile: undefined, version: undefined,
@@ -172,7 +158,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
 
     expect(enriched.stackTrace.elements[1]).toEqual(
         {
-            method: {class: {packageName: "net.minecraft.client", simpleName: "Minecraft",}, name: "func_71407_l"},
+            method: JavaMethod.dotSeperated("net.minecraft.client.Minecraft","func_71407_l"),
             line: {file: "Minecraft.java", number: 1422},
             forgeMetadata: {
                 jarFile: undefined, version: undefined,
@@ -187,7 +173,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
     // {re:classloading,re:mixin,pl:runtimedistcleaner:A,pl:mixin:A,pl:runtimedistcleaner:A}
     expect(enriched.stackTrace.elements[6]).toEqual(
         {
-            method: {class: {packageName: "net.minecraft.client.main", simpleName: "Main",}, name: "main"},
+            method: JavaMethod.dotSeperated("net.minecraft.client.main.Main","main"),
             line: {file: "Main.java", number: 184},
             forgeMetadata: {
                 jarFile: undefined, version: undefined,
@@ -201,7 +187,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
     // 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:1.8.0_51] {}
     expect(enriched.stackTrace.elements[7]).toEqual(
         {
-            method: {class: {packageName: "sun.reflect", simpleName: "NativeMethodAccessorImpl",}, name: "invoke0"},
+            method: JavaMethod.dotSeperated("sun.reflect.NativeMethodAccessorImpl","invoke0"),
             line: {file: "Native Method", number: undefined},
             forgeMetadata: {
                 jarFile: undefined, version: "1.8.0_51",
@@ -214,10 +200,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
     // 	[forge-1.16.5-36.1.16.jar:36.1] {}
     expect(enriched.stackTrace.elements[11]).toEqual(
         {
-            method: {
-                class: {packageName: "net.minecraftforge.fml.loading", simpleName: "FMLClientLaunchProvider",},
-                name: "lambda$launchService$0"
-            },
+            method: JavaMethod.dotSeperated("net.minecraftforge.fml.loading.FMLClientLaunchProvider","lambda$launchService$0"),
             line: {file: "FMLClientLaunchProvider.java", number: 51},
             forgeMetadata: {
                 jarFile: "forge-1.16.5-36.1.16.jar", version: "36.1",
@@ -229,7 +212,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
     // 	at cpw.mods.modlauncher.Launcher.main(Launcher.java:66) [modlauncher-8.0.9.jar:?] {re:classloading}
     expect(enriched.stackTrace.elements[17]).toEqual(
         {
-            method: {class: {packageName: "cpw.mods.modlauncher", simpleName: "Launcher",}, name: "main"},
+            method: JavaMethod.dotSeperated("cpw.mods.modlauncher.Launcher","main"),
             line: {file: "Launcher.java", number: 66},
             forgeMetadata: {
                 jarFile: "modlauncher-8.0.9.jar", version: undefined,

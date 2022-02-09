@@ -1,7 +1,7 @@
-import {MappingStrategy} from "./resolve/MappingStrategy";
-import {hashString} from "../utils/hashmap/Hashing";
-import {ClassMethodSeperator} from "./providers/TinyMappings";
-import {Mappings} from "./Mappings";
+import {MappingStrategy} from "../../../src/mappings/resolve/MappingStrategy";
+import {hashString} from "../../../src/utils/hashmap/Hashing";
+import {ClassMethodSeperator} from "../../../src/mappings/providers/TinyMappings";
+import {Mappings} from "../../../src/mappings/Mappings";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyMappable = Mappable<any>

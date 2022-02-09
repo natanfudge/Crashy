@@ -1,4 +1,4 @@
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../Mappable";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
 import {HashMap, MutableDict} from "../../utils/hashmap/HashMap";
 import {ClassMappings, Mappings} from "../Mappings";
 import {MappingsImpl} from "./MappingsImpl";

@@ -1,5 +1,5 @@
 import {StringMap} from "./CrashReport";
-import {JavaClass, JavaMethod} from "../../../src/mappings/Mappable";
+import {JavaClass, JavaMethod} from "./Mappable";
 
 export interface RichCrashReport {
     rawText: string

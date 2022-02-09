@@ -8,7 +8,8 @@ import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "cr
 import {objectMap} from "../../../utils/Javascript";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Wrap} from "../../utils/simple/SimpleDiv";
-import {MappingsController, WithMappings} from "./mappings/MappingsUi";
+import {WithMappings} from "./mappings/MappingsUi";
+import {MappingsController} from "./mappings/MappingsController";
 
 export function CrashReportSectionUi({
     report,

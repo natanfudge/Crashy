@@ -32,7 +32,6 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mapping
                                paddingLeft: 10,
                                paddingRight: 5,
                                alignSelf: isPortrait ? "center" : undefined,
-                               // paddingTop: 8
                            }}
                            values={builds}
                            index={isValidDesiredBuild(mappings.build) ? indexOfOrThrow(builds, mappings.build) : 0}
@@ -47,8 +46,7 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
     return <Column style={{float: "right"}} justifyContent={"end"}>
-        <Row /*style={{float: "right"}} justifyContent={"end"}*/
-                         padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}}
+        <Row padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}}
                          margin={{left: isPortrait ? 0 : 15}}>
 
         <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
@@ -56,10 +54,6 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
                        index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
                        onIndexChange={i => {
                            const newNamespace = allMappingNamespaces[i];
-                           // When the user switches mapping, immediately switch to that mapping,
-                           // and since getting what versions are available takes time, we'll set the version to undefined
-                           // for now.
-                           // If the build is undefined then when all the builds load the first one will be used automatically.
                            onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
                        }}/>
 

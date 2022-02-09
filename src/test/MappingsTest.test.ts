@@ -15,7 +15,7 @@ import {
 } from "../mappings/providers/MappingsProvider";
 
 import "crash-parser/src/util/ExtensionsImpl"
-import {BasicMappable, JavaClass, JavaMethod} from "../mappings/Mappable";
+import {BasicMappable, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
 import {AllowAllMappings} from "../mappings/storage/MappingsBuilder";
 import {HashSet} from "../utils/hashmap/HashSet";
 
@@ -40,7 +40,7 @@ test("Remapping works correctly", async () => {
     const testMethod: JavaMethod = JavaMethod.dotSeperated("net.minecraft.class_3060","method_13365")
 
     const mappingStrategy = await getMappingForName(testClass, {
-        relevantMappables: HashSet.of<BasicMappable>(testClass, testMethod),
+        relevantMappables: HashSet.of<BasicMappable>(testClass, testMethod, testMethod.classIn),
         desiredNamespace: "Yarn",
         desiredBuild: versions[0].version,
         loader: LoaderType.Fabric,

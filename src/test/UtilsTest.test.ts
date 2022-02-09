@@ -1,20 +1,17 @@
-import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
-import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
 import {flipRecord} from "../utils/Javascript";
-import {HashMap} from "../utils/hashmap/HashMap";
 
 test("Flip record works correctly", () => {
     const oldRecord = {
-        "foo" :"bar",
+        "foo": "bar",
         "baz": "biz",
-        "booz" :"bez"
+        "booz": "bez"
     }
 
     expect(flipRecord(oldRecord)).toEqual(
         {
             "bar": "foo",
             "biz": "baz",
-            "bez" :"booz"
+            "bez": "booz"
         }
     )
 

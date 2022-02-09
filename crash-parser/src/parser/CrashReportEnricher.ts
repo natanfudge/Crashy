@@ -29,7 +29,7 @@ import {
 import {parseCrashReport} from "./CrashReportParser";
 import {typedKeys} from "../util/Utils";
 import "../util/Extensions"
-import {JavaClass, JavaMethod} from "../../../src/mappings/Mappable";
+import {JavaClass, JavaMethod} from "../model/Mappable";
 
 export function parseCrashReportRich(rawReport: string): RichCrashReport {
     return enrichCrashReport(parseCrashReport(rawReport));

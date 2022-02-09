@@ -1,4 +1,4 @@
-import {BasicMappable, JavaClass, JavaMethod} from "../Mappable";
+import {BasicMappable, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
 import {MappingContext} from "./MappingStrategy";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {LoaderType} from "crash-parser/src/model/RichCrashReport";

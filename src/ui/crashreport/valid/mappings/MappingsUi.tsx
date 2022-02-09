@@ -1,70 +1,13 @@
 import {WithChildren} from "../../../utils/simple/SimpleElementProps";
 import {useScreenSize} from "../../../../utils/Gui";
 import {Column} from "../../../utils/simple/Flex";
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import {MappingsSelection} from "./MappingsSelection";
 import {usePromise} from "../../../utils/PromiseBuilder";
-import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {DesiredBuild, DesiredBuildProblem, MappingContext} from "../../../../mappings/resolve/MappingStrategy";
+import {DesiredBuild, DesiredBuildProblem} from "../../../../mappings/resolve/MappingStrategy";
 import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/MappingsApi";
-import {HashSet} from "../../../../utils/hashmap/HashSet";
-import {BasicMappable} from "../../../../mappings/Mappable";
 import {MappingsState, withBuild} from "./MappingsState";
-
-export class MappingsController {
-    mappingsState: MappingsState
-    onMappingsStateChanged: (newState: MappingsState) => void
-    report: RichCrashReport
-
-    constructor(report: RichCrashReport) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
-        this.mappingsState = mappingsState
-        this.onMappingsStateChanged = setMappingsState;
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        // this.mappings = useMappings(this.mappingsState)
-        this.report = report;
-    }
-
-    getContext(): MappingContext {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const mappables = useMemo(() => findAllMappablesInReport(this.report), [this.report])
-        return {
-            relevantMappables: mappables,
-            desiredBuild: this.mappingsState.build,
-            desiredNamespace: this.mappingsState.namespace,
-            isDeobfuscated: this.report.deobfuscated,
-            loader: this.report.context.loader.type,
-            minecraftVersion: this.report.context.minecraftVersion
-        }
-    }
-}
-
-function findAllMappablesInReport(report: RichCrashReport): HashSet<BasicMappable> {
-    const all = HashSet.ofCapacity<BasicMappable>(50)
-    visitStackTrace(all, report.stackTrace)
-    report.sections.forEach(section => {
-        if (section.stackTrace !== undefined) visitElements(all, section.stackTrace)
-    })
-    return all
-}
-
-function visitStackTrace(all: HashSet<BasicMappable>, stackTrace: RichStackTrace) {
-    visitElements(all, stackTrace.elements)
-    all.put(stackTrace.title.class)
-    if (stackTrace.causedBy !== undefined) {
-        visitStackTrace(all, stackTrace.causedBy)
-    }
-}
-
-function visitElements(all: HashSet<BasicMappable>, elements: RichStackTraceElement[]) {
-    elements.forEach(element => {
-        if (typeof element !== "number") {
-            all.put(element.method)
-            all.put(element.method.classIn)
-        }
-    })
-}
+import {MappingsController} from "./MappingsController";
 
 
 export function WithMappings({controller, children}:
@@ -84,10 +27,9 @@ export function WithMappings({controller, children}:
 function MappingSelectionLayout({children, selection}: { selection: JSX.Element } & WithChildren) {
     const screen = useScreenSize();
     return screen.isPortrait ? <Column>{selection}{children}</Column> :
-        <div style={{width: "100%"}} /*width={"max"}*/>
+        <div style={{width: "100%"}} >
 
             {selection}
-            {/*<Spacer flexGrow={1}/>*/}
             {children}
         </div>
 }
@@ -104,11 +46,11 @@ export function useMappingsState(minecraftVersion: string): MutableMappingsState
         }
     )
 
-    const actualState = withBuild(state, useDetermineBuildToUse(state, minecraftVersion));
+    const actualState = withBuild(state, useBuildFor(state, minecraftVersion));
     return [actualState, setState];
 }
 
-function useDetermineBuildToUse(state: MappingsState, minecraftVersion: string): DesiredBuild {
+function useBuildFor(state: MappingsState, minecraftVersion: string): DesiredBuild {
     const allBuilds = usePromise(buildsOf(state.namespace, minecraftVersion), [state.namespace])
 
     // If the user has chosen something, use it.
@@ -124,8 +66,3 @@ function useDetermineBuildToUse(state: MappingsState, minecraftVersion: string):
     }
 }
 
-// export function useMappings(mappingsState: MappingsState): Mappings {
-//     const build = mappingsState.build
-//     const promise = build !== undefined ? getMappingsCached(IntermediaryToYarnMappingsProvider, build) : EmptyMappings
-//     return usePromise(promise, [build]) ?? LoadingMappings;
-// }

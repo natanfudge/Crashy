@@ -5,7 +5,7 @@ import {getMappingsCached} from "../MappingsApi";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {resolveMappingsChain} from "./MappingsResolver";
 import {HashSet} from "../../utils/hashmap/HashSet";
-import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "../Mappable";
+import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "crash-parser/src/model/Mappable";
 import {MappingsFilter} from "../storage/MappingsBuilder";
 import {detectMappingNamespace} from "./MappingDetector";
 

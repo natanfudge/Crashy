@@ -1,5 +1,5 @@
 import {Lazy} from "../../utils/PromiseMemoryCache";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../Mappable";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
 import {ClassMappings} from "../Mappings";
 import {Dict} from "../../utils/hashmap/HashMap";
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
