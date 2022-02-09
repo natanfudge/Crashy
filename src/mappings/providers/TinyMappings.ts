@@ -1,8 +1,9 @@
-import {Mappings, MappingsBuilder, MappingsFilter} from "../Mappings";
+import {Mappings} from "../Mappings";
+import {MappingsBuilder, MappingsFilter} from "../storage/MappingsBuilder";
 
 export const ClassMethodSeperator = "#"
 
-export async function parseTinyFile(contents: string, filter: MappingsFilter): Promise<Mappings> {
+export  function parseTinyFile(contents: string, filter: MappingsFilter): Mappings {
     const classMappings = contents.split("\nc").map(e => e.split("\n").map(c => c.split("\t", -1)));
     const first_line = classMappings.shift();
     if (first_line === undefined) {

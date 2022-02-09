@@ -1,7 +1,7 @@
-import {Mappings} from "./Mappings";
-import {MappingMethod} from "./MappingMethod";
+import {MappingStrategy} from "./resolve/MappingStrategy";
 import {hashString} from "../utils/hashmap/Hashing";
 import {ClassMethodSeperator} from "./providers/TinyMappings";
+import {Mappings} from "./Mappings";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyMappable = Mappable<any>
@@ -35,7 +35,7 @@ export class JavaClass implements Mappable<JavaClass> {
         return this._fullUnmappedName;
     }
 
-    fullName(mappings: MappingMethod) {
+    fullName(mappings: MappingStrategy) {
         return mappings.mapClass(this)._fullUnmappedName;
     }
 
@@ -49,7 +49,7 @@ export class JavaClass implements Mappable<JavaClass> {
         return this._simpleName!;
     }
 
-    simpleName(mappings: MappingMethod){
+    simpleName(mappings: MappingStrategy){
         return mappings.mapClass(this).getUnmappedSimpleName();
     }
 
@@ -112,7 +112,7 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
         return this._name;
     }
 
-    simpleName(mappings: MappingMethod): string {
+    simpleName(mappings: MappingStrategy): string {
         const mapped = mappings.mapMethod(this)
         return mapped.classIn.getUnmappedSimpleName() + ClassMethodSeperator + mapped.getUnmappedMethodName()
     }
@@ -121,7 +121,7 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
         return this.classIn.getUnmappedFullName() + ClassMethodSeperator + this.getUnmappedMethodName();
     }
 
-    fullName(mappings: MappingMethod): string {
+    fullName(mappings: MappingStrategy): string {
         return mappings.mapMethod(this).getUnmappedFullName();
     }
 
@@ -160,11 +160,11 @@ export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
         this.descriptor = descriptor;
     }
 
-    remap(mappings: Mappings, reverse: boolean): DescriptoredMethod {
-        return mappings.mapDescriptoredMethod(this, reverse);
-    }
-
     withClass(classIn: JavaClass): DescriptoredMethod {
         return new DescriptoredMethod(this.method.withClass(classIn), this.descriptor)
+    }
+
+    remap(mappings: Mappings, reverse: boolean): DescriptoredMethod {
+        return mappings.mapDescriptoredMethod(this, reverse);
     }
 }

@@ -1,8 +1,9 @@
 import {extractTinyMappings, profiler, profilerDel} from "./ProviderUtils";
-import {Mappings, MappingsFilter} from "../Mappings";
 import {parseTinyFile} from "./TinyMappings";
 import {httpGet} from "../../utils/Http";
 import {HttpStatusCode} from "../../server/CrashyServer";
+import {Mappings} from "../Mappings";
+import {MappingsFilter} from "../storage/MappingsBuilder";
 
 export async function getYarnMappings(build: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading Yarn Mappings");

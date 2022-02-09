@@ -6,8 +6,8 @@ import {MappingsSelection} from "./MappingsSelection";
 import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
 import {usePromise} from "../../../utils/PromiseBuilder";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {DesiredBuild, DesiredBuildProblem, MappingContext} from "../../../../mappings/MappingMethod";
-import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/Mappings";
+import {DesiredBuild, DesiredBuildProblem, MappingContext} from "../../../../mappings/resolve/MappingStrategy";
+import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/MappingsApi";
 import {namespaceHasMultipleBuildsPerMcVersion} from "../../../../mappings/MappingsNamespace";
 import {HashSet} from "../../../../utils/hashmap/HashSet";
 import {AnyMappable, BasicMappable} from "../../../../mappings/Mappable";
@@ -119,11 +119,12 @@ function useDetermineBuildToUse(state: MappingsState, minecraftVersion: string):
     // If finished loading but the user has not chosen anything
     if (allBuilds.length === 0) {
         // Make sure the namespace actually has no builds before returning NoBuildsForNamespace, workaround the fact that allBuilds doesn't update immediately.
-        if (namespaceHasMultipleBuildsPerMcVersion(state.namespace)) {
-            return DesiredBuildProblem.BuildsLoading;
-        } else {
+       //TODO: this was commented out to test if it works without it!
+        // if (namespaceHasMultipleBuildsPerMcVersion(state.namespace)) {
+        //     return DesiredBuildProblem.BuildsLoading;
+        // } else {
             return DesiredBuildProblem.NoBuildsForNamespace
-        }
+        // }
     } else {
         // Choose the first build automatically
         return allBuilds[0]

@@ -13,7 +13,7 @@ import {
 import {Spacer} from "../../utils/simple/SimpleDiv";
 import {ClickCallback} from "../../utils/simple/GuiTypes";
 import {MappingsController, WithMappings} from "./mappings/MappingsUi";
-import {MappingContext, MappingMethod, useMappingFor, useMappingForName} from "../../../mappings/MappingMethod";
+import {MappingContext, MappingStrategy, useMappingFor, useMappingForName} from "../../../mappings/resolve/MappingStrategy";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
     const causerList = unfoldRichStackTrace(report.stackTrace);
@@ -121,7 +121,7 @@ export function StackTraceElementUi({
     </Row>;
 }
 
-function getTraceElementText(traceElement: RichStackTraceElement, open: boolean, mappings: MappingMethod): string {
+function getTraceElementText(traceElement: RichStackTraceElement, open: boolean, mappings: MappingStrategy): string {
     if (typeof traceElement === "number") return `${traceElement} more...`
     if (open) {
         const fileName = traceElement.method.classIn.fullName(mappings)

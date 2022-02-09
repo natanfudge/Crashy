@@ -1,7 +1,7 @@
-import { MappingContext} from "./MappingMethod";
-import {MappingsNamespace} from "./MappingsNamespace";
-import { LoaderType} from "crash-parser/src/model/RichCrashReport";
-import {AnyMappable, BasicMappable, JavaClass, JavaMethod, Mappable} from "./Mappable";
+import {BasicMappable, JavaClass, JavaMethod} from "../Mappable";
+import {MappingContext} from "./MappingStrategy";
+import {MappingsNamespace} from "../MappingsNamespace";
+import {LoaderType} from "crash-parser/src/model/RichCrashReport";
 
 export function detectMappingNamespace(name: BasicMappable, context: MappingContext): MappingsNamespace {
     if (isIntermediaryName(name)) {
@@ -21,15 +21,11 @@ export function detectMappingNamespace(name: BasicMappable, context: MappingCont
 }
 
 function isIntermediaryName(mappable: BasicMappable): boolean {
-    if (isJavaMethod(mappable)) {
+    if (mappable instanceof JavaMethod) {
         return isIntermediaryMethodName(mappable)
     } else {
         return isIntermediaryClassName(mappable)
     }
-}
-
-function isJavaMethod(mappable: BasicMappable): mappable is JavaMethod {
-    return "classIn" in mappable;
 }
 
 function isIntermediaryClassName(javaClass: JavaClass): boolean {

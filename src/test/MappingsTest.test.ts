@@ -7,7 +7,7 @@ import {
 import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
 import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
 import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
-import {getMappingForName} from "../mappings/MappingMethod";
+import {getMappingForName} from "../mappings/resolve/MappingStrategy";
 import {resolveMappingsChain} from "../mappings/MappingsResolver";
 import {
     IntermediaryToQuiltMappingsProvider,

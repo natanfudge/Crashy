@@ -3,7 +3,7 @@ import {Column, Row} from "../../../utils/simple/Flex";
 import {CircularProgress} from "@mui/material";
 import {DropdownSelection} from "../../../utils/DropdownSelection";
 import {indexOfOrThrow} from "../../../../utils/Javascript";
-import {buildsOf} from "../../../../mappings/Mappings";
+import {buildsOf} from "../../../../mappings/MappingsApi";
 import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
 import {allMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
 import {usePromise} from "../../../utils/PromiseBuilder";
@@ -11,7 +11,7 @@ import {useScreenSize} from "../../../../utils/Gui";
 import {ItemSelection, SelectionType} from "../../../utils/Selection";
 import {MappingsBuilds} from "../../../../mappings/MappingsProvider";
 import {Text} from "../../../utils/simple/Text";
-import {DesiredBuildProblem, isValidDesiredBuild} from "../../../../mappings/MappingMethod";
+import {DesiredBuildProblem, isValidDesiredBuild} from "../../../../mappings/resolve/MappingStrategy";
 
 export interface MappingsSelectionProps {
     mappings: MappingsState;

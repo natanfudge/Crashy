@@ -1,8 +1,9 @@
 import {MappingsNamespace} from "./MappingsNamespace";
-import {EmptyMappings, Mappings, MappingsFilter} from "./Mappings";
 import {getYarnBuilds, getYarnMappings} from "./providers/YarnMappingsProvider";
 import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
 import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
+import {EmptyMappings, Mappings} from "./Mappings";
+import {MappingsFilter} from "./storage/MappingsBuilder";
 
 export type MappingsBuilds = string[];
 
@@ -118,3 +119,15 @@ export const allMappingsProviders: MappingsProvider[] = [
     SrgToMcpMappingsProvider
 ]
 
+const buildsCache = new PromiseMemoryCache<MappingsBuilds>();
+
+export async function getBuildsCached(provider: MappingsProvider, minecraftVersion: string): Promise<MappingsBuilds> {
+    // noinspection JSDeprecatedSymbols
+    return buildsCache.get(
+        provider.fromNamespace + provider.toNamespace + minecraftVersion,
+        () => provider.getBuilds(minecraftVersion)
+    ).catch(e => {
+        console.error("Could not get mapping builds", e);
+        return [];
+    })
+}

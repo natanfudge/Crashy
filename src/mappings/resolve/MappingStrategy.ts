@@ -1,19 +1,20 @@
 import {LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {usePromise} from "../ui/utils/PromiseBuilder";
-import {MappingsProvider} from "./MappingsProvider";
-import {getBuildsCached, getMappingsCached, MappingsFilter} from "./Mappings";
-import {MappingsNamespace} from "./MappingsNamespace";
+import {usePromise} from "../../ui/utils/PromiseBuilder";
+import {getBuildsCached, MappingsProvider} from "../MappingsProvider";
+import {getMappingsCached} from "../MappingsApi";
+import {MappingsNamespace} from "../MappingsNamespace";
+import {resolveMappingsChain} from "../MappingsResolver";
+import {HashSet} from "../../utils/hashmap/HashSet";
+import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "../Mappable";
+import {MappingsFilter} from "../storage/MappingsBuilder";
 import {detectMappingNamespace} from "./MappingDetector";
-import {resolveMappingsChain} from "./MappingsResolver";
-import {HashSet} from "../utils/hashmap/HashSet";
-import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "./Mappable";
 
-export interface MappingMethod {
+export interface MappingStrategy {
     mapMethod: (unmapped: JavaMethod) => JavaMethod
     mapClass: (unmapped: JavaClass) => JavaClass
 }
 
-export const IdentityMapping: MappingMethod = {
+ const IdentityMapping: MappingStrategy = {
     mapClass: unmapped => unmapped,
     mapMethod: unmapped => unmapped
 }
@@ -39,19 +40,19 @@ export interface MappingContext {
     relevantMappables: HashSet<BasicMappable>
 }
 
-export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingMethod {
+export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingStrategy {
     return usePromise(
          getMappingFor(element, context), [context.desiredBuild, context.desiredNamespace]
     ) ?? IdentityMapping
 }
 
-export function useMappingForName(name: BasicMappable, context: MappingContext): MappingMethod {
+export function useMappingForName(name: BasicMappable, context: MappingContext): MappingStrategy {
     return usePromise(
         getMappingForName(name, context), [context.desiredBuild, context.desiredNamespace]
     ) ?? IdentityMapping; // When mappings have not loaded yet keep name as-is
 }
 
-async function getMappingFor(element: RichStackTraceElement, context: MappingContext): Promise<MappingMethod> {
+async function getMappingFor(element: RichStackTraceElement, context: MappingContext): Promise<MappingStrategy> {
     if (typeof element === "number") {
         return IdentityMapping
     } else {
@@ -59,7 +60,7 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
     }
 }
 // export for testing
-export async function getMappingForName(name: BasicMappable, context: MappingContext): Promise<MappingMethod> {
+export async function getMappingForName(name: BasicMappable, context: MappingContext): Promise<MappingStrategy> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
     const originalNamespace = detectMappingNamespace(name, context);
     const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace);
@@ -99,7 +100,7 @@ async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
     relevantMappables: HashSet<BasicMappable>,
     version: DesiredVersion,
-): Promise<MappingMethod> {
+): Promise<MappingStrategy> {
     // Say the relevant mappables are the following:
     // - d#b
     // - abb#d
@@ -186,24 +187,3 @@ function keepOnMappin<Out extends AnyMappable>(target: Mappable<Out>, calls: ((v
     return current as Out;
 }
 
-// Need to remap: {
-//   "method": {
-//     "classIn": {
-//       "_fullUnmappedName": "net.minecraft.class_711$class_712",
-//       "_packageName": "net.minecraft",
-//       "_simpleName": "class_711$class_712"
-//     },
-//     "name": "method_3096"
-//   },
-//   "descriptor": "(Lnet/minecraft/class_2400;Lnet/minecraft/class_638;DDDDDD)Lnet/minecraft/class_703;"
-// }
-//
-// Which was originally:
-//{
-//   "classIn": {
-//     "_fullUnmappedName": "net.minecraft.client.particle.SpellParticle$EntityAmbientFactory",
-//     "_packageName": "net.minecraft.client.particle",
-//     "_simpleName": "SpellParticle$EntityAmbientFactory"
-//   },
-//   "name": "createParticle"
-// }
