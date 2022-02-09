@@ -16,8 +16,6 @@ export class MappingsController {
         const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
         this.mappingsState = mappingsState
         this.onMappingsStateChanged = setMappingsState;
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        // this.mappings = useMappings(this.mappingsState)
         this.report = report;
     }
 

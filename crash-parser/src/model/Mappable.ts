@@ -30,6 +30,9 @@ export class JavaClass implements Mappable<JavaClass> {
     static dotSeperated(fullName: string) {
         return new JavaClass(fullName, false)
     }
+    static slashSeperated(fullName: string) {
+        return new JavaClass(fullName, true)
+    }
 
      getUnmappedFullName() {
         return this._fullUnmappedName;

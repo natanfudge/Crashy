@@ -1,100 +1,85 @@
-export {}
-// import {extractFromZip, NO_CORS_BYPASS, profiler, profilerDel, withDotNotation} from "./ProviderUtils";
-// import {Mappings} from "../Mappings";
-// import {BiMap} from "../../utils/BiMap";
-// import {StringMap} from "crash-parser/src/model/CrashReport";
-// import {ClassMethodSeperator} from "./TinyMappings";
-//
-// enum SRGVersion {
-//     SRG, TSRG, TSRG2
-// }
-//
-// export async function getSrgMappings(mcVersion: string): Promise<Mappings> {
-//     profiler("Downloading SRG Mappings");
-//     const res = await fetch(`${NO_CORS_BYPASS}/https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`);
-//
-//     profilerDel("Downloading SRG Mappings");
-//     const oldFormatMappings = await extractSrgMappings(res);
-//     const usedMappings = oldFormatMappings ?? await extractTsrgMappings(res);
-//     const srgVersion = oldFormatMappings !== undefined ? SRGVersion.SRG :
-//         usedMappings.startsWith("tsrg2") ? SRGVersion.TSRG2 : SRGVersion.TSRG
-//
-//     return loadSRGMappings(srgVersion, usedMappings)
-// }
-//
-// async function extractTsrgMappings(response: Response): Promise<string | undefined> {
-//     return extractFromZip(response, "config/joined.tsrg")
-// }
-//
-// async function extractSrgMappings(response: Response): Promise<string> {
-//     return (await extractFromZip(response, "joined.srg"))!
-// }
-//
-// async function loadSRGMappings(srgVersion: SRGVersion, srg_mappings: string): Promise<Mappings> {
-//     profiler("Parsing SRG Mappings");
-//     switch (srgVersion) {
-//         case SRGVersion.SRG:
-//             return loadSRG1Mappings(srg_mappings);
-//         case SRGVersion.TSRG:
-//             return loadTSRG1Mappings(srg_mappings);
-//         case SRGVersion.TSRG2:
-//             return loadTSRG2Mappings(srg_mappings);
-//     }
-//     profilerDel("Parsing SRG Mappings");
-// }
-//
-// async function loadSRG1Mappings(srg_mappings: string): Promise<Mappings> {
-//     // We keep the slash notation at the start because that's what descriptors use
-//     const classesWithSlashNotation: StringMap = {}
-//     const noDescriptorToDescriptorMethods: StringMap = {}
-//     const descriptorToDescriptorMethods: StringMap = {}
-//     const lines = srg_mappings.split("\n");
-//     while (lines.length) {
-//         const current_line = (<string>lines.shift()).split(/\s+/);
-//         switch (current_line[0]) {
-//             case "CL:":
-//                 classesWithSlashNotation[current_line[1]] = current_line[2]
-//                 break;
-//             case "FD:":
-//                 // Ignore fields
-//                 break;
-//
-//             case "MD:": {
-//                 const obf_parts = current_line[1].match(/(.+)\/([^\/]+)$/)!;
-//                 const srg_parts = current_line[3].match(/(.+)\/([^\/]+)$/);
-//                 const officialClassName = obf_parts[1];
-//                 const officialDescriptor = current_line[2];
-//                 const officialMethod =
-//
-//                 const descriptor = item[2]
-//                 const fromMethod = item[3]
-//                 const toMethod = item[4]
-//
-//                 const simpleFromMethodName = withDotNotation(fromClass + ClassMethodSeperator + fromMethod)
-//                 const fullFromMethodName = simpleFromMethodName + descriptor;
-//                 const fullToMethodName = withDotNotation(toClass + ClassMethodSeperator + toMethod)
-//                     + remapDescriptor(descriptor, classesWithSlashNotation)
-//                 noDescriptorToDescriptorMethods[simpleFromMethodName] = fullToMethodName;
-//                 descriptorToDescriptorMethods[fullFromMethodName] = fullToMethodName;
-//
-//                 const current_method = officialClassName.getOrAddMethod(<string>obf_parts?.[2], current_line[2], MappingTypes.OBF);
-//                 current_method?.addMapping(MappingTypes.SRG, <string>srg_parts?.[2]);
-//                 current_method?.setDescriptor(MappingTypes.SRG, current_line[4]);
-//                 const id = <string>srg_parts?.[2].match(/\d+/)?.[0];
-//                 if (!id) {
-//                     console.warn(`NO NUMBERS IN SRG MAPPING??? "${current_line}"`);
-//                     continue;
-//                 }
-//                 if (!this.srgMethods.has(id)) this.srgMethods.set(id, []);
-//                 if (current_method) this.srgMethods.get(id)?.push(current_method);
-//                 break;
-//             }
-//             case "PK:":
-//                 break
-//         }
-//     }
-// }
-//
+import {extractFromZip, NO_CORS_BYPASS, profiler, profilerDel, withDotNotation} from "./ProviderUtils";
+import {Mappings} from "../Mappings";
+import {BiMap} from "../../utils/BiMap";
+import {StringMap} from "crash-parser/src/model/CrashReport";
+import {ClassMethodSeperator} from "./TinyMappings";
+import {MappingsBuilder, MappingsFilter} from "../storage/MappingsBuilder";
+import {JavaClass} from "crash-parser/src/model/Mappable";
+
+enum SRGVersion {
+    SRG, TSRG, TSRG2
+}
+
+export async function getSrgMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings> {
+    profiler("Downloading SRG Mappings");
+    const res = await fetch(`${NO_CORS_BYPASS}/https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`);
+
+    profilerDel("Downloading SRG Mappings");
+    const oldFormatMappings = await extractSrgMappings(res);
+    const usedMappings = oldFormatMappings ?? await extractTsrgMappings(res);
+    const srgVersion = oldFormatMappings !== undefined ? SRGVersion.SRG :
+        usedMappings.startsWith("tsrg2") ? SRGVersion.TSRG2 : SRGVersion.TSRG
+
+    return loadSRGMappings(srgVersion, usedMappings, filter)
+}
+
+async function extractTsrgMappings(response: Response): Promise<string | undefined> {
+    return extractFromZip(response, "config/joined.tsrg")
+}
+
+async function extractSrgMappings(response: Response): Promise<string> {
+    return (await extractFromZip(response, "joined.srg"))!
+}
+
+ function loadSRGMappings(srgVersion: SRGVersion, srg_mappings: string, filter: MappingsFilter): Mappings {
+    profiler("Parsing SRG Mappings");
+    switch (srgVersion) {
+        case SRGVersion.SRG:
+            return loadSRG1Mappings(srg_mappings, filter);
+        case SRGVersion.TSRG:
+            throw new Error("TODO")
+            // return loadTSRG1Mappings(srg_mappings);
+        case SRGVersion.TSRG2:
+            throw new Error("TODO")
+            // return loadTSRG2Mappings(srg_mappings);
+    }
+    profilerDel("Parsing SRG Mappings");
+}
+// Example: https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.7.10/mcp-1.7.10-srg.zip
+ function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings {
+    const builder = new MappingsBuilder(filter)
+    const lines = rawMappings.split("\n");
+    for(const line of lines){
+        const current_line = line.split(/\s+/);
+        switch (current_line[0]) {
+            case "CL:":
+                builder.addClass(current_line[1],current_line[2])
+                break;
+            case "FD:":
+                // Ignore fields
+                break;
+
+            //    Example: MD: aky/a (II)Lrf; net/minecraft/block/BlockFarmland/func_149691_a (II)Lnet/minecraft/util/IIcon;
+                //TODO: debug this! make this more readble and make sure its correct
+            case "MD:": {
+                const obf_parts =  /(.+)\/([^/]+)$/.exec(current_line[1])!;
+                const srg_parts = /(.+)\/([^/]+)$/.exec(current_line[3])!
+                const className = obf_parts[1]
+                builder.addMethod(JavaClass.slashSeperated(className),obf_parts[2],current_line[4],srg_parts[2])
+                const id = (/\d+/.exec(srg_parts?.[2]))?.[0];
+                if (id === undefined) {
+                    console.warn(`NO NUMBERS IN SRG MAPPING??? "${current_line}"`);
+                    continue;
+                }
+                break;
+            }
+            case "PK:":
+                break
+        }
+    }
+    return builder.build();
+}
+
 // async function loadTSRG1Mappings(tsrg_mappings: string): Mappings {
 //     const lines = tsrg_mappings.split("\n");
 //     let current_class: ClassData | null | undefined = null;
