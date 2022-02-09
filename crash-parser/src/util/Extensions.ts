@@ -30,6 +30,8 @@ declare global {
         drop(amount: number) : Array<T>
         // Happens synchronously, every item is evaluated after the previous one
         mapSync<NT>( map: (item: T, index: number) => Promise<NT>) : Promise<Array<NT>>
+
+        isEmpty(): boolean
     }
 }
 

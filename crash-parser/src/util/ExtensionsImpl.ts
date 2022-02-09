@@ -104,3 +104,6 @@ Array.prototype.mapSync = async function <T, NT>(this: T[], map: (item: T, index
     }
     return newArr;
 }
+Array.prototype.isEmpty =  function <T>(this: T[]): boolean {
+    return this.length === 0;
+}

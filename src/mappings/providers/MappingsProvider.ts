@@ -1,9 +1,9 @@
-import {MappingsNamespace} from "./MappingsNamespace";
-import {getYarnBuilds, getYarnMappings} from "./providers/YarnMappingsProvider";
-import {getIntermediaryMappings} from "./providers/IntermediaryMappingsProvider";
-import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
-import {EmptyMappings, Mappings} from "./Mappings";
-import {MappingsFilter} from "./storage/MappingsBuilder";
+import {MappingsNamespace} from "../MappingsNamespace";
+import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
+import {getIntermediaryMappings} from "./IntermediaryMappingsProvider";
+import {PromiseMemoryCache} from "../../utils/PromiseMemoryCache";
+import {EmptyMappings, Mappings} from "../Mappings";
+import {MappingsFilter} from "../storage/MappingsBuilder";
 
 export type MappingsBuilds = string[];
 
@@ -35,7 +35,6 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
     toNamespace: "Yarn",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
         const builds = await getYarnBuilds(minecraftVersion)
-        // await new Promise(resolve => setTimeout(resolve, 3000))
         return builds.map(build => build.version)
     },
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
@@ -102,15 +101,7 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
         throw new Error("TODO")
     }
 }
-const mappingsProvidersForEveryNamespace: Record<MappingsNamespace,MappingsProvider> = {
-    Intermediary: OfficialToIntermediaryMappingsProvider,
-    Yarn: IntermediaryToYarnMappingsProvider,
-    Quilt: IntermediaryToQuiltMappingsProvider,
-    Official: OfficialToIntermediaryMappingsProvider,
-    Srg: OfficialToSrgMappingsProvider,
-    Mcp: SrgToMcpMappingsProvider,
-    MojMap: OfficialToMojmapMappingsProvider
-}
+
 export const allMappingsProviders: MappingsProvider[] = [
     IntermediaryToYarnMappingsProvider,
     IntermediaryToQuiltMappingsProvider,

@@ -1,5 +1,5 @@
-import {MappingsNamespace} from "./MappingsNamespace";
-import {DesiredBuild} from "./resolve/MappingStrategy";
+import {DesiredBuild} from "../../../../mappings/resolve/MappingStrategy";
+import {MappingsNamespace} from "../../../../mappings/MappingsNamespace";
 
 export interface MappingsState {
     namespace: MappingsNamespace,

@@ -3,14 +3,13 @@ import {useScreenSize} from "../../../../utils/Gui";
 import {Column} from "../../../utils/simple/Flex";
 import React, {useMemo, useState} from "react";
 import {MappingsSelection} from "./MappingsSelection";
-import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
 import {usePromise} from "../../../utils/PromiseBuilder";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {DesiredBuild, DesiredBuildProblem, MappingContext} from "../../../../mappings/resolve/MappingStrategy";
 import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/MappingsApi";
-import {namespaceHasMultipleBuildsPerMcVersion} from "../../../../mappings/MappingsNamespace";
 import {HashSet} from "../../../../utils/hashmap/HashSet";
-import {AnyMappable, BasicMappable} from "../../../../mappings/Mappable";
+import {BasicMappable} from "../../../../mappings/Mappable";
+import {MappingsState, withBuild} from "./MappingsState";
 
 export class MappingsController {
     mappingsState: MappingsState
@@ -29,7 +28,7 @@ export class MappingsController {
 
     getContext(): MappingContext {
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        const mappables = useMemo(() => findAllMappablesInReport(this.report),[this.report])
+        const mappables = useMemo(() => findAllMappablesInReport(this.report), [this.report])
         return {
             relevantMappables: mappables,
             desiredBuild: this.mappingsState.build,
@@ -118,13 +117,7 @@ function useDetermineBuildToUse(state: MappingsState, minecraftVersion: string):
     if (allBuilds === undefined) return DesiredBuildProblem.BuildsLoading;
     // If finished loading but the user has not chosen anything
     if (allBuilds.length === 0) {
-        // Make sure the namespace actually has no builds before returning NoBuildsForNamespace, workaround the fact that allBuilds doesn't update immediately.
-       //TODO: this was commented out to test if it works without it!
-        // if (namespaceHasMultipleBuildsPerMcVersion(state.namespace)) {
-        //     return DesiredBuildProblem.BuildsLoading;
-        // } else {
-            return DesiredBuildProblem.NoBuildsForNamespace
-        // }
+        return DesiredBuildProblem.NoBuildsForNamespace
     } else {
         // Choose the first build automatically
         return allBuilds[0]

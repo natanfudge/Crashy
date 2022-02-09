@@ -1,9 +1,9 @@
 import {LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {usePromise} from "../../ui/utils/PromiseBuilder";
-import {getBuildsCached, MappingsProvider} from "../MappingsProvider";
+import {getBuildsCached, MappingsProvider} from "../providers/MappingsProvider";
 import {getMappingsCached} from "../MappingsApi";
 import {MappingsNamespace} from "../MappingsNamespace";
-import {resolveMappingsChain} from "../MappingsResolver";
+import {resolveMappingsChain} from "./MappingsResolver";
 import {HashSet} from "../../utils/hashmap/HashSet";
 import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "../Mappable";
 import {MappingsFilter} from "../storage/MappingsBuilder";
@@ -14,7 +14,7 @@ export interface MappingStrategy {
     mapClass: (unmapped: JavaClass) => JavaClass
 }
 
- const IdentityMapping: MappingStrategy = {
+const IdentityMapping: MappingStrategy = {
     mapClass: unmapped => unmapped,
     mapMethod: unmapped => unmapped
 }
@@ -42,7 +42,7 @@ export interface MappingContext {
 
 export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingStrategy {
     return usePromise(
-         getMappingFor(element, context), [context.desiredBuild, context.desiredNamespace]
+        getMappingFor(element, context), [context.desiredBuild, context.desiredNamespace]
     ) ?? IdentityMapping
 }
 
@@ -59,6 +59,7 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
         return getMappingForName(element.method, context);
     }
 }
+
 // export for testing
 export async function getMappingForName(name: BasicMappable, context: MappingContext): Promise<MappingStrategy> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
@@ -101,6 +102,8 @@ async function mappingViaProviderChain(
     relevantMappables: HashSet<BasicMappable>,
     version: DesiredVersion,
 ): Promise<MappingStrategy> {
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (providerChain.isEmpty()) return IdentityMapping;
     // Say the relevant mappables are the following:
     // - d#b
     // - abb#d
@@ -142,6 +145,7 @@ async function mappingViaProviderChain(
         }
     };
 }
+
 type MappingStep = <T extends AnyMappable>(unmapped: Mappable<T>) => T
 
 async function mappingViaProviderStep<T extends boolean>(
@@ -163,7 +167,7 @@ async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvi
     if (last && version.targetBuild !== DesiredBuildProblem.NoBuildsForNamespace) {
         return version.targetBuild;
     }
-    return (await getBuildsCached(provider,version.minecraftVersion)).firstOr(() => "no-build")
+    return (await getBuildsCached(provider, version.minecraftVersion)).firstOr(() => "no-build")
 }
 
 function mappingFilterForMappables(mappables: HashSet<BasicMappable>, reverse: boolean): MappingsFilter {

@@ -1,22 +1,23 @@
 import "crash-parser/src/util/Extensions"
 import {
-    JavaClass,
-    JavaMethod,
     LoaderType
 } from "crash-parser/src/model/RichCrashReport";
 import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
 import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
 import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
 import {getMappingForName} from "../mappings/resolve/MappingStrategy";
-import {resolveMappingsChain} from "../mappings/MappingsResolver";
+import {resolveMappingsChain} from "../mappings/resolve/MappingsResolver";
 import {
     IntermediaryToQuiltMappingsProvider,
     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
     SrgToMcpMappingsProvider
-} from "../mappings/MappingsProvider";
+} from "../mappings/providers/MappingsProvider";
 
 import "crash-parser/src/util/ExtensionsImpl"
+import {BasicMappable, JavaClass, JavaMethod} from "../mappings/Mappable";
+import {AllowAllMappings} from "../mappings/storage/MappingsBuilder";
+import {HashSet} from "../utils/hashmap/HashSet";
 
 
 //TODO: test it does the shortest path by adding more providers
@@ -33,23 +34,25 @@ test("Mappings BFS works correctly", () => {
 
 test("Remapping works correctly", async () => {
     const versions = await getYarnBuilds("1.18.1");
-    // const mappings = await getYarnMappings(versions[0].version)
-    const testClass: JavaClass = new JavaClass("net.minecraft.class_5973", false)
+    // const builds = versions[0].version;
+    // const mappings = await getYarnMappings(builds, AllowAllMappings)
+    const testClass: JavaClass =  JavaClass.dotSeperated("net.minecraft.class_5973")
+    const testMethod: JavaMethod = JavaMethod.dotSeperated("net.minecraft.class_3060","method_13365")
 
-    const mappings = await getMappingForName(testClass, {
+    const mappingStrategy = await getMappingForName(testClass, {
+        relevantMappables: HashSet.of<BasicMappable>(testClass, testMethod),
         desiredNamespace: "Yarn",
         desiredBuild: versions[0].version,
         loader: LoaderType.Fabric,
         isDeobfuscated: false,
         minecraftVersion: "1.18.1"
     })
-    const remappedClass = testClass.fullName(mappings)
+    const remappedClass = testClass.fullName(mappingStrategy)
     expect(remappedClass).toEqual("net.minecraft.util.math.MathConstants")
 
-    const testMethod: JavaMethod = new JavaMethod(new JavaClass("net.minecraft.class_3060",false), "method_13365")
 
-    const remappedMethodFull = testMethod.fullName(mappings)
-    const remappedMethodSimple = testMethod.simpleName(mappings)
+    const remappedMethodFull = testMethod.fullName(mappingStrategy)
+    const remappedMethodSimple = testMethod.simpleName(mappingStrategy)
 
     expect(remappedMethodFull).toEqual("net.minecraft.server.command.ForceLoadCommand#register")
     expect(remappedMethodSimple).toEqual("ForceLoadCommand#register")

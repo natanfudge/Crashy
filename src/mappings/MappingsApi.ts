@@ -5,7 +5,7 @@ import {
     MappingsBuilds,
     MappingsProvider,
     MappingsVersion
-} from "./MappingsProvider";
+} from "./providers/MappingsProvider";
 import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
 import {MappingsFilter} from "./storage/MappingsBuilder";

@@ -4,14 +4,14 @@ import {CircularProgress} from "@mui/material";
 import {DropdownSelection} from "../../../utils/DropdownSelection";
 import {indexOfOrThrow} from "../../../../utils/Javascript";
 import {buildsOf} from "../../../../mappings/MappingsApi";
-import {MappingsState, withBuild} from "../../../../mappings/MappingsState";
 import {allMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
 import {usePromise} from "../../../utils/PromiseBuilder";
 import {useScreenSize} from "../../../../utils/Gui";
 import {ItemSelection, SelectionType} from "../../../utils/Selection";
-import {MappingsBuilds} from "../../../../mappings/MappingsProvider";
+import {MappingsBuilds} from "../../../../mappings/providers/MappingsProvider";
 import {Text} from "../../../utils/simple/Text";
 import {DesiredBuildProblem, isValidDesiredBuild} from "../../../../mappings/resolve/MappingStrategy";
+import {MappingsState, withBuild} from "./MappingsState";
 
 export interface MappingsSelectionProps {
     mappings: MappingsState;
@@ -37,9 +37,7 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mapping
                            values={builds}
                            index={isValidDesiredBuild(mappings.build) ? indexOfOrThrow(builds, mappings.build) : 0}
                            onIndexChange={i => onMappingsChange(withBuild(mappings, builds[i]))}/>
-        {mappingsLoading &&
-            <Text padding={{left: 8, right: 3}} className={"blinking_text"} align={"center"} fontWeight={"bold"}
-                  text={"Loading Mappings..."}/>}
+
     </Column>;
 }
 
@@ -48,8 +46,11 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
-    return <Row style={{float: "right"}} justifyContent={"end"}
-                padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}} margin={{left: isPortrait ? 0 : 15}}>
+    return <Column style={{float: "right"}} justifyContent={"end"}>
+        <Row /*style={{float: "right"}} justifyContent={"end"}*/
+                         padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}}
+                         margin={{left: isPortrait ? 0 : 15}}>
+
         <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
                        values={allMappingNamespaces.map(type => mappingsName(type))}
                        index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
@@ -61,6 +62,8 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
                            // If the build is undefined then when all the builds load the first one will be used automatically.
                            onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
                        }}/>
+
+
         {builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
             {builds.length > 0 &&
                 <BuildSelection mappingsLoading={mappingsLoading} isPortrait={isPortrait} builds={builds}
@@ -68,6 +71,10 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
                                 onMappingsChange={onMappingsChange}/>}
         </Fragment>}
     </Row>
+        {mappingsLoading &&
+            <Text padding={{left: 8, right: 3}} className={"blinking_text"} align={"center"} fontWeight={"bold"}
+                  text={"Loading Mappings..."}/>}
+    </Column>
 }
 
 

@@ -1,6 +1,7 @@
 import {DescriptoredMethod, JavaClass, JavaMethod} from "../Mappable";
 import {HashMap, MutableDict} from "../../utils/hashmap/HashMap";
 import {ClassMappings, Mappings} from "../Mappings";
+import {MappingsImpl} from "./MappingsImpl";
 
 export interface MappingsFilter {
     needClass(javaClass: JavaClass): boolean
@@ -80,6 +81,6 @@ export class MappingsBuilder {
             }
 
         }
-        return new Mappings(finalMappings);
+        return new MappingsImpl(finalMappings);
     }
 }

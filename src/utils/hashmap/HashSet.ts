@@ -7,6 +7,14 @@ export class HashSet<T> {
         return new HashSet(new HashMap<T, 1>(capacity));
     }
 
+    static of<T>(...items: T[]) : HashSet<T>{
+        const set = this.ofCapacity<T>(items.length);
+        for(const item of items){
+            set.put(item);
+        }
+        return set;
+    }
+
     private constructor(map: HashMap<T, 1>) {
         this._map = map;
     }

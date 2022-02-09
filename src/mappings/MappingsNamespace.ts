@@ -32,16 +32,3 @@ export const allMappingNamespaces: MappingsNamespace[] = [
     "Official"
 ];
 
-export function namespaceHasMultipleBuildsPerMcVersion(namespace: MappingsNamespace): boolean {
-    switch (namespace) {
-        case "Yarn":
-        case "Mcp":
-        case "Quilt":
-            return true;
-        case "Official":
-        case "MojMap":
-        case "Intermediary":
-        case "Srg":
-           return false;
-    }
-}
