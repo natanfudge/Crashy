@@ -23,7 +23,6 @@ export const AllowAllMappings: MappingsFilter = {
 
 export class MappingsBuilder {
     private readonly classMappings: MutableDict<JavaClass, JavaClass>
-    // private readonly mappings: MutableDict<JavaClass, ClassMappings>
     private readonly filter: MappingsFilter
 
     private readonly methodsToAdd: { unmapped: DescriptoredMethod, mappedName: string }[] = [];
@@ -42,8 +41,6 @@ export class MappingsBuilder {
         return this.filter.needClass(this.filter.usingReverse ? mappedClass : unmappedClass) ? unmappedClass : undefined;
     }
 
-    //VERY IMPORTANT TODO: WE NEED THE MAPPINGS OF CLASSES THAT EXIST IN DESCRIPTORS!
-
     addMethod(unmappedClassName: JavaClass, unmappedMethodName: string, unmappedDescriptor: string, mappedMethodName: string) {
         const method = unmappedClassName.withMethod(unmappedMethodName)
 
@@ -52,7 +49,7 @@ export class MappingsBuilder {
 
     remapDescriptor(descriptor: string): string {
         return descriptor.replace(/L(.+?);/g, (match, p1) =>
-            `L${this.classMappings.get(new JavaClass(p1, true))?.getUnmappedFullName()?.replaceAll(".", "/") ?? p1};`
+            `L${this.classMappings.get(new JavaClass(p1, true))?.getUnmappedFullName()?.replace(/"."/g, "/") ?? p1};`
         );
     }
 

@@ -32,6 +32,8 @@ declare global {
         mapSync<NT>( map: (item: T, index: number) => Promise<NT>) : Promise<Array<NT>>
 
         isEmpty(): boolean
+
+        none(test: (item: T) => boolean) : boolean
     }
 }
 

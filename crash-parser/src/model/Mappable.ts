@@ -30,11 +30,12 @@ export class JavaClass implements Mappable<JavaClass> {
     static dotSeperated(fullName: string) {
         return new JavaClass(fullName, false)
     }
+
     static slashSeperated(fullName: string) {
         return new JavaClass(fullName, true)
     }
 
-     getUnmappedFullName() {
+    getUnmappedFullName() {
         return this._fullUnmappedName;
     }
 
@@ -52,7 +53,7 @@ export class JavaClass implements Mappable<JavaClass> {
         return this._simpleName!;
     }
 
-    simpleName(mappings: MappingStrategy){
+    simpleName(mappings: MappingStrategy) {
         return mappings.mapClass(this).getUnmappedSimpleName();
     }
 
@@ -111,7 +112,12 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
         return new JavaMethod(JavaClass.dotSeperated(classIn), name)
     }
 
-    getUnmappedMethodName() : string {
+    static parse(methodDotSeperated: string): JavaMethod {
+        const [classIn, name] = methodDotSeperated.splitToTwo(ClassMethodSeperator);
+        return this.dotSeperated(classIn, name);
+    }
+
+    getUnmappedMethodName(): string {
         return this._name;
     }
 
@@ -161,6 +167,19 @@ export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
     constructor(method: JavaMethod, descriptor: string) {
         this.method = method;
         this.descriptor = descriptor;
+    }
+
+    static parse(dotQualifiedMethod: string): DescriptoredMethod {
+        const [method, descWithoutParen] = dotQualifiedMethod.splitToTwo("(");
+        return JavaMethod.parse(method).withDescriptor("(" + descWithoutParen);
+    }
+
+    getUnmappedFullName() {
+        return this.method.getUnmappedFullName() + this.descriptor;
+    }
+
+    toString() {
+        return this.getUnmappedFullName();
     }
 
     withClass(classIn: JavaClass): DescriptoredMethod {

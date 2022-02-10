@@ -71,6 +71,9 @@ export function flipRecord<K extends Key, V extends Key>(record: Record<K, V>): 
     return flippedRecord;
 }
 
+// export function toStringOfAnything<T>( thing: T): string {
+//     return thing + "";
+// }
 
 export function coercePreferMin(num: number, bounds: { min: number, max: number }): number {
     // Opinionated preferral of min over max

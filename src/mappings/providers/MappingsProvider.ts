@@ -4,6 +4,7 @@ import {getIntermediaryMappings} from "./IntermediaryMappingsProvider";
 import {PromiseMemoryCache} from "../../utils/PromiseMemoryCache";
 import {EmptyMappings, Mappings} from "../Mappings";
 import {MappingsFilter} from "../storage/MappingsBuilder";
+import {getSrgMappings} from "./SrgMappingsProvider";
 
 export type MappingsBuilds = string[];
 
@@ -72,11 +73,10 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
     toNamespace: "Srg",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
-        throw new Error("TODO")
+        return [];
     },
     async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        return EmptyMappings;
-        // throw new Error("TODO")
+        return getSrgMappings(version.minecraftVersion,filter);
     }
 }
 

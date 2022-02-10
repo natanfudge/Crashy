@@ -1,8 +1,5 @@
-import {extractFromZip, NO_CORS_BYPASS, profiler, profilerDel, withDotNotation} from "./ProviderUtils";
+import {extractFromZip, profiler, profilerDel} from "./ProviderUtils";
 import {Mappings} from "../Mappings";
-import {BiMap} from "../../utils/BiMap";
-import {StringMap} from "crash-parser/src/model/CrashReport";
-import {ClassMethodSeperator} from "./TinyMappings";
 import {MappingsBuilder, MappingsFilter} from "../storage/MappingsBuilder";
 import {JavaClass} from "crash-parser/src/model/Mappable";
 
@@ -12,7 +9,7 @@ enum SRGVersion {
 
 export async function getSrgMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading SRG Mappings");
-    const res = await fetch(`${NO_CORS_BYPASS}/https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`);
+    const res = await fetch(`https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`);
 
     profilerDel("Downloading SRG Mappings");
     const oldFormatMappings = await extractSrgMappings(res);
@@ -31,46 +28,43 @@ async function extractSrgMappings(response: Response): Promise<string> {
     return (await extractFromZip(response, "joined.srg"))!
 }
 
- function loadSRGMappings(srgVersion: SRGVersion, srg_mappings: string, filter: MappingsFilter): Mappings {
+function loadSRGMappings(srgVersion: SRGVersion, srg_mappings: string, filter: MappingsFilter): Mappings {
     profiler("Parsing SRG Mappings");
     switch (srgVersion) {
         case SRGVersion.SRG:
             return loadSRG1Mappings(srg_mappings, filter);
         case SRGVersion.TSRG:
             throw new Error("TODO")
-            // return loadTSRG1Mappings(srg_mappings);
+        // return loadTSRG1Mappings(srg_mappings);
         case SRGVersion.TSRG2:
             throw new Error("TODO")
-            // return loadTSRG2Mappings(srg_mappings);
+        // return loadTSRG2Mappings(srg_mappings);
     }
     profilerDel("Parsing SRG Mappings");
 }
+
 // Example: https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.7.10/mcp-1.7.10-srg.zip
- function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings {
+function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings {
     const builder = new MappingsBuilder(filter)
     const lines = rawMappings.split("\n");
-    for(const line of lines){
-        const current_line = line.split(/\s+/);
-        switch (current_line[0]) {
+    for (const line of lines) {
+        const lineArray = line.split(/\s+/);
+        switch (lineArray[0]) {
             case "CL:":
-                builder.addClass(current_line[1],current_line[2])
+                builder.addClass(lineArray[1], lineArray[2])
                 break;
             case "FD:":
                 // Ignore fields
                 break;
 
             //    Example: MD: aky/a (II)Lrf; net/minecraft/block/BlockFarmland/func_149691_a (II)Lnet/minecraft/util/IIcon;
-                //TODO: debug this! make this more readble and make sure its correct
+            //TODO: debug this! make this more readble and make sure its correct
             case "MD:": {
-                const obf_parts =  /(.+)\/([^/]+)$/.exec(current_line[1])!;
-                const srg_parts = /(.+)\/([^/]+)$/.exec(current_line[3])!
-                const className = obf_parts[1]
-                builder.addMethod(JavaClass.slashSeperated(className),obf_parts[2],current_line[4],srg_parts[2])
-                const id = (/\d+/.exec(srg_parts?.[2]))?.[0];
-                if (id === undefined) {
-                    console.warn(`NO NUMBERS IN SRG MAPPING??? "${current_line}"`);
-                    continue;
-                }
+                const [_, unmapped, unmappedDescriptor, mapped, mappedDescriptor] = lineArray;
+                const [unmappedClass, unmappedMethod] = unmapped.splitToTwoOnLast("/")!;
+                const [mappedClass, mappedMethod] = mapped.splitToTwoOnLast("/")!;
+
+                builder.addMethod(JavaClass.slashSeperated(unmappedClass), unmappedMethod, unmappedDescriptor, mappedMethod)
                 break;
             }
             case "PK:":
