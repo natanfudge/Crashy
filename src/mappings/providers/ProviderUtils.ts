@@ -11,6 +11,8 @@ export type MCVersionSlug = string;
 
 export const NO_CORS_BYPASS = "/Projects/CORS-Bypass/App";
 
+
+
 // export function mcVersionCompare(a: MCVersionSlug, b: MCVersionSlug) {
 //     if (a === b) return 0;
 //     // @ts-ignore

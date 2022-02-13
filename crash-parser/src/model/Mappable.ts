@@ -2,6 +2,7 @@ import {MappingStrategy} from "../../../src/mappings/resolve/MappingStrategy";
 import {hashString} from "../../../src/utils/hashmap/Hashing";
 import {ClassMethodSeperator} from "../../../src/mappings/providers/TinyMappings";
 import {Mappings} from "../../../src/mappings/Mappings";
+import {EnableAssertions} from "../../../src/Crashy";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyMappable = Mappable<any>
@@ -12,7 +13,7 @@ export interface Mappable<To extends AnyMappable> {
     remap(mappings: Mappings, reverse: boolean): To
 }
 
-const EnableAssertions = false;
+
 
 export class JavaClass implements Mappable<JavaClass> {
     // Stored in dot.qualified.format

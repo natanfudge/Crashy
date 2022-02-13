@@ -6,10 +6,11 @@ import {JavaClass} from "crash-parser/src/model/Mappable";
 enum SRGVersion {
     SRG, TSRG, TSRG2
 }
-
+//https://files.minecraftforge.net/de/oceanlabs/mcp/mcp//mcp--srg.zip
 export async function getSrgMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading SRG Mappings");
-    const res = await fetch(`https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`);
+    // const res = await fetch(`https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`);
+    const res = await fetch(`https://files.minecraftforge.net/maven/de/oceanlabs/mcp/mcp_config/${mcVersion}/mcp_config-${mcVersion}.zip`);
 
     profilerDel("Downloading SRG Mappings");
     const oldFormatMappings = await extractSrgMappings(res);
@@ -58,7 +59,6 @@ function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings
                 break;
 
             //    Example: MD: aky/a (II)Lrf; net/minecraft/block/BlockFarmland/func_149691_a (II)Lnet/minecraft/util/IIcon;
-            //TODO: debug this! make this more readble and make sure its correct
             case "MD:": {
                 const [_, unmapped, unmappedDescriptor, mapped, mappedDescriptor] = lineArray;
                 const [unmappedClass, unmappedMethod] = unmapped.splitToTwoOnLast("/")!;
@@ -74,48 +74,44 @@ function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings
     return builder.build();
 }
 
-// async function loadTSRG1Mappings(tsrg_mappings: string): Mappings {
-//     const lines = tsrg_mappings.split("\n");
-//     let current_class: ClassData | null | undefined = null;
-//     while (lines.length) {
-//         const current_line = <string>lines.shift();
-//         const indent = <string>current_line.match(/^\t*/)?.[0];
-//         if (indent.length == 0) {
-//             const cParts = current_line.trim().split(/\s+/);
-//             current_class = await this.getOrAddClass(cParts[0], MappingTypes.OBF);
-//             if (current_class == null) {
-//                 continue;
-//             }
-//             current_class.addMapping(MappingTypes.SRG, cParts[1]);
-//         } else if (indent.length == 1) {
-//             const fmParts = current_line.trim().split(/\s+/);
-//             //field
-//             if (fmParts.length == 2) {
-//                 const current_field = current_class?.getOrAddField(fmParts[0], null, MappingTypes.OBF);
-//                 current_field?.addMapping(MappingTypes.SRG, fmParts[1]);
-//                 const id = fmParts[1].match(/\d+/)?.[0];
-//                 if (!id) {
-//                     console.warn(`NO NUMBERS IN SRG MAPPING??? "${current_line}"`);
-//                     continue;
-//                 }
-//                 if (!this.srgFields.has(id)) this.srgFields.set(id, []);
-//                 if (current_field) this.srgFields.get(id)?.push(current_field);
-//                 //method
-//             } else {
-//                 const current_method = current_class?.getOrAddMethod(fmParts[0], fmParts[1], MappingTypes.OBF);
-//                 current_method?.addMapping(MappingTypes.SRG, fmParts[2]);
-//                 const id = fmParts[2].match(/\d+/)?.[0];
-//                 if (!id) {
-//                     console.warn(`NO NUMBERS IN SRG MAPPING??? "${current_line}"`);
-//                     continue;
-//                 }
-//                 if (!this.srgMethods.has(id)) this.srgMethods.set(id, []);
-//                 if (current_method) this.srgMethods.get(id)?.push(current_method);
-//             }
-//         }
-//     }
-//
-// }
+async function loadTSRG1Mappings(mappings: string,filter: MappingsFilter): Mappings {
+    const builder = new MappingsBuilder(filter);
+    const lines = mappings.split("\n");
+    for(const line of lines){
+        const indent = (/^\t*/.exec(line))![0];
+        if (indent.length === 0) {
+            // class
+            const [unmappedName,mappedName] = line.trim().split(/\s+/);
+            builder.addClass(unmappedName,mappedName)
+        } else if (indent.length === 1) {
+            const fieldParts = line.trim().split(/\s+/);
+            //field
+            if (fieldParts.length == 2) {
+                const current_field = current_class?.getOrAddField(fieldParts[0], null, MappingTypes.OBF);
+                current_field?.addMapping(MappingTypes.SRG, fieldParts[1]);
+                const id = fieldParts[1].match(/\d+/)?.[0];
+                if (!id) {
+                    console.warn(`NO NUMBERS IN SRG MAPPING??? "${line}"`);
+                    continue;
+                }
+                if (!this.srgFields.has(id)) this.srgFields.set(id, []);
+                if (current_field) this.srgFields.get(id)?.push(current_field);
+                //method
+            } else {
+                const current_method = current_class?.getOrAddMethod(fieldParts[0], fieldParts[1], MappingTypes.OBF);
+                current_method?.addMapping(MappingTypes.SRG, fieldParts[2]);
+                const id = fieldParts[2].match(/\d+/)?.[0];
+                if (!id) {
+                    console.warn(`NO NUMBERS IN SRG MAPPING??? "${line}"`);
+                    continue;
+                }
+                if (!this.srgMethods.has(id)) this.srgMethods.set(id, []);
+                if (current_method) this.srgMethods.get(id)?.push(current_method);
+            }
+        }  
+    }
+
+}
 //
 // async function loadTSRG2Mappings(tsrg2_mappings: string): Mappings {
 //     const lines = tsrg2_mappings.split("\n");
