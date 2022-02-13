@@ -22,10 +22,11 @@ class VersionParsingError extends Error {
     }
 }
 
+// Unused code, but may be useful later
 // Taken from Fabric Loader https://github.com/FabricMC/fabric-loader/blob/cbb121843c861bbf97f4a4360047dd38ac3f9fd1/src/main/java/net/fabricmc/loader/impl/util/version/SemanticVersionImpl.java
 export class SemanticVersionImpl {
-    static DOT_SEPARATED_ID = /|[-\dA-Za-z]+(\\.[-\dA-Za-z]+)*/.compile();
-    static UNSIGNED_INTEGER = /0|[1-9]\d*/.compile();
+    static DOT_SEPARATED_ID = RegExp(/|[-\dA-Za-z]+(\\.[-\dA-Za-z]+)*/);
+    static UNSIGNED_INTEGER = RegExp(/0|[1-9]\d*/);
     components: number[];
     prerelease: string | undefined;
     build: string | undefined;

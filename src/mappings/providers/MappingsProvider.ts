@@ -12,7 +12,7 @@ export interface MappingsVersion {
     minecraftVersion: string
     build: string
 }
-
+//TODO: what happens when mappings don't exist for a version?
 export interface MappingsProvider {
     fromNamespace: MappingsNamespace
     toNamespace: MappingsNamespace

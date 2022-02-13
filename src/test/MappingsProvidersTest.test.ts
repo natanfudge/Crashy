@@ -155,3 +155,20 @@ test("New Tests - Srg mappings work", async () => {
     }
     await testMappingsProvider(OfficialToSrgMappingsProvider,"1.7.10",assertions);
 })
+
+test("New Tests - TSrg1 mappings work", async () => {
+    const assertions: MappingAssertions = {
+        classes: {"aky": "net.minecraft.block.BlockFarmland"},
+        methods: {
+            "zs#b()V": "net.minecraft.inventory.Container#func_75142_b()V",
+            "zs#b(I)I": "net.minecraft.inventory.Container#func_94529_b(I)I",
+            "zs#b(II)V": "net.minecraft.inventory.Container#func_75137_b(II)V",
+            "zs#b(Laac;)V": "net.minecraft.inventory.Container#func_82847_b(Lnet.minecraft.inventory.ICrafting;)V",
+            "zs#b(Laay;)Z": "net.minecraft.inventory.Container#func_94531_b(Lnet.minecraft.inventory.Slot;)Z",
+            "zs#b(Lrb;)I": "net.minecraft.inventory.Container#func_94526_b(Lnet.minecraft.inventory.IInventory;)I",
+            "zs#b(Lyz;)V": "net.minecraft.inventory.Container#func_75134_a(Lnet.minecraft.entity.player.EntityPlayer;)V",
+            "zs#b(Lyz;I)Ladd;": "net.minecraft.inventory.Container#func_82846_b(Lnet.minecraft.entity.player.EntityPlayer;I)Lnet.minecraft.item.ItemStack;",
+        }
+    }
+    await testMappingsProvider(OfficialToSrgMappingsProvider,"1.12.2",assertions);
+}, 40000)

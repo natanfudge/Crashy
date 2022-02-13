@@ -1,4 +1,4 @@
-import {extractFromZip, profiler, profilerDel} from "./ProviderUtils";
+import {extractFromZip, isOlderThan1_12_2, profiler, profilerDel} from "./ProviderUtils";
 import {Mappings} from "../Mappings";
 import {MappingsBuilder, MappingsFilter} from "../storage/MappingsBuilder";
 import {JavaClass} from "crash-parser/src/model/Mappable";
@@ -9,8 +9,10 @@ enum SRGVersion {
 //https://files.minecraftforge.net/de/oceanlabs/mcp/mcp//mcp--srg.zip
 export async function getSrgMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading SRG Mappings");
-    // const res = await fetch(`https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`);
-    const res = await fetch(`https://files.minecraftforge.net/maven/de/oceanlabs/mcp/mcp_config/${mcVersion}/mcp_config-${mcVersion}.zip`);
+    const url = isOlderThan1_12_2(mcVersion)
+        ? `https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`
+        : `https://files.minecraftforge.net/maven/de/oceanlabs/mcp/mcp_config/${mcVersion}/mcp_config-${mcVersion}.zip`
+    const res = await fetch(url);
 
     profilerDel("Downloading SRG Mappings");
     const oldFormatMappings = await extractSrgMappings(res);
@@ -74,43 +76,30 @@ function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings
     return builder.build();
 }
 
-async function loadTSRG1Mappings(mappings: string,filter: MappingsFilter): Mappings {
+ function loadTSRG1Mappings(mappings: string,filter: MappingsFilter): Mappings {
     const builder = new MappingsBuilder(filter);
     const lines = mappings.split("\n");
+    let currentClass: JavaClass | undefined = undefined;
     for(const line of lines){
         const indent = (/^\t*/.exec(line))![0];
         if (indent.length === 0) {
-            // class
+            // class, Example: a net/minecraft/client/renderer/Quaternion
             const [unmappedName,mappedName] = line.trim().split(/\s+/);
-            builder.addClass(unmappedName,mappedName)
+            currentClass = builder.addClass(unmappedName,mappedName)
         } else if (indent.length === 1) {
-            const fieldParts = line.trim().split(/\s+/);
-            //field
-            if (fieldParts.length == 2) {
-                const current_field = current_class?.getOrAddField(fieldParts[0], null, MappingTypes.OBF);
-                current_field?.addMapping(MappingTypes.SRG, fieldParts[1]);
-                const id = fieldParts[1].match(/\d+/)?.[0];
-                if (!id) {
-                    console.warn(`NO NUMBERS IN SRG MAPPING??? "${line}"`);
-                    continue;
-                }
-                if (!this.srgFields.has(id)) this.srgFields.set(id, []);
-                if (current_field) this.srgFields.get(id)?.push(current_field);
-                //method
-            } else {
-                const current_method = current_class?.getOrAddMethod(fieldParts[0], fieldParts[1], MappingTypes.OBF);
-                current_method?.addMapping(MappingTypes.SRG, fieldParts[2]);
-                const id = fieldParts[2].match(/\d+/)?.[0];
-                if (!id) {
-                    console.warn(`NO NUMBERS IN SRG MAPPING??? "${line}"`);
-                    continue;
-                }
-                if (!this.srgMethods.has(id)) this.srgMethods.set(id, []);
-                if (current_method) this.srgMethods.get(id)?.push(current_method);
-            }
-        }  
-    }
+            // Field or method
+            const memberParts = line.trim().split(/\s+/);
 
+            if(memberParts.length === 2) {
+                // field, Example: a field_195895_a
+            } else {
+                // Method, Example: a (La;)V func_195890_a
+                const [unmappedMethodName, unmappedDescriptor, mappedMethodName] = memberParts;
+                builder.addMethod(currentClass!,unmappedMethodName,unmappedDescriptor,unmappedMethodName);
+            }
+        }
+    }
+    return builder.build();
 }
 //
 // async function loadTSRG2Mappings(tsrg2_mappings: string): Mappings {
