@@ -2,9 +2,9 @@ import {MappingsNamespace} from "../MappingsNamespace";
 import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
 import {getIntermediaryMappings} from "./IntermediaryMappingsProvider";
 import {PromiseMemoryCache} from "../../utils/PromiseMemoryCache";
-import {EmptyMappings, Mappings} from "../Mappings";
-import {MappingsFilter} from "../storage/MappingsBuilder";
+import {EmptyMappings, Mappings} from "crash-parser/src/util/common/Mappings";
 import {getSrgMappings} from "./SrgMappingsProvider";
+import {MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
 
 export type MappingsBuilds = string[];
 

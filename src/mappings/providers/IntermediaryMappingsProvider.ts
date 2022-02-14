@@ -1,7 +1,7 @@
 import {extractTinyMappings, profiler, profilerDel} from "./ProviderUtils";
 import {parseTinyFile} from "./TinyMappings";
-import {Mappings} from "../Mappings";
-import {AllowAllMappings, MappingsFilter} from "../storage/MappingsBuilder";
+import {Mappings} from "crash-parser/src/util/common/Mappings";
+import {AllowAllMappings, MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
 
 export async function getIntermediaryMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading Yarn Intermediary Mappings");

@@ -1,25 +1,8 @@
-import {DescriptoredMethod, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
-import {HashMap, MutableDict} from "../../utils/hashmap/HashMap";
-import {ClassMappings, Mappings} from "../Mappings";
+import {DescriptoredMethod, JavaClass} from "../../model/Mappable";
+import {HashMap, MutableDict} from "./HashMap";
+import {ClassMappings, Mappings} from "./Mappings";
 import {MappingsImpl} from "./MappingsImpl";
-
-export interface MappingsFilter {
-    needClass(javaClass: JavaClass): boolean
-
-    needMethod(method: JavaMethod): boolean
-
-    usingReverse: boolean
-}
-
-export const AllowAllMappings: MappingsFilter = {
-    needClass(name: JavaClass): boolean {
-        return true
-    },
-    needMethod(method: JavaMethod): boolean {
-        return true
-    },
-    usingReverse: false
-}
+import {MappingsFilter} from "./MappingsFilter";
 
 export class MappingsBuilder {
     private readonly classMappings: MutableDict<JavaClass, JavaClass>

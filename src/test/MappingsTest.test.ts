@@ -16,8 +16,8 @@ import {
 
 import "crash-parser/src/util/ExtensionsImpl"
 import {BasicMappable, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
-import {AllowAllMappings} from "../mappings/storage/MappingsBuilder";
 import {HashSet} from "../utils/hashmap/HashSet";
+import {AllowAllMappings} from "crash-parser/src/util/common/MappingsFilter";
 
 
 //TODO: test it does the shortest path by adding more providers

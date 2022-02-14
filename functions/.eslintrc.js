@@ -29,7 +29,7 @@ module.exports = {
         "import/no-unresolved": 0,
         "max-len": [1, 160],
         "indent": 0,
-        "no-unused-vars": 1,
+        "no-unused-vars": 0,
         "comma-dangle": 0,
         "no-trailing-spaces": 0,
         "padded-blocks": 0,
@@ -41,6 +41,12 @@ module.exports = {
         "no-non-null-assertion": 0,
         "semi": 0,
         "arrow-parens": 0,
-        "camelcase": 0
+        "camelcase": 0,
+        "@typescript-eslint/no-unused-vars":0,
+        "@typescript-eslint/no-non-null-assertion":0,
+        "key-spacing": 0,
+        "space-before-blocks": 0,
+        "comma-spacing": 0,
+        "keyword-spacing": 0
     },
 };

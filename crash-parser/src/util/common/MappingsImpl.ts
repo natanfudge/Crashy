@@ -1,9 +1,9 @@
-import {Lazy} from "../../utils/PromiseMemoryCache";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
-import {ClassMappings} from "../Mappings";
-import {Dict} from "../../utils/hashmap/HashMap";
+import {Lazy} from "../../../../src/utils/PromiseMemoryCache";
+import {ClassMappings, Mappings} from "./Mappings";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "../../model/Mappable";
+import {Dict} from "./HashMap";
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
-export class MappingsImpl {
+export class MappingsImpl implements Mappings {
     private readonly mappings: SingleDirectionMappingData
 
     // eslint-disable-next-line no-invalid-this
@@ -13,7 +13,9 @@ export class MappingsImpl {
         this.mappings = mappings;
     }
 
-
+    serialize(): string {
+        throw new Error("Method not implemented.");
+    }
 
     private getMappings(reversed: boolean): SingleDirectionMappingData {
         return reversed ? this.mappingsReversed.get() : this.mappings;

@@ -1,5 +1,6 @@
 import {firestore} from "firebase-admin";
 import Timestamp = firestore.Timestamp;
+import {BasicMappable} from "crash-parser/src/model/Mappable";
 
 export interface Crash {
     uploadDate: Timestamp,
@@ -25,6 +26,7 @@ export interface DeleteCrashRequest {
 
 export interface GetSrgMappingsRequest {
     mcVersion: string
+    relevantMappables: BasicMappable[]
 }
 
 // Record: unmappedClassName: string, mappedAndMethods: ClassMappingsEntry

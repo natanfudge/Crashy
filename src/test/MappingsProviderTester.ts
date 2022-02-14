@@ -32,10 +32,10 @@
 //             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(FFFF)V"))
 //     ).toBeTruthy()
 import {MappingsProvider} from "../mappings/providers/MappingsProvider";
-import {AllowAllMappings} from "../mappings/storage/MappingsBuilder";
 import {DescriptoredMethod, JavaClass} from "crash-parser/src/model/Mappable";
 import {equalsOfAnything} from "../utils/hashmap/EqualsImplementation";
 import {typedKeys} from "crash-parser/src/util/Utils";
+import {AllowAllMappings} from "crash-parser/src/util/common/MappingsFilter";
 
 export interface MappingAssertions {
     classes: Record<string, string>

@@ -1,7 +1,7 @@
 import {MappingStrategy} from "../../../src/mappings/resolve/MappingStrategy";
 import {hashString} from "../../../src/utils/hashmap/Hashing";
 import {ClassMethodSeperator} from "../../../src/mappings/providers/TinyMappings";
-import {Mappings} from "../../../src/mappings/Mappings";
+import {Mappings} from "../util/common/Mappings";
 import {EnableAssertions} from "../../../src/Crashy";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

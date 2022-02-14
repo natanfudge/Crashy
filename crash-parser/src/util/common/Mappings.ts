@@ -1,6 +1,6 @@
-import {DescriptoredMethod, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
-import {HashMap} from "../utils/hashmap/HashMap";
-import {MappingsImpl} from "./storage/MappingsImpl";
+import {MappingsImpl} from "./MappingsImpl";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "../../model/Mappable";
+import { HashMap } from "./HashMap";
 
 export interface Mappings {
     mapClass(className: JavaClass, reverse: boolean): JavaClass
@@ -8,6 +8,15 @@ export interface Mappings {
     mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethod
 
     mapDescriptoredMethod(methodName: DescriptoredMethod, reverse: boolean): DescriptoredMethod
+
+    serialize(): SerializedMappings
+}
+
+export interface SerializedMappings {
+
+}
+function deserializeMappings(serialized: SerializedMappings): Mappings {
+    throw new Error("TODO")
 }
 
 export const EmptyMappings = new MappingsImpl(HashMap.empty());

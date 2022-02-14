@@ -2,25 +2,20 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import {firestore} from "firebase-admin";
 import {generateCrashKey, getCrashValidationErrors, HttpStatusCode} from "./utils";
-import {
-    Crash,
-    DeleteCrashRequest,
-    GetCrashRequest,
-    GetSrgMappingsRequest,
-    UploadCrashResponse
-} from "./models";
-import {Result} from "./index";
+import {Crash, DeleteCrashRequest, GetCrashRequest, GetSrgMappingsRequest, UploadCrashResponse} from "./models";
+import {EndpointResult} from "./index";
+import {getSrgMappingsImpl} from "./SrgUtils";
+import {mappingFilterForMappables} from "crash-parser/src/util/common/MappingsFilter";
+import {HashSet} from "../../src/utils/hashmap/HashSet";
 import Timestamp = firestore.Timestamp;
 import DocumentReference = firestore.DocumentReference;
 import DocumentData = firestore.DocumentData;
-import {isOlderThan1_12_2} from "../../src/mappings/providers/ProviderUtils";
-import * as axios from "axios";
 // import {get} from "http";
 // import {} from "axios"
 
 const maxSize = 100_000;
 
-export async function uploadCrash(req: functions.Request) : Promise<Result> {
+export async function uploadCrash(req: functions.Request): Promise<EndpointResult> {
     if (req.headers["content-encoding"] === "gzip") {
         return {
             status: HttpStatusCode.UnsupportedMediaType,
@@ -83,7 +78,7 @@ export async function getCrashFromDocument(document: DocumentReference<DocumentD
     return (await document.get()).data() as Promise<Crash | undefined>;
 }
 
-export async function getCrash(req: functions.Request & GetCrashRequest) : Promise<Result> {
+export async function getCrash(req: functions.Request & GetCrashRequest): Promise<EndpointResult> {
     const url = req.url;
     if (!url || url === "" || url === "/") {
         return {
@@ -126,7 +121,7 @@ export async function getCrash(req: functions.Request & GetCrashRequest) : Promi
 
 }
 
-export async function deleteCrash(req: functions.Request) : Promise<Result> {
+export async function deleteCrash(req: functions.Request): Promise<EndpointResult> {
     const query: DeleteCrashRequest = req.query as unknown as DeleteCrashRequest;
     const {crashId, key} = query;
 
@@ -167,19 +162,23 @@ export async function deleteCrash(req: functions.Request) : Promise<Result> {
     }
 }
 
-export async function getSrgMappings(req: functions.Request & GetSrgMappingsRequest): Promise<Result>{
-    const {mcVersion} = req;
-    const url = isOlderThan1_12_2(mcVersion) ?
-        `https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip` :
-        `https://files.minecraftforge.net/maven/de/oceanlabs/mcp/mcp_config/${mcVersion}/mcp_config-${mcVersion}.zip`
-
-
-    const forgeResponse = await axios.default.get(url);
-    if(forgeResponse.status === HttpStatusCode.Ok){
-        const body = forgeResponse.data
-    }
-    switch (forgeResponse.status){
-        case HttpStatusCode.Ok:
-
+//TODO: cache mappings to improve performance
+export async function getSrgMappings(req: functions.Request): Promise<EndpointResult> {
+    const {mcVersion, relevantMappables} = req.body as GetSrgMappingsRequest;
+    const {
+        ok,
+        value
+    } = await getSrgMappingsImpl(mcVersion, mappingFilterForMappables(HashSet.from(relevantMappables), false))
+    if (ok) {
+        return {
+            status: HttpStatusCode.Ok,
+            body: JSON.stringify(value)
+        }
+    } else {
+        return {
+            status: value.status,
+            body: `Got error when trying to fetch SRG mappings from Forge server: ${value.message}`
+        }
     }
 }
+

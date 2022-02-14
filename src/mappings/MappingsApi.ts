@@ -8,8 +8,8 @@ import {
 } from "./providers/MappingsProvider";
 import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
-import {MappingsFilter} from "./storage/MappingsBuilder";
-import {EmptyMappings, Mappings} from "./Mappings";
+import {EmptyMappings, Mappings} from "crash-parser/src/util/common/Mappings";
+import {MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
 
 
 export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {

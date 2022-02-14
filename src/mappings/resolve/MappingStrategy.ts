@@ -6,8 +6,8 @@ import {MappingsNamespace} from "../MappingsNamespace";
 import {resolveMappingsChain} from "./MappingsResolver";
 import {HashSet} from "../../utils/hashmap/HashSet";
 import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "crash-parser/src/model/Mappable";
-import {MappingsFilter} from "../storage/MappingsBuilder";
 import {detectMappingNamespace} from "./MappingDetector";
+import {mappingFilterForMappables, MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
 
 export interface MappingStrategy {
     mapMethod: (unmapped: JavaMethod) => JavaMethod
@@ -170,17 +170,7 @@ async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvi
     return (await getBuildsCached(provider, version.minecraftVersion)).firstOr(() => "no-build")
 }
 
-function mappingFilterForMappables(mappables: HashSet<BasicMappable>, reverse: boolean): MappingsFilter {
-    return {
-        needClass(javaClass: JavaClass): boolean {
-            return mappables.contains(javaClass)
-        },
-        needMethod(method: JavaMethod): boolean {
-            return mappables.contains(method)
-        },
-        usingReverse: reverse
-    }
-}
+
 
 function keepOnMappin<Out extends AnyMappable>(target: Mappable<Out>, calls: ((value: Mappable<Out>) => Out)[]): Out {
     if (calls.length === 0) throw new Error("Expected to map at least once!")

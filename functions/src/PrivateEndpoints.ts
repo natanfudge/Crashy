@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import {HttpStatusCode} from "./utils";
 import {firestore} from "firebase-admin";
 import {Crash} from "./models";
+import {EndpointResult} from "./index";
 
 // CONCLUSIONS FROM RESEARCH:
 // Firestore store is not that expensive ($0.10/GB/Month)
@@ -32,11 +33,13 @@ interface DownloadDatabaseOverviewRequest {
 }
 
 
-export async function downloadDatabaseOverview(req: functions.Request, res: functions.Response): Promise<void> {
+export async function downloadDatabaseOverview(req: functions.Request): Promise<EndpointResult> {
     const request = req.query as unknown as DownloadDatabaseOverviewRequest;
     if (request.password !== functions.config()["roles"]["admin_password"]) {
-        res.status(HttpStatusCode.Unauthorized).send("Unauthorized");
-        return;
+        return {
+            status: HttpStatusCode.Unauthorized,
+            body: "Unauthorized"
+        }
     }
 
     const snapshot = await firestore().collection("crashes").get()
@@ -48,5 +51,8 @@ export async function downloadDatabaseOverview(req: functions.Request, res: func
             size: crash.log.length
         }
     })
-    res.json(overview);
+    return {
+        status: HttpStatusCode.Ok,
+        body: JSON.stringify(overview)
+    }
 }

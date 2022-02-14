@@ -1,9 +1,9 @@
 // const Capacity = 10;
 
 
-import {hashCodeOfAnything} from "./Hashing";
-import {equalsOfAnything} from "./EqualsImplementation";
-import {LinkedList} from "../LinkedList";
+import {hashCodeOfAnything} from "../../../../src/utils/hashmap/Hashing";
+import {equalsOfAnything} from "../../../../src/utils/hashmap/EqualsImplementation";
+import {LinkedList} from "../../../../src/utils/LinkedList";
 //// Debug 22 -> 21 -> 20: 86MB
 //// Now its 115MB and 121MB...
 const InitialCapacityPadding = 1.35;

@@ -1,4 +1,4 @@
-import {HashMap} from "./HashMap";
+import {HashMap} from "crash-parser/src/util/common/HashMap";
 
 export class HashSet<T> {
     private _map: HashMap<T, 1>
@@ -8,6 +8,9 @@ export class HashSet<T> {
     }
 
     static of<T>(...items: T[]) : HashSet<T>{
+        return this.from(items);
+    }
+    static from<T>(items: T[]) : HashSet<T>{
         const set = this.ofCapacity<T>(items.length);
         for(const item of items){
             set.put(item);

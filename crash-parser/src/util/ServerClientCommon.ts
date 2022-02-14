@@ -1,7 +1,7 @@
 import {strFromU8, unzip, Unzipped} from "fflate";
 
-export async function extractFromZip(response: Response, path: string): Promise<string | undefined> {
-    const byteArray = new Uint8Array(await response.arrayBuffer())
+export async function extractFromZip(zip: ArrayBuffer, path: string): Promise<string | undefined> {
+    const byteArray = new Uint8Array(zip)
     const unzipped = await new Promise<Unzipped>((resolve,reject) => {
         unzip(byteArray, (err,unzipped) =>{
             if(err !== null) reject(err);

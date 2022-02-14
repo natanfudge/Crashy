@@ -1,6 +1,5 @@
 import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
 import {getIntermediaryMappings} from "../mappings/providers/IntermediaryMappingsProvider";
-import {AllowAllMappings} from "../mappings/storage/MappingsBuilder";
 import {JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
 import {getSrgMappings} from "../mappings/providers/SrgMappingsProvider";
 import "crash-parser/src/util/ExtensionsImpl"
@@ -9,6 +8,7 @@ import {
     IntermediaryToYarnMappingsProvider,
     OfficialToIntermediaryMappingsProvider, OfficialToSrgMappingsProvider
 } from "../mappings/providers/MappingsProvider";
+import {AllowAllMappings} from "crash-parser/src/util/common/MappingsFilter";
 
 //remove this if it ever breaks (superseded by new tests)
 test("Yarn mappings can be retrieved via new method", async () => {

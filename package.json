@@ -58,7 +58,7 @@
     "customize-cra": "^1.0.0",
     "eslint": "^7.32.0",
     "react-app-rewired": "^2.1.8",
-    "typescript": "^4.4.3",
+    "typescript": "^4.6.1-rc",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0"
   }
