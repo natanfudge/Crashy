@@ -34,11 +34,11 @@ export function generateCrashKey(): string {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace HttpStatusCode {
-    export const OK = 200;
-    export const BadRequest = 400;
-    export const Unauthorized = 401;
-    export const NotFound = 404;
-    export const PayloadTooLarge = 413;
-    export const UnsupportedMediaType = 415;
+export enum HttpStatusCode {
+    Ok= 200,
+    BadRequest = 400,
+    Unauthorized = 401,
+    NotFound = 404,
+    PayloadTooLarge = 413,
+    UnsupportedMediaType = 415
 }

@@ -40,7 +40,7 @@ module.exports = {
         "valid-jsdoc": 0,
         "no-non-null-assertion": 0,
         "semi": 0,
-        "arrow-parens": 0
-
+        "arrow-parens": 0,
+        "camelcase": 0
     },
 };
