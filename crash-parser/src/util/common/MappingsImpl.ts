@@ -1,8 +1,10 @@
 import {Lazy} from "../../../../src/utils/PromiseMemoryCache";
-import {ClassMappings, Mappings} from "./Mappings";
+import {ClassMappings, Mappings, SerializedMappings} from "./Mappings";
 import {DescriptoredMethod, JavaClass, JavaMethod} from "../../model/Mappable";
 import {Dict} from "./HashMap";
+
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
+
 export class MappingsImpl implements Mappings {
     private readonly mappings: SingleDirectionMappingData
 
@@ -13,8 +15,19 @@ export class MappingsImpl implements Mappings {
         this.mappings = mappings;
     }
 
-    serialize(): string {
-        throw new Error("Method not implemented.");
+    serialize(): SerializedMappings {
+        return this.mappings.toRecord(unmappedClass => unmappedClass.getUnmappedFullName(),
+            (_, {mappedClassName, methods}) => ({
+                c: mappedClassName.getUnmappedFullName(),
+                m: methods.toArray((unmappedMethod, mappedMethod) =>{
+                    const unmapped = unmappedMethod.method.getUnmappedMethodName();
+                    const mapped = mappedMethod.method.getUnmappedMethodName();
+                    const unmappedDescriptor = unmappedMethod.descriptor;
+                    // Unmapped, mapped, unmapped descriptor
+                    return [unmapped, mapped, unmappedDescriptor]
+                } )
+            })
+        )
     }
 
     private getMappings(reversed: boolean): SingleDirectionMappingData {

@@ -31,9 +31,11 @@ export class MappingsBuilder {
     }
 
     remapDescriptor(descriptor: string): string {
-        return descriptor.replace(/L(.+?);/g, (match, p1) =>
-            `L${this.classMappings.get(new JavaClass(p1, true))?.getUnmappedFullName()?.replace(/"."/g, "/") ?? p1};`
-        );
+        return descriptor.replace(/L(.+?);/g, (match, p1: string) =>{
+            const remapped = this.classMappings.get(new JavaClass(p1, true))
+                ?.getUnmappedFullName()?.replace(/"."/g, "/") ?? p1
+            return `L${remapped};`
+        });
     }
 
     build(): Mappings {
@@ -50,7 +52,7 @@ export class MappingsBuilder {
         for (const {unmapped, mappedName} of this.methodsToAdd) {
             const classEntry = finalMappings.get(unmapped.method.classIn)
             if (classEntry === undefined) {
-                throw new Error(`Class ${unmapped.method.classIn} not found in mappings`)
+                throw new Error(`Class ${unmapped.method.classIn.toString()} not found in mappings`)
             }
 
             // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it

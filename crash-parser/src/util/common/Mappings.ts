@@ -1,6 +1,8 @@
 import {MappingsImpl} from "./MappingsImpl";
 import {DescriptoredMethod, JavaClass, JavaMethod} from "../../model/Mappable";
-import { HashMap } from "./HashMap";
+import {HashMap} from "./HashMap";
+import {MappingsBuilder} from "./MappingsBuilder";
+import {AllowAllMappings} from "./MappingsFilter";
 
 export interface Mappings {
     mapClass(className: JavaClass, reverse: boolean): JavaClass
@@ -12,11 +14,30 @@ export interface Mappings {
     serialize(): SerializedMappings
 }
 
-export interface SerializedMappings {
+export type SerializedMappings = Record<string, ClassMappingsEntry>
 
+export interface ClassMappingsEntry {
+    // Mapped Class name (shortened to save space)
+    c: string
+    // Method entries (shortened to save space)
+    m: MethodEntry[]
 }
+
+// Unmapped, mapped, unmapped descriptor
+export type MethodEntry = [string, string, string]
+
 function deserializeMappings(serialized: SerializedMappings): Mappings {
-    throw new Error("TODO")
+    const builder = new MappingsBuilder(AllowAllMappings);
+    for (const unmappedClass in serialized) {
+        const {c, m} = serialized[unmappedClass];
+        const javaClass = builder.addClass(unmappedClass, c);
+        if (javaClass !== undefined) {
+            for (const [unmappedMethod, mappedMethod, unmappedDescriptor] of m) {
+                builder.addMethod(javaClass, unmappedMethod, unmappedDescriptor, mappedMethod);
+            }
+        }
+    }
+    return builder.build();
 }
 
 export const EmptyMappings = new MappingsImpl(HashMap.empty());

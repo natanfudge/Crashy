@@ -21,6 +21,10 @@ export interface Dict<K, V> {
     map<NK, NV>(keyMap: (key: K, value: V) => NK, valueMap: (key: K, value: V) => NV): HashMap<NK, NV>
 
     linearSearch(func: (key: K, value: V) => boolean): V | undefined
+
+    toRecord<NK extends string, NV>(keyMap: (key: K, value: V) => NK, valueMap: (key: K, value: V) => NV): Record<NK, NV>
+
+    toArray<T>(map: (key: K, value: V) => T): T[]
 }
 
 export interface MutableDict<K, V> extends Dict<K, V> {
@@ -45,7 +49,7 @@ export class HashMap<K, V> implements MutableDict<K, V> {
     constructor(capacity: number | undefined) {
         // Pad some space for better performance
         this.capacity = capacity === undefined ? DefaultCapacity : Math.ceil(capacity * InitialCapacityPadding);
-        this.buckets = new Array(this.capacity);
+        this.buckets = new Array<MapBucket<K, V>>(this.capacity);
     }
 
     static fromArray<K, V>(items: Entry<K, V>[]): HashMap<K, V> {
@@ -101,24 +105,33 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         return undefined;
     }
 
-    copy() : HashMap<K, V> {
-        const newMap = new HashMap<K,V>(this.capacity);
+    copy(): HashMap<K, V> {
+        const newMap = new HashMap<K, V>(this.capacity);
         for (let i = 0; i < this.buckets.length; i++) {
             const bucket = this.buckets[i];
             newMap.buckets[i] = bucket.copyReversed();
         }
         return newMap;
     }
-
-    toArray(): [K,V][] {
-        const arr = new Array<[K,V]>()
+    toArray<T>(map: (key: K, value: V) => T): T[] {
+        const arr = new Array<T>()
         let i = 0;
-        this.forEach((k,v) => {
-            arr[i] = [k,v]
+        this.forEach((k, v) => {
+            arr[i] = map(k,v)
             i++;
         })
         return arr;
     }
+
+    // toArray(): [K, V][] {
+    //     const arr = new Array<[K, V]>()
+    //     let i = 0;
+    //     this.forEach((k, v) => {
+    //         arr[i] = [k, v]
+    //         i++;
+    //     })
+    //     return arr;
+    // }
 
     /**
      * If contains `key`, returns its value and does not mutate the map
@@ -159,7 +172,7 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         this.capacity = Math.floor(this.capacity * SizeIncreaseMultiplier);
         const oldBuckets = this.buckets;
         // Delete all buckets and do over
-        this.buckets = new Array(this.capacity);
+        this.buckets = new Array<MapBucket<K, V>>(this.capacity);
         this._bucketsFilled = 0;
         this._size = 0;
         this.forEachImpl(oldBuckets, (entry) => this.putEntry(entry))
@@ -182,6 +195,14 @@ export class HashMap<K, V> implements MutableDict<K, V> {
             const bucket = buckets[i];
             bucket?.forEach((entry) => func(entry))
         }
+    }
+
+    toRecord<NK extends string, NV>(keyMap: (key: K, value: V) => NK, valueMap: (key: K, value: V) => NV): Record<NK, NV> {
+        const record = {} as Record<NK, NV>;
+        this.forEach((k, v) => {
+            record[keyMap(k, v)] = valueMap(k, v);
+        })
+        return record;
     }
 
     // delete(key: K) {
