@@ -1,0 +1,28 @@
+{
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc  --p ../functions",
+    "serve": "npm run build -- --watch | firebase emulators:start --inspect-functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "stop": "kill-port 5000 9229"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "eslint-config-crashy": "file:../eslint-config-crashy",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.6.1-rc"
+  },
+  "private": true
+}

@@ -1,0 +1,11 @@
+{
+  "name": "crashy-client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "typescript": "^4.6.1-rc"
+  }
+}
