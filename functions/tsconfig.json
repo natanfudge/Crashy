@@ -8,6 +8,13 @@
     "strict": true,
     "target": "es2017"
   },
+  "references": [
+    {
+      "path": "../crash-parser",
+      // add 'prepend' if you want to include the referenced project in your output file
+      "prepend": false,
+    }
+  ],
   "compileOnSave": true,
   "include": [
     "src"
