@@ -1,8 +1,8 @@
 
-import {Mappings} from "../util/common/Mappings";
-import {ClassMethodSeparator, EnableAssertions} from "../Constants";
+import {Mappings} from "../../util/mappings/Mappings";
+import {ClassMethodSeparator, EnableAssertions} from "../../Constants";
 import {MappingStrategy} from "./MappingStrategy";
-import {hashString} from "../util/common/hashmap/Hashing";
+import {hashString} from "../../collections/hashmap/Hashing";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyMappable = Mappable<any>
@@ -14,7 +14,7 @@ export interface Mappable<To extends AnyMappable> {
 }
 
 
-
+export type JavaClassJsObject = {packageName: string, simpleName: string};
 export class JavaClass implements Mappable<JavaClass> {
     // Stored in dot.qualified.format
     private readonly _fullUnmappedName: string
@@ -34,6 +34,10 @@ export class JavaClass implements Mappable<JavaClass> {
 
     static slashSeperated(fullName: string) {
         return new JavaClass(fullName, true)
+    }
+
+    static dotSeperatedObject(obj: JavaClassJsObject) {
+        return this.dotSeperated(obj.packageName + "." + obj.simpleName)
     }
 
     getUnmappedFullName() {
@@ -111,6 +115,9 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
 
     static dotSeperated(classIn: string, name: string) {
         return new JavaMethod(JavaClass.dotSeperated(classIn), name)
+    }
+    static dotSeperatedObject(obj: {name: string, classIn: JavaClassJsObject}) {
+        return new JavaMethod(JavaClass.dotSeperatedObject(obj.classIn), obj.name)
     }
 
     static parse(methodDotSeperated: string): JavaMethod {

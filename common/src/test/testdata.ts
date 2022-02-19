@@ -1,5 +1,6 @@
-import {CrashReport, StackTrace, StackTraceElement} from "../model/CrashReport";
-import {LoaderType, OperatingSystemType, RichCrashReport} from "../model/RichCrashReport";
+import {CrashReport, StackTrace, StackTraceElement} from "../crash/model/CrashReport";
+import {LoaderType, OperatingSystemType, RichCrashReport} from "../crash/model/RichCrashReport";
+import {JavaClass, JavaMethod} from "../crash/model/Mappable";
 
 const testStackTrace: StackTrace = {
     message: "java.lang.StackOverflowError: charTyped event handler",
@@ -38,6 +39,7 @@ const testElementStackTrace: StackTraceElement[] = [
 
 
 const testCrashReport: CrashReport = {
+    rawText: "Test raw text",
     stacktrace: testStackTrace,
     time: "7/19/21 8:03 PM",
     description: "charTyped event handler",
@@ -65,15 +67,17 @@ const testCrashReport: CrashReport = {
 
 
 const testRichStackTrace: RichCrashReport = {
+    rawText: "Test raw text",
+    deobfuscated: false,
     title: "charTyped event handler",
     wittyComment: "Why did you do that?",
     stackTrace: {
         title: {
             message: "charTyped event handler",
-            class: {
+            class: JavaClass.dotSeperatedObject({
                 packageName: "java.lang",
                 simpleName: "StackOverflowError"
-            }
+            })
         },
         elements: [
             {
@@ -88,13 +92,13 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: {
+                method: JavaMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.streamffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
                         simpleName: "AbstractPipeline"
                     }
-                }
+                })
             },
             {
                 forgeMetadata: {
@@ -107,19 +111,19 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 69420
                 },
-                method: {
+                method: JavaMethod.dotSeperatedObject({
                     name: "doStuff",
                     classIn: {
                         packageName: "io.natanfudge.github.greatshit",
                         simpleName: "MiencraftFixer"
                     }
-                }
+                })
             }
         ],
         causedBy: {
             title: {
                 message: "causer of hell",
-                class: {packageName: "java.lang", simpleName: "UberCrasher"}
+                class: JavaClass.dotSeperatedObject({packageName: "java.lang", simpleName: "UberCrasher"})
             },
             elements: [
                 {
@@ -134,19 +138,19 @@ const testRichStackTrace: RichCrashReport = {
                         file: "CrashFile.java",
                         number: 34422222222
                     },
-                    method: {
+                    method: JavaMethod.dotSeperatedObject({
                         name: "kill",
                         classIn: {
                             packageName: "java.util.stream",
                             simpleName: "ForgeStuff"
                         }
-                    }
+                    })
                 }
             ],
             causedBy: {
                 title: {
                     message: "actual causer of hell",
-                    class: {packageName: "java.lang", simpleName: "UberSuperCrasher"}
+                    class: JavaClass.dotSeperatedObject({packageName: "java.lang", simpleName: "UberSuperCrasher"})
                 },
                 elements: [
                     {
@@ -161,13 +165,13 @@ const testRichStackTrace: RichCrashReport = {
                             file: "CrashFile.java",
                             number: 34422222222
                         },
-                        method: {
+                        method: JavaMethod.dotSeperatedObject({
                             name: "kill",
                             classIn: {
                                 packageName: "java.util.stream",
                                 simpleName: "ForgeStuff"
                             }
-                        }
+                        })
                     }
                 ],
             }
@@ -226,13 +230,13 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: {
+                method: JavaMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.stream",
                         simpleName: "AbstractPipeline"
                     }
-                }
+                })
             }],
             details: {
                 "Thread": "amar thread",
@@ -254,13 +258,13 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: {
+                method: JavaMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.stream",
                         simpleName: "AbstractPipeline"
                     }
-                }
+                })
             }],
             details: {
                 "Thread": "amar thread",
@@ -282,13 +286,13 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: {
+                method: JavaMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.stream",
                         simpleName: "AbstractPipeline"
                     }
-                }
+                })
             }],
             details: {
                 "Thread": "amar thread",

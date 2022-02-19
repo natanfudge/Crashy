@@ -1,10 +1,10 @@
-import {CrashReport} from "../model/CrashReport";
-import {parseCrashReport, parseCrashReportImpl} from "../parser/CrashReportParser";
+import {CrashReport} from "../crash/model/CrashReport";
+import {parseCrashReport, parseCrashReportImpl} from "../crash/parser/CrashReportParser";
 import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 import {TestBuggyParseCrash} from "./TestBuggyParseCrash";
-import {enrichCrashReport} from "../parser/CrashReportEnricher";
+import {enrichCrashReport} from "../crash/parser/CrashReportEnricher";
 import {BarebonesFabricCrash} from "./BarebonesFabricCrash";
-import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../model/RichCrashReport";
+import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../crash/model/RichCrashReport";
 import {TestVerifyErrorCrash} from "./TestVerifyErrorCrash";
 import {BrokenTimeCrash} from "./BrokenTimeCrash";
 import {TestEmptySectionCrash} from "./TestEmptySectionCrash";

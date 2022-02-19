@@ -6,7 +6,7 @@ import {
     StackTraceElement,
     StringMap
 } from "../model/CrashReport";
-import "../util/ExtensionsImpl"
+import "../../util/ExtensionsImpl"
 
 class StringBuilder {
     str: string

@@ -1,8 +1,8 @@
 
 import {testFabricCrashReportEnrich} from "./EnrichmentTest.test";
 import {testFabricCrashReportParse} from "./ParsingTest.test";
-import {parseCrashReport} from "../parser/CrashReportParser";
-import {enrichCrashReport} from "../parser/CrashReportEnricher";
+import {parseCrashReport} from "../crash/parser/CrashReportParser";
+import {enrichCrashReport} from "../crash/parser/CrashReportEnricher";
 import {testFabricCrashReportUsingWindowsLines} from "./TestCrashes";
 
 test("Windows newlines can be handled", () => {

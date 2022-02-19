@@ -27,9 +27,9 @@ import {
     TraceLine
 } from "../model/RichCrashReport";
 import {parseCrashReport} from "./CrashReportParser";
-import {typedKeys} from "../util/Utils";
-import "../util/Extensions"
+import "../../util/Extensions"
 import {JavaClass, JavaMethod} from "../model/Mappable";
+import {typedKeys} from "../../util/HelperMethods";
 
 export function parseCrashReportRich(rawReport: string): RichCrashReport {
     return enrichCrashReport(parseCrashReport(rawReport));

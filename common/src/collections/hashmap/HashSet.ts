@@ -1,4 +1,4 @@
-import {HashMap} from "crash-parser/src/util/common/HashMap";
+import {HashMap} from "./HashMap";
 
 export class HashSet<T> {
     private _map: HashMap<T, 1>

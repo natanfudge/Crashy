@@ -1,4 +1,4 @@
-import {TsObject} from "../Javascript";
+import {TsObject} from "../../util/HelperTypes";
 
 
 export function equalsOfAnything(thingA: unknown, thingB: unknown): boolean {

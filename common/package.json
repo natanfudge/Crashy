@@ -1,14 +1,21 @@
 {
-  "name": "crash-parser",
+  "name": "common",
   "devDependencies": {
-    "@babel/core": "^7.17.4",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-typescript": "^7.16.7",
     "@types/jest": "^27.4.0",
-    "babel-jest": "^27.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-crashy": "file:../eslint-config-crashy",
     "jest": "^27.5.1",
-    "ts-node": "^10.5.0",
+    "ts-jest": "^27.1.3",
     "typescript": "^4.5.5"
   },
-  "private": true
+  "scripts": {
+    "build": "tsc -b",
+    "lint": "eslint --ext .js,.ts ."
+  },
+  "private": true,
+  "dependencies": {
+    "fflate": "^0.7.3"
+  }
 }

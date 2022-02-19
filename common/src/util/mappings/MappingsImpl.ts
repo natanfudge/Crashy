@@ -1,14 +1,13 @@
-import {Lazy} from "../../../../src/utils/PromiseMemoryCache";
 import {ClassMappings, Mappings, SerializedMappings} from "./Mappings";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../../model/Mappable";
-import {Dict} from "./hashmap/HashMap";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {Dict} from "../../collections/hashmap/HashMap";
+import {Lazy} from "../HelperClasses";
 
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
 
 export class MappingsImpl implements Mappings {
     private readonly mappings: SingleDirectionMappingData
 
-    // eslint-disable-next-line no-invalid-this
     private readonly mappingsReversed = new Lazy(() => reverseMappingData(this.mappings));
 
     constructor(mappings: SingleDirectionMappingData) {

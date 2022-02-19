@@ -1,11 +1,8 @@
-// const Capacity = 10;
 
+import {equalsOfAnything} from "./EqualsImplementation";
+import {LinkedList} from "../LinkedList";
+import {hashCodeOfAnything} from "./Hashing";
 
-import {hashCodeOfAnything} from "../../../../src/utils/hashmap/Hashing";
-import {equalsOfAnything} from "../../../../src/utils/hashmap/EqualsImplementation";
-import {LinkedList} from "../../../../src/utils/LinkedList";
-//// Debug 22 -> 21 -> 20: 86MB
-//// Now its 115MB and 121MB...
 const InitialCapacityPadding = 1.35;
 const DefaultCapacity = 16;
 const LoadFactor = 0.75;
@@ -190,6 +187,7 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         return bucket.find(entry => equalsOfAnything(entry.key, key));
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private forEachImpl(buckets: MapBucket<K, V>[], func: (entry: Entry<K, V>) => void) {
         for (let i = 0; i < buckets.length; i++) {
             const bucket = buckets[i];

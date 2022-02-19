@@ -1,5 +1,5 @@
-import {DescriptoredMethod, JavaClass} from "../../model/Mappable";
-import {HashMap, MutableDict} from "./hashmap/HashMap";
+import {DescriptoredMethod, JavaClass} from "../../crash/model/Mappable";
+import {HashMap, MutableDict} from "../../collections/hashmap/HashMap";
 import {ClassMappings, Mappings} from "./Mappings";
 import {MappingsImpl} from "./MappingsImpl";
 import {MappingsFilter} from "./MappingsFilter";

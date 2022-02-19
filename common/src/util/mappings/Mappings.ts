@@ -1,6 +1,6 @@
 import {MappingsImpl} from "./MappingsImpl";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../../model/Mappable";
-import {HashMap} from "./hashmap/HashMap";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {HashMap} from "../../collections/hashmap/HashMap";
 import {MappingsBuilder} from "./MappingsBuilder";
 import {AllowAllMappings} from "./MappingsFilter";
 

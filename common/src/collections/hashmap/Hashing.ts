@@ -1,4 +1,4 @@
-import {TsObject} from "../../Utils";
+import {TsObject} from "../../util/HelperTypes";
 
 export function hashCodeOfAnything<T>(thing: unknown): number {
     switch (typeof thing) {

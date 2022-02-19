@@ -1,5 +1,5 @@
-import {HashSet} from "../../../../src/utils/hashmap/HashSet";
-import {BasicMappable, JavaClass, JavaMethod} from "../../model/Mappable";
+import {BasicMappable, JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {HashSet} from "../../collections/hashmap/HashSet";
 
 export interface MappingsFilter {
     needClass(javaClass: JavaClass): boolean
