@@ -1,11 +1,13 @@
-import {extractFromZip} from "crash-parser/src/util/ServerClientCommon";
-import {MappingsBuilder} from "crash-parser/src/util/common/MappingsBuilder";
-import {Mappings, SerializedMappings} from "crash-parser/src/util/common/Mappings";
-import {JavaClass} from "crash-parser/src/model/Mappable";
+import {MappingsFilter} from "crashy-common/lib/src/util/mappings/MappingsFilter";
+import {Mappings, SerializedMappings} from "crashy-common/lib/src/util/mappings/Mappings";
+import {JavaClass} from "crashy-common/lib/src/crash/model/Mappable";
 import {isOlderThan1_12_2} from "./MinecraftVersionUtil";
-import * as axios from "axios";
+import {extractFromZip} from "crashy-common/lib/src/util/Zip";
 import {HttpStatusCode} from "./utils";
-import {MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
+import axios from "axios";
+import {MappingsBuilder} from "crashy-common/lib/src/util/mappings/MappingsBuilder";
+import "crashy-common/lib/src/util/Extensions"
+
 
 enum SRGVersion {
     SRG, TSRG, TSRG2
@@ -34,7 +36,7 @@ export async function getSrgMappingsImpl(mcVersion: string, filter: MappingsFilt
         `https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip` :
         `https://files.minecraftforge.net/maven/de/oceanlabs/mcp/mcp_config/${mcVersion}/mcp_config-${mcVersion}.zip`
 
-    const forgeResponse = await axios.default.get(url, {responseType: "arraybuffer"});
+    const forgeResponse = await axios.get(url, {responseType: "arraybuffer"});
     if (forgeResponse.status === HttpStatusCode.Ok) {
         const body = forgeResponse.data as ArrayBuffer;
         const oldFormatMappings = await extractSrgMappings(body);

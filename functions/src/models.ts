@@ -1,7 +1,6 @@
 import {firestore} from "firebase-admin";
 import Timestamp = firestore.Timestamp;
-import {BasicMappable} from "crash-parser/src/model/Mappable";
-
+import {BasicMappable} from "crashy-common/lib/src/crash/model/Mappable";
 export interface Crash {
     uploadDate: Timestamp,
     lastRead: Timestamp,

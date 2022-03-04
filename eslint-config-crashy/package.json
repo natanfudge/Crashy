@@ -1,11 +1,14 @@
 {
   "name": "eslint-config-crashy",
   "main": "index.js",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "eslint": "^8.10.0",
     "eslint-plugin-import": "^2.25.4"
+  },
+  "scripts": {
+    "upload": "npm publish"
   }
 }

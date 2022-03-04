@@ -1,4 +1,4 @@
-import {HashSet} from "../../src/utils/hashmap/HashSet";
+import {HashSet} from "crashy-common/lib/src/collections/hashmap/HashSet";
 
 export function isOlderThan1_12_2(mcVersion: string): boolean {
     return allVersionsOlderThan1_12_2.contains(mcVersion);

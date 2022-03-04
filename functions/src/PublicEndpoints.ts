@@ -5,11 +5,11 @@ import {generateCrashKey, getCrashValidationErrors, HttpStatusCode} from "./util
 import {Crash, DeleteCrashRequest, GetCrashRequest, GetSrgMappingsRequest, UploadCrashResponse} from "./models";
 import {EndpointResult} from "./index";
 import {getSrgMappingsImpl} from "./SrgUtils";
-import {mappingFilterForMappables} from "crash-parser/src/util/common/MappingsFilter";
-import {HashSet} from "../../src/utils/hashmap/HashSet";
 import Timestamp = firestore.Timestamp;
 import DocumentReference = firestore.DocumentReference;
 import DocumentData = firestore.DocumentData;
+import {mappingFilterForMappables} from "crashy-common/lib/src/util/mappings/MappingsFilter";
+import {HashSet} from "crashy-common/lib/src/collections/hashmap/HashSet";
 // import {get} from "http";
 // import {} from "axios"
 
@@ -39,7 +39,7 @@ export async function uploadCrash(req: functions.Request): Promise<EndpointResul
     }
 
     const error = await getCrashValidationErrors(body);
-    if (error) {
+    if (error !== undefined) {
         return {
             status: HttpStatusCode.BadRequest,
             body: "Could not parse crash log. Error message: " + error.message
@@ -80,7 +80,7 @@ export async function getCrashFromDocument(document: DocumentReference<DocumentD
 
 export async function getCrash(req: functions.Request & GetCrashRequest): Promise<EndpointResult> {
     const url = req.url;
-    if (!url || url === "" || url === "/") {
+    if (url === undefined || url === "" || url === "/") {
         return {
             status: HttpStatusCode.BadRequest,
             body: "No crashlog ID specified"
@@ -92,7 +92,7 @@ export async function getCrash(req: functions.Request & GetCrashRequest): Promis
     const crashDocument = await getCrashDocument(id);
     const crash = await getCrashFromDocument(crashDocument);
 
-    if (!crash) {
+    if (crash === undefined) {
         return {
             status: HttpStatusCode.NotFound,
             body: `No crashlog with id ${id}`
@@ -126,12 +126,14 @@ export async function deleteCrash(req: functions.Request): Promise<EndpointResul
     const {crashId, key} = query;
 
     if (crashId === undefined) {
+        functions.logger.warn("Attempt to delete crash with no crash ID")
         return {
             status: HttpStatusCode.BadRequest,
             body: "No crash id specified"
         }
     }
     if (key === undefined) {
+        functions.logger.warn("Attempt to delete crash with no crash code")
         return {
             status: HttpStatusCode.BadRequest,
             body: "No crash key specified"
@@ -141,7 +143,8 @@ export async function deleteCrash(req: functions.Request): Promise<EndpointResul
     const crashDocument = await getCrashDocument(crashId);
     const crash = await getCrashFromDocument(crashDocument);
 
-    if (!crash) {
+    if (crash === undefined) {
+        functions.logger.warn("Attempt to delete crash that doesn't exist: " + crashId)
         return {
             status: HttpStatusCode.NotFound,
             body: `No crashlog with id ${crashId}`
@@ -149,6 +152,7 @@ export async function deleteCrash(req: functions.Request): Promise<EndpointResul
     }
 
     if (crash.key !== key) {
+        functions.logger.info(`Attempt to delete crash with incorrect code: ${key} (correct code: ${crash.key}).`)
         return {
             status: HttpStatusCode.Unauthorized,
             body: "Incorrect crash key"

@@ -1,5 +1,5 @@
 import * as Zlib from "zlib";
-import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
+import {parseCrashReportRich} from "crashy-common/lib/src/crash/parser/CrashReportEnricher";
 
 export async function getCrashValidationErrors(crash: Buffer): Promise<Error | undefined> {
     return new Promise((resolve) => {

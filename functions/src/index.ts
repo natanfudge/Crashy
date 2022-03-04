@@ -18,7 +18,11 @@ export interface EndpointResult {
 }
 
 function endpoint(code: (req: Request) => Promise<EndpointResult>) {
-    return functions.region("europe-west1").https.onRequest(async (req, res) => {
+    return functions.region("europe-west1").https.onRequest( (req, res) => {
+        functions.logger.log("Url 1: " + req.originalUrl)
+        functions.logger.log("Url 2: " + req.baseUrl)
+        functions.logger.log("Url 3: " + req.url)
+        functions.logger.log("Url 4: " + req.path)
         cors(req, res, async () => {
             const {body, status, runAfter, headers} = await code(req);
             if (headers !== undefined) {

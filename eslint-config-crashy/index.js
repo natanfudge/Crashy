@@ -12,6 +12,7 @@ module.exports = {
         "@typescript-eslint"
     ],
     rules: {
+
         "@typescript-eslint/strict-boolean-expressions": ["error", {"allowString":  false, "allowNumber" :  false, "allowNullableObject":  false}],
         "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
         "require-atomic-updates": "warn",
@@ -49,7 +50,16 @@ module.exports = {
                 "@typescript-eslint/no-non-null-assertion" : "off",
                 "@typescript-eslint/restrict-plus-operands" : "off",
                 "@typescript-eslint/no-namespace": "off",
-                "eqeqeq": "off"
+                "@typescript-eslint/no-unsafe-assignment": "off",
+                "@typescript-eslint/no-empty-function": "off",
+                "@typescript-eslint/no-unused-vars": "off",
+                "@typescript-eslint/no-unsafe-member-access": "off",
+                "@typescript-eslint/restrict-template-expressions": "off",
+                "react/jsx-no-undef": "off",
+                "@typescript-eslint/no-unsafe-call": "off",
+                "@typescript-eslint/ban-ts-comment" : "off",
+                "@typescript-eslint/require-await": "warn",
+                "@typescript-eslint/no-unsafe-return": "warn"
             }
         }
     ]
