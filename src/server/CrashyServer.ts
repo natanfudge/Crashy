@@ -1,6 +1,6 @@
 // import {deflate, inflate} from "zlib";
 
-import {httpDelete, httpGet, httpPost} from "../utils/Http";
+import {httpDelete, httpGet, httpPost} from "../../fudge-commons/src/utils/Http";
 import {TestCrashReel} from "crash-parser/src/test/TestCrashReel";
 import {TestVerifyErrorCrash} from "crash-parser/src/test/TestVerifyErrorCrash";
 

@@ -1,7 +1,7 @@
 import {allMappingNamespaces, MappingsNamespace} from "../MappingsNamespace";
 import {MappingsProvider, allMappingsProviders} from "../providers/MappingsProvider";
-import {Queue} from "../../utils/Queue";
-import {toRecord} from "../../utils/Javascript";
+import {Queue} from "../../../fudge-commons/src/utils/Queue";
+import {toRecord} from "../../../fudge-commons/src/utils/Javascript";
 
 /**
  * Problem: Given only a limited set of mappings from namespaces to other namespaces, find a way to map from any namespace to any other namespace.

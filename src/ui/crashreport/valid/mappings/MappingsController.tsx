@@ -2,7 +2,7 @@ import {MappingsState} from "./MappingsState";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
 import {MappingContext} from "../../../../mappings/resolve/MappingStrategy";
 import {useMemo} from "react";
-import {HashSet} from "../../../../utils/hashmap/HashSet";
+import {HashSet} from "../../../../../fudge-commons/src/utils/hashmap/HashSet";
 import {BasicMappable} from "crash-parser/src/model/Mappable";
 import {useMappingsState} from "./MappingsUi";
 

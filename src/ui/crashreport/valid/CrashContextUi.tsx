@@ -9,16 +9,17 @@ import WindowsLogo from "../../../media/windows_logo.svg";
 import LinuxLogo from "../../../media/linux_logo.svg";
 import MacosLogo from "../../../media/macos_logo.svg";
 import QuestionMarkIcon from "../../../media/questionmark_icon_white.svg";
-import {Text, TextTheme} from "../../utils/simple/Text";
 import {lightBlue} from "@mui/material/colors";
-import {CrashContext, LoaderType, OperatingSystemType} from "crash-parser/src/model/RichCrashReport";
 import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";
 import {CrashyNewIssueUrl} from "../../utils/Crashy";
-import {SimpleDivider} from "../../utils/simple/SimpleDivider";
-import {Spacer} from "../../utils/simple/SimpleDiv";
-import {SimpleImage} from "../../utils/simple/SimpleImage";
-import {Surface} from "../../utils/simple/Surface";
+import {SimpleDivider} from "../../../../crashy-common/src/simple/Simple/SimpleDivider";
+import {TextTheme} from "../../../../crashy-common/src/simple/Simple/Text";
+import {Spacer} from "../../../../crashy-common/src/simple/Simple/SimpleDiv";
+import {SimpleImage} from "../../../../crashy-common/src/simple/Simple/SimpleImage";
+import {Surface} from "../../../../crashy-common/src/simple/Simple/Surface";
+import {CrashContext, LoaderType, OperatingSystemType} from "../../../../crashy-common/src/crash/model/RichCrashReport";
+
 
 export function CrashLeftSide(props: { context: CrashContext }) {
     return <Column height={"max"}>

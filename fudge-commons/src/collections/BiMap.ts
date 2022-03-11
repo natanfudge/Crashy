@@ -1,4 +1,4 @@
-import {flipRecord} from "./Javascript";
+import {flipRecord} from "../methods/Javascript";
 
 export type Key = string | number
 // Debug 22 -> 21 -> 20: 86MB

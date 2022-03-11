@@ -7,12 +7,12 @@ import {crashyTitleColor, dialogBodyColor} from "../Colors";
 import {CrashyServer, UploadCrashError, UploadCrashResponse} from "../../server/CrashyServer";
 import pako from "pako";
 import {CrashyLogo} from "../utils/Crashy";
-import {goToUploadedCrash} from "../../utils/PageUrl";
+import {goToUploadedCrash} from "../../../fudge-commons/src/utils/PageUrl";
 import {Wrap, WrapMultiple} from "../utils/simple/SimpleDiv";
 import {Surface} from "../utils/simple/Surface";
 import {SimpleTextField} from "../utils/simple/SimpleTextField";
-import {useScreenSize} from "../../utils/Gui";
-import {gzipAsync} from "../../utils/fflate";
+import {useScreenSize} from "../../../fudge-commons/src/utils/Gui";
+import {gzipAsync} from "../../../fudge-commons/src/utils/fflate";
 
 enum InitialUploadState {
     Start,

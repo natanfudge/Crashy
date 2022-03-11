@@ -2,6 +2,10 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/crashy-common/src/simple/Simple" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/fudge-commons/src/simple" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/fudge-commons/src/simple/Simple" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/fudge-commons/src/simpleasdg/Simple" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/ui/utils/simple" vcs="Git" />
   </component>
 </project>

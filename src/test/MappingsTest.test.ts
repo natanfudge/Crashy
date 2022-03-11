@@ -16,7 +16,7 @@ import {
 
 import "crash-parser/src/util/ExtensionsImpl"
 import {BasicMappable, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
-import {HashSet} from "../utils/hashmap/HashSet";
+import {HashSet} from "../../fudge-commons/src/utils/hashmap/HashSet";
 import {AllowAllMappings} from "crash-parser/src/util/common/MappingsFilter";
 
 

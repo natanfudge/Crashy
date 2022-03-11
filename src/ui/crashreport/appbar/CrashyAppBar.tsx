@@ -7,11 +7,11 @@ import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
 import {Delete, Subject} from "@mui/icons-material";
 import {DeletePopup} from "./DeleteCrash";
 import {Spacer} from "../../utils/simple/SimpleDiv";
-import {ScreenSize} from "../../../utils/Gui";
+import {ScreenSize} from "../../../../fudge-commons/src/utils/Gui";
 import {CrashProps, isCrashAttemptValid} from "../CrashReportPage";
 import {HeaderHeight, NavigationDrawer} from "./NavigationDrawer";
 import {SimpleIconButton} from "../../utils/simple/SimpleIconButton";
-import {setUrlRaw} from "../../../utils/PageUrl";
+import {setUrlRaw} from "../../../../fudge-commons/src/utils/PageUrl";
 
 export function CrashyAppBar({crash, sectionState, screen}: CrashProps & { screen: ScreenSize }) {
     const validCrash = isCrashAttemptValid(crash);

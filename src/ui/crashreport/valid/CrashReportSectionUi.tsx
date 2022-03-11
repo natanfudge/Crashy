@@ -5,7 +5,7 @@ import React from "react";
 import {StackTraceElementsUi,} from "./StackTraceUi";
 import {primaryColor} from "../../Colors";
 import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {objectMap} from "../../../utils/Javascript";
+import {objectMap} from "../../../../fudge-commons/src/utils/Javascript";
 import {SimpleDivider} from "../../utils/simple/SimpleDivider";
 import {Wrap} from "../../utils/simple/SimpleDiv";
 import {WithMappings} from "./mappings/MappingsUi";

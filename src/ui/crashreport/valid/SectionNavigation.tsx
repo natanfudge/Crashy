@@ -4,7 +4,7 @@ import {Button, ButtonGroup, Typography} from "@mui/material";
 import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
 import {Surface} from "../../utils/simple/Surface";
 import {ActiveColor, OnBackgroundColor} from "../../Colors";
-import {nameOfSection, Section, sectionsEqual, SectionState} from "../../../utils/Section";
+import {nameOfSection, Section, sectionsEqual, SectionState} from "../../../../fudge-commons/src/utils/Section";
 
 
 export function SectionNavigation({sections,sectionState}: {

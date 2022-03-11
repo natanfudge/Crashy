@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './ui/App';
 import reportWebVitals from './reportWebVitals';
-import {initPageArgs} from "./utils/PageUrl";
+import {initPageArgs} from "../fudge-commons/src/utils/PageUrl";
 
 if (initPageArgs()) {
     ReactDOM.render(

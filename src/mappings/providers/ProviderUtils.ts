@@ -6,7 +6,7 @@ Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/secti
 // type MCVersionSlug =  ReleaseVersion | Snapshot;
 import pako from "pako";
 import {strFromU8, unzip, Unzipped} from "fflate";
-import {HashSet} from "../../utils/hashmap/HashSet";
+import {HashSet} from "../../../fudge-commons/src/utils/hashmap/HashSet";
 import {extractFromZip} from "crash-parser/src/util/ServerClientCommon";
 
 export type MCVersionSlug = string;

@@ -33,7 +33,7 @@
 //     ).toBeTruthy()
 import {MappingsProvider} from "../mappings/providers/MappingsProvider";
 import {DescriptoredMethod, JavaClass} from "crash-parser/src/model/Mappable";
-import {equalsOfAnything} from "../utils/hashmap/EqualsImplementation";
+import {equalsOfAnything} from "../../fudge-commons/src/utils/hashmap/EqualsImplementation";
 import {typedKeys} from "crash-parser/src/util/Utils";
 import {AllowAllMappings} from "crash-parser/src/util/common/MappingsFilter";
 

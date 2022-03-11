@@ -4,7 +4,7 @@ import {getBuildsCached, MappingsProvider} from "../providers/MappingsProvider";
 import {getMappingsCached} from "../MappingsApi";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {resolveMappingsChain} from "./MappingsResolver";
-import {HashSet} from "../../utils/hashmap/HashSet";
+import {HashSet} from "../../../fudge-commons/src/utils/hashmap/HashSet";
 import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "crash-parser/src/model/Mappable";
 import {detectMappingNamespace} from "./MappingDetector";
 import {mappingFilterForMappables, MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";

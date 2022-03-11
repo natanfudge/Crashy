@@ -1,5 +1,7 @@
-import {Key, Optional, typedKeys} from "crash-parser/src/util/Utils";
-import {Rect} from "./Gui";
+import {Rect} from "../types/Gui";
+import {typedKeys} from "./Typescript";
+import {TsKey} from "../types/Basic";
+
 
 export function removeSuffix(str: string, suffix: string): string {
     return str.endsWith(suffix) ? str.slice(0, str.length - suffix.length) : str;
@@ -9,7 +11,7 @@ export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, 
     return typedKeys(object).map((key, index) => mapFn(key, object[key], index));
 }
 
-export function mapRecord<K extends Key, V, NK extends Key, NV>(
+export function mapRecord<K extends TsKey, V, NK extends TsKey, NV>(
     record: Record<K, V>, keyMap: (key: K, value: V) => NK, valueMap: (key: K, value: V) => NV
 ): Record<NK, NV> {
     const newRecord: Record<NK, NV> = {} as Record<NK, NV>
@@ -35,7 +37,7 @@ export function indexOfOrThrow<T>(arr: T[], element: T): number {
     return index;
 }
 
-export function toRecord<K extends Key, V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
+export function toRecord<K extends TsKey, V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
     const result = {} as Record<K, V>;
     for (let i = 0; i < arr.length; i++) {
         const [key, value] = mapFn(arr[i], i);
@@ -44,19 +46,19 @@ export function toRecord<K extends Key, V, T>(arr: T[], mapFn: (element: T, inde
     return result;
 }
 
-export function withoutKey<K extends Key, V, RK extends Key>(record: Record<K, V>, key: RK): Omit<Record<K, V>, RK> {
+export function withoutKey<K extends TsKey, V, RK extends TsKey>(record: Record<K, V>, key: RK): Omit<Record<K, V>, RK> {
     if (!(key in record)) return record;
     const {[key]: value, ...otherProps} = record;
     return otherProps;
 }
 
-export function recordIsEmpty<K extends Key, V>(record: Record<K, V>): boolean {
+export function recordIsEmpty<K extends TsKey, V>(record: Record<K, V>): boolean {
     return Object.keys(record).length === 0;
 }
 
 /**
  */
-export function flipRecord<K extends Key, V extends Key>(record: Record<K, V>): Record<V, K> {
+export function flipRecord<K extends TsKey, V extends TsKey>(record: Record<K, V>): Record<V, K> {
     const flippedRecord: Record<V, K> = {} as Record<V, K>
     for (const key in record) {
         const flippedRecordKey: V = record[key];
@@ -117,8 +119,3 @@ export function getDocumentRelativeRect(element?: Element | null): Rect { // cro
     }
 }
 
-// export function isPortrait(): boolean {
-//     return window.innerWidth < window.innerHeight;
-// }
-
-export type TsObject = Record<string,unknown>

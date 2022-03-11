@@ -7,11 +7,11 @@ import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";
 import {NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
 import {Wrap} from "../utils/simple/SimpleDiv";
-import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
-import {getCookieDeleted} from "../../utils/Cookies";
+import {getUrlCrashId, getUrlNoCache} from "../../../fudge-commons/src/utils/PageUrl";
+import {getCookieDeleted} from "../../../fudge-commons/src/utils/Cookies";
 import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
-import {useScreenSize} from "../../utils/Gui";
-import {Section, SectionState, SpecialSection} from "../../utils/Section";
+import {useScreenSize} from "../../../fudge-commons/src/utils/Gui";
+import {Section, SectionState, SpecialSection} from "../../../fudge-commons/src/utils/Section";
 
 
 export function CrashyCrashReportPage() {

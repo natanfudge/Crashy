@@ -1,5 +1,5 @@
 import {WithChildren} from "../../../utils/simple/SimpleElementProps";
-import {useScreenSize} from "../../../../utils/Gui";
+import {useScreenSize} from "../../../../../fudge-commons/src/utils/Gui";
 import {Column} from "../../../utils/simple/Flex";
 import React, {useState} from "react";
 import {MappingsSelection} from "./MappingsSelection";

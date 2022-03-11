@@ -6,7 +6,7 @@ import {
     MappingsProvider,
     MappingsVersion
 } from "./providers/MappingsProvider";
-import {PromiseMemoryCache} from "../utils/PromiseMemoryCache";
+import {PromiseMemoryCache} from "../../fudge-commons/src/utils/PromiseMemoryCache";
 import {useEffect, useState} from "react";
 import {EmptyMappings, Mappings} from "crash-parser/src/util/common/Mappings";
 import {MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";

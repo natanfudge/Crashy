@@ -8,7 +8,7 @@ import {CrashyCrashReportPage, InvalidCrashAttempt, isCrashAttemptValid, useCras
 import {ErrorBoundary} from "./utils/ErrorBoundary";
 import {Text, TextTheme} from "./utils/simple/Text";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
-import {getUrlIsRaw} from "../utils/PageUrl";
+import {getUrlIsRaw} from "../../fudge-commons/src/utils/PageUrl";
 import {Column, Row} from "./utils/simple/Flex";
 import {Spacer} from "./utils/simple/SimpleDiv";
 

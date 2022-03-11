@@ -5,7 +5,7 @@ import {AppbarColor, fadedOutColor, NavigationDrawerColor, OnBackgroundColor, se
 import {ArrowDropDown, ArrowDropUp, Menu} from "@mui/icons-material";
 import {ButtonGroup, ClickAwayListener, SvgIcon, SwipeableDrawer} from "@mui/material";
 import {CrashContextUi} from "../valid/CrashContextUi";
-import {nameOfSection, sectionNavigationOf, sectionsEqual} from "../../../utils/Section";
+import {nameOfSection, sectionNavigationOf, sectionsEqual} from "../../../../fudge-commons/src/utils/Section";
 import {SimpleButton} from "../../utils/simple/SimpleButton";
 import {Text, TextTheme} from "../../utils/simple/Text";
 export const HeaderHeight = 65
