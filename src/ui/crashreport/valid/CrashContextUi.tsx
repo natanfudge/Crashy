@@ -12,13 +12,13 @@ import {lightBlue} from "@mui/material/colors";
 import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";
 import {CrashyNewIssueUrl} from "../../utils/Crashy";
-import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {Text, TextTheme} from "fudge-commons/lib/simple/Text";
 import {CrashContext, LoaderType, OperatingSystemType} from "../../../crash/model/RichCrashReport";
-import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
-import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
-import {Spacer} from "fudge-commons/lib/src/simple/SimpleDiv";
-import {SimpleImage} from "fudge-commons/lib/src/simple/SimpleImage";
-import {Surface} from "fudge-commons/lib/src/simple/Surface";
+import {SimpleDivider} from "fudge-commons/lib/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/lib/simple/Flex";
+import {Spacer} from "fudge-commons/lib/simple/SimpleDiv";
+import {SimpleImage} from "fudge-commons/lib/simple/SimpleImage";
+import {Surface} from "fudge-commons/lib/simple/Surface";
 
 
 export function CrashLeftSide(props: { context: CrashContext }) {

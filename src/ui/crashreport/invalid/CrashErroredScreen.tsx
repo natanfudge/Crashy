@@ -1,7 +1,7 @@
 
 import React from "react";
-import {Column} from "fudge-commons/lib/src/simple/Flex";
-import {TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {Column} from "fudge-commons/lib/simple/Flex";
+import {TextTheme} from "fudge-commons/lib/simple/Text";
 
 export function CrashErroredScreen() {
     return <Column height={"max"} justifyContent={"center"}>

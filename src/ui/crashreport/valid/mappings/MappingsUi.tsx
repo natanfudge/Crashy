@@ -3,12 +3,12 @@ import {DesiredBuild, DesiredBuildProblem} from "../../../../mappings/resolve/Ma
 import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/MappingsApi";
 import {MappingsState, withBuild} from "./MappingsState";
 import {MappingsController} from "./MappingsController";
-import {WithChildren} from "fudge-commons/lib/src/simple/SimpleElementProps";
+import {WithChildren} from "fudge-commons/lib/simple/SimpleElementProps";
 import {MappingsSelection} from "./MappingsSelection";
-import {Column} from "fudge-commons/lib/src/simple/Flex";
-import {usePromise} from "fudge-commons/lib/src/components/PromiseBuilder";
+import {Column} from "fudge-commons/lib/simple/Flex";
+import {usePromise} from "fudge-commons/lib/components/PromiseBuilder";
 import {useState} from "react";
-import {useScreenSize} from "fudge-commons/lib/src/methods/Gui";
+import {useScreenSize} from "fudge-commons/lib/methods/Gui";
 
 
 export function WithMappings({controller, children}:

@@ -6,11 +6,11 @@ import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage, InvalidCrashAttempt, isCrashAttemptValid, useCrash} from "./crashreport/CrashReportPage";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
-import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {Text, TextTheme} from "fudge-commons/lib/simple/Text";
 import {getUrlIsRaw} from "../utils/PageUrl";
 import {WithChild} from "../../fudge-commons/src/simple/SimpleElementProps";
-import {Wrap} from "fudge-commons/lib/src/simple/SimpleDiv";
-import {ErrorBoundary} from "fudge-commons/lib/src/components/ErrorBoundary";
+import {Wrap} from "fudge-commons/lib/simple/SimpleDiv";
+import {ErrorBoundary} from "fudge-commons/lib/components/ErrorBoundary";
 
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
@@ -26,51 +26,10 @@ export default function App() {
 
     return <ThemeProvider theme={outerTheme}>
         <CssBaseline/>
-        {/*<Wrap>*/}
-        {/*    <Text text={"ff"}/>*/}
-        {/*</Wrap>*/}
-
         <ErrorBoundary fallback={<CrashyUiFallback/>}>
-            <Typography>
-                asdf
-            </Typography>
-                {/*<CrashyUi/>*/}
+            <CrashyUi/>
         </ErrorBoundary>
     </ThemeProvider>
-}
-
-export interface ErrorBoundaryProps extends WithChild {
-    fallback: JSX.Element
-}
-export interface ErrorBoundaryState {
-    hasError: boolean;
-}
-export class ErrorBoundary2 extends React.Component<ErrorBoundaryProps,ErrorBoundaryState> {
-    constructor(props: ErrorBoundaryProps) {
-        super(props);
-        this.state = { hasError: false };
-    }
-
-    static getDerivedStateFromError(error: Error) {
-        // Update state so the next render will show the fallback UI.
-        return { hasError: true };
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        // You can also log the error to an error reporting service
-        //    logErrorToMyService(error, errorInfo);
-        // return { hasError: true };
-    }
-
-    render() {
-        if (this.state.hasError) {
-            // You can render any custom fallback UI
-            return this.props.fallback;
-        }
-
-        return this.props.children;
-    }
 }
 
 function CrashyUi() {
@@ -78,12 +37,9 @@ function CrashyUi() {
     if (getUrlIsRaw()) {
         return <CrashyRawUi/>
     } else if (window.location.pathname === "/") {
-        return <Typography>
-            asdf
-        </Typography>
-        // return <Suspense fallback={<LinearProgress/>}>
-        //     <CrashyHome/>
-        // </Suspense>
+        return <Suspense fallback={<LinearProgress/>}>
+            <CrashyHome/>
+        </Suspense>
     } else {
         return <CrashyCrashReportPage/>;
     }

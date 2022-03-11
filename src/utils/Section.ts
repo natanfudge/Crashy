@@ -1,4 +1,4 @@
-import {isObj} from "fudge-commons/lib/src/methods/Typescript";
+import {isObj} from "fudge-commons/lib/methods/Typescript";
 import {LoaderType, RichCrashReport} from "../crash/model/RichCrashReport";
 
 

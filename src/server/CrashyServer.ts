@@ -1,7 +1,7 @@
 // import {deflate, inflate} from "zlib";
 
 
-import {httpDelete, httpGet, httpPost} from "fudge-commons/lib/src/methods/Http";
+import {httpDelete, httpGet, httpPost} from "fudge-commons/lib/methods/Http";
 
 export namespace HttpStatusCode {
     export const OK = 200;

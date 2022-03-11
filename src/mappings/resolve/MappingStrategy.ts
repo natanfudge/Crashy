@@ -1,4 +1,4 @@
-import {usePromise} from "fudge-commons/lib/src/components/PromiseBuilder";
+import {usePromise} from "fudge-commons/lib/components/PromiseBuilder";
 import {getBuildsCached, MappingsProvider} from "../providers/MappingsProvider";
 import {getMappingsCached} from "../MappingsApi";
 import {MappingsNamespace} from "../MappingsNamespace";
@@ -14,7 +14,7 @@ import {
 } from "../../crash/model/Mappable";
 import {detectMappingNamespace} from "./MappingDetector";
 import {LoaderType, RichStackTraceElement} from "../../crash/model/RichCrashReport";
-import {HashSet} from "fudge-commons/lib/src/collections/hashmap/HashSet";
+import {HashSet} from "fudge-commons/lib/collections/hashmap/HashSet";
 
 export interface MappingStrategy {
     mapMethod: (unmapped: JavaMethod) => JavaMethod

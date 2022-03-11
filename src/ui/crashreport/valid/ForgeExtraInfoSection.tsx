@@ -2,7 +2,7 @@
 import {WithMappings} from "./mappings/MappingsUi";
 import {MappingContext} from "../../../mappings/resolve/MappingStrategy";
 import {MappingsController} from "./mappings/MappingsController";
-import {Require} from "fudge-commons/lib/src/types/Basic";
+import {Require} from "fudge-commons/lib/types/Basic";
 import {
     FullRichStackTraceElement,
     Mod,
@@ -10,14 +10,14 @@ import {
     RichCrashReportSection,
     RichStackTrace, RichStackTraceElement
 } from "../../../crash/model/RichCrashReport";
-import {VisibleSelection} from "fudge-commons/lib/src/components/VisibleSelection";
+import {VisibleSelection} from "fudge-commons/lib/components/VisibleSelection";
 import {StackTraceElementUi} from "./StackTraceUi";
-import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
-import {DropdownSelection} from "fudge-commons/lib/src/components/DropdownSelection";
-import {LazyColumn} from "fudge-commons/lib/src/components/LazyColumn";
-import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
-import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
-import {Spacer} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {Text, TextTheme} from "fudge-commons/lib/simple/Text";
+import {DropdownSelection} from "fudge-commons/lib/components/DropdownSelection";
+import {LazyColumn} from "fudge-commons/lib/components/LazyColumn";
+import {SimpleDivider} from "fudge-commons/lib/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/lib/simple/Flex";
+import {Spacer} from "fudge-commons/lib/simple/SimpleDiv";
 import {Fragment, useState} from "react";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;

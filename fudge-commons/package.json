@@ -1,6 +1,6 @@
 {
   "name": "fudge-commons",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "eslint-config-fudge-commons": "1.0.3",

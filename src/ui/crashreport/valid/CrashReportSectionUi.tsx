@@ -5,12 +5,12 @@ import {primaryColor} from "../../Colors";
 import {WithMappings} from "./mappings/MappingsUi";
 import {MappingsController} from "./mappings/MappingsController";
 import {StringMap} from "../../../crash/model/CrashReport";
-import {Wrap} from "fudge-commons/lib/src/simple/SimpleDiv";
-import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
-import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {Wrap} from "fudge-commons/lib/simple/SimpleDiv";
+import {SimpleDivider} from "fudge-commons/lib/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/lib/simple/Flex";
 import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "../../../crash/model/RichCrashReport";
-import {objectMap} from "fudge-commons/lib/src/methods/Javascript";
-import {Text} from "fudge-commons/lib/src/simple/Text";
+import {objectMap} from "fudge-commons/lib/methods/Javascript";
+import {Text} from "fudge-commons/lib/simple/Text";
 
 export function CrashReportSectionUi({
     report,

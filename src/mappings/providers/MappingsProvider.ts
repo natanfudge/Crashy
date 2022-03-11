@@ -3,7 +3,7 @@ import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
 import {getIntermediaryMappings} from "./IntermediaryMappingsProvider";
 import {MappingsFilter} from "../MappingsFilter";
 import {Mappings} from "../Mappings";
-import {PromiseMemoryCache} from "fudge-commons/lib/src/collections/PromiseMemoryCache";
+import {PromiseMemoryCache} from "fudge-commons/lib/collections/PromiseMemoryCache";
 
 
 export type MappingsBuilds = string[];
