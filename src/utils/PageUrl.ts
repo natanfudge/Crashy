@@ -1,5 +1,5 @@
-import {objectFilter, objectMap, removeSuffix, setCookie} from "./Javascript";
-import {setCookieCrashCode} from "./Cookies";
+import {objectFilter, objectMap, removeSuffix, setCookie} from "../methods/Javascript";
+import {setCookieCrashCode} from "../methods/Cookies";
 
 
 interface PageArgs {

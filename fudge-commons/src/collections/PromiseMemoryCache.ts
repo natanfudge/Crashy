@@ -1,4 +1,4 @@
-import {recordIsEmpty} from "./Javascript";
+import {recordIsEmpty} from "../methods/Javascript";
 
 export class PromiseMemoryCache<T> {
     private cache: Record<string, T> = {}
