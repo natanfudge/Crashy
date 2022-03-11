@@ -2,7 +2,7 @@ import "./Extensions"
 
 export {}
 
-String.prototype.removeExpectedSuffix = function (this: string, suffix: string) {
+String.prototype.removeExpectedSuffix = function (suffix: string) {
     if (!this.endsWith(suffix)) throw new Error(`Expected string to end with '${suffix}', but is actually: '${this}'`)
     return this.slice(0, -1 * suffix.length);
 }
@@ -114,3 +114,4 @@ Array.prototype.none = function <T>(this: T[], test: (item: T) => boolean): bool
     }
     return true;
 }
+

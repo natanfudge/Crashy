@@ -6,7 +6,7 @@ import {MappingsController} from "./MappingsController";
 import {WithChildren} from "fudge-commons/lib/src/simple/SimpleElementProps";
 import {MappingsSelection} from "./MappingsSelection";
 import {Column} from "fudge-commons/lib/src/simple/Flex";
-import {usePromise} from "fudge-commons/src/components/PromiseBuilder";
+import {usePromise} from "fudge-commons/lib/src/components/PromiseBuilder";
 import {useState} from "react";
 import {useScreenSize} from "fudge-commons/lib/src/methods/Gui";
 

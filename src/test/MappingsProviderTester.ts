@@ -35,7 +35,7 @@ import { AllowAllMappings } from "../mappings/MappingsFilter";
 import {MappingsProvider} from "../mappings/providers/MappingsProvider";
 import {DescriptoredMethod, JavaClass} from "../crash/model/Mappable";
 import {equalsOfAnything} from "fudge-commons/lib/src/collections/hashmap/EqualsImplementation";
-import {typedKeys} from "fudge-commons/src/methods/Typescript";
+import {typedKeys} from "fudge-commons/lib/src/methods/Typescript";
 
 export interface MappingAssertions {
     classes: Record<string, string>

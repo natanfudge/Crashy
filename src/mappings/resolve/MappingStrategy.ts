@@ -1,4 +1,4 @@
-import {usePromise} from "fudge-commons/src/components/PromiseBuilder";
+import {usePromise} from "fudge-commons/lib/src/components/PromiseBuilder";
 import {getBuildsCached, MappingsProvider} from "../providers/MappingsProvider";
 import {getMappingsCached} from "../MappingsApi";
 import {MappingsNamespace} from "../MappingsNamespace";

@@ -11,8 +11,8 @@ import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
 import {ItemSelection, SelectionType} from "fudge-commons/lib/src/components/Selection";
 import {indexOfOrThrow} from "fudge-commons/lib/src/methods/Javascript";
 import {MappingsBuilds} from "../../../../mappings/providers/MappingsProvider";
-import {usePromise} from "fudge-commons/src/components/PromiseBuilder";
 import {Text} from "fudge-commons/lib/src/simple/Text";
+import {usePromise} from "fudge-commons/lib/src/components/PromiseBuilder";
 
 export interface MappingsSelectionProps {
     mappings: MappingsState;

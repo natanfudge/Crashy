@@ -34,6 +34,7 @@ declare global {
         isEmpty(): boolean
 
         none(test: (item: T) => boolean) : boolean
+
     }
 }
 
