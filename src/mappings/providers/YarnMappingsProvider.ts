@@ -1,9 +1,10 @@
 import {extractTinyMappings, profiler, profilerDel} from "./ProviderUtils";
 import {parseTinyFile} from "./TinyMappings";
-import {httpGet} from "../../../fudge-commons/src/utils/Http";
 import {HttpStatusCode} from "../../server/CrashyServer";
-import {Mappings} from "crash-parser/src/util/common/Mappings";
-import {MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
+import {MappingsFilter} from "../MappingsFilter";
+import {Mappings} from "../Mappings";
+import {httpGet} from "fudge-commons/lib/src/methods/Http";
+
 
 export async function getYarnMappings(build: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading Yarn Mappings");

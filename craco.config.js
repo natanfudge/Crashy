@@ -7,7 +7,7 @@ const updateWebpackConfig = {
         const loader = webpackConfig.module.rules[1].oneOf[2]
         loader.include = [
             path.join(__dirname, 'src'),
-            path.join(__dirname, 'crash-parser/src'), // This is the directory containing the symlinked-to files
+            path.join(__dirname, 'fudge-commons/src'), // This is the directory containing the symlinked-to files
         ]
 
         return webpackConfig;

@@ -1,6 +1,7 @@
-import {CrashReport, StackTrace, StackTraceElement} from "../../../src/crash/model/CrashReport";
-import {LoaderType, OperatingSystemType, RichCrashReport} from "../../../src/crash/model/RichCrashReport";
-import {JavaClass, JavaMethod} from "../../../src/crash/model/Mappable";
+import {JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {CrashReport, StackTrace, StackTraceElement} from "../crash/model/CrashReport";
+import {LoaderType, OperatingSystemType, RichCrashReport} from "../crash/model/RichCrashReport";
+
 
 const testStackTrace: StackTrace = {
     message: "java.lang.StackOverflowError: charTyped event handler",

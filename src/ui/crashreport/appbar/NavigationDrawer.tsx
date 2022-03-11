@@ -1,13 +1,14 @@
 import {ValidCrashProps} from "../valid/ValidCrashReportUi";
 import React, {Fragment, useState} from "react";
-import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
-import {AppbarColor, fadedOutColor, NavigationDrawerColor, OnBackgroundColor, secondaryColor} from "../../Colors";
-import {ArrowDropDown, ArrowDropUp, Menu} from "@mui/icons-material";
 import {ButtonGroup, ClickAwayListener, SvgIcon, SwipeableDrawer} from "@mui/material";
+import {Spacer, Wrap} from "fudge-commons/lib/src/simple/SimpleDiv";
 import {CrashContextUi} from "../valid/CrashContextUi";
-import {nameOfSection, sectionNavigationOf, sectionsEqual} from "../../../../fudge-commons/src/utils/Section";
-import {SimpleButton} from "../../utils/simple/SimpleButton";
-import {Text, TextTheme} from "../../utils/simple/Text";
+import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {AppbarColor, fadedOutColor, NavigationDrawerColor, OnBackgroundColor} from "../../Colors";
+import {nameOfSection, sectionNavigationOf, sectionsEqual} from "../../../utils/Section";
+import {ArrowDropDown, ArrowDropUp, Menu} from "@mui/icons-material";
+import {SimpleButton} from "fudge-commons/lib/src/simple/SimpleButton";
+
 export const HeaderHeight = 65
 export function NavigationDrawer(props: ValidCrashProps) {
     const [open, setOpen] = useState(false);

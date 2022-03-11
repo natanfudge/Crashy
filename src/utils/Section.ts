@@ -1,5 +1,6 @@
-import {isObj} from "crash-parser/src/util/Utils";
-import {LoaderType, RichCrashReport} from "crash-parser/src/model/RichCrashReport";
+import {isObj} from "fudge-commons/lib/src/methods/Typescript";
+import {LoaderType, RichCrashReport} from "../crash/model/RichCrashReport";
+
 
 export interface SectionState {
     activeSection: Section,

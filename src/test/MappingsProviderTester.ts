@@ -31,11 +31,11 @@
 //             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(IIZ)V") ||
 //             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(FFFF)V"))
 //     ).toBeTruthy()
+import { AllowAllMappings } from "../mappings/MappingsFilter";
 import {MappingsProvider} from "../mappings/providers/MappingsProvider";
-import {DescriptoredMethod, JavaClass} from "crash-parser/src/model/Mappable";
-import {equalsOfAnything} from "../../fudge-commons/src/utils/hashmap/EqualsImplementation";
-import {typedKeys} from "crash-parser/src/util/Utils";
-import {AllowAllMappings} from "crash-parser/src/util/common/MappingsFilter";
+import {DescriptoredMethod, JavaClass} from "../crash/model/Mappable";
+import {equalsOfAnything} from "fudge-commons/lib/src/collections/hashmap/EqualsImplementation";
+import {typedKeys} from "fudge-commons/src/methods/Typescript";
 
 export interface MappingAssertions {
     classes: Record<string, string>

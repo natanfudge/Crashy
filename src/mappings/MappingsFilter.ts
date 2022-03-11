@@ -1,5 +1,6 @@
-import {BasicMappable, JavaClass, JavaMethod} from "../../../src/crash/model/Mappable";
-import {HashSet} from "../collections/hashmap/HashSet";
+import {BasicMappable, JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {HashSet} from "fudge-commons/lib/src/collections/hashmap/HashSet";
+
 
 export interface MappingsFilter {
     needClass(javaClass: JavaClass): boolean

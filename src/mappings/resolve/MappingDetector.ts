@@ -1,7 +1,7 @@
-import {BasicMappable, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
 import {MappingContext} from "./MappingStrategy";
 import {MappingsNamespace} from "../MappingsNamespace";
-import {LoaderType} from "crash-parser/src/model/RichCrashReport";
+import {BasicMappable, JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {LoaderType} from "../../crash/model/RichCrashReport";
 
 export function detectMappingNamespace(name: BasicMappable, context: MappingContext): MappingsNamespace {
     if (isIntermediaryName(name)) {
@@ -16,6 +16,8 @@ export function detectMappingNamespace(name: BasicMappable, context: MappingCont
                 return "Srg"
             case LoaderType.Vanilla:
                 return "Official"
+            default:
+                throw new Error("Impossible")
         }
     }
 }

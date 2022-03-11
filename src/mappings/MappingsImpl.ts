@@ -1,13 +1,14 @@
 import {ClassMappings, Mappings, SerializedMappings} from "./Mappings";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../../../src/crash/model/Mappable";
-import {Dict} from "../collections/hashmap/HashMap";
-import {Lazy} from "../collections/HelperClasses";
+import {Lazy} from "fudge-commons/lib/src/collections/HelperClasses";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {Dict} from "fudge-commons/lib/src/collections/hashmap/HashMap";
 
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
 
 export class MappingsImpl implements Mappings {
     private readonly mappings: SingleDirectionMappingData
 
+    // eslint-disable-next-line no-invalid-this
     private readonly mappingsReversed = new Lazy(() => reverseMappingData(this.mappings));
 
     constructor(mappings: SingleDirectionMappingData) {

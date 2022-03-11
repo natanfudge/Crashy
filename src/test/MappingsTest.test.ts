@@ -1,9 +1,5 @@
-import "crash-parser/src/util/Extensions"
-import {
-    LoaderType
-} from "crash-parser/src/model/RichCrashReport";
-import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
-import {testFabricCrashReport} from "crash-parser/src/test/TestCrashes";
+import "fudge-commons/src/util/Extensions"
+
 import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
 import {getMappingForName} from "../mappings/resolve/MappingStrategy";
 import {resolveMappingsChain} from "../mappings/resolve/MappingsResolver";
@@ -14,10 +10,11 @@ import {
     SrgToMcpMappingsProvider
 } from "../mappings/providers/MappingsProvider";
 
-import "crash-parser/src/util/ExtensionsImpl"
-import {BasicMappable, JavaClass, JavaMethod} from "crash-parser/src/model/Mappable";
-import {HashSet} from "../../fudge-commons/src/utils/hashmap/HashSet";
-import {AllowAllMappings} from "crash-parser/src/util/common/MappingsFilter";
+import "fudge-commons/src/util/ExtensionsImpl"
+import {BasicMappable, JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {HashSet} from "fudge-commons/lib/src/collections/hashmap/HashSet";
+import {LoaderType} from "../crash/model/RichCrashReport";
+
 
 
 //TODO: test it does the shortest path by adding more providers

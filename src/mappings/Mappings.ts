@@ -1,8 +1,8 @@
 import {MappingsImpl} from "./MappingsImpl";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../../../src/crash/model/Mappable";
-import {HashMap} from "../collections/hashmap/HashMap";
 import {MappingsBuilder} from "./MappingsBuilder";
 import {AllowAllMappings} from "./MappingsFilter";
+import {DescriptoredMethod, JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {HashMap} from "fudge-commons/lib/src/collections/hashmap/HashMap";
 
 export interface Mappings {
     mapClass(className: JavaClass, reverse: boolean): JavaClass

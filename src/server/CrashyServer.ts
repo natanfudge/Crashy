@@ -1,8 +1,7 @@
 // import {deflate, inflate} from "zlib";
 
-import {httpDelete, httpGet, httpPost} from "../../fudge-commons/src/utils/Http";
-import {TestCrashReel} from "crash-parser/src/test/TestCrashReel";
-import {TestVerifyErrorCrash} from "crash-parser/src/test/TestVerifyErrorCrash";
+
+import {httpDelete, httpGet, httpPost} from "fudge-commons/lib/src/methods/Http";
 
 export namespace HttpStatusCode {
     export const OK = 200;

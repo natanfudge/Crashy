@@ -1,24 +1,24 @@
+
+import {WithMappings} from "./mappings/MappingsUi";
+import {MappingContext} from "../../../mappings/resolve/MappingStrategy";
+import {MappingsController} from "./mappings/MappingsController";
+import {Require} from "fudge-commons/lib/src/types/Basic";
 import {
     FullRichStackTraceElement,
     Mod,
     RichCrashReport,
     RichCrashReportSection,
-    RichStackTrace,
-    RichStackTraceElement
-} from "crash-parser/src/model/RichCrashReport";
-import React, {Fragment, useState} from "react";
-import {Column, Row} from "../../utils/simple/Flex";
-import {Spacer} from "../../utils/simple/SimpleDiv";
-import {SimpleDivider} from "../../utils/simple/SimpleDivider";
-import {Require} from "crash-parser/src/util/Utils";
-import {Text, TextTheme} from "../../utils/simple/Text";
+    RichStackTrace, RichStackTraceElement
+} from "../../../crash/model/RichCrashReport";
+import {VisibleSelection} from "fudge-commons/lib/src/components/VisibleSelection";
 import {StackTraceElementUi} from "./StackTraceUi";
-import {LazyColumn} from "../../utils/LazyColumn";
-import {VisibleSelection} from "../../utils/VisibleSelection";
-import {DropdownSelection} from "../../utils/DropdownSelection";
-import {WithMappings} from "./mappings/MappingsUi";
-import {MappingContext} from "../../../mappings/resolve/MappingStrategy";
-import {MappingsController} from "./mappings/MappingsController";
+import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {DropdownSelection} from "fudge-commons/lib/src/components/DropdownSelection";
+import {LazyColumn} from "fudge-commons/lib/src/components/LazyColumn";
+import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {Spacer} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {Fragment, useState} from "react";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
 
@@ -29,7 +29,7 @@ interface TraceFei {
 
 export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
     const [isTraceSection, setIsTraceSection] = useState(true);
-    const [currentTrace, setCurrentTrace] = React.useState(0);
+    const [currentTrace, setCurrentTrace] = useState(0);
     const allFei = allTraceFei(report)
     return <Column width="max">
         <Row alignItems={"center"} width={"max"} padding={{bottom: 5}}>

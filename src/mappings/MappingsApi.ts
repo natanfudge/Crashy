@@ -6,10 +6,11 @@ import {
     MappingsProvider,
     MappingsVersion
 } from "./providers/MappingsProvider";
-import {PromiseMemoryCache} from "../../fudge-commons/src/utils/PromiseMemoryCache";
+import {MappingsFilter} from "./MappingsFilter";
+import {EmptyMappings, Mappings} from "./Mappings";
 import {useEffect, useState} from "react";
-import {EmptyMappings, Mappings} from "crash-parser/src/util/common/Mappings";
-import {MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
+import {PromiseMemoryCache} from "fudge-commons/lib/src/collections/PromiseMemoryCache";
+
 
 
 export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {

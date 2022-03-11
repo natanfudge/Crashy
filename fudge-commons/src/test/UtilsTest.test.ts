@@ -1,4 +1,4 @@
-import {flipRecord} from "../../fudge-commons/src/utils/Javascript";
+import {flipRecord} from "../methods/Javascript";
 
 test("Flip record works correctly", () => {
     const oldRecord = {

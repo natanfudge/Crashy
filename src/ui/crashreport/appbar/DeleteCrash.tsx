@@ -1,14 +1,15 @@
 import React from "react";
-import {Column, Row} from "../../utils/simple/Flex";
-import {Text, TextTheme} from "../../utils/simple/Text";
-import {CircularProgress, Link} from "@mui/material";
 import {CrashyServer, DeleteCrashResponse} from "../../../server/CrashyServer";
-import {getUrlCrashId, setUrlNoCache} from "../../../../fudge-commons/src/utils/PageUrl";
-import {getCookieCrashCode, setCookieDeleted} from "../../../../fudge-commons/src/utils/Cookies";
+import {Spacer, Wrap} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {getCookieCrashCode, setCookieDeleted} from "../../../utils/Cookies";
+import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
 import {fadedOutColor} from "../../Colors";
-import {SimpleButton} from "../../utils/simple/SimpleButton";
-import {Spacer, Wrap} from "../../utils/simple/SimpleDiv";
-import {SimpleTextField} from "../../utils/simple/SimpleTextField";
+import {getUrlCrashId} from "../../../utils/PageUrl";
+import {CircularProgress, Link} from "@mui/material";
+import {SimpleButton} from "fudge-commons/lib/src/simple/SimpleButton";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {SimpleTextField} from "fudge-commons/lib/src/simple/SimpleTextField";
+
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"
 

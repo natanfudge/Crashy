@@ -1,10 +1,10 @@
 import {MappingsState} from "./MappingsState";
-import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {MappingContext} from "../../../../mappings/resolve/MappingStrategy";
-import {useMemo} from "react";
-import {HashSet} from "../../../../../fudge-commons/src/utils/hashmap/HashSet";
-import {BasicMappable} from "crash-parser/src/model/Mappable";
 import {useMappingsState} from "./MappingsUi";
+import {MappingContext} from "../../../../mappings/resolve/MappingStrategy";
+import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "../../../../crash/model/RichCrashReport";
+import {useMemo} from "react";
+import {BasicMappable} from "../../../../crash/model/Mappable";
+import {HashSet} from "fudge-commons/lib/src/collections/hashmap/HashSet";
 
 export class MappingsController {
     mappingsState: MappingsState

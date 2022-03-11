@@ -1,18 +1,18 @@
 import React, {Fragment} from "react";
-import {Column, Row} from "../utils/simple/Flex";
-import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link, TextField} from "@mui/material";
-import {CloudUpload} from "@mui/icons-material";
-import {Text, TextTheme} from "../utils/simple/Text";
+import {Wrap, WrapMultiple} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link} from "@mui/material";
 import {crashyTitleColor, dialogBodyColor} from "../Colors";
-import {CrashyServer, UploadCrashError, UploadCrashResponse} from "../../server/CrashyServer";
-import pako from "pako";
+import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
 import {CrashyLogo} from "../utils/Crashy";
-import {goToUploadedCrash} from "../../../fudge-commons/src/utils/PageUrl";
-import {Wrap, WrapMultiple} from "../utils/simple/SimpleDiv";
-import {Surface} from "../utils/simple/Surface";
-import {SimpleTextField} from "../utils/simple/SimpleTextField";
-import {useScreenSize} from "../../../fudge-commons/src/utils/Gui";
-import {gzipAsync} from "../../../fudge-commons/src/utils/fflate";
+import {gzipAsync} from "fudge-commons/lib/src/methods/Zip";
+import {useScreenSize} from "fudge-commons/lib/src/methods/Gui";
+import {Surface} from "fudge-commons/lib/src/simple/Surface";
+import {CrashyServer, UploadCrashError, UploadCrashResponse} from "../../server/CrashyServer";
+import {CloudUpload} from "@mui/icons-material";
+import {goToUploadedCrash} from "../../utils/PageUrl";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {SimpleTextField} from "fudge-commons/lib/src/simple/SimpleTextField";
+
 
 enum InitialUploadState {
     Start,

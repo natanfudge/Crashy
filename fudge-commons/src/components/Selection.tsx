@@ -1,9 +1,9 @@
 import React, {CSSProperties, useState} from "react";
 import {DropdownSelection} from "./DropdownSelection";
-import {Column} from "./simple/Flex";
 import {VisibleSelection} from "./VisibleSelection";
 import {IconButton} from "@mui/material";
 import {ArrowDropDown, ArrowDropUp} from "@mui/icons-material";
+import {Column} from "../simple/Flex";
 
 export enum SelectionType {
     Expandable, Dropdown

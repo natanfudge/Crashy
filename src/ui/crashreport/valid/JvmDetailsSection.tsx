@@ -1,6 +1,7 @@
-import {RichExceptionDetails} from "crash-parser/src/model/RichCrashReport";
-import {TextTheme} from "../../utils/simple/Text";
+
 import React from "react";
+import {RichExceptionDetails} from "../../../crash/model/RichCrashReport";
+import {TextTheme} from "fudge-commons/lib/src/simple/Text";
 
 export function JVMDetailsSection(props: { details: RichExceptionDetails }) {
     return <TextTheme overflow="auto" padding={5} wordBreak={"break-all"}

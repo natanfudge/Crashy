@@ -1,15 +1,16 @@
-import {Column, Row} from "../../utils/simple/Flex";
-import {Text} from "../../utils/simple/Text";
-import {StringMap} from "crash-parser/src/model/CrashReport";
+
 import React from "react";
 import {StackTraceElementsUi,} from "./StackTraceUi";
 import {primaryColor} from "../../Colors";
-import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {objectMap} from "../../../../fudge-commons/src/utils/Javascript";
-import {SimpleDivider} from "../../utils/simple/SimpleDivider";
-import {Wrap} from "../../utils/simple/SimpleDiv";
 import {WithMappings} from "./mappings/MappingsUi";
 import {MappingsController} from "./mappings/MappingsController";
+import {StringMap} from "../../../crash/model/CrashReport";
+import {Wrap} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "../../../crash/model/RichCrashReport";
+import {objectMap} from "fudge-commons/lib/src/methods/Javascript";
+import {Text} from "fudge-commons/lib/src/simple/Text";
 
 export function CrashReportSectionUi({
     report,

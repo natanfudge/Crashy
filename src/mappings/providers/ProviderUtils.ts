@@ -4,15 +4,13 @@ Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/secti
 // type ReleaseVersion = `${number}.${number}` | `${number}.${number}.${number}`;
 // type Snapshot = `${number}w${number}${"a"|"b"|"c"|"d"|"e"}` | `${ReleaseVersion}-pre${number}` | `${ReleaseVersion}-rc${number}`;
 // type MCVersionSlug =  ReleaseVersion | Snapshot;
-import pako from "pako";
-import {strFromU8, unzip, Unzipped} from "fflate";
-import {HashSet} from "../../../fudge-commons/src/utils/hashmap/HashSet";
-import {extractFromZip} from "crash-parser/src/util/ServerClientCommon";
+
+
+import {extractFromZip} from "fudge-commons/lib/src/methods/Zip";
 
 export type MCVersionSlug = string;
 
 export const NO_CORS_BYPASS = "/Projects/CORS-Bypass/App";
-
 
 
 // export function mcVersionCompare(a: MCVersionSlug, b: MCVersionSlug) {
@@ -46,13 +44,12 @@ export function profilerDel(thing: string) {
 }
 
 
-
 export async function extractTinyMappings(response: Response): Promise<string> {
-    return (await extractFromZip(await response.arrayBuffer(),"mappings/mappings.tiny"))!
+    return (await extractFromZip(await response.arrayBuffer(), "mappings/mappings.tiny"))!
 }
 
 
-export  function withDotNotation(string: string): string {
+export function withDotNotation(string: string): string {
     return string.replace(/\//g, ".")
 }
 

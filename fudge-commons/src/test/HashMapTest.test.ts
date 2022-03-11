@@ -1,4 +1,4 @@
-import {HashMap} from "crash-parser/src/util/common/HashMap";
+import {HashMap} from "../collections/hashmap/HashMap";
 
 test("HashMap works with strings", () => {
     const stringMap = new HashMap<string, string>(100);

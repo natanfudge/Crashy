@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/crashy-common.iml" filepath="$PROJECT_DIR$/.idea/crashy-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/fudge-commons.iml" filepath="$PROJECT_DIR$/.idea/fudge-commons.iml" />
     </modules>
   </component>
 </project>

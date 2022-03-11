@@ -1,13 +1,20 @@
-import {LoaderType, RichStackTraceElement} from "crash-parser/src/model/RichCrashReport";
-import {usePromise} from "../../ui/utils/PromiseBuilder";
+import {usePromise} from "fudge-commons/src/components/PromiseBuilder";
 import {getBuildsCached, MappingsProvider} from "../providers/MappingsProvider";
 import {getMappingsCached} from "../MappingsApi";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {resolveMappingsChain} from "./MappingsResolver";
-import {HashSet} from "../../../fudge-commons/src/utils/hashmap/HashSet";
-import {AnyMappable, BasicMappable, DescriptoredMethod, JavaClass, JavaMethod, Mappable} from "crash-parser/src/model/Mappable";
+import {mappingFilterForMappables, MappingsFilter} from "../MappingsFilter";
+import {
+    AnyMappable,
+    BasicMappable,
+    DescriptoredMethod,
+    JavaClass,
+    JavaMethod,
+    Mappable
+} from "../../crash/model/Mappable";
 import {detectMappingNamespace} from "./MappingDetector";
-import {mappingFilterForMappables, MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
+import {LoaderType, RichStackTraceElement} from "../../crash/model/RichCrashReport";
+import {HashSet} from "fudge-commons/lib/src/collections/hashmap/HashSet";
 
 export interface MappingStrategy {
     mapMethod: (unmapped: JavaMethod) => JavaMethod

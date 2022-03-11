@@ -1,8 +1,8 @@
-import {LoaderType, OperatingSystemType, RichCrashReport} from "../../../src/crash/model/RichCrashReport";
-import {enrichCrashReport} from "../../../src/crash/parser/CrashReportEnricher";
 import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
-import {parseCrashReport} from "../../../src/crash/parser/CrashReportParser";
-import {JavaClass, JavaMethod} from "../../../src/crash/model/Mappable";
+import {JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {enrichCrashReport} from "../crash/parser/CrashReportEnricher";
+import {LoaderType, OperatingSystemType, RichCrashReport} from "../crash/model/RichCrashReport";
+import {parseCrashReport} from "../crash/parser/CrashReportParser";
 
 
 export function testFabricCrashReportEnrich(enriched: RichCrashReport) {

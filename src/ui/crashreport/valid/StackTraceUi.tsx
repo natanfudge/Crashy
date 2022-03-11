@@ -1,20 +1,19 @@
-import {Column, Row} from "../../utils/simple/Flex";
-import {SimpleSpan, Text, TextTheme} from "../../utils/simple/Text";
-import React, {Fragment, useEffect, useRef, useState} from "react";
-import {Button, Divider, Typography} from "@mui/material";
-import {clickableColor, fadedOutColor} from "../../Colors";
-import {
-    RichCrashReport,
-    RichStackTrace,
-    RichStackTraceElement,
-    StackTraceMessage,
-    unfoldRichStackTrace
-} from "crash-parser/src/model/RichCrashReport";
-import {Spacer} from "../../utils/simple/SimpleDiv";
-import {ClickCallback} from "../../utils/simple/GuiTypes";
+
 import {WithMappings} from "./mappings/MappingsUi";
 import {MappingContext, MappingStrategy, useMappingFor, useMappingForName} from "../../../mappings/resolve/MappingStrategy";
 import {MappingsController} from "./mappings/MappingsController";
+import {SimpleSpan, Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {
+    RichCrashReport,
+    RichStackTrace, RichStackTraceElement,
+    StackTraceMessage,
+    unfoldRichStackTrace
+} from "../../../crash/model/RichCrashReport";
+import {Fragment, useEffect, useRef, useState} from "react";
+import {clickableColor, fadedOutColor} from "../../Colors";
+import {ClickCallback} from "fudge-commons/lib/src/simple/GuiTypes";
+import {Button, Divider, Typography} from "@mui/material";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
     const causerList = unfoldRichStackTrace(report.stackTrace);
@@ -75,7 +74,7 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
 }
 
 function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage, mappingContext: MappingContext }) {
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(false)
     const mappingMethod = useMappingForName(title.class, mappingContext);
     const text = open ? title.class.fullName(mappingMethod) : title.class.simpleName(mappingMethod);
 
@@ -107,7 +106,7 @@ export function StackTraceElementUi({
                                         withMarginLeft,
                                         mappings
                                     }: { traceElement: RichStackTraceElement, withMarginLeft: boolean, mappings: MappingContext }) {
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(false)
     const mappingMethod = useMappingFor(traceElement, mappings);
     const text = getTraceElementText(traceElement, open, mappingMethod)
     const isXMore = typeof traceElement === "number"

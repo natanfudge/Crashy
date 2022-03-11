@@ -1,20 +1,21 @@
-import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
-import React, {Fragment, RefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
-import {Column, Row} from "../../utils/simple/Flex";
-import {CrashLeftSide} from "./CrashContextUi";
-import {SectionNavigation} from "./SectionNavigation";
-import {Text} from "../../utils/simple/Text";
-import {StackTraceUi} from "./StackTraceUi";
 import {ModListUi} from "./ModListUi";
-import {CrashReportSectionUi} from "./CrashReportSectionUi";
-import {SimpleDivider} from "../../utils/simple/SimpleDivider";
-import {Surface} from "../../utils/simple/Surface";
-import {ScreenSize, useScreenSize} from "../../../../fudge-commons/src/utils/Gui";
-import {Wrap} from "../../utils/simple/SimpleDiv";
-import {Section, sectionNavigationOf, SectionState, SpecialSection} from "../../../../fudge-commons/src/utils/Section";
-import {WithChild} from "../../utils/simple/SimpleElementProps";
-import {ForgeExtraInfoSection} from "./ForgeExtraInfoSection";
+import {Wrap} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {StackTraceUi} from "./StackTraceUi";
 import {JVMDetailsSection} from "./JvmDetailsSection";
+import {Surface} from "fudge-commons/lib/src/simple/Surface";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {ScreenSize, useScreenSize} from "fudge-commons/lib/src/methods/Gui";
+import {Section, sectionNavigationOf, SectionState, SpecialSection} from "../../../utils/Section";
+import {WithChild} from "fudge-commons/lib/src/simple/SimpleElementProps";
+import {SectionNavigation} from "./SectionNavigation";
+import {RefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
+import {RichCrashReport} from "../../../crash/model/RichCrashReport";
+import {CrashReportSectionUi} from "./CrashReportSectionUi";
+import {ForgeExtraInfoSection} from "./ForgeExtraInfoSection";
+import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
+import {CrashLeftSide} from "./CrashContextUi";
+import {Text} from "fudge-commons/lib/src/simple/Text";
+
 
 export interface ValidCrashProps {
     report: RichCrashReport

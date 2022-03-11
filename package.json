@@ -11,7 +11,7 @@
     "@types/node": "^12.20.25",
     "@types/react": "^17.0.22",
     "@types/react-dom": "^17.0.0",
-    "crash-parser": "file:crash-parser",
+    "fudge-commons": "1.0.2",
     "fflate": "^0.7.3",
     "pako": "^2.0.4",
     "react": "^17.0.2",

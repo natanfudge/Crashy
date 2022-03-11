@@ -1,17 +1,17 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {LinearProgress} from "@mui/material";
 import {CrashyServer, GetCrashError, isSuccessfulGetCrashResponse} from "../../server/CrashyServer";
-import {parseCrashReportRich} from "crash-parser/src/parser/CrashReportEnricher";
-import {CrashyAppBar} from "./appbar/CrashyAppBar";
-import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";
+import {Wrap} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {Section, SectionState, SpecialSection} from "../../utils/Section";
 import {NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
-import {Wrap} from "../utils/simple/SimpleDiv";
-import {getUrlCrashId, getUrlNoCache} from "../../../fudge-commons/src/utils/PageUrl";
-import {getCookieDeleted} from "../../../fudge-commons/src/utils/Cookies";
-import {RichCrashReport} from "crash-parser/src/model/RichCrashReport";
-import {useScreenSize} from "../../../fudge-commons/src/utils/Gui";
-import {Section, SectionState, SpecialSection} from "../../../fudge-commons/src/utils/Section";
+import {getCookieDeleted} from "../../utils/Cookies";
+import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
+import {RichCrashReport} from "../../crash/model/RichCrashReport";
+import {useScreenSize} from "fudge-commons/lib/src/methods/Gui";
+import {parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
+import {CrashyAppBar} from "./appbar/CrashyAppBar";
+import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";
 
 
 export function CrashyCrashReportPage() {

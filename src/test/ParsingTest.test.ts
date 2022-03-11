@@ -1,14 +1,14 @@
-import {CrashReport} from "../../../src/crash/model/CrashReport";
-import {parseCrashReport, parseCrashReportImpl} from "../../../src/crash/parser/CrashReportParser";
 import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
 import {TestBuggyParseCrash} from "./TestBuggyParseCrash";
-import {enrichCrashReport} from "../../../src/crash/parser/CrashReportEnricher";
 import {BarebonesFabricCrash} from "./BarebonesFabricCrash";
-import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../../../src/crash/model/RichCrashReport";
 import {TestVerifyErrorCrash} from "./TestVerifyErrorCrash";
 import {BrokenTimeCrash} from "./BrokenTimeCrash";
 import {TestEmptySectionCrash} from "./TestEmptySectionCrash";
 import {BrokenSectionCrash} from "./BrokenSectionCrash";
+import { CrashReport } from "../crash/model/CrashReport";
+import {enrichCrashReport} from "../crash/parser/CrashReportEnricher";
+import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../crash/model/RichCrashReport";
+import {parseCrashReport, parseCrashReportImpl} from "../crash/parser/CrashReportParser";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")

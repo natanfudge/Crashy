@@ -1,4 +1,3 @@
-import {Column, Row} from "../../utils/simple/Flex";
 import MinecraftLogo from "../../../media/minecraft_cube.svg";
 import ForgeLogo from "../../../media/forge_logo.svg";
 import FabricLogo from "../../../media/fabric_logo.svg";
@@ -13,12 +12,13 @@ import {lightBlue} from "@mui/material/colors";
 import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";
 import {CrashyNewIssueUrl} from "../../utils/Crashy";
-import {SimpleDivider} from "../../../../crashy-common/src/simple/Simple/SimpleDivider";
-import {TextTheme} from "../../../../crashy-common/src/simple/Simple/Text";
-import {Spacer} from "../../../../crashy-common/src/simple/Simple/SimpleDiv";
-import {SimpleImage} from "../../../../crashy-common/src/simple/Simple/SimpleImage";
-import {Surface} from "../../../../crashy-common/src/simple/Simple/Surface";
-import {CrashContext, LoaderType, OperatingSystemType} from "../../../../crashy-common/src/crash/model/RichCrashReport";
+import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {CrashContext, LoaderType, OperatingSystemType} from "../../../crash/model/RichCrashReport";
+import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {Spacer} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {SimpleImage} from "fudge-commons/lib/src/simple/SimpleImage";
+import {Surface} from "fudge-commons/lib/src/simple/Surface";
 
 
 export function CrashLeftSide(props: { context: CrashContext }) {

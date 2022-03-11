@@ -5,12 +5,11 @@ import {createTheme, CssBaseline, LinearProgress, Link} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage, InvalidCrashAttempt, isCrashAttemptValid, useCrash} from "./crashreport/CrashReportPage";
-import {ErrorBoundary} from "./utils/ErrorBoundary";
-import {Text, TextTheme} from "./utils/simple/Text";
+import {ErrorBoundary} from "fudge-commons/src/components/ErrorBoundary";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
-import {getUrlIsRaw} from "../../fudge-commons/src/utils/PageUrl";
-import {Column, Row} from "./utils/simple/Flex";
-import {Spacer} from "./utils/simple/SimpleDiv";
+import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {getUrlIsRaw} from "../utils/PageUrl";
+
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
 

@@ -1,17 +1,18 @@
-import {Row} from "../../utils/simple/Flex";
-import {LinkContent} from "../../utils/simple/LinkContent";
-import {Text} from "../../utils/simple/Text";
-import {AppbarColor, crashyTitleColor} from "../../Colors";
-import React, {Fragment} from "react";
-import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
-import {Delete, Subject} from "@mui/icons-material";
-import {DeletePopup} from "./DeleteCrash";
-import {Spacer} from "../../utils/simple/SimpleDiv";
-import {ScreenSize} from "../../../../fudge-commons/src/utils/Gui";
+import { ScreenSize } from "fudge-commons/lib/src/methods/Gui";
 import {CrashProps, isCrashAttemptValid} from "../CrashReportPage";
-import {HeaderHeight, NavigationDrawer} from "./NavigationDrawer";
-import {SimpleIconButton} from "../../utils/simple/SimpleIconButton";
-import {setUrlRaw} from "../../../../fudge-commons/src/utils/PageUrl";
+import {Delete, Subject} from "@mui/icons-material";
+import {AppbarColor, crashyTitleColor} from "../../Colors";
+import {LinkContent} from "fudge-commons/lib/src/simple/LinkContent";
+import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
+import {SimpleIconButton} from "fudge-commons/lib/src/simple/SimpleIconButton";
+import {NavigationDrawer} from "./NavigationDrawer";
+import {Spacer} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {setUrlRaw} from "../../../utils/PageUrl";
+import {DeletePopup} from "./DeleteCrash";
+import {Row} from "fudge-commons/lib/src/simple/Flex";
+import {Text} from "fudge-commons/lib/src/simple/Text";
+import {Fragment} from "react";
+
 
 export function CrashyAppBar({crash, sectionState, screen}: CrashProps & { screen: ScreenSize }) {
     const validCrash = isCrashAttemptValid(crash);

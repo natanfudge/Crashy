@@ -1,9 +1,9 @@
-import {Column} from "../../utils/simple/Flex";
-import {Text} from "../../utils/simple/Text";
+import {Column} from "fudge-commons/lib/src/simple/Flex";
+import {Spacer} from "fudge-commons/lib/src/simple/SimpleDiv";
 import {fadedOutColor} from "../../Colors";
+import {Text} from "fudge-commons/lib/src/simple/Text";
 import {Link} from "@mui/material";
-import React from "react";
-import {Spacer} from "../../utils/simple/SimpleDiv";
+
 
 export function NoSuchCrashScreen() {
     return <Column height={"max"} alignItems={"center"}>

@@ -1,9 +1,11 @@
 import {ButtonGroup} from "@mui/material";
-import {ActiveColor, OnBackgroundColor, primaryColor, secondaryColor} from "../Colors";
 import React from "react";
-import {SimpleButton} from "./simple/SimpleButton";
-import {Text} from "./simple/Text";
-
+import {SimpleButton} from "../simple/SimpleButton";
+import {Text} from "../simple/Text";
+ const primaryColor = "#90caf9"
+ const secondaryColor = "#65ff00"
+ const ActiveColor = "#374550"
+ const OnBackgroundColor = "#FFFFFF"
 export function VisibleSelection({
                                      showAll,
                                      values,
@@ -31,7 +33,7 @@ export function VisibleSelection({
     </ButtonGroup>
 }
 
-
+//TODO: integrate colors with theme
 function VisibleSelectionButton(props: { active: boolean, onClick: () => void, text: string, last: boolean, enabled: boolean }) {
     return <SimpleButton disabled={!props.enabled} style={{borderBottom: props.last ? undefined : `2px solid ${secondaryColor}`}}
                          backgroundColor={props.active ? ActiveColor : undefined}

@@ -1,11 +1,11 @@
-import {Mod} from "crash-parser/src/model/RichCrashReport";
-import {Column, Row} from "../../utils/simple/Flex";
-import {Text, TextTheme} from "../../utils/simple/Text";
-import React, {useState} from "react";
+import {Mod} from "../../../crash/model/RichCrashReport";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
-import {Spacer} from "../../utils/simple/SimpleDiv";
-import {SimpleDivider} from "../../utils/simple/SimpleDivider";
-import {LazyColumn} from "../../utils/LazyColumn";
+import {SimpleDivider} from "fudge-commons/lib/src/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/lib/src/simple/Flex";
+import {Text, TextTheme} from "fudge-commons/lib/src/simple/Text";
+import {Spacer} from "fudge-commons/lib/src/simple/SimpleDiv";
+import {LazyColumn} from "fudge-commons/lib/src/components/LazyColumn";
+import {useState} from "react";
 
 
 export function ModListUi({mods}: { mods: Mod[] }) {

@@ -1,6 +1,7 @@
-import {Mappings} from "crash-parser/src/util/common/Mappings";
-import {MappingsBuilder} from "crash-parser/src/util/common/MappingsBuilder";
-import {MappingsFilter} from "crash-parser/src/util/common/MappingsFilter";
+import {MappingsFilter} from "../MappingsFilter";
+import {Mappings} from "../Mappings";
+import {MappingsBuilder} from "../MappingsBuilder";
+
 
 export const ClassMethodSeperator = "#"
 

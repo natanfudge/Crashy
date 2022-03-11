@@ -1,30 +1,29 @@
 module.exports = {
-    root: true,
-    parser: "@typescript-eslint/parser",
-    parserOptions: {
-        project: ["tsconfig.json"],
-        sourceType: "module",
-    },
-    ignorePatterns: [
-        "/lib/**/*", // Ignore built files.
-    ],
-    plugins: [
+    "plugins": [
         "@typescript-eslint"
     ],
-    rules: {
-
+    "extends": [
+        "react-app",
+        "react-app/jest",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    "rules": {
         "@typescript-eslint/strict-boolean-expressions": ["error", {"allowString":  false, "allowNumber" :  false, "allowNullableObject":  false}],
         "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
+        "@typescript-eslint/consistent-indexed-object-style": "warn",
         "require-atomic-updates": "warn",
         "array-callback-return": "warn",
         "class-methods-use-this": "warn",
         "curly": ["warn", "multi-line"],
         "default-param-last": "warn",
         "no-constructor-return": "error",
+        "no-eval": "error",
         "no-extend-native": "off",
         "no-extra-bind": "warn",
         "no-extra-label": "warn",
         "no-implicit-coercion": "error",
+        "no-implied-eval": "error",
         "no-invalid-this": "error",
         "no-iterator": "error",
         "no-new": "warn",
@@ -37,10 +36,9 @@ module.exports = {
         "no-sequences": "error",
         "no-throw-literal": "error",
         "no-useless-call": "warn",
-        "no-useless-concat": "warn",
-        "@typescript-eslint/no-base-to-string": "warn"
+        "no-useless-concat": "warn"
     },
-    overrides: [
+    "overrides": [
         {
             "files": [
                 "**/*.ts?(x)"
@@ -50,6 +48,7 @@ module.exports = {
                 "@typescript-eslint/no-non-null-assertion" : "off",
                 "@typescript-eslint/restrict-plus-operands" : "off",
                 "@typescript-eslint/no-namespace": "off",
+                "eqeqeq": "off",
                 "@typescript-eslint/no-unsafe-assignment": "off",
                 "@typescript-eslint/no-empty-function": "off",
                 "@typescript-eslint/no-unused-vars": "off",
@@ -63,4 +62,4 @@ module.exports = {
             }
         }
     ]
-};
+}

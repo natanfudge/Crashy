@@ -1,8 +1,9 @@
-import {DescriptoredMethod, JavaClass} from "../../../src/crash/model/Mappable";
-import {HashMap, MutableDict} from "../collections/hashmap/HashMap";
+
 import {ClassMappings, Mappings} from "./Mappings";
 import {MappingsImpl} from "./MappingsImpl";
 import {MappingsFilter} from "./MappingsFilter";
+import {HashMap, MutableDict} from "fudge-commons/lib/src/collections/hashmap/HashMap";
+import {DescriptoredMethod, JavaClass} from "../crash/model/Mappable";
 
 export class MappingsBuilder {
     private readonly classMappings: MutableDict<JavaClass, JavaClass>

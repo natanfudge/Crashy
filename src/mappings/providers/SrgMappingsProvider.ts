@@ -1,8 +1,8 @@
 export {}
 // import {extractFromZip, isOlderThan1_12_2, profiler, profilerDel} from "./ProviderUtils";
-// import {Mappings} from "crash-parser/src/util/common/Mappings";
-// import {MappingsBuilder, MappingsFilter.ts} from "crash-parser/src/util/common/MappingsBuilder";
-// import {JavaClass} from "crash-parser/src/model/Mappable";
+// import {Mappings} from "fudge-commons/src/util/common/Mappings";
+// import {MappingsBuilder, MappingsFilter.ts} from "fudge-commons/src/util/common/MappingsBuilder";
+// import {JavaClass} from "fudge-commons/src/model/Mappable";
 //
 // enum SRGVersion {
 //     SRG, TSRG, TSRG2

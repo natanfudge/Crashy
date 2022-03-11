@@ -6,7 +6,7 @@ import {
     StackTraceElement,
     StringMap
 } from "../model/CrashReport";
-import "../../../fudge-commons/src/extensions/ExtensionsImpl"
+import "fudge-commons/src/extensions/ExtensionsImpl"
 
 class StringBuilder {
     str: string
