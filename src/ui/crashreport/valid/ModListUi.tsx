@@ -1,10 +1,10 @@
 import {Mod} from "../../../crash/model/RichCrashReport";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
-import {SimpleDivider} from "fudge-commons/lib/simple/SimpleDivider";
-import {Column, Row} from "fudge-commons/lib/simple/Flex";
-import {Text, TextTheme} from "fudge-commons/lib/simple/Text";
-import {Spacer} from "fudge-commons/lib/simple/SimpleDiv";
-import {LazyColumn} from "fudge-commons/lib/components/LazyColumn";
+import {SimpleDivider} from "fudge-commons/simple/SimpleDivider";
+import {Column, Row} from "fudge-commons/simple/Flex";
+import {Text, TextTheme} from "fudge-commons/simple/Text";
+import {Spacer} from "fudge-commons/simple/SimpleDiv";
+import {LazyColumn} from "fudge-commons/components/LazyColumn";
 import {useState} from "react";
 
 

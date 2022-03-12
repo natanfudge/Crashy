@@ -1,20 +1,20 @@
 import {ModListUi} from "./ModListUi";
-import {Wrap} from "fudge-commons/lib/simple/SimpleDiv";
+import {Wrap} from "fudge-commons/simple/SimpleDiv";
 import {StackTraceUi} from "./StackTraceUi";
 import {JVMDetailsSection} from "./JvmDetailsSection";
-import {Surface} from "fudge-commons/lib/simple/Surface";
-import {Column, Row} from "fudge-commons/lib/simple/Flex";
-import {ScreenSize, useScreenSize} from "fudge-commons/lib/methods/Gui";
+import {Surface} from "fudge-commons/simple/Surface";
+import {Column, Row} from "fudge-commons/simple/Flex";
+import {ScreenSize, useScreenSize} from "fudge-commons/methods/Gui";
 import {Section, sectionNavigationOf, SectionState, SpecialSection} from "../../../utils/Section";
-import {WithChild} from "fudge-commons/lib/simple/SimpleElementProps";
+import {WithChild} from "fudge-commons/simple/SimpleElementProps";
 import {SectionNavigation} from "./SectionNavigation";
 import {RefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {RichCrashReport} from "../../../crash/model/RichCrashReport";
 import {CrashReportSectionUi} from "./CrashReportSectionUi";
 import {ForgeExtraInfoSection} from "./ForgeExtraInfoSection";
-import {SimpleDivider} from "fudge-commons/lib/simple/SimpleDivider";
+import {SimpleDivider} from "fudge-commons/simple/SimpleDivider";
 import {CrashLeftSide} from "./CrashContextUi";
-import {Text} from "fudge-commons/lib/simple/Text";
+import {Text} from "fudge-commons/simple/Text";
 
 
 export interface ValidCrashProps {

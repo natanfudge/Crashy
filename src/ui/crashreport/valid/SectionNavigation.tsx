@@ -1,9 +1,9 @@
-import {Spacer, Wrap} from "fudge-commons/lib/simple/SimpleDiv";
+import {Spacer, Wrap} from "fudge-commons/simple/SimpleDiv";
 import {nameOfSection, Section, sectionsEqual, SectionState} from "../../../utils/Section";
-import {Surface} from "fudge-commons/lib/simple/Surface";
+import {Surface} from "fudge-commons/simple/Surface";
 import {ActiveColor, OnBackgroundColor} from "../../Colors";
 import {Button, ButtonGroup, Typography} from "@mui/material";
-import {Row} from "fudge-commons/lib/simple/Flex";
+import {Row} from "fudge-commons/simple/Flex";
 
 
 export function SectionNavigation({sections,sectionState}: {

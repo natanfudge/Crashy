@@ -4,7 +4,7 @@ import {MappingContext} from "../../../../mappings/resolve/MappingStrategy";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "../../../../crash/model/RichCrashReport";
 import {useMemo} from "react";
 import {BasicMappable} from "../../../../crash/model/Mappable";
-import {HashSet} from "fudge-commons/lib/collections/hashmap/HashSet";
+import {HashSet} from "fudge-commons/collections/hashmap/HashSet";
 
 export class MappingsController {
     mappingsState: MappingsState

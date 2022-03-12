@@ -9,7 +9,7 @@ import {
 import {MappingsFilter} from "./MappingsFilter";
 import {EmptyMappings, Mappings} from "./Mappings";
 import {useEffect, useState} from "react";
-import {PromiseMemoryCache} from "fudge-commons/lib/collections/PromiseMemoryCache";
+import {PromiseMemoryCache} from "fudge-commons/collections/PromiseMemoryCache";
 
 
 

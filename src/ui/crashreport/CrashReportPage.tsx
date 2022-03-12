@@ -1,14 +1,14 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {LinearProgress} from "@mui/material";
 import {CrashyServer, GetCrashError, isSuccessfulGetCrashResponse} from "../../server/CrashyServer";
-import {Wrap} from "fudge-commons/lib/simple/SimpleDiv";
+import {Wrap} from "fudge-commons/simple/SimpleDiv";
 import {Section, SectionState, SpecialSection} from "../../utils/Section";
 import {NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
 import {getCookieDeleted} from "../../utils/Cookies";
 import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
 import {RichCrashReport} from "../../crash/model/RichCrashReport";
-import {useScreenSize} from "fudge-commons/lib/methods/Gui";
+import {useScreenSize} from "fudge-commons/methods/Gui";
 import {parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";

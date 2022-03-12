@@ -2,7 +2,7 @@
 import {WithMappings} from "./mappings/MappingsUi";
 import {MappingContext, MappingStrategy, useMappingFor, useMappingForName} from "../../../mappings/resolve/MappingStrategy";
 import {MappingsController} from "./mappings/MappingsController";
-import {SimpleSpan, Text, TextTheme} from "fudge-commons/lib/simple/Text";
+import {SimpleSpan, Text, TextTheme} from "fudge-commons/simple/Text";
 import {
     RichCrashReport,
     RichStackTrace, RichStackTraceElement,
@@ -11,9 +11,9 @@ import {
 } from "../../../crash/model/RichCrashReport";
 import {Fragment, useEffect, useRef, useState} from "react";
 import {clickableColor, fadedOutColor} from "../../Colors";
-import {ClickCallback} from "fudge-commons/lib/simple/GuiTypes";
+import {ClickCallback} from "fudge-commons/simple/GuiTypes";
 import {Button, Divider, Typography} from "@mui/material";
-import {Column, Row} from "fudge-commons/lib/simple/Flex";
+import {Column, Row} from "fudge-commons/simple/Flex";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
     const causerList = unfoldRichStackTrace(report.stackTrace);

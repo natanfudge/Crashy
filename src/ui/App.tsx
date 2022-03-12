@@ -1,16 +1,14 @@
-import React, {ErrorInfo, Suspense, useEffect} from 'react';
+import React, {Suspense} from 'react';
 import '../App.css';
 
-import {createTheme, CssBaseline, LinearProgress, Link, Typography} from "@mui/material";
+import {createTheme, CssBaseline, LinearProgress, Link} from "@mui/material";
 import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage, InvalidCrashAttempt, isCrashAttemptValid, useCrash} from "./crashreport/CrashReportPage";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
-import {Text, TextTheme} from "fudge-commons/lib/simple/Text";
+import {Text, TextTheme} from "fudge-commons/simple/Text";
 import {getUrlIsRaw} from "../utils/PageUrl";
-import {WithChild} from "../../fudge-commons/src/simple/SimpleElementProps";
-import {Wrap} from "fudge-commons/lib/simple/SimpleDiv";
-import {ErrorBoundary} from "fudge-commons/lib/components/ErrorBoundary";
+import {ErrorBoundary} from "fudge-commons/components/ErrorBoundary";
 
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
