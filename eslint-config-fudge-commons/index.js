@@ -1,12 +1,7 @@
 module.exports = {
-    "plugins": [
-        "@typescript-eslint"
-    ],
     "extends": [
         "react-app",
-        "react-app/jest",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "react-app/jest"
     ],
     "rules": {
         "@typescript-eslint/strict-boolean-expressions": ["error", {"allowString":  false, "allowNumber" :  false, "allowNullableObject":  false}],
