@@ -1,4 +1,5 @@
 import "./Extensions"
+import {TsKey} from "../types/Basic";
 
 export {}
 
@@ -65,14 +66,16 @@ String.prototype.removeBeforeLastExclusive = function (this: string, removeBefor
         return this.slice(index + 1);
     }
 }
-// String.prototype.removeBeforeLast = function (this: string, removeBefore: string): string {
-//     const index = this.lastIndexOf(removeBefore);
-//     if (index === -1) {
-//         return this;
-//     } else {
-//         return this.slice(index);
-//     }
-// }
+Array.prototype.toRecord = function <T, K extends TsKey, V>(this: Array<T>, map: (element: T, index:number) => [K, V]): Record<K, V> {
+    const record = {} as Record<K, V>;
+    this.forEach((element,index)=>{
+        const [key, value] = map(element,index);
+        record[key] = value;
+    })
+    return record;
+}
+
+
 
 Array.prototype.arrayEquals = function <T>(this: T[], b: T[]): boolean {
     return this.length === b.length &&

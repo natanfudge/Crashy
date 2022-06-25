@@ -3,12 +3,11 @@ import {typedKeys} from "./Typescript";
 import {TsKey} from "../types/Basic";
 
 
-export function removeSuffix(str: string, suffix: string): string {
-    return str.endsWith(suffix) ? str.slice(0, str.length - suffix.length) : str;
-}
 
-export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
-    return typedKeys(object).map((key, index) => mapFn(key, object[key], index));
+export  function recordForEach<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K,V>, action: (key: K, value: V) => void): void {
+    for(const key in record){
+        action(key,record[key])
+    }
 }
 
 export function mapRecord<K extends TsKey, V, NK extends TsKey, NV>(
@@ -22,29 +21,53 @@ export function mapRecord<K extends TsKey, V, NK extends TsKey, NV>(
     return newRecord
 }
 
-export function objectFilter<V>(object: Record<string, V>, filter: (key: string, value: V) => boolean): Record<string, V> {
-    const newObj: Record<string, V> = {};
-    for (const key in object) {
-        const value = object[key];
-        if (filter(key, object[key])) newObj[key] = value;
+export  function mapRecordValues<K extends TsKey, V, NV>(record: Record<K, V>, valueMap: (key: K, value: V) => NV): Record<K, NV> {
+    return mapRecord(record,k => k,valueMap);
+}
+
+export  function recordFilter<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>
+(record: Record<K,V>, filter: (key: K, value: V, index: number) => boolean): Rec {
+    const newObj = {} as Rec;
+    let i =0;
+    for (const key in record) {
+        const value = record[key];
+        //@ts-ignore
+        if (filter(key, record[key],i)) newObj[key] = value;
+        i++;
     }
     return newObj;
 }
 
-export function indexOfOrThrow<T>(arr: T[], element: T): number {
-    const index = arr.indexOf(element);
-    if (index === -1) throw new Error(`The element '${element}' doesn't exist in the array: ${arr}`)
-    return index;
+export function recordSome<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean) : boolean{
+    for(const key in record){
+        const value = record[key]
+        if(condition(key,value)) return true;
+    }
+    return false;
+}
+export function recordAll<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean) : boolean{
+    for(const key in record){
+        const value = record[key]
+        if(!condition(key,value)) return false;
+    }
+    return true;
+}
+export function recordNone<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean) : boolean{
+    return !recordSome(record,condition)
 }
 
-export function toRecord<K extends TsKey, V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
-    const result = {} as Record<K, V>;
-    for (let i = 0; i < arr.length; i++) {
-        const [key, value] = mapFn(arr[i], i);
-        result[key] = value;
-    }
-    return result;
+export  function recordToArray<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec, R>(record: Record<K,V>, mapFn: (key: K, value: V, index: number) => R): R[] {
+    return typedKeys(record).map((key, index) => mapFn(key, record[key], index));
 }
+
+export function objectLength(obj: object) : number {
+    return Object.keys(obj).length;
+}
+
+export function recordIsEmpty<K extends TsKey, V>(record: Record<K, V>): boolean {
+    return Object.keys(record).length === 0;
+}
+
 
 export function withoutKey<K extends TsKey, V, RK extends TsKey>(record: Record<K, V>, key: RK): Omit<Record<K, V>, RK> {
     if (!(key in record)) return record;
@@ -52,30 +75,14 @@ export function withoutKey<K extends TsKey, V, RK extends TsKey>(record: Record<
     return otherProps;
 }
 
-export function recordIsEmpty<K extends TsKey, V>(record: Record<K, V>): boolean {
-    return Object.keys(record).length === 0;
-}
-
-/**
- */
 export function flipRecord<K extends TsKey, V extends TsKey>(record: Record<K, V>): Record<V, K> {
     const flippedRecord: Record<V, K> = {} as Record<V, K>
     for (const key in record) {
         const flippedRecordKey: V = record[key];
-        // if (flippedRecordKey in flippedRecord) {
-        //     // newRecord[flippedRecordKey] is the other key with the same value
-        //     console.warn(`Found duplicate value '${flippedRecordKey}' when attempting to flip record with keys '${key}',
-        //      '${flippedRecord[flippedRecordKey]}'`)
-        // } else {
         flippedRecord[flippedRecordKey] = key;
-        // }
     }
     return flippedRecord;
 }
-
-// export function toStringOfAnything<T>( thing: T): string {
-//     return thing + "";
-// }
 
 export function coercePreferMin(num: number, bounds: { min: number, max: number }): number {
     // Opinionated preferral of min over max
@@ -89,33 +96,39 @@ export function coercePreferMin(num: number, bounds: { min: number, max: number 
     }
 }
 
-export interface Cookie {
-    name: string
-    value: string
-    expires: Date
-    // path: string
+/**
+ * @deprecated use extension method removeSuffix(suffix) instead
+ */
+export function removeSuffix(str: string, suffix: string): string {
+    return str.removeSuffix(suffix)
 }
 
-export function setCookie(cookie: Cookie) {
-    document.cookie = `${cookie.name}=${encodeURIComponent(cookie.value)};expires=${cookie.expires.toUTCString()};path=${window.location.pathname}`
+/**
+ * @deprecated use recordToArray instead
+ */
+export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
+    return recordToArray(object,mapFn)
 }
 
-export function getCookieValue(name: string): string | undefined {
-    const cookies = document.cookie.split("; ");
-    const targetCookie = cookies.find(row => row.startsWith(name + "="))
-    if (targetCookie === undefined) return undefined;
-    const [key, value] = targetCookie.split("=")
-    return value;
+/**
+ * @deprecated use Array extension method toRecord(mapFn) instead
+ */
+export function toRecord<K extends TsKey, V, T>(arr: T[], mapFn: (element: T, index: number) => [K, V]): Record<K, V> {
+    return arr.toRecord(mapFn)
 }
 
-export function getDocumentRelativeRect(element?: Element | null): Rect { // crossbrowser version
-    if (element === undefined || element === null) return {left: 0, top: 0, width: 0, height: 0}
-    const box = element.getBoundingClientRect();
-    return {
-        top: box.top + window.scrollY,
-        left: box.left + window.scrollX,
-        width: box.width,
-        height: box.height
-    }
+/**
+ * @deprecated if you use this, make an extension method for it
+ */
+export function indexOfOrThrow<T>(arr: T[], element: T): number {
+    const index = arr.indexOf(element);
+    if (index === -1) throw new Error(`The element '${element}' doesn't exist in the array: ${arr}`)
+    return index;
 }
 
+/**
+ * @deprecated use recordFilter instead
+ */
+export function objectFilter<V>(object: Record<string, V>, filter: (key: string, value: V) => boolean): Record<string, V> {
+    return recordFilter(object,filter)
+}

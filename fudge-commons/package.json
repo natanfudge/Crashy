@@ -1,6 +1,6 @@
 {
   "name": "fudge-commons",
-  "version": "1.0.11",
+  "version": "1.0.15",
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "eslint-config-fudge-commons": "1.0.6",
@@ -13,12 +13,16 @@
     "lint": "eslint --ext .js,.ts .",
     "fullpublish": "npm run build && npm version patch && copy \"package.json\" \"lib\\package.json\" && cd lib && npm publish"
   },
-  "dependencies": {
-    "fflate": "^0.7.3"
-  },
   "peerDependencies": {
+    "@date-io/date-fns": "^2.13.1",
     "@types/react": "^17.0.22",
     "@types/react-dom": "^17.0.0",
+    "dayjs": "^1.11.0",
+    "fflate": "^0.7.3",
     "react": "^17.0.2"
+  },
+  "dependencies": {
+    "@mui/lab": "^5.0.0-alpha.74",
+    "@mui/material": "^5.5.2"
   }
 }
