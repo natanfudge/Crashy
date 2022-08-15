@@ -7,7 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/functions/lib" />
       <excludeFolder url="file://$MODULE_DIR$/crash-parser/coverage" />
       <excludeFolder url="file://$MODULE_DIR$/crashy-common/lib" />
-      <excludeFolder url="file://$MODULE_DIR$/fudge-commons/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/client/fudge-commons/lib" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
