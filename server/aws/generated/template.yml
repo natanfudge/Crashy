@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Lambda application that calls the Lambda API.
+Resources:
+  api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: api
+      TracingEnabled: true
+      OpenApiVersion: 3.0.2
+  all:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: il.co.nocancer.functions.Entrypoint::handleRequest
+      CodeUri: C:\Users\natan\Desktop\anti-cancer\server\build\libs\AntiCancerServer-0.0.2.jar
+      Runtime: java11
+      Description: Java function
+      MemorySize: 512
+      Timeout: 35
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSLambda_ReadOnlyAccess
+        - AWSXrayWriteOnlyAccess
+        - AWSLambdaVPCAccessExecutionRole
+      Tracing: Active
+      Layers:
+        - !Ref libs
+      Events:
+        getEndpoint:
+          Type: Api
+          Properties:
+            RestApiId: !Ref api
+            Path: /{proxy+}
+            Method: ANY
+  libs:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: anticancerserver-lib
+      Description: Dependencies for the blank-java sample app.
+      ContentUri: C:\Users\natan\Desktop\anti-cancer\server\build\distributions\AntiCancerServer-libs-0.0.2.zip
+      CompatibleRuntimes:
+        - java11

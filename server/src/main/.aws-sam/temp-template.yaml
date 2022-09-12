@@ -1,0 +1,11 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 512
+      Handler: il.co.nocancer.functions.TestFunction
+      CodeUri: C:\Users\natan\Desktop\anti-cancer\server
+      Runtime: java11
+      Architectures:
+        - x86_64

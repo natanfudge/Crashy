@@ -7,3 +7,5 @@ firestore-debug.log
 ui-debug.log
 
 lib/
+.gradle/
+aws/generated

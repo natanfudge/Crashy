@@ -1,3 +1,24 @@
+
+# Workplan:
+
+- Test and see how well the client side is working.  
+  -[ ] Merge eslint-config-fudge-commons into our client
+  -[ ] Since a lot of util stuff has been merged, clean it all up to not have any duplicates
+  -[ ] Update client dependencies and get to working state
+- Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff.
+  -[ ] Get the basic server serving client setup working
+  -[ ] Move to toml version config, update server dependencies with refreshVersions
+  -[ ] Setup amazon EC2 server and get a full remote upload working. 
+- Implement upload crash, delete crash, mappings endpoints on EC2.
+  -[ ] Implement tests for these, based off of ClientPlayground
+  -[ ] Migrate client to support new endpoints
+- Complete client mappings feature.
+  - Move mappings selection, and make it not move when there's no version selection:  
+  ![img.png](img.png)
+- Experiment with templating the client, eventually serving the client merged with the crash data.
+
+
+
 # Final goals:
 - Crashy pages served directly from the server, including the crash data itself with it, making response times very fast, and allowing previews of crashes in links
 - Integrate the mappings feature completely
@@ -20,12 +41,3 @@
     - Every day or at will, all crash logs with last access day of <CurrentDay - 30> will be transferred to the S3 where it will be tiered automatically by Amazon.
 - In some cases the EC2 server will receive a mappings data request. The server will request the mappings from the appropriate provider and cache it for 30 days in the SSD. (Works the same way as crash logs, a bidirectional map is needed as well)
 - EC2 server supports upload crash and delete crash endpoints.
-
-# Workplan:
-
-- Test and see how well the client side is working.
-- Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff. 
-- Implement upload crash, delete crash, mappings endpoints on EC2 and migrate client to support them. 
-- Complete client mappings feature.
-- Experiment with templating the client, eventually serving the client merged with the crash data. 
-
