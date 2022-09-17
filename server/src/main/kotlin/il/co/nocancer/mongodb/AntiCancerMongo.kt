@@ -21,13 +21,12 @@ fun getTableByName(name: String): MongoDbBasedTableData<*>? = when (name) {
 
 object AntiCancerMongo {
     //TODO: unsafe when open-sourced
-    private const val ConnectionString =
-        "mongodb+srv://fudge:mUYGUfYnZv7HvuYe@fudgemongocluster.qg16x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    private const val ConnectionString = "[REDACTED]"
 
     // We use a secret key to avoid some evil attacker sending us viwus objects with his database
     // note: okhttp title-cases this string so we need to keep it exactly this way
     //TODO: unsafe when open-sourced/
-    const val SecretLocalMongoDbHeaderKey = "Nwefn232Q-3Rfw2Qfm@#!31-Debug-Client"
+    const val SecretLocalMongoDbHeaderKey = "[REDACTED]"
 
     //TODO: proguard!!
     const val TestKey = "Test"
