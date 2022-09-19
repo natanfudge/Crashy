@@ -6,7 +6,7 @@ Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/secti
 // type MCVersionSlug =  ReleaseVersion | Snapshot;
 
 
-import {extractFromZip} from "fudge-commons/methods/Zip";
+import {extractFromZip} from "../../fudge-commons/methods/Zip";
 
 export type MCVersionSlug = string;
 

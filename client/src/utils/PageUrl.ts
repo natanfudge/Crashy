@@ -1,7 +1,7 @@
 
-import {parsePageQuery, serializePageArgs, updateUrl} from "fudge-commons/methods/PageUrl";
+import {parsePageQuery, serializePageArgs, updateUrl} from "../fudge-commons/methods/PageUrl";
 import {setCookieCrashCode} from "./Cookies";
-import {TsObject} from "fudge-commons/types/Basic";
+import {TsObject} from "../fudge-commons/types/Basic";
 
 
 interface PageArgs {

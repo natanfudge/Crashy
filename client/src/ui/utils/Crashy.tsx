@@ -1,12 +1,12 @@
 import {KeyboardArrowDown} from "@mui/icons-material";
 import {primaryColor} from "../Colors";
 import React, {Fragment} from "react";
-import {Expansion, useExpansion} from "fudge-commons/simple/expansion/Api";
-import {SimpleImage} from "fudge-commons/simple/SimpleImage";
-import {ClickCallback, Margin, Padding} from "fudge-commons/simple/GuiTypes";
-import {SingleChildParentProps, WithChild} from "fudge-commons/simple/SimpleElementProps";
-import {SimpleIconButton} from "fudge-commons/simple/SimpleIconButton";
-import {Surface} from "fudge-commons/simple/Surface";
+import {Expansion, useExpansion} from "../../fudge-commons/simple/expansion/Api";
+import {SimpleImage} from "../../fudge-commons/simple/SimpleImage";
+import {ClickCallback, Margin, Padding} from "../../fudge-commons/simple/GuiTypes";
+import {SingleChildParentProps, WithChild} from "../../fudge-commons/simple/SimpleElementProps";
+import {SimpleIconButton} from "../../fudge-commons/simple/SimpleIconButton";
+import {Surface} from "../../fudge-commons/simple/Surface";
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
     return <SimpleImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}

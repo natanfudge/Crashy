@@ -15,7 +15,6 @@
     "react-app/jest"
   ],
   "rules": {
-    "@typescript-eslint/strict-boolean-expressions": ["error", {"allowString":  false, "allowNumber" :  false, "allowNullableObject":  false}],
     "@typescript-eslint/no-unnecessary-boolean-literal-compare": "warn",
     "@typescript-eslint/consistent-indexed-object-style": "warn",
     "require-atomic-updates": "warn",

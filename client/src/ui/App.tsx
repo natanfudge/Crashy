@@ -6,9 +6,9 @@ import {ThemeProvider} from '@mui/material/styles';
 import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage, InvalidCrashAttempt, isCrashAttemptValid, useCrash} from "./crashreport/CrashReportPage";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
-import {Text, TextTheme} from "fudge-commons/simple/Text";
+import {Text, TextTheme} from "../fudge-commons/simple/Text";
 import {getUrlIsRaw} from "../utils/PageUrl";
-import {ErrorBoundary} from "fudge-commons/components/ErrorBoundary";
+import {ErrorBoundary} from "../fudge-commons/components/ErrorBoundary";
 
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))

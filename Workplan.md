@@ -2,7 +2,7 @@
 # Workplan:
 
 - Test and see how well the client side is working.  
-  -[ ] Merge eslint-config-fudge-commons into our client
+-  check if dayjs dependency is bloating bundle size
   -[ ] Since a lot of util stuff has been merged, clean it all up to not have any duplicates
   -[ ] Update client dependencies and get to working state
 - Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff.
@@ -16,6 +16,10 @@
   - Move mappings selection, and make it not move when there's no version selection:  
   ![img.png](img.png)
 - Experiment with templating the client, eventually serving the client merged with the crash data.
+
+# Important things to check
+- Website content is gzipped/brotli'd. It should work by pre-zipping JS files, templating HTML files (no zip) and also downloading 
+
 
 
 

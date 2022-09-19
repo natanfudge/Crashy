@@ -1,14 +1,14 @@
 import React from "react";
 import {CrashyServer, DeleteCrashResponse} from "../../../server/CrashyServer";
-import {Spacer, Wrap} from "fudge-commons/simple/SimpleDiv";
+import {Spacer, Wrap} from "../../../fudge-commons/simple/SimpleDiv";
 import {getCookieCrashCode, setCookieDeleted} from "../../../utils/Cookies";
-import {Text, TextTheme} from "fudge-commons/simple/Text";
+import {Text, TextTheme} from "../../../fudge-commons/simple/Text";
 import {fadedOutColor} from "../../Colors";
 import {getUrlCrashId} from "../../../utils/PageUrl";
 import {CircularProgress, Link} from "@mui/material";
-import {SimpleButton} from "fudge-commons/simple/SimpleButton";
-import {Column, Row} from "fudge-commons/simple/Flex";
-import {SimpleTextField} from "fudge-commons/simple/SimpleTextField";
+import {SimpleButton} from "../../../fudge-commons/simple/SimpleButton";
+import {Column, Row} from "../../../fudge-commons/simple/Flex";
+import {SimpleTextField} from "../../../fudge-commons/simple/SimpleTextField";
 
 
 const CRASH_CODE_HELP_URL = "https://github.com/natanfudge/Crashy/blob/main/Crash%20Code.md"

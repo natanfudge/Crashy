@@ -1,6 +1,6 @@
 import {ThemeOptions} from "@mui/material";
 import {grey} from "@mui/material/colors";
-import {Gradient} from "fudge-commons/simple/Color";
+import {Gradient} from "../fudge-commons/simple/Color";
 
 export const OnBackgroundColor = "#FFFFFF"
 export const primaryColor = "#90caf9"

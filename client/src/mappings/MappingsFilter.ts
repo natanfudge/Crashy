@@ -1,5 +1,5 @@
 import {BasicMappable, JavaClass, JavaMethod} from "../crash/model/Mappable";
-import {HashSet} from "fudge-commons/collections/hashmap/HashSet";
+import {HashSet} from "../fudge-commons/collections/hashmap/HashSet";
 
 
 export interface MappingsFilter {

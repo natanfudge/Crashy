@@ -3,16 +3,16 @@ import React, {Fragment} from "react";
 import {DesiredBuildProblem, isValidDesiredBuild} from "../../../../mappings/resolve/MappingStrategy";
 import {MappingsState, withBuild} from "./MappingsState";
 import {buildsOf} from "../../../../mappings/MappingsApi";
-import {DropdownSelection} from "fudge-commons/components/DropdownSelection";
-import {useScreenSize} from "fudge-commons/methods/Gui";
+import {DropdownSelection} from "../../../../fudge-commons/components/DropdownSelection";
+import {useScreenSize} from "../../../../fudge-commons/methods/Gui";
 import {CircularProgress} from "@mui/material";
 import {allMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
-import {Column, Row} from "fudge-commons/simple/Flex";
-import {ItemSelection, SelectionType} from "fudge-commons/components/Selection";
-import {indexOfOrThrow} from "fudge-commons/methods/Javascript";
+import {Column, Row} from "../../../../fudge-commons/simple/Flex";
+import {ItemSelection, SelectionType} from "../../../../fudge-commons/components/Selection";
+import {indexOfOrThrow} from "../../../../fudge-commons/methods/Javascript";
 import {MappingsBuilds} from "../../../../mappings/providers/MappingsProvider";
-import {Text} from "fudge-commons/simple/Text";
-import {usePromise} from "fudge-commons/components/PromiseBuilder";
+import {Text} from "../../../../fudge-commons/simple/Text";
+import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
 
 export interface MappingsSelectionProps {
     mappings: MappingsState;

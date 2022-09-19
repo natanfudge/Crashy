@@ -1,7 +1,7 @@
-import {Column} from "fudge-commons/simple/Flex";
-import {Spacer} from "fudge-commons/simple/SimpleDiv";
+import {Column} from "../../../fudge-commons/simple/Flex";
+import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {fadedOutColor} from "../../Colors";
-import {Text} from "fudge-commons/simple/Text";
+import {Text} from "../../../fudge-commons/simple/Text";
 import {Link} from "@mui/material";
 
 

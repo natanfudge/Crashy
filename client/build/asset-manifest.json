@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.f9a71527.css",
+    "main.js": "/static/js/main.ebf02c33.js",
+    "static/js/796.4ee210e7.chunk.js": "/static/js/796.4ee210e7.chunk.js",
+    "static/js/496.8237ce7d.chunk.js": "/static/js/496.8237ce7d.chunk.js",
+    "static/media/linux_logo.svg": "/static/media/linux_logo.e4f4bd887e9d04926eb5ffef2b1669fa.svg",
+    "static/media/macos_logo.svg": "/static/media/macos_logo.c6c57281fa773cb0991ef8bf3c9c7722.svg",
+    "static/media/java-icon.svg": "/static/media/java-icon.3c5854fce4aa30ad19d569c45d5ce874.svg",
+    "static/media/fabric_logo.svg": "/static/media/fabric_logo.32dbf2fbed789416fd20bf97cdfacfee.svg",
+    "static/media/minecraft_cube.svg": "/static/media/minecraft_cube.4fba712f791f4aecc12d7d256ef73631.svg",
+    "index.html": "/index.html",
+    "static/media/forge_logo.svg": "/static/media/forge_logo.3b98f7bbde3fcc3e0e09d5df809718dd.svg",
+    "static/media/windows_logo.svg": "/static/media/windows_logo.f3b7d863031ef132ea63532d1491306b.svg",
+    "static/media/questionmark_icon_white.svg": "/static/media/questionmark_icon_white.3cf737a883f15833c2aa9fa9e5b3d79e.svg",
+    "static/media/clock_white.svg": "/static/media/clock_white.3a437317f4fdf29d9c54c646632bf3e1.svg",
+    "main.f9a71527.css.map": "/static/css/main.f9a71527.css.map",
+    "main.ebf02c33.js.map": "/static/js/main.ebf02c33.js.map",
+    "796.4ee210e7.chunk.js.map": "/static/js/796.4ee210e7.chunk.js.map",
+    "496.8237ce7d.chunk.js.map": "/static/js/496.8237ce7d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f9a71527.css",
+    "static/js/main.ebf02c33.js"
+  ]
+}

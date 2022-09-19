@@ -1,16 +1,16 @@
-import { ScreenSize } from "fudge-commons/methods/Gui";
+import { ScreenSize } from "../../../fudge-commons/methods/Gui";
 import {CrashProps, isCrashAttemptValid} from "../CrashReportPage";
 import {Delete, Subject} from "@mui/icons-material";
 import {AppbarColor, crashyTitleColor} from "../../Colors";
-import {LinkContent} from "fudge-commons/simple/LinkContent";
+import {LinkContent} from "../../../fudge-commons/simple/LinkContent";
 import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
-import {SimpleIconButton} from "fudge-commons/simple/SimpleIconButton";
+import {SimpleIconButton} from "../../../fudge-commons/simple/SimpleIconButton";
 import {NavigationDrawer} from "./NavigationDrawer";
-import {Spacer} from "fudge-commons/simple/SimpleDiv";
+import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {setUrlRaw} from "../../../utils/PageUrl";
 import {DeletePopup} from "./DeleteCrash";
-import {Row} from "fudge-commons/simple/Flex";
-import {Text} from "fudge-commons/simple/Text";
+import {Row} from "../../../fudge-commons/simple/Flex";
+import {Text} from "../../../fudge-commons/simple/Text";
 import {Fragment} from "react";
 
 
