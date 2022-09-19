@@ -9,3 +9,4 @@ ui-debug.log
 lib/
 .gradle/
 aws/generated
+build/
