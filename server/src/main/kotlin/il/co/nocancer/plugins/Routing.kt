@@ -35,7 +35,7 @@ fun Application.configureRouting() {
 //                call.respondText("Inside $it")
 //            }
         // Static plugin. Try to access `/static/index.html`
-        static("/") {
+        static("/*") {
             preCompressed {
                 staticRootFolder = staticDir.toFile()
                 files(".")
