@@ -5,7 +5,6 @@ import il.co.nocancer.model.DonationGathering
 import il.co.nocancer.model.StoreName
 import il.co.nocancer.mongodb.AntiCancerMongo
 import il.co.nocancer.mongodb.MongoDbBasedTableData
-import il.co.nocancer.utils.createTestGathering
 import kotlinx.coroutines.runBlocking
 import org.bson.Document
 import org.junit.Test
@@ -18,8 +17,8 @@ import kotlin.test.assertTrue
 
 
 class MongoTest {
-    private val emulateServer = true
-    private val client by lazy { if (emulateServer) EmulatedMongoServer.ClientAndServerOnThisMachine else AntiCancerMongo.createRealClient() }
+    private val emulateServer = false
+    private val client by lazy { if (emulateServer) EmulatedMongoServer.Client else AntiCancerMongo.Client }
     private val database by lazy { client.getDatabase("AntiCancerTest") }
 
 
@@ -33,7 +32,7 @@ class MongoTest {
     @Test
     fun testMongoDbBasedTable(): Unit = runBlocking {
         val start = System.currentTimeMillis()
-        val client = if (emulateServer) EmulatedMongoServer.ClientAndServerOnThisMachine else AntiCancerMongo.createRealClient()
+        val client = if (emulateServer) EmulatedMongoServer.Client else AntiCancerMongo.Client
         println("Get client time: ${System.currentTimeMillis() - start}")
         val database = client.getDatabase("AntiCancerTest")
         println("Get database time: ${System.currentTimeMillis() - start}")
@@ -105,7 +104,13 @@ class MongoTest {
 
     @Test
     fun testMongoPutDelete(): Unit = runBlocking {
-        val gathering = createTestGathering()
+        val gathering = DonationGathering(
+            storeName = StoreName("amar"),
+            centreName = CentreName("def"),
+            notes = "amar",
+            leftBox = true,
+            date = Instant.now()
+        )
         gatheringData.put(gathering)
         assertTrue(gatheringData.delete(gathering.mongoId))
     }
