@@ -10,10 +10,12 @@ plugins {
     kotlin("jvm") version "1.7.0-Beta"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.20"
     id ("com.adarshr.test-logger") version "3.2.0"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
-
-group = "il.co.nocancer"
+application {
+    mainClass.set("io.github.crashy.ApplicationKt")
+}
+group = "io.github.crashy"
 version = "0.0.2"
 java {
     toolchain {
@@ -80,6 +82,7 @@ tasks {
     val buildClient by register<Exec>("buildClient") {
         group = "client"
 
+
         inputs.dir("../client/src")
         inputs.dir("../client/public")
         inputs.file("../client/package.json")
@@ -101,11 +104,8 @@ tasks {
 
     processResources.get().dependsOn(syncClient)
 
-    shadowJar {
-        manifest {
-            attributes(Pair("Main-Class", "com.example.ApplicationKt"))
-        }
-    }
+
+
 
     // SSH into ec2
     // stop process
@@ -122,12 +122,20 @@ tasks {
 
     afterEvaluate {
 
+        val shadowJarFiles = shadowJar.get().outputs.files
+        val serverJar = shadowJarFiles.singleFile
+
+        register<Exec>("runServerJar") {
+            group = "server"
+            dependsOn(shadowJar)
+
+            workingDir(serverJar.parent)
+            commandLine("java", "-jar",serverJar.name)
+        }
+
         val uploadToEc2 = register("uploadToEc2") {
             group = "ec2"
             dependsOn(shadowJar)
-
-            val shadowJarFiles = shadowJar.get().outputs.files
-            val serverJar = shadowJarFiles.singleFile
 
             // We put it in a directory with a random id so it won't clash with the previous one.
             val randomId = Random.nextLong().absoluteValue.toString()

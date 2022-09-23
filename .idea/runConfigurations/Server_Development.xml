@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Server Development" type="JetRunConfigurationType">
+    <option name="MAIN_CLASS_NAME" value="io.github.crashy.ApplicationKt" />
+    <module name="AntiCancerServer.main" />
+    <shortenClasspath name="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

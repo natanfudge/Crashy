@@ -1,4 +1,4 @@
-package il.co.nocancer.util
+package io.github.crashy.util
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

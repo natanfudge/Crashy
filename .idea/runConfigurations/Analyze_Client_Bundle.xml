@@ -1,12 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Development" type="js.build_tools.npm">
+  <configuration default="false" name="Analyze Client Bundle" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/client/package.json" />
     <command value="run" />
     <scripts>
-      <script value="start" />
+      <script value="analyze" />
     </scripts>
     <node-interpreter value="project" />
-    <package-manager value="npm" />
     <envs />
     <method v="2" />
   </configuration>

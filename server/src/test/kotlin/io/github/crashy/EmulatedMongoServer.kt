@@ -1,4 +1,4 @@
-package il.co.nocancer
+package io.github.crashy
 
 import com.mongodb.MongoClientSettings
 import com.mongodb.ServerAddress

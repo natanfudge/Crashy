@@ -1,4 +1,4 @@
-package il.co.nocancer
+package io.github.crashy
 
 import io.ktor.server.application.*
 import org.reflections.Reflections
@@ -12,6 +12,10 @@ val staticDir = runDir.resolve(staticPath)
 
 object AC
 
+/**
+ * Ktor doesn't support serving precompressed files out of the 'resources' folder, so we copy the resources to a real folder
+ * and serve it from there. Also this is more efficient since it doesn't need to extract it from the jar every time I believe.
+ */
 fun copyResourcesForServing() {
     val reflections = Reflections(staticPath, Scanners.Resources)
     val resourceList = reflections.getResources(".*")

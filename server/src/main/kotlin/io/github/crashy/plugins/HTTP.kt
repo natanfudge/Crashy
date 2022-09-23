@@ -1,4 +1,4 @@
-package il.co.nocancer.plugins
+package io.github.crashy.plugins
 
 import io.ktor.server.plugins.*
 import io.ktor.server.http.content.*

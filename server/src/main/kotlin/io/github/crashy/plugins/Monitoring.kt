@@ -1,4 +1,4 @@
-package il.co.nocancer.plugins
+package io.github.crashy.plugins
 
 import org.slf4j.event.*
 import io.ktor.server.request.*

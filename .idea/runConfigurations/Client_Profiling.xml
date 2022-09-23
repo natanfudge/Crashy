@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Analyze Bundle" type="js.build_tools.npm">
+  <configuration default="false" name="Client Profiling" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/client/package.json" />
     <command value="run" />
     <scripts>
-      <script value="analyze" />
+      <script value="profileprod" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
