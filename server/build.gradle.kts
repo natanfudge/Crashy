@@ -7,10 +7,10 @@ import java.util.Scanner
 
 plugins {
     application
-    kotlin("jvm") version "1.7.0-Beta"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.20"
-    id ("com.adarshr.test-logger") version "3.2.0"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.test.logger)
+    alias(libs.plugins.shadow)
 }
 application {
     mainClass.set("io.github.crashy.ApplicationKt")
@@ -33,42 +33,13 @@ repositories {
 
 val invoker = configurations.create("invoker")
 
-val ktor_version = "2.1.1"
-val kotlin_version = "1.7.0-Beta"
-val logback_version = "1.4.1"
-
-
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-auth-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-auto-head-response-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-locations-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-host-common-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-status-pages-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-caching-headers-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-compression-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-conditional-headers-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-cors-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-default-headers-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-http-redirect-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-call-logging-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-metrics-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-metrics-micrometer-jvm:$ktor_version")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.9.3")
-    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
-    implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
-    implementation("ch.qos.logback:logback-classic:$logback_version")
-    testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-
-    implementation("org.reflections:reflections:0.10.2")
+    implementation (libs.bundles.main)
+    implementation(libs.bundles.test)
 }
 
 
 tasks {
-
-
     withType<Test> {
         useJUnit()
     }
@@ -103,8 +74,6 @@ tasks {
     }
 
     processResources.get().dependsOn(syncClient)
-
-
 
 
     // SSH into ec2
