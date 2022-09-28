@@ -1,4 +1,4 @@
-package il.co.nocancer
+package io.github.crashy
 
 import il.co.nocancer.model.CentreName
 import il.co.nocancer.model.DonationGathering

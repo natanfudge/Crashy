@@ -1,0 +1,10 @@
+echo Starting Epic Command
+CSCRIPT SLEEP.VBS 2000
+echo 25%
+CSCRIPT SLEEP.VBS 2000
+echo 50%
+CSCRIPT SLEEP.VBS 2000
+echo 75%
+CSCRIPT SLEEP.VBS 2000
+echo 100%
+echo Done!

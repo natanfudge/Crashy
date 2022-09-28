@@ -14,5 +14,3 @@ export class Lazy<T> {
         return this.value;
     }
 }
-
-

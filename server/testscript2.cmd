@@ -1,0 +1,1 @@
+scp -r -i C:\\Users\\natan\\Desktop\\GoogleDrivedSynced\\GoogleDriveBackup\\aws_secret\\AcEC2Pair.pem C:\\Users\\natan\\Desktop\\Crashy\\server\\build\\libs\\4872830908762331994 ec2-user@ec2-35-157-64-36.eu-central-1.compute.amazonaws.com:~/ac/

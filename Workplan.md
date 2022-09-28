@@ -1,13 +1,11 @@
 
 # Workplan:
 
- 
+
 - Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff.
-  -[ ] Get the basic server serving client setup working
-  - [] Redirect all requests to index.html
-  - [ ] setup precompression
-  -[ ] Move to toml version config, update server dependencies with refreshVersions
-  -[ ] Setup amazon EC2 server and get a full remote upload working. 
+  - [ ] Setup amazon EC2 server and get a full remote upload working. 
+  - [ ] See if any ktor modules would be useful for us. 
+  - [ ] implement ssl
 - Implement upload crash, delete crash, mappings endpoints on EC2.
   -[ ] Implement tests for these, based off of ClientPlayground
   -[ ] Migrate client to support new endpoints
