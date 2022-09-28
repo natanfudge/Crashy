@@ -5,7 +5,7 @@ import DateAdapter from "@mui/lab/AdapterDateFns";
 import {Check, Close} from "@mui/icons-material";
 import {DateValidation, Validation} from "../table/editable/Validation";
 import {OnChange} from "../types/React";
-import {DayDate} from "../collections/HelperClasses";
+import {DayDate} from "../collections/DayDate";
 
 const MinTextFieldWidth = 200;
 const fontSize = 10;

@@ -1,12 +1,11 @@
 
 # Workplan:
 
-- Test and see how well the client side is working.  
--  check if dayjs dependency is bloating bundle size
-  -[ ] Since a lot of util stuff has been merged, clean it all up to not have any duplicates
-  -[ ] Update client dependencies and get to working state
+ 
 - Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff.
   -[ ] Get the basic server serving client setup working
+  - [] Redirect all requests to index.html
+  - [ ] setup precompression
   -[ ] Move to toml version config, update server dependencies with refreshVersions
   -[ ] Setup amazon EC2 server and get a full remote upload working. 
 - Implement upload crash, delete crash, mappings endpoints on EC2.
@@ -18,7 +17,7 @@
 - Experiment with templating the client, eventually serving the client merged with the crash data.
 
 # Important things to check
-- Website content is gzipped/brotli'd. It should work by pre-zipping JS files, templating HTML files (no zip) and also downloading 
+- Website content is gzipped/brotli'd. It should work by pre-zipping JS files and templating HTML files with the full crash data and the needed headers for SEO, Discord and stuff. 
 
 
 
