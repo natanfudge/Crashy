@@ -17,8 +17,8 @@ shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 
 [versions]
 
-ktor = "2.1.1"
-kotlin = "1.7.10"
+ktor = "2.1.2"
+kotlin = "1.7.20"
 logback = "1.4.1"
 reflections = "0.10.2"
 shadow = "7.1.2"
