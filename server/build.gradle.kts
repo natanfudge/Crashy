@@ -3,11 +3,9 @@ import com.sshtools.client.SshClient
 import com.sshtools.client.scp.ScpClient
 import com.sshtools.client.tasks.AbstractCommandTask
 import com.sshtools.client.tasks.FileTransferProgress
-import me.tongfei.progressbar.ProgressBarBuilder
 import java.nio.charset.Charset
 import kotlin.math.absoluteValue
 import kotlin.random.Random
-import java.nio.file.*
 
 buildscript {
     repositories {
@@ -28,6 +26,8 @@ plugins {
     alias(libs.plugins.test.logger)
     alias(libs.plugins.shadow)
 }
+val r8 = configurations.create("r8")
+
 application {
     mainClass.set("io.github.crashy.ApplicationKt")
 }
@@ -48,6 +48,7 @@ repositories {
     maven(
         url = ("https://oss.sonatype.org/content/repositories/snapshots")
     )
+    maven(url = "https://maven.google.com/")
 
 
 }
@@ -57,10 +58,22 @@ val invoker = configurations.create("invoker")
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
+    r8("com.android.tools:r8:3.3.75")
 }
 
 
 tasks {
+//    register("progress") {
+//        doFirst {
+//            ProgressBarBuilder().setTaskName("Upload").setInitialMax(100) .setUpdateIntervalMillis(200).build().use { progressBar ->
+//                repeat(10){
+//                    progressBar.stepTo(it * 10L)
+//                    Thread.sleep(500)
+//                }
+//            }
+//        }
+//    }
+
     withType<Test> {
         useJUnit()
     }
@@ -97,30 +110,48 @@ tasks {
     processResources.get().dependsOn(syncClient)
 
 
-    // SSH into ec2
-    // stop process
-    // delete everything
-    // scp new file
-    // start process
 
-    register("testServer") {
-        doLast {
-//            runCommand("echo starting && ssh -i C:\\Users\\natan\\Desktop\\GoogleDriveBackup\\aws_secret\\AcEC2Pair.pem ec2-user@ec2-18-195-90-15.eu-central-1.compute.amazonaws.com \"nohup sudo java -jar ~/ac/2325446946910435587/AntiCancerServer-0.0.2-all.jar >~/ac/2325446946910435587/output.txt 2>~/ac/2325446946910435587/output.txt <~/ac/2325446946910435587/output.txt &\"")
-            runCommand("echo starting && ssh -i C:\\Users\\natan\\Desktop\\GoogleDriveBackup\\aws_secret\\AcEC2Pair.pem ec2-user@ec2-18-195-90-15.eu-central-1.compute.amazonaws.com \"sudo killall java ; sudo find ./ac -type f -not -path \"./ac/5388493444252912057/*\" -delete && sudo find ~/ac -empty -type d -delete && nohup sudo java -jar ~/ac/5388493444252912057/AntiCancerServer-0.0.2-all.jar >~/ac/5388493444252912057/output.txt 2>~/ac/5388493444252912057/output.txt <~/ac/5388493444252912057/output.txt &\"")
-        }
-    }
 
     afterEvaluate {
 
         val shadowJarFiles = shadowJar.get().outputs.files
-        val serverJar = shadowJarFiles.singleFile
+        val shadowJarFile = shadowJarFiles.singleFile
 
-        register<Exec>("runServerJar") {
+        register<Exec>("runFatServerJar") {
             group = "server"
             dependsOn(shadowJar)
 
-            workingDir(serverJar.parent)
-            commandLine("java", "-jar", serverJar.name)
+            workingDir(shadowJarFile.parent)
+            commandLine("java", "-jar", shadowJarFile.name)
+        }
+
+        val r8JarFile = shadowJarFile.parentFile.resolve(shadowJarFile.nameWithoutExtension + "-r8.jar")
+
+        val r8Jar = tasks.register<JavaExec>("r8Jar") {
+            group = "server"
+            val rules = file("src/main/proguard-rules.pro")
+            dependsOn(shadowJar)
+            inputs.file(shadowJarFile)
+            outputs.files(r8JarFile,rules)
+
+            classpath(r8)
+            mainClass.set("com.android.tools.r8.R8")
+            args = listOf(
+                "--release",
+                "--classfile",
+                "--output", r8JarFile.toString(),
+                "--pg-conf", rules.toString(),
+                "--lib", System.getProperty("java.home").toString(),
+                shadowJarFile.absolutePath
+            )
+        }
+
+        register<Exec>("runR8ServerJar") {
+            group = "server"
+            dependsOn(r8Jar)
+
+            workingDir(r8JarFile.parent)
+            commandLine("java", "-jar", r8JarFile.name)
         }
 
         /**
@@ -143,30 +174,25 @@ tasks {
             group = "ec2"
             dependsOn(shadowJar)
 
-            // We put it in a directory with a random id so it won't clash with the previous one.
+            // We put it in a directory with a random id, so it won't clash with the previous one.
             val randomId = Random.nextLong().absoluteValue.toString()
             // SCP doesn't support creating parent directories as needed, so we create the desired directory structure in this computer and copy
             // it wholesale to the ec2 instance.
-            val serverDir = serverJar.toPath().parent.resolve(randomId)
+            val serverDir = shadowJarFile.toPath().parent.resolve(randomId)
 
             inputs.files(shadowJarFiles)
             outputs.dir(serverDir)
 
             val keyPair = System.getenv("EC2_KEYPAIR")
-            val serverJarPath = serverJar.absolutePath
             val domain = project.property("ec2_domain")?.toString()
-            val sshTarget = "ec2-user@$domain"
-            val serverDirPath = serverDir.toFile().absolutePath
-            val jarName = serverJar.name
+            val jarName = shadowJarFile.name
 
 
-            val sshCommandPrefix = "ssh -i $keyPair $sshTarget"
             val killCommand = "sudo killall java"
 
             val allJarsDir = "jars"
             val fullJarsDir = "~/$allJarsDir"
 
-//            val scpCommand = "scp -r -i $keyPair $serverDirPath $sshTarget:$fullJarsDir/"
             val relativeJarsDir = "./$allJarsDir"
             val removeCommand = "sudo find $relativeJarsDir -type f -not -path \"$relativeJarsDir/$randomId/*\" -delete"
             val cleanDirsCommand = "sudo find $fullJarsDir -empty -type d -delete"
@@ -177,62 +203,24 @@ tasks {
             // Kill old java process, remove all old files, delete empty directories
             val remoteCleanupCommand = "$killCommand ; $removeCommand && $cleanDirsCommand"
 
-            // Split cleanup command and java -jar command so the task will exit properly
-//            val sshCommand1 = "$sshCommandPrefix \"$remoteCleanupCommand\""
-//            val sshCommand2 = "$sshCommandPrefix \"$javaCommand\""
-
             doFirst {
                 if (keyPair == null) error("Environment variable EC2_KEYPAIR is not set!")
                 if (domain == null) error("Project variable ec2_domain is not set!")
 
                 // Create the server jar directory that will be transferred to the server
                 serverDir.toFile().mkdirs()
-                serverJar.copyTo(serverDir.resolve(serverJar.name).toFile())
+                shadowJarFile.copyTo(serverDir.resolve(shadowJarFile.name).toFile())
 
+                // SSH into ec2
+                // stop process
+                // delete everything
+                // scp new file
+                // start process
                 ssh(host = domain, username = "ec2-user", keyPair = File(keyPair)) {
                     scp(from = serverDir, to = fullJarsDir)
                     execute(remoteCleanupCommand)
                     execute(javaCommand)
                 }
-
-//                val ssh = SshClient("")
-//                ScpClient()
-
-//                runCommandToStd("testscript2.cmd")
-//                ByteArrayOutputStream().use { baos ->
-////                    runBlocking {
-////                        val job = launch {
-//                            exec {
-//                                commandLine = "scp -r -i C:\\Users\\natan\\Desktop\\GoogleDrivedSynced\\GoogleDriveBackup\\aws_secret\\AcEC2Pair.pem C:\\Users\\natan\\Desktop\\Crashy\\server\\build\\libs\\4872830908762331994 ec2-user@ec2-35-157-64-36.eu-central-1.compute.amazonaws.com:~/ac/".split(" ")
-//                                standardOutput = baos
-//                            }
-////                        }
-//
-//                    println ("Output:\n$baos")
-//
-////                        while(job.isActive){
-////                            println(baos.toString())
-////                            delay(500)
-////                        }
-////                    }
-//
-//                }
-//                println("done running command")
-
-//                runCommandToStd()
-
-//                println("Uploading server jar $serverJarPath to EC2 instance at $domain with id $randomId...")
-
-//
-////                runCommandToStd("amar")
-//
-//                println("Running '$scpCommand'")
-//                runCommandToStd(scpCommand)
-//                println("Uploaded server to $fullJarsDir in the EC2 instance, Running '$sshCommand1'")
-//                runCommandToStd( sshCommand1)
-//                println("Cleanup done, Running '$sshCommand2'")
-//                runCommandToStd( sshCommand2)
-//                println("Update successful.")
             }
 
         }
@@ -241,41 +229,6 @@ tasks {
 }
 
 fun String.trimNewlines() = replace("\n", "").replace("\r", "")
-
-//fun runCommandToStd(command: String) {
-//    println(command)
-//    val proc = Runtime.getRuntime().exec(command)
-//
-//    val inputStream: InputStream = proc.inputStream
-//    val inputStreamReader = InputStreamReader(inputStream)
-//    val bufferedReader = BufferedReader(inputStreamReader)
-//
-//    var line: String?
-//    while (bufferedReader.readLine().also { line = it } != null) {
-//        println(line) // it prints all at once after command has been executed.
-//    }
-//    proc.waitFor()
-//
-////    val proc = ProcessBuilder(*command.split(" ").toTypedArray())
-////        .inheritIO()
-////        .redirectOutput(Redirect.PIPE)
-////        .redirectError(Redirect.PIPE)
-////        .start()
-//
-////    inheritIO(proc.inputStream,System.out)
-////    inheritIO(proc.errorStream,System.err)
-////
-////    proc.waitFor(60, TimeUnit.MINUTES)
-//}
-//
-//fun inheritIO(src: java.io.InputStream, dest: java.io.PrintStream) {
-//    Thread {
-//        val sc = Scanner(src)
-//        while (sc.hasNextLine()) {
-//            dest.println(sc.nextLine())
-//        }
-//    }.start()
-//}
 
 fun runCommand(command: String): String {
     val parts = command.split("\\s".toRegex())
@@ -299,24 +252,30 @@ fun ssh(host: String, username: String, keyPair: File, session: SSHSession.() ->
 class SSHSession(private val ssh: SshClient) {
     fun scp(from: java.nio.file.Path, to: String) {
         println("Uploading ${from.toAbsolutePath()} to $to")
-        ProgressBarBuilder().setTaskName("Upload").setUpdateIntervalMillis(200).build().use { progressBar ->
-            ScpClient(ssh).put(from.toAbsolutePath().toString(), to, true, object : FileTransferProgress {
-                override fun started(bytesTotal: Long, remoteFile: String?) {
-                    progressBar.maxHint(bytesTotal)
-                }
+//        ProgressBarBuilder().setTaskName("Upload").setUpdateIntervalMillis(200).build().use { progressBar ->
+        ScpClient(ssh).put(from.toAbsolutePath().toString(), to, true, object : FileTransferProgress {
+            var bytesTotal = 0L
+            override fun started(bytesTotal: Long, remoteFile: String?) {
+                this.bytesTotal = bytesTotal
+//                    progressBar.maxHint(bytesTotal)
+            }
 
-                override fun isCancelled(): Boolean {
-                    return false
-                }
+            override fun isCancelled(): Boolean {
+                return false
+            }
 
-                override fun progressed(bytesSoFar: Long) {
-                    progressBar.stepTo(bytesSoFar)
-                }
+            override fun progressed(bytesSoFar: Long) {
+                println(
+                    "Uploaded $bytesSoFar/$bytesTotal bytes " +
+                            if (bytesTotal == 0L) "" else "(${bytesSoFar.toDouble() / bytesTotal}%)"
+                )
+//                    progressBar.stepTo(bytesSoFar)
+            }
 
-                override fun completed() {
-                }
-            })
-        }
+            override fun completed() {
+            }
+        })
+//        }
         println("Upload successful")
     }
 
