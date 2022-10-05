@@ -1,4 +1,3 @@
-import dayjs, {Dayjs} from "dayjs";
 
 export class Lazy<T> {
     private value: T | undefined
@@ -15,4 +14,3 @@ export class Lazy<T> {
         return this.value;
     }
 }
-

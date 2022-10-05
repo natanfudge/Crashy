@@ -1,9 +1,11 @@
 
 # Workplan:
 
+
 - Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff.
   - [ ] Implement SSL.
   - [ ] See if any ktor modules would be useful for us. 
+  - [ ] implement ssl
 - Implement upload crash, delete crash, mappings endpoints on EC2.
   -[ ] Implement tests for these, based off of ClientPlayground
   -[ ] Migrate client to support new endpoints
@@ -13,7 +15,7 @@
 - Experiment with templating the client, eventually serving the client merged with the crash data.
 
 # Important things to check
-- Website content is gzipped/brotli'd. It should work by pre-zipping JS files, templating HTML files (no zip) and also downloading 
+- Website content is gzipped/brotli'd. It should work by pre-zipping JS files and templating HTML files with the full crash data and the needed headers for SEO, Discord and stuff. 
 
 
 
