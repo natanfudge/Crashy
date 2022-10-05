@@ -48,8 +48,6 @@ repositories {
     maven(
         url = ("https://oss.sonatype.org/content/repositories/snapshots")
     )
-    maven(url = "https://maven.google.com/")
-
 
 }
 
@@ -58,21 +56,10 @@ val invoker = configurations.create("invoker")
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
-    r8("com.android.tools:r8:3.3.75")
 }
 
 
 tasks {
-//    register("progress") {
-//        doFirst {
-//            ProgressBarBuilder().setTaskName("Upload").setInitialMax(100) .setUpdateIntervalMillis(200).build().use { progressBar ->
-//                repeat(10){
-//                    progressBar.stepTo(it * 10L)
-//                    Thread.sleep(500)
-//                }
-//            }
-//        }
-//    }
 
     withType<Test> {
         useJUnit()
@@ -123,35 +110,6 @@ tasks {
 
             workingDir(shadowJarFile.parent)
             commandLine("java", "-jar", shadowJarFile.name)
-        }
-
-        val r8JarFile = shadowJarFile.parentFile.resolve(shadowJarFile.nameWithoutExtension + "-r8.jar")
-
-        val r8Jar = tasks.register<JavaExec>("r8Jar") {
-            group = "server"
-            val rules = file("src/main/proguard-rules.pro")
-            dependsOn(shadowJar)
-            inputs.file(shadowJarFile)
-            outputs.files(r8JarFile,rules)
-
-            classpath(r8)
-            mainClass.set("com.android.tools.r8.R8")
-            args = listOf(
-                "--release",
-                "--classfile",
-                "--output", r8JarFile.toString(),
-                "--pg-conf", rules.toString(),
-                "--lib", System.getProperty("java.home").toString(),
-                shadowJarFile.absolutePath
-            )
-        }
-
-        register<Exec>("runR8ServerJar") {
-            group = "server"
-            dependsOn(r8Jar)
-
-            workingDir(r8JarFile.parent)
-            commandLine("java", "-jar", r8JarFile.name)
         }
 
         /**
