@@ -48,6 +48,7 @@ class CrashlogCache(private val parentDir: Path) {
     private fun Path.lastAccessDay() =
     readAttributes<BasicFileAttributes>().lastAccessTime().toInstant().dayInGmt()
 
+
     fun get(id: CrashlogId): CompressedCrashlog {
         val crashFile = locationOfCrash(id)
         val today = currentDayInGmt()
