@@ -1,3 +1,4 @@
+import com.github.gradle.node.npm.task.NpmTask
 import com.sshtools.client.SessionChannelNG
 import com.sshtools.client.SshClient
 import com.sshtools.client.scp.ScpClient
@@ -16,8 +17,6 @@ buildscript {
 
     dependencies {
         classpath("com.sshtools:maverick-synergy-client:3.0.9")
-        classpath("me.tongfei:progressbar:0.9.4")
-
     }
 }
 plugins {
@@ -26,6 +25,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.test.logger)
     alias(libs.plugins.shadow)
+    id( "com.github.node-gradle.node") version "3.5.0"
+
 }
 
 application {
@@ -56,6 +57,12 @@ val invoker = configurations.create("invoker")
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
+    testImplementation("io.strikt:strikt-core:0.34.1")
+}
+
+val clientDir = projectDir.parentFile.resolve("client")
+node {
+    nodeProjectDir.set(clientDir)
 }
 
 
@@ -71,9 +78,10 @@ tasks {
      *
      * Requirement: NPM client project present in ../client
      */
-    val buildClient by register<Exec>("buildClient") {
+    val buildClient by register<NpmTask>("buildClient") {
         group = "client"
 
+//        dependsOn(npmInstall)
 
         inputs.dir("../client/src")
         inputs.dir("../client/public")
@@ -82,8 +90,9 @@ tasks {
 
         outputs.dir("../client/build")
 
-        workingDir("../client")
-        commandLine("npm", "run", "build")
+        args.set(listOf("run", "build"))
+//        workingDir("../client")
+//        commandLine("npm", "run", "build")
     }
 
 
