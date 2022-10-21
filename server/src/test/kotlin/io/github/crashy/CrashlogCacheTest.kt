@@ -43,7 +43,7 @@ class CrashlogCacheTest {
         expectThat(getBytes(id2)).isEqualTo(log2.bytes)
 
         advanceDays(10)
-        evictOld()
+        evictOld {_, _ ->}
 
         expectThat(getBytes(id1)).isEqualTo(log1.bytes)
         expectThat(getBytes(id2)).isEqualTo(log2.bytes)
@@ -54,27 +54,27 @@ class CrashlogCacheTest {
         testStore(id3, log3)
 
         advanceDays(15)
-        evictOld()
+        evictOld {_, _ ->}
 
         expectThat(getBytes(id1)).isEqualTo(log1.bytes)
         expectThat(getBytes(id2)).isEqualTo(log2.bytes)
         expectThat(getBytes(id3)).isEqualTo(log3.bytes)
 
         advanceDays(15)
-        evictOld()
+        evictOld {_, _ ->}
 
         expectThat(getBytes(id1)).isEqualTo(log1.bytes)
         expectThat(getBytes(id2)).isEqualTo(log2.bytes)
         expectThat(getBytes(id3)).isEqualTo(log3.bytes)
 
         advanceDays(20)
-        evictOld()
+        evictOld {_, _ ->}
 
         expectThat(getBytes(id1)).isEqualTo(log1.bytes)
         expectThat(getBytes(id2)).isEqualTo(log2.bytes)
 
         advanceDays(20)
-        evictOld()
+        evictOld {_, _ ->}
 
         expectThat(getBytes(id1)).isEqualTo(log1.bytes)
         expectThat(getBytes(id2)).isEqualTo(log2.bytes)
@@ -82,10 +82,10 @@ class CrashlogCacheTest {
 
 
         advanceDays(20)
-        evictOld()
+        evictOld {_, _ ->}
 
         advanceDays(20)
-        evictOld()
+        evictOld {_, _ ->}
 
         expectThat(getBytes(id1)).isEqualTo(null)
         expectThat(getBytes(id2)).isEqualTo(null)
@@ -99,8 +99,8 @@ class CrashlogCacheTest {
         test(cache, clock, dir)
     }
 
-    private context (CrashlogCache, TestClock, Path)
-    fun getBytes(id: CrashlogId): ByteArray? {
+     context (CrashlogCache, TestClock, Path)
+    private fun getBytes(id: CrashlogId): ByteArray? {
         val bytes = get(id)?.bytes
         if (bytes != null) {
             alignFileWithTestTime(id)

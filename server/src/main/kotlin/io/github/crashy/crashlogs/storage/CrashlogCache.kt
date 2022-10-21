@@ -35,20 +35,8 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         return CompressedCrashlog.read(crashFile)
     }
 
-    private fun updateLastAccessDay(crashFile: Path, id: CrashlogId) {
-        val today = clock.today()
-        val lastAccessDay = lastAccessDay(crashFile)
-        // Only update last access day if the new day (today) is actually different from the old last access time
-        if (lastAccessDay != today) {
-            // Delete old lastDay file and create a new one at the updated day
-            locationOfLastAccessDay(id, lastAccessDay).deleteExisting()
-            storeLastAccessDay(id, today)
-        }
-    }
-
-    fun evictOld() {
-        val existingDays =
-            lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
+    fun evictOld(onEvicted: (CrashlogId, CompressedCrashlog) -> Unit) {
+        val existingDays = lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
         val thirtyDaysAgo = clock.now().minusDays(30)
         val oldDays = existingDays.filter { it.toGmtZonedDateTime().isBefore(thirtyDaysAgo) }
         println("Evicting crashes from days: $oldDays")
@@ -60,7 +48,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
                 val crashId = CrashlogId.fromFileName(crashIdFile)
                 val crashFile = locationOfCrash(crashId)
                 // Archive crash to s3
-                archiveCrash(crashId, CompressedCrashlog.read(crashFile))
+                onEvicted(crashId, CompressedCrashlog.read(crashFile))
                 // Delete LastAccessDay -> crashId record from disk
                 crashIdFile.deleteExisting()
                 // Delete the crash file itself
@@ -70,9 +58,20 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         }
     }
 
-    private fun archiveCrash(id: CrashlogId, log: CompressedCrashlog) {
-        println("Vroom vroom stored $id in the cloud. ")
+    private fun updateLastAccessDay(crashFile: Path, id: CrashlogId) {
+        val today = clock.today()
+        val lastAccessDay = lastAccessDay(crashFile)
+        // Only update last access day if the new day (today) is actually different from the old last access time
+        if (lastAccessDay != today) {
+            // Delete old lastDay file and create a new one at the updated day
+            locationOfLastAccessDay(id, lastAccessDay).deleteExisting()
+            storeLastAccessDay(id, today)
+        }
     }
+
+//    private fun archiveCrash(id: CrashlogId, log: CompressedCrashlog) {
+//        println("Vroom vroom stored $id in the cloud. ")
+//    }
 
     private fun locationOfCrash(id: CrashlogId) = crashes.resolve(id.value.toString() + ".crash")
 
