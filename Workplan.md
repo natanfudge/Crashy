@@ -3,9 +3,7 @@
 
 
 - Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff.
-  - [ ] Implement SSL.
   - [ ] See if any ktor modules would be useful for us. 
-  - [ ] implement ssl
 - Implement upload crash, delete crash, mappings endpoints on EC2.
   -[ ] Implement tests for these, based off of ClientPlayground
   -[ ] Migrate client to support new endpoints

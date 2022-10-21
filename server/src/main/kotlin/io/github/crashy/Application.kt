@@ -18,16 +18,23 @@ fun main() {
             host = "0.0.0.0"
         }
         val keystorePassword = getKeystorePassword()
-        val keyStore = getKeystore(keystorePassword)
-        sslConnector(
-            keyStore = keyStore,
-            keyAlias = "sampleAlias",
-            keyStorePassword = { keystorePassword },
-            privateKeyPassword = { keystorePassword }
-        ) {
-            port = 443
-            host = "0.0.0.0"
+        if (keystorePassword != null) {
+            val keyStore = getKeystore(keystorePassword)
+            if (keyStore != null) {
+                sslConnector(
+                    keyStore = keyStore,
+                    keyAlias = "sampleAlias",
+                    keyStorePassword = { keystorePassword },
+                    privateKeyPassword = { keystorePassword }
+                ) {
+                    port = 443
+                    host = "0.0.0.0"
+                }
+            }
+        } else {
+            println("Warning: Could not find Keystore password, SSL will not be enabled.")
         }
+
         module {
             configureRouting()
             configureHTTP()
@@ -37,13 +44,13 @@ fun main() {
     embeddedServer(Netty, environment).start(wait = true)
 }
 
-private fun getKeystorePassword(): CharArray {
-    return Application::class.java.getResourceAsStream("/keystore_password.txt")!!
-        .readAllBytes().toString(Charset.defaultCharset()).toCharArray()
+private fun getKeystorePassword(): CharArray? {
+    return Application::class.java.getResourceAsStream("/keystore_password.txt")
+        ?.readAllBytes()?.toString(Charset.defaultCharset())?.toCharArray()
 }
 
-private fun getKeystore(password: CharArray): KeyStore {
-    val keystoreFile = Application::class.java.getResourceAsStream("/keystore.jks")
+private fun getKeystore(password: CharArray): KeyStore? {
+    val keystoreFile = Application::class.java.getResourceAsStream("/keystore.jks") ?: return null
     val keystore = KeyStore.getInstance(KeyStore.getDefaultType())
     keystore.load(keystoreFile, password)
     return keystore

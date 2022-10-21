@@ -17,6 +17,8 @@ buildscript {
     dependencies {
         classpath("com.sshtools:maverick-synergy-client:3.0.9")
         classpath("me.tongfei:progressbar:0.9.4")
+        classpath("io.objectbox:objectbox-gradle-plugin:3.4.0")
+
     }
 }
 plugins {
@@ -25,8 +27,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.test.logger)
     alias(libs.plugins.shadow)
+        id("io.objectbox") // Apply last.
 }
-val r8 = configurations.create("r8")
 
 application {
     mainClass.set("io.github.crashy.ApplicationKt")
@@ -83,7 +85,7 @@ tasks {
         outputs.dir("../client/build")
 
         workingDir("../client")
-        commandLine("cmd", "/c", "npm run build")
+        commandLine("npm", "run", "build")
     }
 
 
