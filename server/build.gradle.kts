@@ -17,7 +17,6 @@ buildscript {
     dependencies {
         classpath("com.sshtools:maverick-synergy-client:3.0.9")
         classpath("me.tongfei:progressbar:0.9.4")
-        classpath("io.objectbox:objectbox-gradle-plugin:3.4.0")
 
     }
 }
@@ -27,7 +26,6 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.test.logger)
     alias(libs.plugins.shadow)
-        id("io.objectbox") // Apply last.
 }
 
 application {
