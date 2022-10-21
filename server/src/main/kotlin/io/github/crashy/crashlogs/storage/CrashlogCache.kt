@@ -69,10 +69,6 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         }
     }
 
-//    private fun archiveCrash(id: CrashlogId, log: CompressedCrashlog) {
-//        println("Vroom vroom stored $id in the cloud. ")
-//    }
-
     private fun locationOfCrash(id: CrashlogId) = crashes.resolve(id.value.toString() + ".crash")
 
     private fun locationOfLastAccessDay(id: CrashlogId, lastAccessDay: LastAccessDay): Path {
