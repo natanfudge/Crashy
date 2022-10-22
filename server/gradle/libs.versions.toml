@@ -4,9 +4,9 @@
 
 main = [
     "ktor-core", "ktor-caching-headers", "ktor-compression", "ktor-default-headers", "ktor-call-logging",
-    "ktor-netty", "logback", "reflections",
+    "ktor-netty", "logback", "reflections", "s3"
 ]
-test = ["ktor-tests", "kotlin-test-junit"]
+test = ["ktor-tests", "kotlin-test-junit", "strikt"]
 
 [plugins]
 
@@ -14,15 +14,19 @@ kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 test-logger = { id = "com.adarshr.test-logger", version.ref = "test-logger" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+gradle-node = {id = "com.github.node-gradle.node", version.ref = "gradle-node"}
 
 [versions]
 
 ktor = "2.1.2"
 kotlin = "1.7.20"
-logback = "1.4.1"
+logback = "1.4.4"
 reflections = "0.10.2"
 shadow = "7.1.2"
 test-logger = "3.2.0"
+gradle-node = "3.5.0"
+aws = "0.17.8-beta"
+strikt = "0.34.1"
 
 [libraries]
 
@@ -36,3 +40,5 @@ logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "l
 reflections = { group = "org.reflections", name = "reflections", version.ref = "reflections" }
 ktor-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = "ktor" }
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlin" }
+s3 = {group = "aws.sdk.kotlin", name = "s3", version.ref = "aws"}
+strikt = {group = "io.strikt", name = "strikt-core", version.ref= "strikt"}

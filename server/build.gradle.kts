@@ -25,7 +25,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.test.logger)
     alias(libs.plugins.shadow)
-    id( "com.github.node-gradle.node") version "3.5.0"
+   alias(libs.plugins.gradle.node)
 
 }
 
@@ -57,7 +57,6 @@ val invoker = configurations.create("invoker")
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
-    testImplementation("io.strikt:strikt-core:0.34.1")
 }
 
 val clientDir = projectDir.parentFile.resolve("client")
@@ -70,6 +69,7 @@ tasks {
 
     withType<Test> {
         useJUnit()
+        jvmArgs("-Dfile.encoding=UTF-8")
     }
     /**
      * Name: Build Client

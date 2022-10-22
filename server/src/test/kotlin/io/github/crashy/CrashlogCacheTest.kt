@@ -1,6 +1,7 @@
 package io.github.crashy
 
 import io.github.crashy.crashlogs.storage.*
+import kotlinx.coroutines.runBlocking
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.nio.file.Files
@@ -25,8 +26,6 @@ class TestClock : NowDefinition {
 class CrashlogCacheTest {
     @Test
     fun testCache() = testScope {
-
-
         val id1 = CrashlogId.generate()
         expectThat(getBytes(id1)).isEqualTo(null)
 
@@ -92,11 +91,11 @@ class CrashlogCacheTest {
         expectThat(getBytes(id3)).isEqualTo(null)
     }
 
-    private fun testScope(test: context (CrashlogCache, TestClock, Path) () -> Unit) {
+    private fun testScope(test: suspend context (CrashlogCache, TestClock, Path) () -> Unit) {
         val clock = TestClock()
         val dir = Files.createTempDirectory("test")
         val cache = CrashlogCache(dir, clock)
-        test(cache, clock, dir)
+        runBlocking { test(cache, clock, dir) }
     }
 
      context (CrashlogCache, TestClock, Path)

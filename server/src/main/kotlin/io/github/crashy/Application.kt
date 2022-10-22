@@ -12,36 +12,37 @@ object Application
 
 fun main() {
     copyResourcesForServing()
-    val environment = applicationEngineEnvironment {
-        connector {
-            port = 80
-            host = "0.0.0.0"
-        }
-        val keystorePassword = getKeystorePassword()
-        if (keystorePassword != null) {
-            val keyStore = getKeystore(keystorePassword)
-            if (keyStore != null) {
-                sslConnector(
-                    keyStore = keyStore,
-                    keyAlias = "sampleAlias",
-                    keyStorePassword = { keystorePassword },
-                    privateKeyPassword = { keystorePassword }
-                ) {
-                    port = 443
-                    host = "0.0.0.0"
-                }
-            }
-        } else {
-            println("Warning: Could not find Keystore password, SSL will not be enabled.")
-        }
+    embeddedServer(Netty, createAppEnvironment()).start(wait = true)
+}
 
-        module {
-            configureRouting()
-            configureHTTP()
-            configureMonitoring()
-        }
+private fun createAppEnvironment() = applicationEngineEnvironment {
+    connector {
+        port = 80
+        host = "0.0.0.0"
     }
-    embeddedServer(Netty, environment).start(wait = true)
+    val keystorePassword = getKeystorePassword()
+    if (keystorePassword != null) {
+        val keyStore = getKeystore(keystorePassword)
+        if (keyStore != null) {
+            sslConnector(
+                keyStore = keyStore,
+                keyAlias = "sampleAlias",
+                keyStorePassword = { keystorePassword },
+                privateKeyPassword = { keystorePassword }
+            ) {
+                port = 443
+                host = "0.0.0.0"
+            }
+        }
+    } else {
+        println("Warning: Could not find Keystore password, SSL will not be enabled.")
+    }
+
+    module {
+        configureRouting()
+        configureHTTP()
+        configureMonitoring()
+    }
 }
 
 private fun getKeystorePassword(): CharArray? {

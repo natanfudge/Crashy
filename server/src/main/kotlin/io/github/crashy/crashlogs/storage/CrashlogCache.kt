@@ -1,5 +1,7 @@
 package io.github.crashy.crashlogs.storage
 
+import aws.smithy.kotlin.runtime.content.ByteStream
+import aws.smithy.kotlin.runtime.content.toByteArray
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.*
@@ -35,7 +37,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         return CompressedCrashlog.read(crashFile)
     }
 
-    fun evictOld(onEvicted: (CrashlogId, CompressedCrashlog) -> Unit) {
+    suspend fun evictOld(onEvicted: suspend (CrashlogId, CompressedCrashlog) -> Unit) {
         val existingDays = lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
         val thirtyDaysAgo = clock.now().minusDays(30)
         val oldDays = existingDays.filter { it.toGmtZonedDateTime().isBefore(thirtyDaysAgo) }
@@ -49,6 +51,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
                 val crashFile = locationOfCrash(crashId)
                 // Archive crash to s3
                 onEvicted(crashId, CompressedCrashlog.read(crashFile))
+                println("Archived $crashId to S3.")
                 // Delete LastAccessDay -> crashId record from disk
                 crashIdFile.deleteExisting()
                 // Delete the crash file itself
@@ -93,13 +96,19 @@ inline class CrashlogId private constructor(val value: UUID) {
     companion object {
         fun fromFileName(path: Path) = CrashlogId(UUID.fromString(path.nameWithoutExtension))
         fun generate() = CrashlogId(UUID.randomUUID())
+
+        fun fromString(string: String) = CrashlogId(UUID.fromString(string))
     }
 }
 
 inline class CompressedCrashlog private constructor(val bytes: ByteArray) {
+    override fun toString(): String  = "${bytes.size} bytes [${bytes.take(5).joinToString(",")}...]"
     companion object {
         fun read(path: Path): CompressedCrashlog {
             return CompressedCrashlog(path.readBytes())
+        }
+        suspend fun read(byteStream: ByteStream): CompressedCrashlog {
+            return CompressedCrashlog(byteStream.toByteArray())
         }
 
         fun createRandom() = CompressedCrashlog(Random.nextBytes(100))
