@@ -9,7 +9,7 @@
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
         <option name="gradleHome" value="$PROJECT_DIR$/../../../../gradle-7.5-bin/gradle-7.5" />
-        <option name="gradleJvm" value="corretto-17" />
+        <option name="gradleJvm" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/server" />
