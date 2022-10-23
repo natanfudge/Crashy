@@ -10,3 +10,5 @@ lib/
 .gradle/
 aws/generated
 build/
+server/src/main/resources/keystore.jks
+server/src/main/resources/keystore_password.txt
