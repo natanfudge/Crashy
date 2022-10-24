@@ -2,6 +2,8 @@ package io.github.crashy.crashlogs.storage
 
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.toByteArray
+import io.github.crashy.utils.UUIDSerializer
+import kotlinx.serialization.Serializable
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.*
@@ -14,13 +16,13 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
     // Full compressed crash logs are stored under /crashlogs, with their ID as the file name
-    private val crashes = parentDir.resolve("crashlogs").createDirectory()
+    private val crashes = parentDir.resolve("crashlogs").createDirectories()
 
     // The last day that crash logs were accessed are stored under /last_access, with a separate directory for each day
     // containing the ID of logs that their last access day is equal to said day as the file name.
     // This allows quickly figuring out which logs have not been accessed in a long time.
     // Days are in GMT.
-    private val lastAccessDays = parentDir.resolve("last_access").createDirectory()
+    private val lastAccessDays = parentDir.resolve("last_access").createDirectories()
     fun store(id: CrashlogId, log: CompressedCrashlog) {
         val crashFile = locationOfCrash(id)
 
@@ -91,8 +93,8 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 
 }
 
-
-inline class CrashlogId private constructor(val value: UUID) {
+@Serializable
+inline class CrashlogId private constructor(@Serializable(with = UUIDSerializer::class) val value: UUID) {
     companion object {
         fun fromFileName(path: Path) = CrashlogId(UUID.fromString(path.nameWithoutExtension))
         fun generate() = CrashlogId(UUID.randomUUID())

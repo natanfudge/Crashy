@@ -4,7 +4,8 @@
 
 main = [
     "ktor-core", "ktor-caching-headers", "ktor-compression", "ktor-default-headers", "ktor-call-logging",
-    "ktor-netty", "logback", "reflections", "s3"
+    "ktor-server-serialization", "kotlinx-serialization-json", "ktor-server-content-negotiation",
+    "ktor-netty", "logback", "reflections", "s3", "ktor-server-resources"
 ]
 test = ["ktor-tests", "kotlin-test-junit", "strikt"]
 
@@ -27,6 +28,7 @@ test-logger = "3.2.0"
 gradle-node = "3.5.0"
 aws = "0.17.8-beta"
 strikt = "0.34.1"
+kotlin-serialization = "1.4.1"
 
 [libraries]
 
@@ -42,3 +44,7 @@ ktor-tests = { group = "io.ktor", name = "ktor-server-tests-jvm", version.ref = 
 kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlin" }
 s3 = {group = "aws.sdk.kotlin", name = "s3", version.ref = "aws"}
 strikt = {group = "io.strikt", name = "strikt-core", version.ref= "strikt"}
+ktor-server-resources = {group = "io.ktor", name = "ktor-server-resources", version.ref= "ktor"}
+ktor-server-serialization = {group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref= "ktor"}
+ktor-server-content-negotiation = {group = "io.ktor", name = "ktor-server-content-negotiation", version.ref= "ktor"}
+kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref= "kotlin-serialization"}

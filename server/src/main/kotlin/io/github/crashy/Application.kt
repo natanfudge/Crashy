@@ -3,8 +3,13 @@ package io.github.crashy
 import io.github.crashy.plugins.configureHTTP
 import io.github.crashy.plugins.configureMonitoring
 import io.github.crashy.plugins.configureRouting
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
+import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.resources.*
 import java.nio.charset.Charset
 import java.security.KeyStore
 
@@ -39,6 +44,10 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
     }
 
     module {
+        install(ContentNegotiation) {
+            json()
+        }
+        install(Resources)
         configureRouting()
         configureHTTP()
         configureMonitoring()

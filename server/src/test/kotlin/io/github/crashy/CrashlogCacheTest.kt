@@ -91,7 +91,7 @@ class CrashlogCacheTest {
         expectThat(getBytes(id3)).isEqualTo(null)
     }
 
-    private fun testScope(test: suspend context (CrashlogCache, TestClock, Path) () -> Unit) {
+    private inline fun testScope(crossinline test: suspend context (CrashlogCache, TestClock, Path) () -> Unit) {
         val clock = TestClock()
         val dir = Files.createTempDirectory("test")
         val cache = CrashlogCache(dir, clock)

@@ -89,7 +89,7 @@ class CrashlogStorageTest {
         expectThat(get(CrashlogId.fromString("7fc76c2f-5dc0-402f-bec8-4869d86ef3f3"))).isEqualTo(GetCrashlogResponse.Archived)
     }
 
-    private fun testScope(test: suspend context (CrashlogStorage, TestClock, Path) () -> Unit) {
+    private inline fun testScope(crossinline test: suspend context (CrashlogStorage, TestClock, Path) () -> Unit) {
         runBlocking {
             val clock = TestClock()
             val dir = withContext(Dispatchers.IO) {
