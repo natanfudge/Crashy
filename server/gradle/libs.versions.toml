@@ -5,9 +5,9 @@
 main = [
     "ktor-core", "ktor-caching-headers", "ktor-compression", "ktor-default-headers", "ktor-call-logging",
     "ktor-server-serialization", "kotlinx-serialization-json", "ktor-server-content-negotiation",
-    "ktor-netty", "logback", "reflections", "s3", "ktor-server-resources"
+    "ktor-netty", "logback", "reflections", "s3", "ktor-server-resources",
 ]
-test = ["ktor-tests", "kotlin-test-junit", "strikt"]
+test = ["ktor-tests", "kotlin-test-junit", "strikt", "okhttp"]
 
 [plugins]
 
@@ -29,6 +29,7 @@ gradle-node = "3.5.0"
 aws = "0.17.9-beta"
 strikt = "0.34.1"
 kotlin-serialization = "1.4.1"
+okhttp = "5.0.0-alpha.10"
 
 [libraries]
 
@@ -48,3 +49,4 @@ ktor-server-resources = {group = "io.ktor", name = "ktor-server-resources", vers
 ktor-server-serialization = {group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref= "ktor"}
 ktor-server-content-negotiation = {group = "io.ktor", name = "ktor-server-content-negotiation", version.ref= "ktor"}
 kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref= "kotlin-serialization"}
+okhttp = {group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}

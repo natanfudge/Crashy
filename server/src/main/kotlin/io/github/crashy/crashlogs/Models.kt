@@ -49,10 +49,11 @@ inline class CrashlogId private constructor(@Serializable(with = UUIDSerializer:
 }
 
 
-interface CrashlogEntry {
+sealed interface CrashlogEntry {
     fun copyLog(): ByteArray
     val deletionKey: DeletionKey
     fun writeToFile(path: Path)
+
 
     class ContiguousArrayBacked(val bytes: ByteArray) : CrashlogEntry {
         override fun writeToFile(path: Path) {
@@ -94,9 +95,10 @@ interface CrashlogEntry {
 
 
 }
-
 enum class DeleteCrashResult {
     Success,
     NoSuchId,
-    IncorrectDeletionKey
+    IncorrectDeletionKey;
+
+    fun responseString() = name
 }

@@ -36,10 +36,10 @@ class CrashlogStorage private constructor(
         cache.store(id, log)
     }
 
-    suspend fun get(id: CrashlogId): GetCrashlogResponse {
+    suspend fun get(id: CrashlogId): GetCrashlogResult {
         // First try to get it from the locally stored logs
         val cachedResult = cache.get(id)
-        if (cachedResult != null) return GetCrashlogResponse.Success(cachedResult)
+        if (cachedResult != null) return GetCrashlogResult.Success(cachedResult)
         // Then try to get it from the S3 storage
         try {
             val s3Key = id.s3Key()
@@ -50,7 +50,7 @@ class CrashlogStorage private constructor(
                     key = s3Key
                 }
             } catch (e: NoSuchKey) {
-                return GetCrashlogResponse.DoesNotExist
+                return GetCrashlogResult.DoesNotExist
             }
 
             // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
@@ -63,10 +63,10 @@ class CrashlogStorage private constructor(
                 key = s3Key
             }
 
-            return GetCrashlogResponse.Success(crashlog)
+            return GetCrashlogResult.Success(crashlog)
         } catch (e: InvalidObjectState) {
             //TODO: implement restoration
-            return GetCrashlogResponse.Archived
+            return GetCrashlogResult.Archived
         }
     }
 
@@ -92,13 +92,13 @@ class CrashlogStorage private constructor(
     }
 }
 
-sealed interface GetCrashlogResponse {
-    class Success(val log: CrashlogEntry) : GetCrashlogResponse
-    object DoesNotExist : GetCrashlogResponse {
+sealed interface GetCrashlogResult {
+    class Success(val log: CrashlogEntry) : GetCrashlogResult
+    object DoesNotExist : GetCrashlogResult {
         override fun toString(): String = "GetCrashlogResponse.DoesNotExist"
     }
 
-    object Archived : GetCrashlogResponse {
+    object Archived : GetCrashlogResult {
         override fun toString(): String = "GetCrashlogResponse.Archived"
     }
 }

@@ -5,7 +5,7 @@ import io.github.crashy.crashlogs.CrashlogId
 import io.github.crashy.crashlogs.DeleteCrashResult
 import io.github.crashy.crashlogs.DeletionKey
 import io.github.crashy.crashlogs.storage.CrashlogStorage
-import io.github.crashy.crashlogs.storage.GetCrashlogResponse
+import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -24,7 +24,7 @@ class CrashlogStorageTest {
     @Test
     fun testStorage() = testScope {
         val id1 = CrashlogId.generate()
-        expectThat(get(id1)).isEqualTo(GetCrashlogResponse.DoesNotExist)
+        expectThat(get(id1)).isEqualTo(GetCrashlogResult.DoesNotExist)
 
         val log1 = createLog()
         testStore(id1, log1)
@@ -32,7 +32,7 @@ class CrashlogStorageTest {
         checkBytes(id1, log1)
 
         val id2 = CrashlogId.generate()
-        expectThat(get(id2)).isEqualTo(GetCrashlogResponse.DoesNotExist)
+        expectThat(get(id2)).isEqualTo(GetCrashlogResult.DoesNotExist)
 
         val log2 = createLog()
         testStore(id2, log2)
@@ -98,15 +98,15 @@ class CrashlogStorageTest {
         expectThat(testDelete(id1, log1.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
         expectThat(testDelete(id2, log2.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
         expectThat(testDelete(id3, log3.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
-        expectThat(get(id1)).isEqualTo(GetCrashlogResponse.DoesNotExist)
-        expectThat(get(id2)).isEqualTo(GetCrashlogResponse.DoesNotExist)
-        expectThat(get(id3)).isEqualTo(GetCrashlogResponse.DoesNotExist)
+        expectThat(get(id1)).isEqualTo(GetCrashlogResult.DoesNotExist)
+        expectThat(get(id2)).isEqualTo(GetCrashlogResult.DoesNotExist)
+        expectThat(get(id3)).isEqualTo(GetCrashlogResult.DoesNotExist)
 
     }
 
     @Test
     fun testArchived() = testScope {
-        expectThat(get(CrashlogId.fromString("7fc76c2f-5dc0-402f-bec8-4869d86ef3f3"))).isEqualTo(GetCrashlogResponse.Archived)
+        expectThat(get(CrashlogId.fromString("7fc76c2f-5dc0-402f-bec8-4869d86ef3f3"))).isEqualTo(GetCrashlogResult.Archived)
     }
 
     private inline fun testScope(crossinline test: suspend context (CrashlogStorage, TestClock, Path) () -> Unit) {
@@ -135,12 +135,12 @@ class CrashlogStorageTest {
     context (CrashlogStorage, TestClock, Path)
             private suspend fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
         val result = get(id)
-        if (result is GetCrashlogResponse.Success) {
+        if (result is GetCrashlogResult.Success) {
             alignFileWithTestTime(id)
         }
         expectThat(result)
-            .isA<GetCrashlogResponse.Success>()
-            .get(GetCrashlogResponse.Success::log)
+            .isA<GetCrashlogResult.Success>()
+            .get(GetCrashlogResult.Success::log)
             .and {
                 get(CrashlogEntry::copyLog).isEqualTo(log.copyLog())
                 get(CrashlogEntry::deletionKey).isEqualTo(log.deletionKey)
