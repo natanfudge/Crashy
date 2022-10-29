@@ -10,23 +10,17 @@ import kotlin.io.path.readAttributes
 
 // Used mainly for testing, so we can emulate advancement of time.
 interface NowDefinition {
-//    fun today(): LastAccessDay
     fun now(): ZonedDateTime
 }
 
 fun NowDefinition.today() = LastAccessDay.fromDate(now())
 
 object RealClock: NowDefinition {
-//    override fun today(): LastAccessDay =
     override fun now(): ZonedDateTime = ZonedDateTime.now(utc)
 }
 
  data class LastAccessDay(val day: Int, val month: Int, val year: Int) {
      override fun toString(): String  = "$day/$month/$year"
-//    override fun toString(): String {
-//        return
-//    }
-//
      fun toFileName() = Path("${day}_${month}_${year}")
 
 
@@ -42,7 +36,6 @@ object RealClock: NowDefinition {
             LastAccessDay(day = dateTime.dayOfMonth, month = dateTime.monthValue, year = dateTime.year)
     }
 }
-//fun nowUtc(): ZonedDateTime = ZonedDateTime.now(utc)
 
 private val utc = ZoneId.of("UTC")
 

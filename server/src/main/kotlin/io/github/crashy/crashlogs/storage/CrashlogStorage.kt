@@ -7,7 +7,10 @@ import aws.sdk.kotlin.services.s3.model.InvalidObjectState
 import aws.sdk.kotlin.services.s3.model.NoSuchKey
 import aws.sdk.kotlin.services.s3.putObject
 import aws.smithy.kotlin.runtime.content.ByteStream
-import io.github.crashy.runDir
+import io.github.crashy.crashlogs.CrashlogEntry
+import io.github.crashy.crashlogs.CrashlogId
+import io.github.crashy.crashlogs.DeleteCrashResult
+import io.github.crashy.crashlogs.DeletionKey
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 
@@ -28,7 +31,8 @@ class CrashlogStorage private constructor(
     }
 
     private val cache = CrashlogCache(parentDir = runDir.resolve("cache").createDirectories(), clock)
-    fun store(id: CrashlogId, log: CompressedCrashlog) {
+
+    fun store(id: CrashlogId, log: CrashlogEntry) {
         cache.store(id, log)
     }
 
@@ -52,7 +56,7 @@ class CrashlogStorage private constructor(
             // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
             val body = s3Result.body ?: error("Could not get crashlog body")
 
-            val crashlog = CompressedCrashlog.read(body)
+            val crashlog = CrashlogEntry.read(body)
             cache.store(id, crashlog)
             s3.deleteObject {
                 bucket = bucketName
@@ -66,13 +70,19 @@ class CrashlogStorage private constructor(
         }
     }
 
+    fun delete(id: CrashlogId, key: DeletionKey): DeleteCrashResult {
+        // Technically the entry could only exist on the S3, but if the user requested to delete the crash he had
+        // to have viewed it just now, which means he pulled it out of the S3 into the cache.
+        return cache.delete(id, key)
+    }
+
     suspend fun evictOld() {
         cache.evictOld { id, log ->
             // Once objects are evicted from the cache, we store them on the S3.
             s3.putObject {
                 bucket = bucketName
                 key = id.s3Key()
-                body = log.toByteStream()
+                body = ByteStream.fromBytes(log.bytes)
             }
         }
     }
@@ -83,7 +93,7 @@ class CrashlogStorage private constructor(
 }
 
 sealed interface GetCrashlogResponse {
-    data class Success(val log: CompressedCrashlog) : GetCrashlogResponse
+    class Success(val log: CrashlogEntry) : GetCrashlogResponse
     object DoesNotExist : GetCrashlogResponse {
         override fun toString(): String = "GetCrashlogResponse.DoesNotExist"
     }
@@ -94,7 +104,7 @@ sealed interface GetCrashlogResponse {
 }
 
 private fun CrashlogId.s3Key() = value.toString()
-private fun CompressedCrashlog.toByteStream() = ByteStream.fromBytes(bytes)
+//private fun CompressedCrashlog.toByteStream() = ByteStream.fromBytes(bytes)
 
 // Fix up the weird s3 kotlin api
 private suspend fun S3Client.getObject(requestBuilder: GetObjectRequest.Builder.() -> Unit) =

@@ -2,9 +2,8 @@ package io.github.crashy
 
 import io.github.crashy.plugins.configureHTTP
 import io.github.crashy.plugins.configureMonitoring
-import io.github.crashy.plugins.configureRouting
+import io.github.crashy.configureRouting
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.application.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -13,7 +12,7 @@ import io.ktor.server.resources.*
 import java.nio.charset.Charset
 import java.security.KeyStore
 
-object Application
+object App
 
 fun main() {
     copyResourcesForServing()
@@ -55,12 +54,12 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
 }
 
 private fun getKeystorePassword(): CharArray? {
-    return Application::class.java.getResourceAsStream("/keystore_password.txt")
+    return App::class.java.getResourceAsStream("/keystore_password.txt")
         ?.readAllBytes()?.toString(Charset.defaultCharset())?.toCharArray()
 }
 
 private fun getKeystore(password: CharArray): KeyStore? {
-    val keystoreFile = Application::class.java.getResourceAsStream("/keystore.jks") ?: return null
+    val keystoreFile = App::class.java.getResourceAsStream("/keystore.jks") ?: return null
     val keystore = KeyStore.getInstance(KeyStore.getDefaultType())
     keystore.load(keystoreFile, password)
     return keystore

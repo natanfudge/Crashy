@@ -1,13 +1,11 @@
 package io.github.crashy.crashlogs.storage
 
-import aws.smithy.kotlin.runtime.content.ByteStream
-import aws.smithy.kotlin.runtime.content.toByteArray
-import io.github.crashy.utils.UUIDSerializer
-import kotlinx.serialization.Serializable
+import io.github.crashy.crashlogs.CrashlogEntry
+import io.github.crashy.crashlogs.CrashlogId
+import io.github.crashy.crashlogs.DeleteCrashResult
+import io.github.crashy.crashlogs.DeletionKey
 import java.nio.file.Path
-import java.util.*
 import kotlin.io.path.*
-import kotlin.random.Random
 
 
 class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
@@ -23,23 +21,46 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     // This allows quickly figuring out which logs have not been accessed in a long time.
     // Days are in GMT.
     private val lastAccessDays = parentDir.resolve("last_access").createDirectories()
-    fun store(id: CrashlogId, log: CompressedCrashlog) {
+    fun store(id: CrashlogId, log: CrashlogEntry) {
         val crashFile = locationOfCrash(id)
 
-        crashFile.writeBytes(log.bytes)
+        log.writeToFile(crashFile)
         storeLastAccessDay(id, clock.today())
     }
 
 
-    fun get(id: CrashlogId): CompressedCrashlog? {
+    fun get(id: CrashlogId): CrashlogEntry? {
         val crashFile = locationOfCrash(id)
         if (!crashFile.exists()) return null
 
-        updateLastAccessDay(crashFile, id)
-        return CompressedCrashlog.read(crashFile)
+        updateLastAccessDay(id, oldLastAccessDay = lastAccessDay(crashFile))
+        return CrashlogEntry.read(crashFile)
     }
 
-    suspend fun evictOld(onEvicted: suspend (CrashlogId, CompressedCrashlog) -> Unit) {
+    /**
+     * Returns true if something was deleted
+     */
+    fun delete(id: CrashlogId, key: DeletionKey): DeleteCrashResult {
+        val crashFile = locationOfCrash(id)
+        if (!crashFile.exists()) return DeleteCrashResult.NoSuchId
+
+        val oldLastAccessDay = lastAccessDay(crashFile)
+        val correctKey = CrashlogEntry.peekDeletionKey(crashFile)
+        if (key != correctKey) {
+            updateLastAccessDay(id, oldLastAccessDay)
+            return DeleteCrashResult.IncorrectDeletionKey
+        }
+
+        deleteLastAccessDay(id, oldLastAccessDay)
+        crashFile.deleteExisting()
+        return DeleteCrashResult.Success
+    }
+
+    private fun deleteLastAccessDay(id: CrashlogId, lastAccessDay: LastAccessDay) {
+        locationOfLastAccessDay(id, lastAccessDay).deleteExisting()
+    }
+
+    suspend fun evictOld(onEvicted: suspend (CrashlogId, CrashlogEntry.ContiguousArrayBacked) -> Unit) {
         val existingDays = lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
         val thirtyDaysAgo = clock.now().minusDays(30)
         val oldDays = existingDays.filter { it.toGmtZonedDateTime().isBefore(thirtyDaysAgo) }
@@ -52,7 +73,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
                 val crashId = CrashlogId.fromFileName(crashIdFile)
                 val crashFile = locationOfCrash(crashId)
                 // Archive crash to s3
-                onEvicted(crashId, CompressedCrashlog.read(crashFile))
+                onEvicted(crashId, CrashlogEntry.read(crashFile))
                 println("Archived $crashId to S3.")
                 // Delete LastAccessDay -> crashId record from disk
                 crashIdFile.deleteExisting()
@@ -63,13 +84,12 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         }
     }
 
-    private fun updateLastAccessDay(crashFile: Path, id: CrashlogId) {
+    private fun updateLastAccessDay(id: CrashlogId, oldLastAccessDay: LastAccessDay) {
         val today = clock.today()
-        val lastAccessDay = lastAccessDay(crashFile)
         // Only update last access day if the new day (today) is actually different from the old last access time
-        if (lastAccessDay != today) {
+        if (oldLastAccessDay != today) {
             // Delete old lastDay file and create a new one at the updated day
-            locationOfLastAccessDay(id, lastAccessDay).deleteExisting()
+            locationOfLastAccessDay(id, oldLastAccessDay).deleteExisting()
             storeLastAccessDay(id, today)
         }
     }
@@ -92,30 +112,5 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
 }
-
-@Serializable
-inline class CrashlogId private constructor(@Serializable(with = UUIDSerializer::class) val value: UUID) {
-    companion object {
-        fun fromFileName(path: Path) = CrashlogId(UUID.fromString(path.nameWithoutExtension))
-        fun generate() = CrashlogId(UUID.randomUUID())
-
-        fun fromString(string: String) = CrashlogId(UUID.fromString(string))
-    }
-}
-
-inline class CompressedCrashlog private constructor(val bytes: ByteArray) {
-    override fun toString(): String  = "${bytes.size} bytes [${bytes.take(5).joinToString(",")}...]"
-    companion object {
-        fun read(path: Path): CompressedCrashlog {
-            return CompressedCrashlog(path.readBytes())
-        }
-        suspend fun read(byteStream: ByteStream): CompressedCrashlog {
-            return CompressedCrashlog(byteStream.toByteArray())
-        }
-
-        fun createRandom() = CompressedCrashlog(Random.nextBytes(100))
-    }
-}
-
 
 

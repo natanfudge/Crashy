@@ -19,14 +19,14 @@ gradle-node = {id = "com.github.node-gradle.node", version.ref = "gradle-node"}
 
 [versions]
 
-ktor = "2.1.2"
+ktor = "2.1.3"
 kotlin = "1.7.20"
 logback = "1.4.4"
 reflections = "0.10.2"
 shadow = "7.1.2"
 test-logger = "3.2.0"
 gradle-node = "3.5.0"
-aws = "0.17.8-beta"
+aws = "0.17.9-beta"
 strikt = "0.34.1"
 kotlin-serialization = "1.4.1"
 

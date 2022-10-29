@@ -1,25 +1,11 @@
 package io.github.crashy.crashlogs
 
-import io.github.crashy.crashlogs.storage.CrashlogId
+import io.github.crashy.crashlogs.storage.CrashlogStorage
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 
 
 typealias UploadCrashlogRequest = ByteArray
 
-@Serializable
-inline class DeletionKey private constructor(val value: String) {
-    companion object {
-        const val Length = 6
-        private val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-        fun generate() = buildString {
-            repeat(Length) {
-                append(characters.random())
-            }
-        }
-    }
-}
-val CrashyJson = Json
 sealed interface UploadCrashlogResponse {
     fun responseString(): String
     @Serializable
@@ -36,10 +22,9 @@ sealed interface UploadCrashlogResponse {
          * A crashy.net url that displays the crash that was just uploaded.
          */
         val crashyUrl: String
-        ): UploadCrashlogResponse {
+    ): UploadCrashlogResponse {
         override fun responseString() = CrashyJson.encodeToString(serializer(), this)
     }
-//    "Too Large" | "Invalid Crash"
     /**
      *The compressed size of the crash is too large (>100KB). We don't allow this to avoid overloading the server/storage.
      */
@@ -55,11 +40,17 @@ sealed interface UploadCrashlogResponse {
     }
 }
 
-
-
-class CrashlogApi {
+private const val MaxCrashSize = 100_000
+class CrashlogApi(private val logs: CrashlogStorage) {
     fun uploadCrash(request: UploadCrashlogRequest): UploadCrashlogResponse {
+        if(request.size > MaxCrashSize) return UploadCrashlogResponse.CrashTooLargeError
 
+        val id = CrashlogId.generate()
+        //TODO: validate log
+        val key = DeletionKey.generate()
+        logs.store(id = id, log = CrashlogEntry.create(request, key))
+
+        return UploadCrashlogResponse.Success(id, deletionKey = key, crashyUrl = "https://crashy.net/${id.value}")
     }
 }
 
