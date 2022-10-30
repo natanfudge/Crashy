@@ -2,13 +2,14 @@ package io.github.crashy.crashlogs
 
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
+import java.net.HttpURLConnection
 
 
 typealias UploadCrashlogRequest = ByteArray
 
-sealed interface UploadCrashlogResponse {
-    fun responseString(): String
+sealed interface UploadCrashlogResponse: Response {
 
     @Serializable
     data class Success(
@@ -26,6 +27,7 @@ sealed interface UploadCrashlogResponse {
         val crashyUrl: String
     ) : UploadCrashlogResponse {
         override fun responseString() = CrashyJson.encodeToString(serializer(), this)
+        override val statusCode: HttpStatusCode get()= HttpStatusCode.OK
     }
 
     /**
@@ -33,14 +35,16 @@ sealed interface UploadCrashlogResponse {
      */
     object CrashTooLargeError : UploadCrashlogResponse {
         override fun responseString() = "Too Large"
+        override val statusCode: HttpStatusCode = HttpStatusCode.PayloadTooLarge
     }
-
-    /**
-     * The crash is in an invalid format. We don't allow storing just any text, because that's not the purpose of Crashy.
-     */
-    object InvalidCrashError : UploadCrashlogResponse {
-        override fun responseString(): String = "Invalid Crash"
-    }
+//
+//    /**
+//     * The crash is in an invalid format. We don't allow storing just any text, because that's not the purpose of Crashy.
+//     */
+//    object InvalidCrashError : UploadCrashlogResponse {
+//        override fun responseString(): String = "Invalid Crash"
+//        override val statusCode: Int = HttpURLConnection.HTTP_ENTITY_TOO_LARGE
+//    }
 }
 
 private const val MaxCrashSize = 100_000
@@ -49,6 +53,11 @@ typealias GetCrashRequest = CrashlogId
 
 @Serializable
 data class DeleteCrashlogRequest(val id: CrashlogId, val key: DeletionKey)
+
+interface Response {
+    fun responseString(): String
+    val statusCode: HttpStatusCode
+}
 
 
 class CrashlogApi(private val logs: CrashlogStorage) {

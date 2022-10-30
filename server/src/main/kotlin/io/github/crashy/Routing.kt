@@ -1,15 +1,14 @@
 package io.github.crashy
 
-import io.github.crashy.crashlogs.CrashlogApi
-import io.github.crashy.crashlogs.DeleteCrashlogRequest
-import io.github.crashy.crashlogs.GetCrashRequest
-import io.github.crashy.crashlogs.UploadCrashlogRequest
+import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
+import io.ktor.server.plugins.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.pipeline.*
 import kotlinx.coroutines.runBlocking
 
 fun Application.configureRouting() {
@@ -20,13 +19,13 @@ fun Application.configureRouting() {
     val api = CrashlogApi(logStorage)
 
     routing {
-        post<UploadCrashlogRequest>("/uploadCrash"){
-            call.respondText(api.uploadCrash(it).responseString())
+        handle<UploadCrashlogRequest>("/uploadCrash"){
+            respondResponse(api.uploadCrash(it))
         }
-        post<DeleteCrashlogRequest>("/deleteCrash"){
-            call.respondText(api.deleteCrash(it).responseString())
+        handle<DeleteCrashlogRequest>("/deleteCrash"){
+            respondResponse(api.deleteCrash(it))
         }
-        post<GetCrashRequest>("/getCrash"){
+        handle<GetCrashRequest>("/getCrash"){
             call.respondBytes(api.getCrash(it))
         }
         preCompressed {
@@ -36,4 +35,15 @@ fun Application.configureRouting() {
             }
         }
     }
+}
+
+private inline fun<reified T: Any> Routing.handle(path: String, crossinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit) {
+    post<T>(path) {
+//        println("IP:" + call.request.origin.)
+        body(it)
+    }
+}
+
+private suspend fun  PipelineContext<Unit, ApplicationCall>.respondResponse(response: Response) {
+    call.respondText(response.responseString(), status = response.statusCode)
 }

@@ -4,6 +4,7 @@ import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.toByteArray
 import io.github.crashy.utils.UUIDSerializer
 import io.github.crashy.utils.readNBytes
+import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.nio.file.Path
@@ -95,10 +96,10 @@ sealed interface CrashlogEntry {
 
 
 }
-enum class DeleteCrashResult {
-    Success,
-    NoSuchId,
-    IncorrectDeletionKey;
+enum class DeleteCrashResult(override val statusCode: HttpStatusCode): Response {
+    Success(HttpStatusCode.OK),
+    NoSuchId(HttpStatusCode.NotFound),
+    IncorrectDeletionKey(HttpStatusCode.Unauthorized);
 
-    fun responseString() = name
+    override fun responseString() = name
 }

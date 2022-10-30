@@ -1,4 +1,5 @@
 import TestCrash.*
+import io.github.crashy.api.utils.OkHttpTestClient
 import java.io.File
 
 
@@ -40,17 +41,17 @@ interface TestClass {
 
 class HttpTest private constructor(
     local: Boolean = true,
-    private val directApi: Boolean = true,
+    ssl: Boolean =false,
     private val cache: Boolean = true,
     private val useGzip: Boolean = true,
     private val clientLibrary: ClientLibrary = ClientLibrary.OkHttp
 ) {
     companion object {
-        fun TestClass.httpTest(directApi: Boolean = true,
+        fun TestClass.httpTest(ssl: Boolean = false,
                                cache: Boolean = true,
                                useGzip: Boolean = true,
                                clientLibrary: ClientLibrary = ClientLibrary.OkHttp, local: Boolean =!useRealServer): HttpTest {
-            return HttpTest(local, directApi, cache, useGzip, clientLibrary)
+            return HttpTest(local = local, ssl = ssl, cache = cache, useGzip = useGzip, clientLibrary = clientLibrary)
         }
     }
     private val client: IHttpClient = when (clientLibrary) {
@@ -58,8 +59,11 @@ class HttpTest private constructor(
         ClientLibrary.Apache -> Java11HttpClient()
     }
 
-    private val domain = if (local) "http://localhost:5001/crashy-9dd87/europe-west1"
-    else "https://europe-west1-crashy-9dd87.cloudfunctions.net/"
+    private val port = if(ssl) 443 else 80
+    private val scheme = if(ssl) "https" else "http"
+
+    private val domain = if (local) "localhost" else TODO()
+    private val pathPrefix = "$scheme://$domain:$port"
 
     suspend fun downloadDatabaseOverview(password: String): TestHttpResponse {
         val path = "downloadDatabaseOverview"
@@ -68,11 +72,11 @@ class HttpTest private constructor(
     }
 
     suspend fun uploadCrash(crash: TestCrash, headers: Map<String,String> = mapOf()): TestHttpResponse {
-        val path = if (directApi) "uploadCrash" else "widgets/api/upload-crash"
+        val path = "uploadCrash"
 
         val crashText = getCrashLogContents(crash)
 
-        return client.post(url = "$domain/$path", crashText, headers)
+        return client.post(url = "$pathPrefix/$path", crashText, headers)
     }
 
     private fun httpParameters(vararg parameters: Pair<String, String?>): String {
@@ -82,15 +86,15 @@ class HttpTest private constructor(
     }
 
     suspend fun deleteCrash(id: String?, key: String?): TestHttpResponse {
-        val path = if (directApi) "deleteCrash" else "widgets/api/delete-crash"
+        val path = "deleteCrash"
 
-        return client.delete("$domain/$path" + httpParameters("crashId" to id, "key" to key))
+        return client.delete("$pathPrefix/$path" + httpParameters("crashId" to id, "key" to key))
     }
 
     suspend fun getCrash(id: String?): TestHttpResponse {
-        val path = if (directApi) "getCrash" else "widgets/api/get-crash"
+        val path = "getCrash"
 
-        return client.get(if (id == null) "$domain/${path}" else "$domain/${path}/$id")
+        return client.get(if (id == null) "$pathPrefix/${path}" else "$pathPrefix/${path}/$id")
     }
 
 //    private fun testRequest(request: Request) {

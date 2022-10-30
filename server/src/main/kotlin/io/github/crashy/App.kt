@@ -9,6 +9,8 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.resources.*
+import io.netty.channel.ChannelHandlerContext
+import io.netty.channel.SimpleChannelInboundHandler
 import java.nio.charset.Charset
 import java.security.KeyStore
 
@@ -16,7 +18,17 @@ object App
 
 fun main() {
     copyResourcesForServing()
-    embeddedServer(Netty, createAppEnvironment()).start(wait = true)
+    embeddedServer(Netty, configure = {
+                             this.channelPipelineConfig  = {
+                                 this.addFirst(object: SimpleChannelInboundHandler<Any>() {
+                                     override fun channelRead0(ctx: ChannelHandlerContext, msg: Any) {
+                                         println("Netty ip: " + ctx.channel().remoteAddress())
+//                                         ctx.
+                                     }
+
+                                 })
+                             }
+    }, environment =  createAppEnvironment()).start(wait = true)
 }
 
 private fun createAppEnvironment() = applicationEngineEnvironment {
