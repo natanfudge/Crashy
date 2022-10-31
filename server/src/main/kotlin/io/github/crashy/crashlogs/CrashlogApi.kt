@@ -4,12 +4,11 @@ import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
-import java.net.HttpURLConnection
 
 
 typealias UploadCrashlogRequest = ByteArray
 
-sealed interface UploadCrashlogResponse: Response {
+sealed interface UploadCrashlogResponse : Response {
 
     @Serializable
     data class Success(
@@ -27,7 +26,7 @@ sealed interface UploadCrashlogResponse: Response {
         val crashyUrl: String
     ) : UploadCrashlogResponse {
         override fun responseString() = CrashyJson.encodeToString(serializer(), this)
-        override val statusCode: HttpStatusCode get()= HttpStatusCode.OK
+        override val statusCode: HttpStatusCode get() = HttpStatusCode.OK
     }
 
     /**
@@ -41,7 +40,7 @@ sealed interface UploadCrashlogResponse: Response {
     /**
      * Too many crashes were uploaded in the last day (>1MB). We don't allow this to avoid overloading the server/storage.
      */
-    object RateLimitedError: UploadCrashlogResponse {
+    object RateLimitedError : UploadCrashlogResponse {
         override fun responseString(): String = "Rate Limited"
         override val statusCode: HttpStatusCode = HttpStatusCode.TooManyRequests
     }
@@ -72,7 +71,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     private val uploadLimiter = UploadLimiter()
     fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashlogResponse {
         if (request.size > MaxCrashSize) return UploadCrashlogResponse.CrashTooLargeError
-        if(!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashlogResponse.RateLimitedError
+        if (!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashlogResponse.RateLimitedError
 
         val id = CrashlogId.generate()
         //TODrO: validate log
