@@ -44,14 +44,6 @@ sealed interface UploadCrashlogResponse : Response {
         override fun responseString(): String = "Rate Limited"
         override val statusCode: HttpStatusCode = HttpStatusCode.TooManyRequests
     }
-//
-//    /**
-//     * The crash is in an invalid format. We don't allow storing just any text, because that's not the purpose of Crashy.
-//     */
-//    object InvalidCrashError : UploadCrashlogResponse {
-//        override fun responseString(): String = "Invalid Crash"
-//        override val statusCode: Int = HttpURLConnection.HTTP_ENTITY_TOO_LARGE
-//    }
 }
 
 private const val MaxCrashSize = 100_000
@@ -74,7 +66,6 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         if (!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashlogResponse.RateLimitedError
 
         val id = CrashlogId.generate()
-        //TODrO: validate log
         val key = DeletionKey.generate()
         logs.store(id = id, log = CrashlogEntry.create(request, key))
 
