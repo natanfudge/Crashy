@@ -18,17 +18,19 @@ object App
 
 fun main() {
     copyResourcesForServing()
-    embeddedServer(Netty, configure = {
-                             this.channelPipelineConfig  = {
-                                 this.addFirst(object: SimpleChannelInboundHandler<Any>() {
-                                     override fun channelRead0(ctx: ChannelHandlerContext, msg: Any) {
-                                         println("Netty ip: " + ctx.channel().remoteAddress())
-//                                         ctx.
-                                     }
-
-                                 })
-                             }
-    }, environment =  createAppEnvironment()).start(wait = true)
+    embeddedServer(Netty,
+//        configure = {
+//                             this.channelPipelineConfig  = {
+//                                 this.addFirst(object: SimpleChannelInboundHandler<Any>() {
+//                                     override fun channelRead0(ctx: ChannelHandlerContext, msg: Any) {
+//                                         println("Netty ip: " + ctx.channel().remoteAddress())
+////                                         ctx.
+//                                     }
+//
+//                                 })
+//                             }
+//    },
+        environment =  createAppEnvironment()).start(wait = true)
 }
 
 private fun createAppEnvironment() = applicationEngineEnvironment {

@@ -26,6 +26,7 @@ class EndpointTesting : TestClass {
         with(httpTest( directApi, cache, useGzip, ClientLibrary.Apache), code)
     }
 
+    //TODO: test rate limiting
     @Test
     fun `Invalid uploadCrash requests`() = runBlocking {
 //        val response2 = httpTest(useGzip = false).uploadCrash(TestCrash.Fabric)

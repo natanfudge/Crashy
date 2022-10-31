@@ -20,7 +20,7 @@ fun Application.configureRouting() {
 
     routing {
         handle<UploadCrashlogRequest>("/uploadCrash"){
-            respondResponse(api.uploadCrash(it))
+            respondResponse(api.uploadCrash(it,  ip = call.request.origin.remoteAddress))
         }
         handle<DeleteCrashlogRequest>("/deleteCrash"){
             respondResponse(api.deleteCrash(it))
@@ -39,7 +39,6 @@ fun Application.configureRouting() {
 
 private inline fun<reified T: Any> Routing.handle(path: String, crossinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit) {
     post<T>(path) {
-//        println("IP:" + call.request.origin.)
         body(it)
     }
 }

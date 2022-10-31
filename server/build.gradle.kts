@@ -49,6 +49,9 @@ repositories {
     maven(
         url = ("https://oss.sonatype.org/content/repositories/snapshots")
     )
+    maven {
+        url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
+    }
 
 }
 
@@ -57,6 +60,7 @@ val invoker = configurations.create("invoker")
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.1")
 }
 
 val clientDir = projectDir.parentFile.resolve("client")

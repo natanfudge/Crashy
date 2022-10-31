@@ -37,6 +37,14 @@ sealed interface UploadCrashlogResponse: Response {
         override fun responseString() = "Too Large"
         override val statusCode: HttpStatusCode = HttpStatusCode.PayloadTooLarge
     }
+
+    /**
+     * Too many crashes were uploaded in the last day (>1MB). We don't allow this to avoid overloading the server/storage.
+     */
+    object RateLimitedError: UploadCrashlogResponse {
+        override fun responseString(): String = "Rate Limited"
+        override val statusCode: HttpStatusCode = HttpStatusCode.TooManyRequests
+    }
 //
 //    /**
 //     * The crash is in an invalid format. We don't allow storing just any text, because that's not the purpose of Crashy.
@@ -61,8 +69,10 @@ interface Response {
 
 
 class CrashlogApi(private val logs: CrashlogStorage) {
-    fun uploadCrash(request: UploadCrashlogRequest): UploadCrashlogResponse {
+    private val uploadLimiter = UploadLimiter()
+    fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashlogResponse {
         if (request.size > MaxCrashSize) return UploadCrashlogResponse.CrashTooLargeError
+        if(!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashlogResponse.RateLimitedError
 
         val id = CrashlogId.generate()
         //TODrO: validate log
