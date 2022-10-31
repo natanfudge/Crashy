@@ -34,10 +34,10 @@ class UploadLimiter {
     fun requestUpload(ip: String, size: Int): Boolean {
         val uploadedAlready = recentClientUploadAmount.getIfPresent(ip) ?: 0
         val newUploadSize = uploadedAlready + size
-        return if (newUploadSize > UploadLimit) false
+        if (newUploadSize > UploadLimit) return false
         else {
             recentClientUploadAmount.put(ip, newUploadSize)
-            true
+            return true
         }
     }
 }
