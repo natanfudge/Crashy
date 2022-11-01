@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.1")
+    testImplementation("io.ktor:ktor-server-tests-jvm:2.2.0-eap-534")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.7.20")
 }
 
 val clientDir = projectDir.parentFile.resolve("client")

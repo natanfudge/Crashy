@@ -6,7 +6,7 @@ import com.github.benmanes.caffeine.cache.Expiry
 import java.time.Duration
 
 private val UploadLimitExpirationNano = Duration.ofDays(1).toNanos()
-private const val UploadLimit = 1_000_000 // 1 MB
+private const val UploadLimit = 500_000 // 0.5 MB
 
 class UploadLimiter {
     private val recentClientUploadAmount: Cache<String, Int> = Caffeine.newBuilder()

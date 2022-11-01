@@ -17,6 +17,7 @@ import kotlin.random.Random
 
 @Serializable
 inline class DeletionKey private constructor(private val value: String) {
+    override fun toString(): String  = value
     companion object {
         //TODO: see how much this is and hardcode it
         val ByteAmount = generate().toByteArray().size
@@ -41,6 +42,7 @@ val CrashyJson = Json
 
 @Serializable
 inline class CrashlogId private constructor(@Serializable(with = UUIDSerializer::class) val value: UUID) {
+    override fun toString(): String  = value.toString()
     companion object {
         fun fromFileName(path: Path) = CrashlogId(UUID.fromString(path.nameWithoutExtension))
         fun generate() = CrashlogId(UUID.randomUUID())

@@ -1,6 +1,5 @@
 import TestCrash.*
 import io.github.crashy.api.utils.OkHttpTestClient
-import java.io.File
 
 
 private fun <T> T.mapIf(case: Boolean, application: (T) -> T): T = if (case) let(application) else this
@@ -91,10 +90,10 @@ class HttpTest private constructor(
         return client.delete("$pathPrefix/$path" + httpParameters("crashId" to id, "key" to key))
     }
 
-    suspend fun getCrash(id: String?): TestHttpResponse {
+    suspend fun getCrash(id: String): TestHttpResponse {
         val path = "getCrash"
 
-        return client.get(if (id == null) "$pathPrefix/${path}" else "$pathPrefix/${path}/$id")
+        return client.post("$pathPrefix/${path}", body = id)
     }
 
 //    private fun testRequest(request: Request) {
@@ -109,10 +108,12 @@ class HttpTest private constructor(
 
 }
 
+private fun getResource(path: String) = TestCrash::class.java.getResourceAsStream("/$path")!!.readAllBytes()
+    .toString(Charsets.UTF_8)
 
 fun getCrashLogContents(crash: TestCrash) = when (crash) {
-    Forge -> File("forge_crash.txt").readText()
-    Fabric -> File("fabric_crash.txt").readText()
-    Malformed -> File("malformed_crash.txt").readText()
+    Forge ->  getResource("forge_crash.txt")
+    Fabric -> getResource("fabric_crash.txt")
+    Malformed -> getResource("malformed_crash.txt")
     Huge -> buildString { repeat(10_000_000) { append(getRandomString(1)) } }
 }

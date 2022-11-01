@@ -8,14 +8,14 @@ import kotlinx.serialization.Serializable
 
 typealias UploadCrashlogRequest = ByteArray
 
-sealed interface UploadCrashlogResponse : Response {
+sealed interface UploadCrashResponse : Response {
 
     @Serializable
     data class Success(
         /**
          * The now-created ID of the newly uploaded crash.
          */
-        val id: CrashlogId,
+        val crashId: CrashlogId,
         /**
          * A secret 6-character key that can be used to delete the crash from the servers.
          */
@@ -24,7 +24,7 @@ sealed interface UploadCrashlogResponse : Response {
          * A crashy.net url that displays the crash that was just uploaded.
          */
         val crashyUrl: String
-    ) : UploadCrashlogResponse {
+    ) : UploadCrashResponse {
         override fun responseString() = CrashyJson.encodeToString(serializer(), this)
         override val statusCode: HttpStatusCode get() = HttpStatusCode.OK
     }
@@ -32,17 +32,24 @@ sealed interface UploadCrashlogResponse : Response {
     /**
      *The compressed size of the crash is too large (>100KB). We don't allow this to avoid overloading the server/storage.
      */
-    object CrashTooLargeError : UploadCrashlogResponse {
-        override fun responseString() = "Too Large"
-        override val statusCode: HttpStatusCode = HttpStatusCode.PayloadTooLarge
-    }
+    object CrashTooLargeError : UploadCrashResponse,
+        Response by response("Too Large", HttpStatusCode.PayloadTooLarge)
 
     /**
      * Too many crashes were uploaded in the last day (>1MB). We don't allow this to avoid overloading the server/storage.
      */
-    object RateLimitedError : UploadCrashlogResponse {
-        override fun responseString(): String = "Rate Limited"
-        override val statusCode: HttpStatusCode = HttpStatusCode.TooManyRequests
+    object RateLimitedError : UploadCrashResponse,
+        Response by response("Rate Limited", HttpStatusCode.TooManyRequests)
+}
+
+
+sealed interface GetCrashResponse : Response {
+    object Archived : GetCrashResponse, Response by response("Archived", HttpStatusCode.Processing)
+    object DoesNotExist : GetCrashResponse, Response by response("Does Not Exist", HttpStatusCode.NotFound)
+    class Success(val log: ByteArray) : GetCrashResponse {
+        override fun responseString(): String = log.toString(Charsets.UTF_8)
+        override val statusCode: HttpStatusCode = HttpStatusCode.OK
+
     }
 }
 
@@ -58,28 +65,37 @@ interface Response {
     val statusCode: HttpStatusCode
 }
 
+fun response(string: String, code: HttpStatusCode) = object : Response {
+    override val statusCode: HttpStatusCode = code
+    override fun responseString(): String = string
+}
+
 
 class CrashlogApi(private val logs: CrashlogStorage) {
     private val uploadLimiter = UploadLimiter()
-    fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashlogResponse {
-        if (request.size > MaxCrashSize) return UploadCrashlogResponse.CrashTooLargeError
-        if (!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashlogResponse.RateLimitedError
+    fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashResponse {
+        if (request.size > MaxCrashSize) return UploadCrashResponse.CrashTooLargeError
+        if (!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashResponse.RateLimitedError
+
+        println("Accepted size: ${request.size}")
 
         val id = CrashlogId.generate()
         val key = DeletionKey.generate()
         logs.store(id = id, log = CrashlogEntry.create(request, key))
 
-        return UploadCrashlogResponse.Success(id, deletionKey = key, crashyUrl = "https://crashy.net/${id.value}")
+        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "https://crashy.net/${id.value}")
     }
 
     /**
      * Used for testing only
      */
-    suspend fun getCrash(id: GetCrashRequest): ByteArray {
+    suspend fun getCrash(id: GetCrashRequest): GetCrashResponse {
+        val result = logs.get(id)
+        println("Res: $result")
         return when (val result = logs.get(id)) {
-            GetCrashlogResult.Archived -> result.toString().toByteArray()
-            GetCrashlogResult.DoesNotExist -> result.toString().toByteArray()
-            is GetCrashlogResult.Success -> result.log.copyLog()
+            GetCrashlogResult.Archived -> GetCrashResponse.Archived
+            GetCrashlogResult.DoesNotExist ->  GetCrashResponse.DoesNotExist
+            is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log.copyLog())
         }
     }
 

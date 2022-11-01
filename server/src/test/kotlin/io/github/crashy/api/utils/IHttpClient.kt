@@ -1,6 +1,6 @@
 interface IHttpClient {
     suspend fun get(url: String): TestHttpResponse
-    suspend fun post(url: String, body: String, headers: Map<String,String>): TestHttpResponse
+    suspend fun post(url: String, body: String, headers: Map<String,String> = mapOf()): TestHttpResponse
     suspend fun delete(url: String): TestHttpResponse
 }
 

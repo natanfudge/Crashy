@@ -6,11 +6,13 @@ import HttpTest.Companion.httpTest
 import TestClass
 import TestCrash
 import TestHttpResponse
-import UploadCrashResponse
 import getCrashLogContents
+import io.github.crashy.crashlogs.UploadCrashResponse
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Test
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 import java.net.HttpURLConnection
 import kotlin.test.assertEquals
 
@@ -18,29 +20,33 @@ class EndpointTesting : TestClass {
     override val useRealServer: Boolean = false
 
     private inline fun withBothClients(
-        directApi: Boolean = true,
+        ssl: Boolean = false,
         cache: Boolean = true,
         useGzip: Boolean = true, code: HttpTest.() -> Unit
     ) {
-        with(httpTest( directApi, cache, useGzip, ClientLibrary.OkHttp), code)
-        with(httpTest( directApi, cache, useGzip, ClientLibrary.Apache), code)
+        with(httpTest(ssl = ssl, cache, useGzip, ClientLibrary.OkHttp), code)
+        with(httpTest(ssl = ssl, cache, useGzip, ClientLibrary.Apache), code)
     }
 
-    //TODO: test rate limiting
     @Test
-    fun `Invalid uploadCrash requests`() = runBlocking {
-//        val response2 = httpTest(useGzip = false).uploadCrash(TestCrash.Fabric)
-//        assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response2.code)
+    fun `Invalid uploadCrash requests`(): Unit = runBlocking {
+        val response2 = httpTest(useGzip = false).uploadCrash(TestCrash.Fabric)
+        assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response2.code)
 
         with(httpTest()) {
-//            val response1 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-encoding" to "gzip"))
-//            assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response1.code)
+            val response1 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-encoding" to "gzip"))
+            assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response1.code)
 
             val response3 = uploadCrash(TestCrash.Huge)
             assertEquals(HttpURLConnection.HTTP_ENTITY_TOO_LARGE, response3.code)
 
-//            val response4 = uploadCrash(TestCrash.Malformed)
-//            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response4.code)
+            repeat(100) {
+                // Load the server with loads of trash
+                uploadCrash(TestCrash.Fabric)
+            }
+
+            expectThat(uploadCrash(TestCrash.Fabric)).get(TestHttpResponse::code).isEqualTo(429)
+
         }
     }
 
@@ -50,7 +56,7 @@ class EndpointTesting : TestClass {
             val (response, parsed) = uploadCrashAndParse(TestCrash.Fabric)
             assertEquals(HttpURLConnection.HTTP_OK, response.code)
 
-            println("ID = ${parsed.crashId}, code = ${parsed.key}")
+            println("ID = ${parsed.crashId}, code = ${parsed.deletionKey}")
         }
 
     }
@@ -58,9 +64,9 @@ class EndpointTesting : TestClass {
     @Test
     fun `Invalid getCrash requests`() = runBlocking {
         with(httpTest()) {
-            for (id in listOf(null, "", "/")) {
+            for (id in listOf("", "/")) {
                 val response1 = getCrash(id)
-                assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response1.code)
+                expectThat(response1).get(TestHttpResponse::code).isEqualTo(HttpURLConnection.HTTP_BAD_REQUEST)
             }
 
             val response4 = getCrash("asdfasdf")
@@ -73,16 +79,16 @@ class EndpointTesting : TestClass {
         with(httpTest()) {
             val (_, uploadResponse) = uploadCrashAndParse(TestCrash.Fabric)
 
-            val getResponse = getCrash(uploadResponse.crashId)
+            val getResponse = getCrash(uploadResponse.crashId.toString())
             val getResponseBody = getResponse.body
             assertEquals(getCrashLogContents(TestCrash.Fabric), getResponseBody)
         }
     }
 
 
-    private suspend fun HttpTest.uploadCrashAndParse(crash: TestCrash): Pair<TestHttpResponse, UploadCrashResponse> {
+    private suspend fun HttpTest.uploadCrashAndParse(crash: TestCrash): Pair<TestHttpResponse, UploadCrashResponse.Success> {
         val uploadResponse = uploadCrash(crash)
-        return uploadResponse to Json.decodeFromString(UploadCrashResponse.serializer(), uploadResponse.body!!)
+        return uploadResponse to Json.decodeFromString(UploadCrashResponse.Success.serializer(), uploadResponse.body!!)
     }
 
     @Test
@@ -101,9 +107,9 @@ class EndpointTesting : TestClass {
             val uploadResponse = uploadCrash(TestCrash.Fabric)
             assertEquals(HttpURLConnection.HTTP_OK, uploadResponse.code)
             val uploadResponseBody =
-                Json.decodeFromString(UploadCrashResponse.serializer(), uploadResponse.body!!)
+                Json.decodeFromString(UploadCrashResponse.Success.serializer(), uploadResponse.body!!)
 
-            val deleteResponse = deleteCrash(uploadResponseBody.crashId, "wrong key")
+            val deleteResponse = deleteCrash(uploadResponseBody.crashId.toString(), "wrong key")
             assertEquals(HttpURLConnection.HTTP_UNAUTHORIZED, deleteResponse.code)
         }
     }
@@ -114,12 +120,12 @@ class EndpointTesting : TestClass {
             val uploadResponse = uploadCrash(TestCrash.Fabric)
             assertEquals(HttpURLConnection.HTTP_OK, uploadResponse.code)
             val uploadResponseBody =
-                Json.decodeFromString(UploadCrashResponse.serializer(), uploadResponse.body!!)
+                Json.decodeFromString(UploadCrashResponse.Success.serializer(), uploadResponse.body!!)
 
-            val deleteResponse = deleteCrash(uploadResponseBody.crashId, uploadResponseBody.key)
+            val deleteResponse = deleteCrash(uploadResponseBody.crashId.toString(), uploadResponseBody.deletionKey.toString())
             assertEquals(HttpURLConnection.HTTP_OK, deleteResponse.code)
 
-            val getResponse = getCrash(uploadResponseBody.crashId)
+            val getResponse = getCrash(uploadResponseBody.crashId.toString())
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, getResponse.code)
         }
     }
