@@ -75,7 +75,7 @@ class HttpTest private constructor(
 
         val crashText = getCrashLogContents(crash)
 
-        return client.post(url = "$pathPrefix/$path", crashText, headers)
+        return client.post(url = "$pathPrefix/$path", crashText, useGzip = useGzip, headers)
     }
 
     private fun httpParameters(vararg parameters: Pair<String, String?>): String {
@@ -93,7 +93,7 @@ class HttpTest private constructor(
     suspend fun getCrash(id: String): TestHttpResponse {
         val path = "getCrash"
 
-        return client.post("$pathPrefix/${path}", body = id)
+        return client.post("$pathPrefix/${path}", body = id, useGzip = false)
     }
 
 //    private fun testRequest(request: Request) {

@@ -53,7 +53,7 @@ class OkHttpTestClient(cache: Boolean, useGzip: Boolean) : IHttpClient {
     }
 
     private suspend fun makeTestRequest(request: Request) = with(makeRequest(request)) {
-        TestHttpResponse(code, body?.string())
+        TestHttpResponse(code, body.string())
     }
 
     override suspend fun get(url: String): TestHttpResponse {
@@ -61,8 +61,10 @@ class OkHttpTestClient(cache: Boolean, useGzip: Boolean) : IHttpClient {
         return makeTestRequest(request)
     }
 
-    override suspend fun post(url: String, body: String, headers: Map<String, String>): TestHttpResponse {
-        val request = Request.Builder().post(body.toRequestBody()).headers(headers.toHeaders()).url(url).build()
+    override suspend fun post(url: String, body: String, useGzip: Boolean, headers: Map<String, String>): TestHttpResponse {
+        val request = Request.Builder().post(body.toRequestBody()).headers(headers.toHeaders()).url(url)
+            .tag(useGzip)
+            .build()
         return makeTestRequest(request)
     }
 
@@ -75,6 +77,8 @@ class OkHttpTestClient(cache: Boolean, useGzip: Boolean) : IHttpClient {
 class GzipRequestInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest: Request = chain.request()
+        val useGzip = originalRequest.tag<Boolean>() ?: false
+        if (!useGzip) return chain.proceed(originalRequest)
 
         // do not set content encoding in negative use case
         if (originalRequest.body == null || originalRequest.header("Content-Encoding") != null) {

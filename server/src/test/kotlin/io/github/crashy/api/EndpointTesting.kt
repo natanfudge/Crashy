@@ -14,6 +14,7 @@ import org.junit.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.net.HttpURLConnection
+import java.util.UUID
 import kotlin.test.assertEquals
 
 class EndpointTesting : TestClass {
@@ -64,12 +65,12 @@ class EndpointTesting : TestClass {
     @Test
     fun `Invalid getCrash requests`() = runBlocking {
         with(httpTest()) {
-            for (id in listOf("", "/")) {
+            for (id in listOf("", "/", "123123", "\"123123\"")) {
                 val response1 = getCrash(id)
-                expectThat(response1).get(TestHttpResponse::code).isEqualTo(HttpURLConnection.HTTP_BAD_REQUEST)
+                expectThat(response1).get(TestHttpResponse::code)/*.isEqualTo(HttpURLConnection.HTTP_UNSUPPORTED_TYPE)*/
             }
 
-            val response4 = getCrash("asdfasdf")
+            val response4 = getCrash("\"${UUID.randomUUID()}\"")
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response4.code)
         }
     }

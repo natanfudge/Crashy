@@ -38,9 +38,11 @@ fun Application.configureRouting() {
         post<DeleteCrashlogRequest>("/deleteCrash") {
             respond(api.deleteCrash(it))
         }
-        post<GetCrashRequest>("/getCrash") {
+        post<String>("/getCrash") {
             println("Alo get?")
-            respond(api.getCrash(it))
+            val x = it
+            val y = 2
+//            respond(api.getCrash(it))
         }
         preCompressed {
             singlePageApplication {

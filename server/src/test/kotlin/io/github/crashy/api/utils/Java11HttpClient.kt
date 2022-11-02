@@ -21,7 +21,7 @@ class Java11HttpClient : IHttpClient {
             }
         }
 
-    override suspend fun post(url: String, body: String, headers: Map<String, String>): TestHttpResponse {
+    override suspend fun post(url: String, body: String, useGzip: Boolean, headers: Map<String, String>): TestHttpResponse {
         val compressed = ByteArrayOutputStream().use { baos ->
             GZIPOutputStream(baos).use { gzos ->
                 gzos.write(body.toByteArray(Charsets.UTF_8))
