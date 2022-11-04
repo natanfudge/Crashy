@@ -1,11 +1,13 @@
 package io.github.crashy
 
+import com.codahale.metrics.jmx.JmxReporter
 import io.github.crashy.plugins.configureHTTP
 import io.github.crashy.plugins.configureMonitoring
 import io.github.crashy.configureRouting
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
+import io.ktor.server.metrics.dropwizard.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.resources.*
@@ -14,6 +16,7 @@ import io.netty.channel.SimpleChannelInboundHandler
 import kotlinx.serialization.json.Json
 import java.nio.charset.Charset
 import java.security.KeyStore
+import java.util.concurrent.TimeUnit
 
 object App
 val CrashyJson = Json
@@ -46,13 +49,16 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
     }
 
     module {
-        install(ContentNegotiation) {
-            json()
-        }
-        install(Resources)
         configureRouting()
         configureHTTP()
         configureMonitoring()
+        install(DropwizardMetrics) {
+            JmxReporter.forRegistry(registry)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .build()
+                .start()
+        }
     }
 }
 

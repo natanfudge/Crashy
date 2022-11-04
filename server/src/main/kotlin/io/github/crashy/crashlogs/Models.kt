@@ -58,6 +58,7 @@ inline class CrashlogId private constructor(@Serializable(with = UUIDSerializer:
 }
 
 
+
 sealed interface CrashlogEntry {
     fun copyLog(): ByteArray
     val deletionKey: DeletionKey

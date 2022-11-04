@@ -100,7 +100,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         return when (val result = logs.get(id)) {
             GetCrashlogResult.Archived -> GetCrashResponse.Archived
             GetCrashlogResult.DoesNotExist ->  GetCrashResponse.DoesNotExist
-            is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log.copyLog())
+            is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log.bytes)
         }
     }
 

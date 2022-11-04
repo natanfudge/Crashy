@@ -93,7 +93,7 @@ class CrashlogStorage private constructor(
 }
 
 sealed interface GetCrashlogResult {
-    class Success(val log: CrashlogEntry) : GetCrashlogResult
+    class Success(val log: CrashlogEntry.ContiguousArrayBacked) : GetCrashlogResult
     object DoesNotExist : GetCrashlogResult {
         override fun toString(): String = "GetCrashlogResponse.DoesNotExist"
     }

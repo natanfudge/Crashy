@@ -3,6 +3,7 @@ package io.github.crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
+import io.github.crashy.utils.decompressGzip
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -15,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import kotlin.io.path.readBytes
 
 fun Application.configureRouting() {
     val logStorage = runBlocking {
@@ -49,6 +51,30 @@ fun Application.configureRouting() {
                 filesPath = staticDir.toString()
             }
         }
+
+//        get("/{id}"){
+//            val id = call.parameters["id"]!!
+//            try{
+//                val logId = CrashlogId.fromString(id)
+//                when(val result = api.getCrash(logId)){
+//                    GetCrashResponse.Archived -> call.respondText("Archived")
+//                    GetCrashResponse.DoesNotExist -> call.respondText("No such crashlog")
+//                    is GetCrashResponse.Success -> {
+//                        val header = result.log.take(512).toByteArray().decompressGzip()
+//                        call.respond(staticDir.resolve("index2.html").readBytes())
+//                    }
+//                }
+//
+//
+//            }catch (e: IllegalArgumentException) {
+//                call.respondText("That's not a real crashlog ID")
+//            }catch (e: Throwable){
+//                e.printStackTrace()
+//                throw e
+//            }
+//
+//
+//        }
     }
 }
 
