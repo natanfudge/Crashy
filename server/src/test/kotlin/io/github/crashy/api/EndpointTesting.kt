@@ -10,13 +10,17 @@ import getCrashLogContents
 import io.github.crashy.crashlogs.UploadCrashResponse
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
+import org.junit.FixMethodOrder
 import org.junit.Test
+import org.junit.runner.OrderWith
+import org.junit.runners.MethodSorters
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import java.net.HttpURLConnection
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertEquals
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class EndpointTesting : TestClass {
     override val useRealServer: Boolean = false
 
@@ -30,7 +34,8 @@ class EndpointTesting : TestClass {
     }
 
     @Test
-    fun `Invalid uploadCrash requests`(): Unit = runBlocking {
+    // Run test last (that's why we have ZZ at the start) because afterwards our IP will be blocked from uploading.
+    fun `ZZInvalid uploadCrash requests`(): Unit = runBlocking {
         val response2 = httpTest(useGzip = false).uploadCrash(TestCrash.Fabric)
         assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response2.code)
 
@@ -66,23 +71,27 @@ class EndpointTesting : TestClass {
     fun `Invalid getCrash requests`() = runBlocking {
         with(httpTest()) {
             for (id in listOf("", "/", "123123", "\"123123\"")) {
-                val response1 = getCrash(id)
-                expectThat(response1).get(TestHttpResponse::code)/*.isEqualTo(HttpURLConnection.HTTP_UNSUPPORTED_TYPE)*/
+                val response = getCrash(id)
+                expectThat(response).get(TestHttpResponse::code).isEqualTo(HttpURLConnection.HTTP_UNSUPPORTED_TYPE)
             }
 
-            val response4 = getCrash("\"${UUID.randomUUID()}\"")
-            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response4.code)
+            for (id in listOf("${UUID.randomUUID()}")) {
+                val response = getCrash(id)
+                assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.code)
+            }
         }
     }
 
     @Test
-    fun `Get Crash`() = runBlocking {
+    fun `Get Crash`(): Unit = runBlocking {
         with(httpTest()) {
             val (_, uploadResponse) = uploadCrashAndParse(TestCrash.Fabric)
 
             val getResponse = getCrash(uploadResponse.crashId.toString())
             val getResponseBody = getResponse.body
-            assertEquals(getCrashLogContents(TestCrash.Fabric), getResponseBody)
+            expectThat(getCrashLogContents(TestCrash.Fabric))
+                .describedAs(getCrashLogContents(TestCrash.Fabric).substring(0, 100))
+                .isEqualTo(getResponseBody)
         }
     }
 
@@ -96,14 +105,16 @@ class EndpointTesting : TestClass {
     fun `Invalid deleteCrash requests`() = runBlocking {
         with(httpTest()) {
             val response1 = deleteCrash(null, "asdf")
-            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response1.code)
+            assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response1.code)
             val response2 = deleteCrash("asdf", null)
-            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response2.code)
+            assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response2.code)
             val response3 = deleteCrash(null, null)
-            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response3.code)
+            assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response3.code)
 
             val response4 = deleteCrash("asdf", "asdf")
-            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response4.code)
+            assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response4.code)
+            val response5 = deleteCrash(UUID.randomUUID().toString(), "asdf")
+            assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response5.code)
 
             val uploadResponse = uploadCrash(TestCrash.Fabric)
             assertEquals(HttpURLConnection.HTTP_OK, uploadResponse.code)
@@ -123,7 +134,8 @@ class EndpointTesting : TestClass {
             val uploadResponseBody =
                 Json.decodeFromString(UploadCrashResponse.Success.serializer(), uploadResponse.body!!)
 
-            val deleteResponse = deleteCrash(uploadResponseBody.crashId.toString(), uploadResponseBody.deletionKey.toString())
+            val deleteResponse =
+                deleteCrash(uploadResponseBody.crashId.toString(), uploadResponseBody.deletionKey.toString())
             assertEquals(HttpURLConnection.HTTP_OK, deleteResponse.code)
 
             val getResponse = getCrash(uploadResponseBody.crashId.toString())
@@ -131,11 +143,11 @@ class EndpointTesting : TestClass {
         }
     }
 
-    @Test
-    fun `Download database`() = runBlocking {
-        with(httpTest(local = false)) {
-            val unauthorizedResponse = downloadDatabaseOverview("blah")
-            assertEquals(HttpURLConnection.HTTP_UNAUTHORIZED, unauthorizedResponse.code)
-        }
-    }
+//    @Test
+//    fun `Download database`() = runBlocking {
+//        with(httpTest(local = false)) {
+//            val unauthorizedResponse = downloadDatabaseOverview("blah")
+//            assertEquals(HttpURLConnection.HTTP_UNAUTHORIZED, unauthorizedResponse.code)
+//        }
+//    }
 }

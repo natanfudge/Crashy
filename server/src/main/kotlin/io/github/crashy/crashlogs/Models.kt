@@ -17,7 +17,8 @@ import kotlin.random.Random
 
 @Serializable
 inline class DeletionKey private constructor(private val value: String) {
-    override fun toString(): String  = value
+    override fun toString(): String = value
+
     companion object {
         //TODO: see how much this is and hardcode it
         val ByteAmount = generate().toByteArray().size
@@ -31,18 +32,23 @@ inline class DeletionKey private constructor(private val value: String) {
         })
 
         fun fromByteArray(array: ByteArray) = DeletionKey(array.toString(charset = Charsets.US_ASCII))
+        fun fromString(string: String): DeletionKey {
+            require(string.length == 6)
+            return DeletionKey(string)
+        }
     }
 
     // We only use ascii values so using ascii here is fine, which also means the amount of bytes is constant
     fun toByteArray() = value.toByteArray(charset = Charsets.US_ASCII)
 }
 
-val CrashyJson = Json
+
 
 
 @Serializable
 inline class CrashlogId private constructor(@Serializable(with = UUIDSerializer::class) val value: UUID) {
-    override fun toString(): String  = value.toString()
+    override fun toString(): String = value.toString()
+
     companion object {
         fun fromFileName(path: Path) = CrashlogId(UUID.fromString(path.nameWithoutExtension))
         fun generate() = CrashlogId(UUID.randomUUID())
@@ -98,7 +104,8 @@ sealed interface CrashlogEntry {
 
 
 }
-enum class DeleteCrashResult(override val statusCode: HttpStatusCode): Response {
+
+enum class DeleteCrashResult(override val statusCode: HttpStatusCode) : Response {
     Success(HttpStatusCode.OK),
     NoSuchId(HttpStatusCode.NotFound),
     IncorrectDeletionKey(HttpStatusCode.Unauthorized);

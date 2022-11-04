@@ -1,5 +1,8 @@
 import TestCrash.*
 import io.github.crashy.api.utils.OkHttpTestClient
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.intellij.lang.annotations.Language
 
 
 private fun <T> T.mapIf(case: Boolean, application: (T) -> T): T = if (case) let(application) else this
@@ -37,29 +40,31 @@ interface TestClass {
 }
 
 
-
 class HttpTest private constructor(
     local: Boolean = true,
-    ssl: Boolean =false,
+    ssl: Boolean = false,
     private val cache: Boolean = true,
     private val useGzip: Boolean = true,
     private val clientLibrary: ClientLibrary = ClientLibrary.OkHttp
 ) {
     companion object {
-        fun TestClass.httpTest(ssl: Boolean = false,
-                               cache: Boolean = true,
-                               useGzip: Boolean = true,
-                               clientLibrary: ClientLibrary = ClientLibrary.OkHttp, local: Boolean =!useRealServer): HttpTest {
+        fun TestClass.httpTest(
+            ssl: Boolean = false,
+            cache: Boolean = true,
+            useGzip: Boolean = true,
+            clientLibrary: ClientLibrary = ClientLibrary.OkHttp, local: Boolean = !useRealServer
+        ): HttpTest {
             return HttpTest(local = local, ssl = ssl, cache = cache, useGzip = useGzip, clientLibrary = clientLibrary)
         }
     }
+
     private val client: IHttpClient = when (clientLibrary) {
         ClientLibrary.OkHttp -> OkHttpTestClient(cache, useGzip)
         ClientLibrary.Apache -> Java11HttpClient()
     }
 
-    private val port = if(ssl) 443 else 80
-    private val scheme = if(ssl) "https" else "http"
+    private val port = if (ssl) 443 else 80
+    private val scheme = if (ssl) "https" else "http"
 
     private val domain = if (local) "localhost" else TODO()
     private val pathPrefix = "$scheme://$domain:$port"
@@ -70,7 +75,7 @@ class HttpTest private constructor(
         return client.get(url = "$domain/$path" + httpParameters("password" to password))
     }
 
-    suspend fun uploadCrash(crash: TestCrash, headers: Map<String,String> = mapOf()): TestHttpResponse {
+    suspend fun uploadCrash(crash: TestCrash, headers: Map<String, String> = mapOf()): TestHttpResponse {
         val path = "uploadCrash"
 
         val crashText = getCrashLogContents(crash)
@@ -87,13 +92,17 @@ class HttpTest private constructor(
     suspend fun deleteCrash(id: String?, key: String?): TestHttpResponse {
         val path = "deleteCrash"
 
-        return client.delete("$pathPrefix/$path" + httpParameters("crashId" to id, "key" to key))
+        @Language("JSON") val body = """{"id": "$id", "key":  "$key"}"""
+
+//        val body = DeleteCrashlogRequest(id = CrashlogId.fromString(id), key = DeletionKey.fromString(key))
+
+        return client.post("$pathPrefix/$path", body = body, useGzip = false)
     }
 
     suspend fun getCrash(id: String): TestHttpResponse {
         val path = "getCrash"
 
-        return client.post("$pathPrefix/${path}", body = id, useGzip = false)
+        return client.post("$pathPrefix/${path}", body = "\"$id\"", useGzip = false)
     }
 
 //    private fun testRequest(request: Request) {
@@ -112,7 +121,7 @@ private fun getResource(path: String) = TestCrash::class.java.getResourceAsStrea
     .toString(Charsets.UTF_8)
 
 fun getCrashLogContents(crash: TestCrash) = when (crash) {
-    Forge ->  getResource("forge_crash.txt")
+    Forge -> getResource("forge_crash.txt")
     Fabric -> getResource("fabric_crash.txt")
     Malformed -> getResource("malformed_crash.txt")
     Huge -> buildString { repeat(10_000_000) { append(getRandomString(1)) } }

@@ -11,26 +11,15 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.resources.*
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
+import kotlinx.serialization.json.Json
 import java.nio.charset.Charset
 import java.security.KeyStore
 
 object App
-
+val CrashyJson = Json
 fun main() {
     copyResourcesForServing()
-    embeddedServer(Netty,
-//        configure = {
-//                             this.channelPipelineConfig  = {
-//                                 this.addFirst(object: SimpleChannelInboundHandler<Any>() {
-//                                     override fun channelRead0(ctx: ChannelHandlerContext, msg: Any) {
-//                                         println("Netty ip: " + ctx.channel().remoteAddress())
-////                                         ctx.
-//                                     }
-//
-//                                 })
-//                             }
-//    },
-        environment =  createAppEnvironment()).start(wait = true)
+    embeddedServer(Netty, environment =  createAppEnvironment()).start(wait = true)
 }
 
 private fun createAppEnvironment() = applicationEngineEnvironment {

@@ -12,13 +12,14 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.pipeline.*
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 
 fun Application.configureRouting() {
     val logStorage = runBlocking {
         CrashlogStorage.create(bucket = "crashy-crashlogs", runDir = runDir, clock = RealClock)
     }
-
-    println("New run?")
 
     val api = CrashlogApi(logStorage)
 
@@ -35,14 +36,12 @@ fun Application.configureRouting() {
                 respond(api.uploadCrash(it, ip = call.request.origin.remoteAddress))
             }
         }
-        post<DeleteCrashlogRequest>("/deleteCrash") {
+        json<DeleteCrashlogRequest>("/deleteCrash") {
             respond(api.deleteCrash(it))
         }
-        post<String>("/getCrash") {
-            println("Alo get?")
-            val x = it
-            val y = 2
-//            respond(api.getCrash(it))
+
+        json<GetCrashRequest>("/getCrash") {
+            respond(api.getCrash(it))
         }
         preCompressed {
             singlePageApplication {
@@ -53,12 +52,19 @@ fun Application.configureRouting() {
     }
 }
 
-private inline fun <reified T : Any> Routing.handle(
+@OptIn(ExperimentalSerializationApi::class)
+private inline fun <reified T : Any> Routing.json(
     path: String,
     crossinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit
 ) {
-    post<T>(path) {
-        body(it)
+    post(path) {
+        call.receiveStream().use {
+            try {
+                body(Json.decodeFromStream(it))
+            } catch (e: IllegalArgumentException) {
+                call.respondText("Error deserializing body", status = HttpStatusCode.UnsupportedMediaType)
+            }
+        }
     }
 }
 

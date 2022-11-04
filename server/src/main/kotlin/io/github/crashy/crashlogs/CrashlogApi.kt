@@ -1,8 +1,15 @@
 package io.github.crashy.crashlogs
 
+import io.github.crashy.CrashyJson
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
+import io.github.crashy.utils.decompressGzip
 import io.ktor.http.*
+import io.ktor.util.*
+import io.ktor.util.Identity.decode
+import io.ktor.utils.io.*
+import io.netty.handler.codec.compression.BrotliDecoder
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 
@@ -47,7 +54,7 @@ sealed interface GetCrashResponse : Response {
     object Archived : GetCrashResponse, Response by response("Archived", HttpStatusCode.Processing)
     object DoesNotExist : GetCrashResponse, Response by response("Does Not Exist", HttpStatusCode.NotFound)
     class Success(val log: ByteArray) : GetCrashResponse {
-        override fun responseString(): String = log.toString(Charsets.UTF_8)
+        override fun responseString(): String = log.decompressGzip().toString(Charsets.UTF_8)
         override val statusCode: HttpStatusCode = HttpStatusCode.OK
 
     }
@@ -90,8 +97,6 @@ class CrashlogApi(private val logs: CrashlogStorage) {
      * Used for testing only
      */
     suspend fun getCrash(id: GetCrashRequest): GetCrashResponse {
-        val result = logs.get(id)
-        println("Res: $result")
         return when (val result = logs.get(id)) {
             GetCrashlogResult.Archived -> GetCrashResponse.Archived
             GetCrashlogResult.DoesNotExist ->  GetCrashResponse.DoesNotExist

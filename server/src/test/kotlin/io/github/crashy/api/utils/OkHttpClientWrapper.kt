@@ -63,7 +63,7 @@ class OkHttpTestClient(cache: Boolean, useGzip: Boolean) : IHttpClient {
 
     override suspend fun post(url: String, body: String, useGzip: Boolean, headers: Map<String, String>): TestHttpResponse {
         val request = Request.Builder().post(body.toRequestBody()).headers(headers.toHeaders()).url(url)
-            .tag(useGzip)
+            .tag(Boolean::class, useGzip)
             .build()
         return makeTestRequest(request)
     }
