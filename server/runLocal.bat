@@ -1,1 +1,0 @@
-gradlew prepRunLocal && sam local start-api -t aws/generated/template.yml --warm-containers EAGER

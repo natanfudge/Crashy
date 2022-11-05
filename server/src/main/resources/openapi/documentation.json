@@ -1,0 +1,32 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "Crashy_main API",
+    "description" : "Crashy_main API",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://Crashy_main"
+  } ],
+  "paths" : {
+    "/" : {
+      "post" : {
+        "description" : "",
+        "responses" : {
+          "415" : {
+            "description" : "Unsupported Media Type <br> TODO: test this",
+            "content" : {
+              "text/plain" : {
+                "examples" : {
+                  "Example#1" : {
+                    "value" : "Mismatching content encoding/type is not supported anymore"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

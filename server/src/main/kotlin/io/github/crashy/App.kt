@@ -1,5 +1,6 @@
 package io.github.crashy
 
+import com.aayushatharva.brotli4j.Brotli4jLoader
 import com.codahale.metrics.jmx.JmxReporter
 import io.github.crashy.plugins.configureHTTP
 import io.github.crashy.plugins.configureMonitoring
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit
 object App
 val CrashyJson = Json
 fun main() {
+    Brotli4jLoader.ensureAvailability()
     copyResourcesForServing()
     embeddedServer(Netty, environment =  createAppEnvironment()).start(wait = true)
 }

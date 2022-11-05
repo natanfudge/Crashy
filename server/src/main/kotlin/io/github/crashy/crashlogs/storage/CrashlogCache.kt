@@ -7,23 +7,10 @@ import java.nio.file.Path
 import kotlin.io.path.*
 import kotlin.math.log
 
-//TODO: rewrite this system. Keep last access the same, and instead of crashlogs do something like this:
-// - /crashlogs
-//  - /abc-123
-    // - crash.br (full crash log compressed in brotli)
-    // - metadata.json (any additional information we need about the crash: description, deletion key, etc)
-//  - /def-456
-    // - etc
-
-// In S3 store things in the same way (folder-based), to avoid complicating things. This is technically slower than storing everything in the same file,
-// but fetching things from S3 is rare.
-
-//TODO: benchmark brotli vs gzip
 //TODO: investigate whether it's possible to include external files in html file, and have those files be indexed by search engines
 // https://moz.com/beginners-guide-to-seo/how-search-engines-operate
 // then, supposing it works, template the crash with the metadata and attach the crash with the <link> or something.
 // See https://stackoverflow.com/questions/74322790/expose-external-resource-to-search-engines
-// Then, make sure we use the proper cache headers and fetch the crash using a normal get request.
 
 
 class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
@@ -115,7 +102,6 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         val path = locationOfLastAccessDay(id, lastAccessDay)
         val parent = path.parent
         if (!parent.exists()) path.parent.createDirectories()
-        println("Creating lastAccessDay at $path")
         path.createFile()
     }
 
@@ -128,7 +114,6 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         val logFile = parentDir.compressedLogFile()
         val metadataFile = parentDir.crashMetadataFile()
         compressedLog.writeToFile(logFile)
-        println("Written log to $logFile")
         metadataFile.writeText(CrashyJson.encodeToString(CrashlogMetadata.serializer(),metadata))
     }
 

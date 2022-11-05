@@ -36,15 +36,18 @@ class EndpointTesting : TestClass {
     @Test
     // Run test last (that's why we have ZZ at the start) because afterwards our IP will be blocked from uploading.
     fun `ZZInvalid uploadCrash requests`(): Unit = runBlocking {
-        val response2 = httpTest(useGzip = false).uploadCrash(TestCrash.Fabric)
-        assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response2.code)
-
-        with(httpTest()) {
-            val response1 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-encoding" to ""))
+        with(httpTest(useGzip = false)){
+            val response1 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-encoding" to "gzip"))
             assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response1.code)
-
+            val response2 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-type" to "application/gzip"))
+            assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response2.code)
+        }
+        with(httpTest()) {
             val response3 = uploadCrash(TestCrash.Huge)
             assertEquals(HttpURLConnection.HTTP_ENTITY_TOO_LARGE, response3.code)
+
+            val response4 = uploadCrash(TestCrash.Malformed)
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response4.code)
 
             repeat(100) {
                 // Load the server with loads of trash

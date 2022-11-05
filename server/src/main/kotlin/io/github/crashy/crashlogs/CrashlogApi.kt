@@ -3,13 +3,7 @@ package io.github.crashy.crashlogs
 import io.github.crashy.CrashyJson
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
-import io.github.crashy.utils.decompressGzip
 import io.ktor.http.*
-import io.ktor.util.*
-import io.ktor.util.Identity.decode
-import io.ktor.utils.io.*
-import io.netty.handler.codec.compression.BrotliDecoder
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 //TODO: ensure it is uncompressed
@@ -41,6 +35,8 @@ sealed interface UploadCrashResponse : Response {
      */
     object CrashTooLargeError : UploadCrashResponse,
         Response by response("Too Large", HttpStatusCode.PayloadTooLarge)
+
+    object MalformedCrashError : UploadCrashResponse, Response by response("Invalid Crash", HttpStatusCode.BadRequest)
 
     /**
      * Too many crashes were uploaded in the last day (>1MB). We don't allow this to avoid overloading the server/storage.
@@ -88,8 +84,8 @@ class CrashlogApi(private val logs: CrashlogStorage) {
 
         val id = CrashlogId.generate()
         val key = DeletionKey.generate()
-        val title = peekCrashTitle(request)
-        logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key,title)))
+        val header = peekCrashHeader(request) ?: return UploadCrashResponse.MalformedCrashError
+        logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, header)))
 
         return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "https://crashy.net/${id.value}")
     }
@@ -100,7 +96,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     suspend fun getCrash(id: GetCrashRequest): GetCrashResponse {
         return when (val result = logs.get(id)) {
             GetCrashlogResult.Archived -> GetCrashResponse.Archived
-            GetCrashlogResult.DoesNotExist ->  GetCrashResponse.DoesNotExist
+            GetCrashlogResult.DoesNotExist -> GetCrashResponse.DoesNotExist
             is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log.compressedLog)
         }
     }
@@ -110,7 +106,14 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     }
 }
 
-private fun peekCrashTitle(log: UncompressedLog): String {
-    TODO()
+private fun peekCrashHeader(log: UncompressedLog): CrashlogHeader? {
+    // 1000 bytes saves a lot of time and should be enough in all cases
+    val start = log.peek(bytes = 1000)
+    val lines = start.split("\n")
+    val descriptionLine = lines.indexOfFirst { it.startsWith("Description:") }
+    if (descriptionLine == -1) return null
+    val description = lines[descriptionLine].removePrefix("Description:").trim()
+    val exception = lines[descriptionLine + 2].trim()
+    return CrashlogHeader(description, exception)
 }
 

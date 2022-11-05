@@ -1,4 +1,5 @@
 import com.github.gradle.node.npm.task.NpmTask
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.sshtools.client.SessionChannelNG
 import com.sshtools.client.SshClient
 import com.sshtools.client.scp.ScpClient
@@ -55,14 +56,32 @@ repositories {
 
 }
 
-val invoker = configurations.create("invoker")
-
+val linuxOnly = configurations.create("linux")
+//}
+val brotliVersion = "1.8.0"
+//dependencies {
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+////    implementation 'com.nixxcode.jvmbrotli:jvmbrotli:0.2.0'
+//    implementation "com.aayushatharva.brotli4j:brotli4j:$brotliVersion"
+//    runtimeOnly("com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion")
+val brotliWindowsNatives = "com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion"
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.1")
-    testImplementation("io.ktor:ktor-server-tests-jvm:2.2.0-eap-534")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.7.20")
+    implementation( "com.aayushatharva.brotli4j:brotli4j:$brotliVersion")
+    runtimeOnly(brotliWindowsNatives)
+    // Use the linux natives when packaging because we run the server on a linux EC2 instance
+    linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
+}
+
+tasks.withType<ShadowJar> {
+    configurations += linuxOnly
+    dependencies {
+        exclude(dependency(brotliWindowsNatives))
+    }
 }
 
 val clientDir = projectDir.parentFile.resolve("client")

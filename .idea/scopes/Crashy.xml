@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Crashy" pattern="!file[Crashy]:gradle/wrapper//*&amp;&amp;!file:gradle.properties&amp;&amp;!file:gradlew&amp;&amp;!file:gradlew.bat&amp;&amp;!file:versions.properties&amp;&amp;!file[client]:.idea//*&amp;&amp;!file:client.iml&amp;&amp;!file:package-lock.json&amp;&amp;!file:tsconfig.json" />
+</component>

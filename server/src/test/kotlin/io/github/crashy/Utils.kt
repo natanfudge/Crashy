@@ -24,5 +24,5 @@ context (TestClock, Path)
 
 private fun createRandomMetadata() = CrashlogMetadata(
     DeletionKey.generate(),
-    randomString(15)
+    CrashlogHeader(randomString(15), randomString(100))
 )

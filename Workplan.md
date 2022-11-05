@@ -3,7 +3,7 @@
 - [ ] Implement web page serving:
   - 
 - [ ] Migrate client to support new endpoints
-
+- [ ] Verify uploaded crashlogs on the client side
 
 - Complete client mappings feature.
   - Move mappings selection, and make it not move when there's no version selection:  

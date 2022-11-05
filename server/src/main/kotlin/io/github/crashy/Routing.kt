@@ -3,6 +3,7 @@ package io.github.crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
+import io.github.crashy.utils.decompressGzip
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -28,13 +29,15 @@ fun Application.configureRouting() {
             val isGzipContentType = call.request.header("content-type") == "application/gzip"
             val isGzipContentEncoding = call.request.header("content-encoding") == "gzip"
             if (isGzipContentType != isGzipContentEncoding) {
-                //TODO: test this
                 call.respondText(
                     "Mismatching content encoding/type is not supported anymore",
                     status = HttpStatusCode.UnsupportedMediaType
                 )
             }
-            respond(api.uploadCrash(UncompressedLog(it), ip = call.request.origin.remoteAddress))
+
+            val uncompressed = if(isGzipContentEncoding) it.decompressGzip() else it
+
+            respond(api.uploadCrash(UncompressedLog(uncompressed), ip = call.request.origin.remoteAddress))
         }
         json<DeleteCrashlogRequest>("/deleteCrash") {
             respond(api.deleteCrash(it))

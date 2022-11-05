@@ -1,0 +1,267 @@
+---- Minecraft Crash Report ----
+// Hi. I'm Minecraft, and I'm a crashaholic.
+ aseef a
+Time: 20/08/2021, 7:41
+Descriptin:f awef weUnawexpected error
+f red.asm.mixin.transformer.throwables.MixinTransformerError: An unexpected critical error was encountered
+	at Not Enough Crashes deobfuscated stack trace.(1.17+build.13)
+	at org.spongepowered.asm.mixin.transformer.MixinProcessor.awefnsformClassBytes(MixinTransformer.java:178)
+	at org.spongepowered.asm.mixin.transformer.FabricMixinTransformerProxy.transformClassBytes(FabricMixinTransformerProxy.java:23)
+	at net.fabricmc.loader.launch.knot.KnotClassDelegate.getPostMixinClassByteArray(KnotClassDelegate.java:162)
+	at net.fabricmc.loader. alaunch.knot.KnotClassLoader.loadClass(KnotClassLoader.java:154)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:519)
+	at net.minecraft.client.render.GameRenderer.updateWorldIcon(GameRenderer:1339)
+	at net.minecraft.client.render.GameRenderer.render(GameRenderer:1158)
+	at net.minecraft.client.MinecraftClient.render(MinecraftClient:1114)
+	at net.minecraft.client.MinecraftClient.run(MinecraftClient:730)
+	at net.minecraft.client.main.Main.main(Main:217)
+	at jdk.internaeloader.game.MinecraftGameProvider.launch(MinecraftGameProvider.java:234)
+	at net.fabricmc.loader.launch.knot.Knot.launch(Knot.java:153)
+	t net.fabricmc.loader.launch.knot.KnotClient.main(KnotClient.java:28)
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	 wat jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+    we w	at java.lang.reflect.Method.invoke(Method.java:567)
+	at org.multimc.onesix.OneSixLauncher.launchWithMainClass(OneSixLauncher.java:196)
+ awe	at org.multimc.onesix.OneSixLauncher.launch(OneSixLauncher.java:231)
+	at org.multimc.EntryPoint.listen(EntryPoint.java:143)
+	at org.multimc.EntryPoint.main(EntryPoint.java:34)
+Caused by: org.spongepowered.asm.mixin.throwables.MixinApplyError: Mixin [screenshotclipboard.mixins.json:ScreenshotMixin] from phase [DEFAULT] in config [screenshotclipboard.mixins.json] FAILED during APPLY
+	at org.spongepowered.asm.mixin.transformer.MixinProcessor.handleMixinError(MixinProcessor.java:642)
+	at org.spongepowered.asm.mixin.transformer.MixinProcessor.handleMixinApplyError(MixinProcessor.java:594)
+	at org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:356)
+	... 26 more
+Caused by: org.spongepowered.asm.mixin.injection.throwables.InvalidInjectionException: Invalid descriptor on screenshotclipboard.mixins.json:ScreenshotMixin->@Inject::screenshotCaptured(Lnet/minecraft/class_1011;Ljava/io/File;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V! Expected (Lnet/minecraft/class_1011;Ljava/io/File;Ljava/lang/Object;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V but found (Lnet/minecraft/class_1011;Ljava/io/File;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V [INJECT Applicator Phase -> screenshotclipboard.mixins.json:ScreenshotMixin -> Apply Injections ->  -> Inject -> screenshotclipboard.mixins.json:ScreenshotMixin->@Inject::screenshotCaptured(Lnet/minecraft/class_1011;Ljava/io/File;Ljava/util/function/Consumer;Lorg/spongepowered/asm/mixin/injection/callback/CallbackInfo;)V]
+	at Not Enough Crashes deobfuscated stack trace.(1.17+build.13)
+	at org.spongepowered.asm.mixin.injection.callback.CallbackInjector.inject(CallbackInjector.java:517)
+	at org.spongepowered.asm.mixin.injection.callback.CallbackInjector.inject(CallbackInjector.java:447)
+	at org.spongepowered.asm.mixin.injection.code.Injector.inject(Injector.java:264)
+	at org.spongepowered.asm.mixin.injection.struct.InjectionInfo.inject(InjectionInfo.java:385)
+	at org.spongepowered.asm.mixin.transformer.MixinTargetContext.applyInjections(MixinTargetContext.java:1284)
+	at org.spongepowered.asm.mixin.transformer.MixinApplicatorStandard.applyInjections(MixinApplicatorStandard.java:1042)
+	at org.spongepowered.asm.mixin.transformer.MixinApplicatorStandard.applyMixin(MixinApplicatorStandard.java:395)
+	at org.spongepowered.asm.mixin.transformer.MixinApplicatorStandard.apply(MixinApplicatorStandard.java:320)
+	at org.spongepowered.asm.mixin.transformer.TargetClassContext.applyMixins(TargetClassContext.java:345)
+	at org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:569)
+	at org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:351)
+	... 26 more
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at org.spongepowered.asm.mixin.transformer.MixinProcessor.applyMixins(MixinProcessor.java:363)
+	at org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClass(MixinTransformer.java:208)
+	at org.spongepowered.asm.mixin.transformer.MixinTransformer.transformClassBytes(MixinTransformer.java:178)
+	at org.spongepowered.asm.mixin.transformer.FabricMixinTransformerProxy.transformClassBytes(FabricMixinTransformerProxy.java:23)
+	at net.fabricmc.loader.launch.knot.KnotClassDelegate.getPostMixinClassByteArray(KnotClassDelegate.java:162)
+	at net.fabricmc.loader.launch.knot.KnotClassLoader.loadClass(KnotClassLoader.java:154)
+
+-- Affected level --
+Details:
+	All players: 1 total; [class_746['FudgeDestroyer'/456, l='ClientLevel', x=-37.50, y=69.00, z=232.50]]
+	Chunk stats: 441, 289
+	Level dimension: minecraft:overworld
+	Level spawn location: World: (-32,71,224), Section: (at 0,7,0 in -2,4,14; chunk contains blocks -32,0,224 to -17,255,239), Region: (-1,0; contains chunks -32,0 to -1,31, blocks -512,0,0 to -1,255,511)
+	Level time: 39 game time, 39 day time
+	Server brand: fabric
+	Server type: Integrated singleplayer server
+Stacktrace:
+	at net.minecraft.class_638.method_8538(class_638.java:476)
+	at net.minecraft.class_310.method_1587(class_310.java:2399)
+	at fudge.notenoughcrashes.mixinhandlers.InGameCatcher.handleClientCrash(InGameCatcher.java:28)
+	at net.minecraft.class_310.modify$bbc000$onCrash(class_310.java:11599)
+	at net.minecraft.class_310.method_1514(class_310.java:754)
+	at net.minecraft.client.main.Main.main(Main.java:217)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at net.fabricmc.loader.game.MinecraftGameProvider.launch(MinecraftGameProvider.java:234)
+	at net.fabricmc.loader.launch.knot.Knot.launch(Knot.java:153)
+	at net.fabricmc.loader.launch.knot.KnotClient.main(KnotClient.java:28)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:78)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:567)
+	at org.multimc.onesix.OneSixLauncher.launchWithMainClass(OneSixLauncher.java:196)
+	at org.multimc.onesix.OneSixLauncher.launch(OneSixLauncher.java:231)
+	at org.multimc.EntryPoint.listen(EntryPoint.java:143)
+	at org.multimc.EntryPoint.main(EntryPoint.java:34)
+
+-- Last reload --
+Details:
+	Reload number: 1
+	Reload reason: initial
+	Finished: Yes
+	Packs: Default, Fabric Mods
+
+-- System Details --
+Details:
+	Minecraft Version: 1.17
+	Minecraft Version ID: 1.17
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 16.0.2, Oracle Corporation
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Oracle Corporation
+	Memory: 875362304 bytes (834 MiB) / 2059403264 bytes (1964 MiB) up to 6291456000 bytes (6000 MiB)
+	CPUs: 16
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 7 3700X 8-Core Processor
+	Identifier: AuthenticAMD Family 23 Model 113 Stepping 0
+	Microarchitecture: Zen 2
+	Frequency (GHz): 3.59
+	Number of physical packages: 1
+	Number of physical CPUs: 8
+	Number of logical CPUs: 16
+	Graphics card #0 name: Radeon RX 580 Series
+	Graphics card #0 vendor: Advanced Micro Devices, Inc. (0x1002)
+	Graphics card #0 VRAM (MB): 4095.00
+	Graphics card #0 deviceId: 0x67df
+	Graphics card #0 versionInfo: DriverVersion=30.0.13001.3012
+	Memory slot #0 capacity (MB): 16384.00
+	Memory slot #0 clockSpeed (GHz): 2.67
+	Memory slot #0 type: DDR4
+	Virtual memory max (MB): 22990.71
+	Virtual memory used (MB): 13788.59
+	Swap memory total (MB): 6656.00
+	Swap memory used (MB): 23.89
+	JVM Flags: 3 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xms512m -Xmx6000m
+	Fabric Mods:
+		architectury: Architectury 2.0.7
+		audiooutput: AudioOutput 0.0.4
+		autoreconnect: AutoReconnect 1.2.0
+		bendy-lib: Bendy api 2.0-SNAPSHOT11
+		betterbeds: Better Beds 1.2.0
+		betterdroppeditems: Better Dropped Items 1.3.0-1.17
+		betterf3: BetterF3 1.1.4
+		betterthirdperson: Better Third Person 1.5.0
+		blue_endless_jankson: jankson 1.2.1
+		bobby: Bobby 2.0.0
+		boostedbrightness: Boosted Brightness 2.1.0
+		cloth-api: Cloth API 2.0.54
+		cloth-basic-math: Cloth Basic Math 0.5.1
+		cloth-client-events-v0: Cloth Client Events v0 2.0.54
+		cloth-common-events-v1: Cloth Common Events v1 2.0.54
+		cloth-config2: Cloth Config v4 5.0.34
+		cloth-datagen-api-v1: Cloth Datagen v1 2.0.54
+		cloth-scissors-api-v1: Cloth Scissors API v1 2.0.54
+		cloth-utils-v1: Cloth Utils v1 2.0.54
+		cmdkeybind: Command Macros 1.5.2-1.17
+		com_moandjiezana_toml_toml4j: toml4j 0.7.2
+		com_neovisionaries_nv-websocket-client: nv-websocket-client 2.14
+		com_typesafe_config: config 1.4.1
+		confabricate: confabricate 2.1.0-SNAPSHOT+4.1.1
+		craftpresence: CraftPresence 1.8.2
+            damagetilt: Damage Tilt 1.17-fabric-0.1.2
+            de_javagl_obj: obj 0.3.0
+            dynamicfps: Dynamic FPS 2.0.3
+            emotecraft: Emotecraft 2.0.5
+            entityculling: EntityCulling-Fabric 1.2.3
+            fabric: Fabric API 0.34.9+1.17
+            fabric-api-base: Fabric API Base 0.3.0+a02b4463d5
+            fabric-api-lookup-api-v1: Fabric API Lookup API (v1) 1.0.2+a02b4463d5
+            fabric-biome-api-v1: Fabric Biome API (v1) 3.1.11+9e521e13d5
+            fabric-blockrenderlayer-v1: Fabric BlockRenderLayer Registration (v1) 1.1.5+a02b4463d5
+            fabric-command-api-v1: Fabric Command API (v1) 1.1.1+a02b4463d5
+            fabric-commands-v0: Fabric Commands (v0) 0.2.2+92519afad5
+                 fabric-containers-v0: Fabric Containers (v0) 0.1.12+a02b4463d5
+                fabric-content-registries-v0: Fabric Content Registries (v0) 0.2.2+a02b4463d5
+                fabric-crash-report-info-v1: Fabric Crash Report Info (v1) 0.1.5+be9da310d5
+		fabric-dimensions-v1: Fabric Dimensions API (v1) 2.0.10+a02b4463d5
+		fabric-entity-events-v1: Fabric Entity Events (v1) 1.1.0+a02b4463d5
+		fabric-events-interaction-v0: Fabric Events Interaction (v0) 0.4.8+a02b4463d5
+		fabric-events-lifecycle-v0: Fabric Events Lifecycle (v0) 0.2.1+92519afad5
+		fabric-game-rule-api-v1: Fabric Game Rule API (v1) 1.0.6+a02b4463d5
+		fabric-item-api-v1: Fabric Item API (v1) 1.2.4+a02b4463d5
+		fabric-item-groups-v0: Fabric Item Groups (v0) 0.2.10+b7ab6121d5
+		fabric-key-binding-api-v1: Fabric Key Binding API (v1) 1.0.4+a02b4463d5
+		fabric-keybindings-v0: Fabric Key Bindings (v0) 0.2.2+36b77c3ed5
+		fabric-lifecycle-events-v1: Fabric Lifecycle Events (v1) 1.4.4+a02b4463d5
+		fabric-loot-tables-v1: Fabric Loot Tables (v1) 1.0.4+a02b4463d5
+		fabric-mining-levels-v0: Fabric Mining Levels (v0) 0.1.3+92519afad5
+		fabric-models-v0: Fabric Models (v0) 0.3.0+a02b4463d5
+		fabric-networking-api-v1: Fabric Networking API (v1) 1.0.11+b7ab6121d5
+		fabric-networking-blockentity-v0: Fabric Networking Block Entity (v0) 0.2.11+a02b4463d5
+		fabric-networking-v0: Fabric Networking (v0) 0.3.2+92519afad5
+		fabric-object-builder-api-v1: Fabric Object Builder API (v1) 1.10.9+b7ab6121d5
+		fabric-object-builders-v0: Fabric Object Builders (v0) 0.7.3+a02b4463d5
+		fabric-particles-v1: Fabric Particles (v1) 0.2.4+a02b4463d5
+		fabric-permissions-api- v0: fabric-permissions-api 0.1-SNAPSHOT
+		fabric-registry-sync-v0: Fabric Registry Sync (v    0) 0.7.9+a02b4463d5
+            fabric-renderer-api-v1: Fabric R    enderer API (v1) 0.4.2+a02b4463d5
+		fabric-renderer-indigo: Fabric Renderer - Indigo 0.4.8+a02b4463d5
+		fabric-renderer-registries-v1: Fabric Renderer Registries (v1) 3.2.0+a02b4463d5
+		fabric-rendering-data-attachment-v1: Fabric Rendering Data Attachment (v1) 0.1.5+a02b4463d5
+		fabric-rendering-fluids-v1: Fabric Rendering Fluids (v1) 0.1.13+a02b4463d5
+		fabric-rendering-v0: Fabric Rendering (v0) 1.1.2+92519afad5
+		fabric-rendering-v1: Fabric Rendering (v1) 1.6.0+a02b4463d5
+            fabric-resource-loader-v0: Fabric Resource Loader (v0) 0.4.7+b7ab6121a0
+            fabric-screen-api-v1: Fabri c Screen API (v1) 1.0.3+b7ab6121d5
+		fabric-screen-handler-api-v1: Fabric Screen Handler A   PI (v1) 1.1.8+a02b4463d5
+		fabric-structure-api-v1: Fabric Structure API (v1) 1.1.10+be9da310d5
+		fabric-tag-extensions-v0: Fabric Tag Extensions (v0) 1.1.4+a02b4463d5
+		fabric-textures-v0: Fabric      Textu es (v0) 1.0.6+a02b4463d5
+		fabric-tool-attribute-api-v1: Fabric  ool Attribute API (v1) 1.2.12+b7ab6121d5
+		fabricloader: Fabric  Loader 0.11.
+		fabrishot: Fabrishot 1.5.0
+		ferritecore: FerriteCore 3.0.0
+		fiber: fiber 0.23.0-2
+		figura: Figura 0.0.5e-[1  ntyref: geantyref 1.3.11
+		java: OpenJDK 64-Bit Server VM 1
+		kyrptconfefMod Menu 2.0.0-beta.7
+		multiconnect: MultiConnect 1.4.2
+		multiconnect-api: MultiConnect API 1.4.2
+		namepain: Name Pain 1.4.0
+		notenoughanimations: NotEnoughAnimations 1.3.0
+		notenoughcrashes: Nofetsing 1.0.0
+		okzoomer: Ok Zoomer 5.0.0-beta.ee f+1.17
+		optifabric: OptiFabric 1.11.9e   e : lambdajcommoa ef
+		r   org_spongepowered_conf igurate-core: configurate-core 4.1.1
+		org_spongepowered_configurate-extra-dfu4: configurate-extra-dfu4 4.1.1
+	ef aw	org_spongepowered_conf igurate-hocon: configurate-hocon 4.1.1
+	aw	performacraft: Performacraft Manager 1.0.0
+e aw		presencefootsteps: Presence Footsteps r31-1.17-rc1
+		respackopts: Resource Pack Options 2.0.0
+		    screenshotclipboard: Sc reenshot to Clipboard 1.0.6
+		seamless_loading_screen: Seam less Loading Screen 1.3.5+1.17
+		smoothboot: Smooth Boot 1.16.5-1.6.0
+		spark: spark ${pluginVersion}
+		s        pruceui: SpruceUI 3.2.0+1.17
+		starlight: Starlight fabric-1.0.0-RC2-3a77ed1
+		thatorthis: ThatOrThis 0.2.3+1.17
+		tooltipfix: ToolTip Fix 1.0.2-1.16
+		transliterationlib: TRansliterationLiba 1.1.0
+	Launched Version: MultiMC5
+	Backend library: LWJGL version 3.2.2 build 10
+	Backend API: Radeon RX 580 Series GL version 3.2.14761 Compatibility Profile Context 21.30.01.03 30.0.13001.3012, ATI Technologies Inc.
+	Window size: 854x480
+	GL Caps: Using framebuffer using OpenGL 3.2
+	GL debug messages:
+	Using VBOs: Yeswd Server (mefnt.txt)
+	Graphics mode: fancy
+	Resource Packs: Fabric Mods
+	Current Language: English (US)
+	CPU: 16x AMD Ryzen 7 3700X 8-Core Procawe
+	Integrated Server Crashes Since Restart: 0
+	OptiFine Version: OptiFine_1.17_HD_U_G9_pre21
+	OptiFine Build: 20210612-020007
+	Render Distance Chunks: 8faw
+	Anisotropic Filtering: 1
+	Antialiasing: 0ef
+	Multitexture: false
+	Shaders: null
+	OpenGlVersion: 3.2.14761 Compatibility Profile Context 21.30.01.03 30.0.13001.3012
+	OpenGlRenderer: Radeon RX 580 Series
+	OpenGlVendor: ATI Technologies Inc.
+	CpuCount: 16
+
+-- OptiFabric --
+Details:
+	OptiFine jar designed for: 1.17
+	OptiFine jar version: OptiFine_1.17_HD_U_G9_pre21
+	OptiFine jar status: Valid OptiFine installer
+	OptiFine remapped jar: C:/Users/natan/Desktop/MultiMC/instances/1.17 NEC error identifying test/.minecraft/.optifine/OptiFine_1.17_HD_U_G9_pre21/Optifine-mapped.jar
+	OptiFabric error: <None>
