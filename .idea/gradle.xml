@@ -8,7 +8,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="gradleJvm" value="17" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../gradle-7.5-bin/gradle-7.5" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/server" />

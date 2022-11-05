@@ -12,8 +12,8 @@ import io.netty.handler.codec.compression.BrotliDecoder
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
-
-typealias UploadCrashlogRequest = ByteArray
+//TODO: ensure it is uncompressed
+typealias UploadCrashlogRequest = UncompressedLog
 
 sealed interface UploadCrashResponse : Response {
 
@@ -53,8 +53,8 @@ sealed interface UploadCrashResponse : Response {
 sealed interface GetCrashResponse : Response {
     object Archived : GetCrashResponse, Response by response("Archived", HttpStatusCode.Processing)
     object DoesNotExist : GetCrashResponse, Response by response("Does Not Exist", HttpStatusCode.NotFound)
-    class Success(val log: ByteArray) : GetCrashResponse {
-        override fun responseString(): String = log.decompressGzip().toString(Charsets.UTF_8)
+    class Success(private val log: CompressedLog) : GetCrashResponse {
+        override fun responseString(): String = log.decompress().decodeToString()
         override val statusCode: HttpStatusCode = HttpStatusCode.OK
 
     }
@@ -88,7 +88,8 @@ class CrashlogApi(private val logs: CrashlogStorage) {
 
         val id = CrashlogId.generate()
         val key = DeletionKey.generate()
-        logs.store(id = id, log = CrashlogEntry.create(request, key))
+        val title = peekCrashTitle(request)
+        logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key,title)))
 
         return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "https://crashy.net/${id.value}")
     }
@@ -100,12 +101,16 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         return when (val result = logs.get(id)) {
             GetCrashlogResult.Archived -> GetCrashResponse.Archived
             GetCrashlogResult.DoesNotExist ->  GetCrashResponse.DoesNotExist
-            is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log.bytes)
+            is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log.compressedLog)
         }
     }
 
     fun deleteCrash(request: DeleteCrashlogRequest): DeleteCrashResult {
         return logs.delete(request.id, request.key)
     }
+}
+
+private fun peekCrashTitle(log: UncompressedLog): String {
+    TODO()
 }
 

@@ -3,7 +3,6 @@ package io.github.crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
-import io.github.crashy.utils.decompressGzip
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
@@ -16,7 +15,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
-import kotlin.io.path.readBytes
 
 fun Application.configureRouting() {
     val logStorage = runBlocking {
@@ -26,17 +24,17 @@ fun Application.configureRouting() {
     val api = CrashlogApi(logStorage)
 
     routing {
-        post<UploadCrashlogRequest>("/uploadCrash") {
-            if (call.request.header("content-encoding") == "gzip") {
+        post<ByteArray>("/uploadCrash") {
+            val isGzipContentType = call.request.header("content-type") == "application/gzip"
+            val isGzipContentEncoding = call.request.header("content-encoding") == "gzip"
+            if (isGzipContentType != isGzipContentEncoding) {
+                //TODO: test this
                 call.respondText(
-                    "Don't specify gzip as the content-encoding. This trips up the server.",
+                    "Mismatching content encoding/type is not supported anymore",
                     status = HttpStatusCode.UnsupportedMediaType
                 )
-            } else if (call.request.header("content-type") != "application/gzip") {
-                call.respondText("log must be compressed using gzip", status = HttpStatusCode.UnsupportedMediaType)
-            } else {
-                respond(api.uploadCrash(it, ip = call.request.origin.remoteAddress))
             }
+            respond(api.uploadCrash(UncompressedLog(it), ip = call.request.origin.remoteAddress))
         }
         json<DeleteCrashlogRequest>("/deleteCrash") {
             respond(api.deleteCrash(it))
@@ -51,30 +49,6 @@ fun Application.configureRouting() {
                 filesPath = staticDir.toString()
             }
         }
-
-//        get("/{id}"){
-//            val id = call.parameters["id"]!!
-//            try{
-//                val logId = CrashlogId.fromString(id)
-//                when(val result = api.getCrash(logId)){
-//                    GetCrashResponse.Archived -> call.respondText("Archived")
-//                    GetCrashResponse.DoesNotExist -> call.respondText("No such crashlog")
-//                    is GetCrashResponse.Success -> {
-//                        val header = result.log.take(512).toByteArray().decompressGzip()
-//                        call.respond(staticDir.resolve("index2.html").readBytes())
-//                    }
-//                }
-//
-//
-//            }catch (e: IllegalArgumentException) {
-//                call.respondText("That's not a real crashlog ID")
-//            }catch (e: Throwable){
-//                e.printStackTrace()
-//                throw e
-//            }
-//
-//
-//        }
     }
 }
 

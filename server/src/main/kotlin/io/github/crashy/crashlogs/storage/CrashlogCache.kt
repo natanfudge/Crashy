@@ -1,11 +1,10 @@
 package io.github.crashy.crashlogs.storage
 
-import io.github.crashy.crashlogs.CrashlogEntry
-import io.github.crashy.crashlogs.CrashlogId
-import io.github.crashy.crashlogs.DeleteCrashResult
-import io.github.crashy.crashlogs.DeletionKey
+import io.github.crashy.CrashyJson
+import io.github.crashy.crashlogs.*
 import java.nio.file.Path
 import kotlin.io.path.*
+import kotlin.math.log
 
 //TODO: rewrite this system. Keep last access the same, and instead of crashlogs do something like this:
 // - /crashlogs
@@ -25,12 +24,13 @@ import kotlin.io.path.*
 // See https://stackoverflow.com/questions/74322790/expose-external-resource-to-search-engines
 // Then, make sure we use the proper cache headers and fetch the crash using a normal get request.
 
+
 class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     init {
         require(parentDir.exists())
     }
 
-    // Full compressed crash logs are stored under /crashlogs, with their ID as the file name
+    // Crash logs are stored on a separate directory per ID, with the crashlog and metadata as separate files in that directory.
     private val crashes = parentDir.resolve("crashlogs").createDirectories()
 
     // The last day that crash logs were accessed are stored under /last_access, with a separate directory for each day
@@ -39,37 +39,32 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     // Days are in GMT.
     private val lastAccessDays = parentDir.resolve("last_access").createDirectories()
     fun store(id: CrashlogId, log: CrashlogEntry) {
-        val crashFile = locationOfCrash(id)
-
-        log.writeToFile(crashFile)
+        log.addToCrashesDir(id)
         storeLastAccessDay(id, clock.today())
     }
 
 
-    fun get(id: CrashlogId): CrashlogEntry.ContiguousArrayBacked? {
-        val crashFile = locationOfCrash(id)
-        if (!crashFile.exists()) return null
+    fun get(id: CrashlogId): CrashlogEntry? {
+        val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
 
-        updateLastAccessDay(id, oldLastAccessDay = lastAccessDay(crashFile))
-        return CrashlogEntry.read(crashFile)
+        updateLastAccessDay(id, oldLastAccessDay = lastAccessDay)
+        return CrashlogEntry.fromCrashesDir(id)
     }
 
     /**
      * Returns true if something was deleted
      */
     fun delete(id: CrashlogId, key: DeletionKey): DeleteCrashResult {
-        val crashFile = locationOfCrash(id)
-        if (!crashFile.exists()) return DeleteCrashResult.NoSuchId
+        val oldLastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return DeleteCrashResult.NoSuchId
 
-        val oldLastAccessDay = lastAccessDay(crashFile)
-        val correctKey = CrashlogEntry.peekDeletionKey(crashFile)
+        val correctKey = CrashlogEntry.peekDeletionKey(id)
         if (key != correctKey) {
             updateLastAccessDay(id, oldLastAccessDay)
             return DeleteCrashResult.IncorrectDeletionKey
         }
 
         deleteLastAccessDay(id, oldLastAccessDay)
-        crashFile.deleteExisting()
+        CrashlogEntry.deleteEntryFiles(id)
         return DeleteCrashResult.Success
     }
 
@@ -77,7 +72,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         locationOfLastAccessDay(id, lastAccessDay).deleteExisting()
     }
 
-    suspend fun evictOld(onEvicted: suspend (CrashlogId, CrashlogEntry.ContiguousArrayBacked) -> Unit) {
+    suspend fun evictOld(onEvicted: suspend (CrashlogId, CrashlogEntry) -> Unit) {
         val existingDays = lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
         val thirtyDaysAgo = clock.now().minusDays(30)
         val oldDays = existingDays.filter { it.toGmtZonedDateTime().isBefore(thirtyDaysAgo) }
@@ -88,14 +83,13 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
             println("Evicting ${crashIds.size} crashes from $oldDay.")
             for (crashIdFile in crashIds) {
                 val crashId = CrashlogId.fromFileName(crashIdFile)
-                val crashFile = locationOfCrash(crashId)
                 // Archive crash to s3
-                onEvicted(crashId, CrashlogEntry.read(crashFile))
+                onEvicted(crashId, CrashlogEntry.fromCrashesDir(crashId))
                 println("Archived $crashId to S3.")
                 // Delete LastAccessDay -> crashId record from disk
                 crashIdFile.deleteExisting()
-                // Delete the crash file itself
-                crashFile.deleteExisting()
+                // Delete the crash files themselves
+                CrashlogEntry.deleteEntryFiles(crashId)
             }
             crashesDir.deleteExisting()
         }
@@ -111,7 +105,6 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         }
     }
 
-    private fun locationOfCrash(id: CrashlogId) = crashes.resolve(id.value.toString() + ".crash")
 
     private fun locationOfLastAccessDay(id: CrashlogId, lastAccessDay: LastAccessDay): Path {
         return locationOfAllLastAccessDay(lastAccessDay).resolve(id.value.toString())
@@ -128,6 +121,42 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         return lastAccessDays.resolve(lastAccessDay.toFileName())
     }
 
+    private fun CrashlogEntry.addToCrashesDir(underId: CrashlogId) {
+        val parentDir = crashes.crashParentDir(underId).createDirectory()
+        val logFile = parentDir.compressedLogFile()
+        val metadataFile = parentDir.crashMetadataFile()
+        compressedLog.writeToFile(logFile)
+        metadataFile.writeText(CrashyJson.encodeToString(CrashlogMetadata.serializer(),metadata))
+    }
+
+    private fun CrashlogEntry.Companion.fromCrashesDir(underId: CrashlogId): CrashlogEntry {
+        val entryDir = crashes.crashParentDir(underId)
+        val logFile = entryDir.compressedLogFile()
+        return CrashlogEntry(CompressedLog.readFromFile(logFile), entryDir.readMetadataFromCrashEntryFolder())
+    }
+
+    private fun CrashlogEntry.Companion.peekDeletionKey(underId: CrashlogId): DeletionKey {
+        return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder().deletionKey
+    }
+
+    private fun CrashlogEntry.Companion.deleteEntryFiles(underId: CrashlogId) {
+        crashes.crashParentDir(underId).toFile().deleteRecursively()
+    }
+
+    private fun CrashlogEntry.Companion.lastAccessDay(ofId: CrashlogId): LastAccessDay? {
+        val file = crashes.crashParentDir(ofId).compressedLogFile()
+        if(!file.exists()) return null
+        return lastAccessDay(file)
+    }
+
 }
 
 
+
+private fun Path.crashParentDir(id: CrashlogId) = resolve(id.value.toString())
+private fun Path.compressedLogFile() = resolve("crash.br")
+private fun Path.crashMetadataFile() = resolve("meta.json")
+
+private fun Path.readMetadataFromCrashEntryFolder(): CrashlogMetadata {
+    return CrashyJson.decodeFromString(CrashlogMetadata.serializer(),crashMetadataFile().readText())
+}

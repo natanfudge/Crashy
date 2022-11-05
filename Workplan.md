@@ -1,12 +1,10 @@
 
 # Workplan:
+- [ ] Implement web page serving:
+  - 
+- [ ] Migrate client to support new endpoints
 
 
-- Build basic ktor 2 EC2 server serving the client side, based off of AntiCancer code, including all the cool automatic build stuff.
-  - [ ] See if any ktor modules would be useful for us. 
-- Implement upload crash, delete crash, mappings endpoints on EC2.
-  -[ ] Implement tests for these, based off of ClientPlayground
-  -[ ] Migrate client to support new endpoints
 - Complete client mappings feature.
   - Move mappings selection, and make it not move when there's no version selection:  
   ![img.png](img.png)
