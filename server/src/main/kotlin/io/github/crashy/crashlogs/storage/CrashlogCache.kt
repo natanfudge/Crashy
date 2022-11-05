@@ -2,6 +2,7 @@ package io.github.crashy.crashlogs.storage
 
 import io.github.crashy.CrashyJson
 import io.github.crashy.crashlogs.*
+import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
 import kotlin.io.path.*
 import kotlin.math.log
@@ -114,6 +115,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         val path = locationOfLastAccessDay(id, lastAccessDay)
         val parent = path.parent
         if (!parent.exists()) path.parent.createDirectories()
+        println("Creating lastAccessDay at $path")
         path.createFile()
     }
 
@@ -126,6 +128,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         val logFile = parentDir.compressedLogFile()
         val metadataFile = parentDir.crashMetadataFile()
         compressedLog.writeToFile(logFile)
+        println("Written log to $logFile")
         metadataFile.writeText(CrashyJson.encodeToString(CrashlogMetadata.serializer(),metadata))
     }
 
@@ -140,6 +143,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
     private fun CrashlogEntry.Companion.deleteEntryFiles(underId: CrashlogId) {
+        println("Deleted log from ${crashes.crashParentDir(underId)}")
         crashes.crashParentDir(underId).toFile().deleteRecursively()
     }
 
@@ -149,6 +153,12 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         return lastAccessDay(file)
     }
 
+    companion object {
+        @TestOnly
+        fun __testGetLogFile(cacheParentDir: Path, id: CrashlogId): Path {
+            return cacheParentDir.resolve("crashlogs").crashParentDir(id).compressedLogFile()
+        }
+    }
 }
 
 

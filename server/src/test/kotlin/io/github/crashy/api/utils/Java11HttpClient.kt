@@ -34,6 +34,7 @@ class Java11HttpClient : IHttpClient {
                 setHeader(headerName, headerValue)
             }
             setHeader("content-type","application/gzip")
+            setHeader("Content-Encoding","gzip")
         }.POST(HttpRequest.BodyPublishers.ofByteArray(compressed))
             .build()
         with(client.sendSuspend(request)) {

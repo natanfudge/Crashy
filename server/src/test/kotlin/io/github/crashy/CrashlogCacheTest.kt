@@ -1,10 +1,10 @@
 package io.github.crashy
 
-import io.github.crashy.crashlogs.CrashlogEntry
-import io.github.crashy.crashlogs.CrashlogId
+import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogCache
 import io.github.crashy.crashlogs.storage.NowDefinition
 import io.github.crashy.crashlogs.storage.RealClock
+import io.github.crashy.utils.randomString
 import kotlinx.coroutines.runBlocking
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -31,21 +31,19 @@ class CrashlogCacheTest {
     @Test
     fun testCache() = testScope {
         val id1 = CrashlogId.generate()
-        expectThat(getBytes(id1)).isEqualTo(null)
+        expectThat(getForTest(id1)).isEqualTo(null)
 
-        val log1 = createLog()
+        val log1 = createRandomLog()
         testStore(id1, log1)
-
-        println("crash code of $id1: ${log1.deletionKey}")
 
         checkBytes(id1, log1)
 
 //        println()
 
         val id2 = CrashlogId.generate()
-        expectThat(getBytes(id2)).isEqualTo(null)
+        expectThat(getForTest(id2)).isEqualTo(null)
 
-        val log2 = createLog()
+        val log2 = createRandomLog()
         testStore(id2, log2)
         checkBytes(id2, log2)
 
@@ -56,7 +54,7 @@ class CrashlogCacheTest {
         checkBytes(id2, log2)
 
         val id3 = CrashlogId.generate()
-        val log3 = createLog()
+        val log3 = createRandomLog()
         testStore(id3, log3)
 
         advanceDays(15)
@@ -84,7 +82,7 @@ class CrashlogCacheTest {
 
         checkBytes(id1, log1)
         checkBytes(id2, log2)
-        expectThat(getBytes(id3)).isEqualTo(null)
+        expectThat(getForTest(id3)).isEqualTo(null)
 
 
         advanceDays(20)
@@ -93,15 +91,15 @@ class CrashlogCacheTest {
         advanceDays(20)
         evictOld { _, _ -> }
 
-        expectThat(getBytes(id1)).isEqualTo(null)
-        expectThat(getBytes(id2)).isEqualTo(null)
-        expectThat(getBytes(id3)).isEqualTo(null)
+        expectThat(getForTest(id1)).isEqualTo(null)
+        expectThat(getForTest(id2)).isEqualTo(null)
+        expectThat(getForTest(id3)).isEqualTo(null)
     }
 
     context (CrashlogCache, TestClock, Path)   fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
         expectThat(getForTest(id)).isNotNull().and {
-            get(CrashlogEntry::copyLog).isEqualTo(log.copyLog())
-            get(CrashlogEntry::deletionKey).isEqualTo(log.deletionKey)
+            get(CrashlogEntry::compressedLog).get(CompressedLog::bytes).isEqualTo(log.compressedLog.bytes)
+            get(CrashlogEntry::metadata).isEqualTo(log.metadata)
         }
     }
 
@@ -113,10 +111,6 @@ class CrashlogCacheTest {
         runBlocking { test(cache, clock, dir) }
     }
 
-    context (CrashlogCache, TestClock, Path)
-            private fun getBytes(id: CrashlogId): ByteArray? {
-        return getForTest(id)?.copyLog()
-    }
 
     context (CrashlogCache, TestClock, Path)
             private fun getForTest(id: CrashlogId): CrashlogEntry? {
@@ -133,16 +127,7 @@ class CrashlogCacheTest {
         alignFileWithTestTime(id)
     }
 
-    context (CrashlogCache, TestClock, Path)
-            private fun alignFileWithTestTime(id: CrashlogId) {
-        val crashFile = resolve("crashlogs").resolve(id.value.toString() + ".crash")
-
-        println("Peek result of $id: " + CrashlogEntry.peekDeletionKey(crashFile))
-
-        // Update the lastAccessTime to match with the time we've advanced on the TestClock
-        crashFile.setAttribute("lastAccessTime", FileTime.from(now().toInstant()))
-    }
 
 
-    private fun createLog() = CrashlogEntry.createRandom()
+
 }

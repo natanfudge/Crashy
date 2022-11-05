@@ -1,5 +1,6 @@
 package io.github.crashy.utils
 
+import io.github.crashy.crashlogs.DeletionKey
 import io.ktor.utils.io.*
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
@@ -34,4 +35,12 @@ fun ByteArray.decompressGzip(): ByteArray {
         }
     }
     return output.toByteArray()
+}
+
+private const val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+fun randomString(length: Int) = buildString {
+    repeat(length) {
+        append(characters.random())
+    }
 }

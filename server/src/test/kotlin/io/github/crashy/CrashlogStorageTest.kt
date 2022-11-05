@@ -1,9 +1,6 @@
 package io.github.crashy
 
-import io.github.crashy.crashlogs.CrashlogEntry
-import io.github.crashy.crashlogs.CrashlogId
-import io.github.crashy.crashlogs.DeleteCrashResult
-import io.github.crashy.crashlogs.DeletionKey
+import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +23,7 @@ class CrashlogStorageTest {
         val id1 = CrashlogId.generate()
         expectThat(get(id1)).isEqualTo(GetCrashlogResult.DoesNotExist)
 
-        val log1 = createLog()
+        val log1 = createRandomLog()
         testStore(id1, log1)
 
         checkBytes(id1, log1)
@@ -34,7 +31,7 @@ class CrashlogStorageTest {
         val id2 = CrashlogId.generate()
         expectThat(get(id2)).isEqualTo(GetCrashlogResult.DoesNotExist)
 
-        val log2 = createLog()
+        val log2 = createRandomLog()
         testStore(id2, log2)
         checkBytes(id2, log2)
 
@@ -47,7 +44,7 @@ class CrashlogStorageTest {
 
 
         val id3 = CrashlogId.generate()
-        val log3 = createLog()
+        val log3 = createRandomLog()
         testStore(id3, log3)
 
         advanceDays(15)
@@ -90,14 +87,14 @@ class CrashlogStorageTest {
         checkBytes(id3, log3)
 
         // Test deletion
-        expectThat(testDelete(id1, log2.deletionKey)).isEqualTo(DeleteCrashResult.IncorrectDeletionKey)
-        expectThat(testDelete(id2, log1.deletionKey)).isEqualTo(DeleteCrashResult.IncorrectDeletionKey)
-        expectThat(testDelete(id1, log1.deletionKey)).isEqualTo(DeleteCrashResult.Success)
-        expectThat(testDelete(id2, log2.deletionKey)).isEqualTo(DeleteCrashResult.Success)
-        expectThat(testDelete(id3, log3.deletionKey)).isEqualTo(DeleteCrashResult.Success)
-        expectThat(testDelete(id1, log1.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
-        expectThat(testDelete(id2, log2.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
-        expectThat(testDelete(id3, log3.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
+        expectThat(testDelete(id1, log2.metadata.deletionKey)).isEqualTo(DeleteCrashResult.IncorrectDeletionKey)
+        expectThat(testDelete(id2, log1.metadata.deletionKey)).isEqualTo(DeleteCrashResult.IncorrectDeletionKey)
+        expectThat(testDelete(id1, log1.metadata.deletionKey)).isEqualTo(DeleteCrashResult.Success)
+        expectThat(testDelete(id2, log2.metadata.deletionKey)).isEqualTo(DeleteCrashResult.Success)
+        expectThat(testDelete(id3, log3.metadata.deletionKey)).isEqualTo(DeleteCrashResult.Success)
+        expectThat(testDelete(id1, log1.metadata.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
+        expectThat(testDelete(id2, log2.metadata.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
+        expectThat(testDelete(id3, log3.metadata.deletionKey)).isEqualTo(DeleteCrashResult.NoSuchId)
         expectThat(get(id1)).isEqualTo(GetCrashlogResult.DoesNotExist)
         expectThat(get(id2)).isEqualTo(GetCrashlogResult.DoesNotExist)
         expectThat(get(id3)).isEqualTo(GetCrashlogResult.DoesNotExist)
@@ -116,7 +113,7 @@ class CrashlogStorageTest {
                 Files.createTempDirectory("test")
             }
             val cache = CrashlogStorage.create(bucket = "crashy-test-crashlogs", clock, dir)
-            test(cache, clock, dir)
+            test(cache, clock, dir.resolve("cache"))
         }
 
     }
@@ -142,8 +139,8 @@ class CrashlogStorageTest {
             .isA<GetCrashlogResult.Success>()
             .get(GetCrashlogResult.Success::log)
             .and {
-                get(CrashlogEntry::copyLog).isEqualTo(log.copyLog())
-                get(CrashlogEntry::deletionKey).isEqualTo(log.deletionKey)
+                get(CrashlogEntry::compressedLog).get(CompressedLog::bytes).isEqualTo(log.compressedLog.bytes)
+                get(CrashlogEntry::metadata).isEqualTo(log.metadata)
             }
     }
 
@@ -176,14 +173,5 @@ class CrashlogStorageTest {
         return res
     }
 
-    context (CrashlogStorage, TestClock, Path)
-            private fun alignFileWithTestTime(id: CrashlogId) {
-        val crashFile = resolve("cache/crashlogs").resolve(id.value.toString() + ".crash")
-        val newTime = FileTime.from(now().toInstant())
-        // Update the lastAccessTime to match with the time we've advanced on the TestClock
-       if(crashFile.exists()) crashFile.setAttribute("lastAccessTime", newTime)
-    }
 
-
-    private fun createLog() = CrashlogEntry.createRandom()
 }

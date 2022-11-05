@@ -40,7 +40,7 @@ class EndpointTesting : TestClass {
         assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response2.code)
 
         with(httpTest()) {
-            val response1 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-encoding" to "gzip"))
+            val response1 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-encoding" to ""))
             assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response1.code)
 
             val response3 = uploadCrash(TestCrash.Huge)
