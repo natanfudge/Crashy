@@ -16,20 +16,20 @@ import kotlin.io.path.*
 
 class CrashlogStorage private constructor(
     private val s3: S3Client,
-    runDir: Path,
+    appDataDir: Path,
     private val bucketName: String,
     clock: NowDefinition
 ) : AutoCloseable {
     companion object {
-        suspend fun create(bucket: String, clock: NowDefinition, runDir: Path): CrashlogStorage {
+        suspend fun create(bucket: String, clock: NowDefinition, appDataDir: Path): CrashlogStorage {
             val client = S3Client.fromEnvironment {
                 region = "eu-central-1"
             }
-            return CrashlogStorage(client, runDir, bucket, clock)
+            return CrashlogStorage(client, appDataDir, bucket, clock)
         }
     }
 
-    private val cache = CrashlogCache(parentDir = runDir.resolve("cache").createDirectories(), clock)
+    private val cache = CrashlogCache(parentDir = appDataDir.resolve("cache").createDirectories(), clock)
 
     fun store(id: CrashlogId, log: CrashlogEntry) {
         cache.store(id, log)

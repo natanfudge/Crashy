@@ -1,14 +1,21 @@
 
 # Workplan:
 - [ ] Implement web page serving:
-  - 
 - [ ] Migrate client to support new endpoints
 - [ ] Verify uploaded crashlogs on the client side
-
-- Complete client mappings feature.
-  - Move mappings selection, and make it not move when there's no version selection:  
-  ![img.png](img.png)
-- Experiment with templating the client, eventually serving the client merged with the crash data.
+- [ ] Complete client mappings feature.
+- [ ] Move mappings selection, and make it not move when there's no version selection:  
+![img.png](img.png)
+- [ ] Introduce backwards compatibility for old NEC versions:
+  - Modify the old firebase uploadCrash endpoint to simply delegate the upload to the EC2 server. 
+- [ ] Migrate all crashes from firebase to EC2 
+  - Old crashes transfer to S3
+  - New crashes transfer to SSD
+- [ ] Start automatically evicting
+- [ ] Add logging
+- [ ] Implement archive retrieval
+- [ ] Fix critical crashy issues
+- [ ] Monetization?
 
 # Important things to check
 - Website content is gzipped/brotli'd. It should work by pre-zipping JS files and templating HTML files with the full crash data and the needed headers for SEO, Discord and stuff. 

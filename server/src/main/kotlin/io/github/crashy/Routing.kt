@@ -19,7 +19,8 @@ import kotlinx.serialization.json.decodeFromStream
 
 fun Application.configureRouting() {
     val logStorage = runBlocking {
-        CrashlogStorage.create(bucket = "crashy-crashlogs", runDir = runDir, clock = RealClock)
+        //TODO: change runDir to System.getProperty("user.home")/crashy to make things persist between versions
+        CrashlogStorage.create(bucket = "crashy-crashlogs", appDataDir = runDir, clock = RealClock)
     }
 
     val api = CrashlogApi(logStorage)
