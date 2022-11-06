@@ -16,11 +16,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import java.nio.file.Paths
+import kotlin.io.path.readBytes
 
 fun Application.configureRouting() {
     val logStorage = runBlocking {
-        //TODO: change runDir to System.getProperty("user.home")/crashy to make things persist between versions
-        CrashlogStorage.create(bucket = "crashy-crashlogs", appDataDir = runDir, clock = RealClock)
+        CrashlogStorage.create(bucket = "crashy-crashlogs", appDataDir = Paths.get(System.getProperty("user.home"),"crashy") , clock = RealClock)
     }
 
     val api = CrashlogApi(logStorage)
@@ -51,6 +52,22 @@ fun Application.configureRouting() {
             singlePageApplication {
                 useResources = false
                 filesPath = staticDir.toString()
+            }
+        }
+        val htmlTemplate = staticDir.resolve("index2.html").readBytes()
+        get("/{id}") {
+            call.respondBytes(htmlTemplate)
+        }
+        get("/{id}/raw") {
+            val id = call.parameters["id"]!!
+            val text = when(val result = api.getCrash(CrashlogId.fromString(id))){
+                GetCrashResponse.Archived ->  "Archived"
+                GetCrashResponse.DoesNotExist ->  "Does not exist"
+                is GetCrashResponse.Success ->{
+                    call.respondBytes(result.log.bytes, contentType = ContentType.parse("text/plain")){
+                        this.headers["content-encoding"] = "brotli"
+                    }
+                }
             }
         }
     }

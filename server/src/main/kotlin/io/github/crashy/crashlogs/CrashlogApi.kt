@@ -6,7 +6,6 @@ import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 
-//TODO: ensure it is uncompressed
 typealias UploadCrashlogRequest = UncompressedLog
 
 sealed interface UploadCrashResponse : Response {
@@ -49,7 +48,7 @@ sealed interface UploadCrashResponse : Response {
 sealed interface GetCrashResponse : Response {
     object Archived : GetCrashResponse, Response by response("Archived", HttpStatusCode.Processing)
     object DoesNotExist : GetCrashResponse, Response by response("Does Not Exist", HttpStatusCode.NotFound)
-    class Success(private val log: CompressedLog) : GetCrashResponse {
+    class Success( val log: CompressedLog) : GetCrashResponse {
         override fun responseString(): String = log.decompress().decodeToString()
         override val statusCode: HttpStatusCode = HttpStatusCode.OK
 

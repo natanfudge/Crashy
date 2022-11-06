@@ -128,7 +128,6 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
     private fun CrashlogEntry.Companion.deleteEntryFiles(underId: CrashlogId) {
-        println("Deleted log from ${crashes.crashParentDir(underId)}")
         crashes.crashParentDir(underId).toFile().deleteRecursively()
     }
 
