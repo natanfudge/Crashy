@@ -1,6 +1,6 @@
 
 # Workplan:
-- [ ] Implement web page serving:
+- [ ] Implement web page serving
 - [ ] Migrate client to support new endpoints
 - [ ] Verify uploaded crashlogs on the client side
 - [ ] Complete client mappings feature.
@@ -15,6 +15,7 @@
 - [ ] Add logging
 - [ ] Implement archive retrieval
 - [ ] Fix critical crashy issues
+- [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
 - [ ] Monetization?
 
 # Important things to check

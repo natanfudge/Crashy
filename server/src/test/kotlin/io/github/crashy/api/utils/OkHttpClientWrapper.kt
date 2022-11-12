@@ -1,8 +1,6 @@
 package io.github.crashy.api.utils
 
-import IHttpClient
-import TestHttpResponse
-import applyIf
+import io.github.crashy.utils.decompressBrotli
 import okhttp3.*
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -53,7 +51,8 @@ class OkHttpTestClient(cache: Boolean, useGzip: Boolean) : IHttpClient {
     }
 
     private suspend fun makeTestRequest(request: Request) = with(makeRequest(request)) {
-        TestHttpResponse(code, body.string())
+        val string = if(header("Content-Encoding") == "br") body.bytes().decompressBrotli().decodeToString() else body.string()
+        TestHttpResponse(code,string)
     }
 
     override suspend fun get(url: String): TestHttpResponse {

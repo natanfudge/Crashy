@@ -1,7 +1,7 @@
 import TestCrash.*
+import io.github.crashy.api.utils.IHttpClient
 import io.github.crashy.api.utils.OkHttpTestClient
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
+import io.github.crashy.api.utils.TestHttpResponse
 import org.intellij.lang.annotations.Language
 
 

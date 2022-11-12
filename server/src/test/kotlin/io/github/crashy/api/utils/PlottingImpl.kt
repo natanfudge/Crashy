@@ -80,7 +80,7 @@
 ////
 ////fun buildData(xName: String, yName: String?, data: List<Pair<Int, Int>>) = mapOf(
 ////    xName to data.map { it.first }
-////).letIf(yName != null) { map -> map + (yName!! to data.map { it.second }) }
+////).io.github.crashy.api.utils.letIf(yName != null) { map -> map + (yName!! to data.map { it.second }) }
 ////
 ////
 ////fun plot(xName: String, yName: String?, data: List<Pair<Int, Int>>, builder: PlotBuilder.() -> Unit): Plot {

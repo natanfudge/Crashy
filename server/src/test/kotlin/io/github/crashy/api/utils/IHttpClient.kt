@@ -1,3 +1,5 @@
+package io.github.crashy.api.utils
+
 interface IHttpClient {
     suspend fun get(url: String): TestHttpResponse
     suspend fun post(url: String, body: String,useGzip: Boolean, headers: Map<String,String> = mapOf()): TestHttpResponse

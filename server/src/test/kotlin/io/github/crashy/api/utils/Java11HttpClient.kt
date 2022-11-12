@@ -1,3 +1,5 @@
+import io.github.crashy.api.utils.IHttpClient
+import io.github.crashy.api.utils.TestHttpResponse
 import java.io.ByteArrayOutputStream
 import java.net.URI
 import java.net.http.HttpClient

@@ -1,11 +1,13 @@
 package io.github.crashy.utils
 
+import com.aayushatharva.brotli4j.Brotli4jLoader
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPInputStream
 
 
@@ -22,6 +24,14 @@ fun ByteArray.decompressGzip(): ByteArray {
     return GZIPInputStream(inputStream()).buffered().use { stream ->
         stream.readAllBytes()
     }
+}
+
+private val brotliInitialized = AtomicBoolean(false)
+fun ByteArray.decompressBrotli(): ByteArray {
+    if(brotliInitialized.compareAndSet(false, true)){
+        Brotli4jLoader.ensureAvailability()
+    }
+    return com.aayushatharva.brotli4j.decoder.Decoder.decompress(this).decompressedData
 }
 
 private const val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"

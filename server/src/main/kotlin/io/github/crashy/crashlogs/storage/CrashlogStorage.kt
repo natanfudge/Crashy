@@ -35,11 +35,27 @@ class CrashlogStorage private constructor(
         cache.store(id, log)
     }
 
-    suspend fun get(id: CrashlogId): GetCrashlogResult {
+    suspend fun peek(id: CrashlogId): PeekCrashlogResult {
+        // First try to get it from the locally stored logs
+        val cachedResult = cache.peek(id)
+        if (cachedResult != null) return PeekCrashlogResult.Success(cachedResult)
+        // Then try to get it from the S3 storage
+        return when(val s3Result = getFromS3(id)){
+            GetCrashlogResult.Archived -> PeekCrashlogResult.Archived
+            GetCrashlogResult.DoesNotExist -> PeekCrashlogResult.DoesNotExist
+            is GetCrashlogResult.Success -> PeekCrashlogResult.Success(s3Result.log.metadata)
+        }
+    }
+
+    suspend fun getLog(id: CrashlogId): GetCrashlogResult {
         // First try to get it from the locally stored logs
         val cachedResult = cache.get(id)
         if (cachedResult != null) return GetCrashlogResult.Success(cachedResult)
         // Then try to get it from the S3 storage
+        return getFromS3(id)
+    }
+
+    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult {
         try {
             val s3Key = id.s3Key()
             val s3Result = try {
@@ -98,6 +114,16 @@ sealed interface GetCrashlogResult {
     }
 
     object Archived : GetCrashlogResult {
+        override fun toString(): String = "GetCrashlogResponse.Archived"
+    }
+}
+sealed interface PeekCrashlogResult {
+    class Success(val metadata: CrashlogMetadata) : PeekCrashlogResult
+    object DoesNotExist : PeekCrashlogResult {
+        override fun toString(): String = "GetCrashlogResponse.DoesNotExist"
+    }
+
+    object Archived : PeekCrashlogResult {
         override fun toString(): String = "GetCrashlogResponse.Archived"
     }
 }

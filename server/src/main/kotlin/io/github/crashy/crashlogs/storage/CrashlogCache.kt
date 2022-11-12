@@ -38,6 +38,12 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         updateLastAccessDay(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.fromCrashesDir(id)
     }
+    fun peek(id: CrashlogId): CrashlogMetadata? {
+        val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
+
+        updateLastAccessDay(id, oldLastAccessDay = lastAccessDay)
+        return CrashlogEntry.peek(id)
+    }
 
     /**
      * Returns true if something was deleted
@@ -125,6 +131,9 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 
     private fun CrashlogEntry.Companion.peekDeletionKey(underId: CrashlogId): DeletionKey {
         return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder().deletionKey
+    }
+    private fun CrashlogEntry.Companion.peek(underId: CrashlogId): CrashlogMetadata {
+        return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder()
     }
 
     private fun CrashlogEntry.Companion.deleteEntryFiles(underId: CrashlogId) {

@@ -1,10 +1,13 @@
 package io.github.crashy
 
 import io.github.crashy.crashlogs.*
+import io.github.crashy.crashlogs.api.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
 import io.github.crashy.utils.decompressGzip
+import io.ktor.client.utils.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.*
@@ -12,16 +15,21 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.pipeline.*
+import io.ktor.utils.io.core.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import java.nio.file.Paths
-import kotlin.io.path.readBytes
+import kotlin.io.use
 
 fun Application.configureRouting() {
     val logStorage = runBlocking {
-        CrashlogStorage.create(bucket = "crashy-crashlogs", appDataDir = Paths.get(System.getProperty("user.home"),"crashy") , clock = RealClock)
+        CrashlogStorage.create(
+            bucket = "crashy-crashlogs",
+            appDataDir = Paths.get(System.getProperty("user.home"), "crashy"),
+            clock = RealClock
+        )
     }
 
     val api = CrashlogApi(logStorage)
@@ -37,16 +45,16 @@ fun Application.configureRouting() {
                 )
             }
 
-            val uncompressed = if(isGzipContentEncoding) it.decompressGzip() else it
+            val uncompressed = if (isGzipContentEncoding) it.decompressGzip() else it
 
             respond(api.uploadCrash(UncompressedLog(uncompressed), ip = call.request.origin.remoteAddress))
         }
         json<DeleteCrashlogRequest>("/deleteCrash") {
             respond(api.deleteCrash(it))
         }
-
+        // Used for testing
         json<GetCrashRequest>("/getCrash") {
-            respond(api.getCrash(it))
+            respond(api.getCrash(it.value.toString()))
         }
         preCompressed {
             singlePageApplication {
@@ -54,24 +62,26 @@ fun Application.configureRouting() {
                 filesPath = staticDir.toString()
             }
         }
-        val htmlTemplate = staticDir.resolve("index2.html").readBytes()
+
+        // Manually respond these files so the /{id} wildcard doesn't take over these endpoints
+        get("favicon.svg") {
+            call.respondFile(staticDir.resolve("favicon.svg").toFile())
+        }
+        get("manifest.json") {
+            call.respondFile(staticDir.resolve("manifest.json").toFile())
+        }
+
         get("/{id}") {
-            call.respondBytes(htmlTemplate)
+            val id = call.parameters["id"]!!
+            respond(api.getCrashPage(id))
         }
         get("/{id}/raw") {
             val id = call.parameters["id"]!!
-            val text = when(val result = api.getCrash(CrashlogId.fromString(id))){
-                GetCrashResponse.Archived ->  "Archived"
-                GetCrashResponse.DoesNotExist ->  "Does not exist"
-                is GetCrashResponse.Success ->{
-                    call.respondBytes(result.log.bytes, contentType = ContentType.parse("text/plain")){
-                        this.headers["content-encoding"] = "brotli"
-                    }
-                }
-            }
+            respond(api.getCrash(id))
         }
     }
 }
+
 
 @OptIn(ExperimentalSerializationApi::class)
 private inline fun <reified T : Any> Routing.json(
@@ -89,6 +99,13 @@ private inline fun <reified T : Any> Routing.json(
     }
 }
 
+
 private suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Response) {
-    call.respondText(response.responseString(), status = response.statusCode)
+    when (response.encoding) {
+        Encoding.Brotli -> call.response.header(HttpHeaders.ContentEncoding, "br")
+        Encoding.None -> {}
+    }
+    call.respondBytes(
+        response.bytes, status = response.statusCode, contentType = response.contentType
+    )
 }

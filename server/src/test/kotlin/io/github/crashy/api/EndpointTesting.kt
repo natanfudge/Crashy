@@ -5,14 +5,13 @@ import HttpTest
 import HttpTest.Companion.httpTest
 import TestClass
 import TestCrash
-import TestHttpResponse
 import getCrashLogContents
-import io.github.crashy.crashlogs.UploadCrashResponse
+import io.github.crashy.api.utils.TestHttpResponse
+import io.github.crashy.crashlogs.api.UploadCrashResponse
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.FixMethodOrder
 import org.junit.Test
-import org.junit.runner.OrderWith
 import org.junit.runners.MethodSorters
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -36,7 +35,7 @@ class EndpointTesting : TestClass {
     @Test
     // Run test last (that's why we have ZZ at the start) because afterwards our IP will be blocked from uploading.
     fun `ZZInvalid uploadCrash requests`(): Unit = runBlocking {
-        with(httpTest(useGzip = false)){
+        with(httpTest(useGzip = false)) {
             val response1 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-encoding" to "gzip"))
             assertEquals(HttpURLConnection.HTTP_UNSUPPORTED_TYPE, response1.code)
             val response2 = uploadCrash(TestCrash.Fabric, headers = mapOf("content-type" to "application/gzip"))
@@ -59,6 +58,7 @@ class EndpointTesting : TestClass {
         }
     }
 
+    //ID = 3055e214-4d1a-41fe-bf77-18ffb3bc836c, code = Idfmsk
     @Test
     fun `Upload Crash`() = runBlocking {
         withBothClients {

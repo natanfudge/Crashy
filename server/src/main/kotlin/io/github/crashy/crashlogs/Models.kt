@@ -3,6 +3,8 @@ package io.github.crashy.crashlogs
 import com.aayushatharva.brotli4j.decoder.Decoder
 import com.aayushatharva.brotli4j.decoder.DecoderJNI.Status.DONE
 import com.aayushatharva.brotli4j.encoder.Encoder
+import io.github.crashy.crashlogs.api.Response
+import io.github.crashy.crashlogs.api.StringResponse
 import io.github.crashy.utils.UUIDSerializer
 import io.github.crashy.utils.randomString
 import io.ktor.http.*
@@ -37,7 +39,11 @@ value class CrashlogId private constructor(@Serializable(with = UUIDSerializer::
         fun fromFileName(path: Path) = CrashlogId(UUID.fromString(path.nameWithoutExtension))
         fun generate() = CrashlogId(UUID.randomUUID())
 
-        fun fromString(string: String) = CrashlogId(UUID.fromString(string))
+        fun parse(string: String): Result<CrashlogId> = try {
+            Result.success(CrashlogId(UUID.fromString(string)))
+        } catch (e: IllegalArgumentException) {
+            Result.failure(e)
+        }
     }
 }
 
@@ -52,7 +58,7 @@ data class CrashlogHeader(val title: String, val exceptionDescription: String)
  */
 @JvmInline
 @Serializable
-value class CompressedLog private constructor(@get:TestOnly val bytes: ByteArray) {
+value class CompressedLog private constructor(val bytes: ByteArray) {
     companion object {
         fun createRandom() = CompressedLog(Random.nextBytes(100))
         fun readFromFile(file: Path) = CompressedLog(file.readBytes())
@@ -89,10 +95,11 @@ class CrashlogEntry(val compressedLog: CompressedLog, val metadata: CrashlogMeta
     companion object
 }
 
-enum class DeleteCrashResult(override val statusCode: HttpStatusCode) : Response {
+enum class DeleteCrashResult(override val statusCode: HttpStatusCode) : StringResponse {
     Success(HttpStatusCode.OK),
     NoSuchId(HttpStatusCode.NotFound),
     IncorrectDeletionKey(HttpStatusCode.Unauthorized);
 
-    override fun responseString() = name
+    override val string: String = name
+    override val contentType: ContentType = ContentType.Text.Plain
 }
