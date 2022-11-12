@@ -77,6 +77,7 @@ fun Application.configureRouting() {
         }
         get("/{id}/raw") {
             val id = call.parameters["id"]!!
+            //TODO: add good caching headers on successful response
             respond(api.getCrash(id))
         }
     }

@@ -18,9 +18,6 @@
 - [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
 - [ ] Monetization?
 
-# Important things to check
-- Website content is gzipped/brotli'd. It should work by pre-zipping JS files and templating HTML files with the full crash data and the needed headers for SEO, Discord and stuff. 
-
 
 
 
