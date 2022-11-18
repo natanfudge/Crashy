@@ -3,14 +3,14 @@ package io.github.crashy.crashlogs
 import com.aayushatharva.brotli4j.decoder.Decoder
 import com.aayushatharva.brotli4j.decoder.DecoderJNI.Status.DONE
 import com.aayushatharva.brotli4j.encoder.Encoder
-import io.github.crashy.crashlogs.api.Response
 import io.github.crashy.crashlogs.api.StringResponse
+import io.github.crashy.utils.InstantSerializer
 import io.github.crashy.utils.UUIDSerializer
 import io.github.crashy.utils.randomString
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
-import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
+import java.time.Instant
 import java.util.*
 import kotlin.io.path.nameWithoutExtension
 import kotlin.io.path.readBytes
@@ -48,7 +48,11 @@ value class CrashlogId private constructor(@Serializable(with = UUIDSerializer::
 }
 
 @Serializable
-data class CrashlogMetadata(val deletionKey: DeletionKey, val header: CrashlogHeader)
+data class CrashlogMetadata(
+    val deletionKey: DeletionKey,
+    @Serializable(with = InstantSerializer::class) val uploadDate: Instant,
+    val header: CrashlogHeader
+)
 
 @Serializable
 data class CrashlogHeader(val title: String, val exceptionDescription: String)

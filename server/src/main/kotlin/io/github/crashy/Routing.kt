@@ -27,7 +27,7 @@ fun Application.configureRouting() {
     val logStorage = runBlocking {
         CrashlogStorage.create(
             bucket = "crashy-crashlogs",
-            appDataDir = Paths.get(System.getProperty("user.home"), "crashy"),
+            appDataDir = Paths.get(System.getProperty("user.home"), ".crashy"),
             clock = RealClock
         )
     }
@@ -77,7 +77,6 @@ fun Application.configureRouting() {
         }
         get("/{id}/raw") {
             val id = call.parameters["id"]!!
-            //TODO: add good caching headers on successful response
             respond(api.getCrash(id))
         }
     }
@@ -105,6 +104,9 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Res
     when (response.encoding) {
         Encoding.Brotli -> call.response.header(HttpHeaders.ContentEncoding, "br")
         Encoding.None -> {}
+    }
+    for ((key, value) in response.extraHeaders) {
+        call.response.header(key, value)
     }
     call.respondBytes(
         response.bytes, status = response.statusCode, contentType = response.contentType

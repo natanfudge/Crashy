@@ -1,8 +1,12 @@
 package io.github.crashy.crashlogs.api
 
 import io.github.crashy.CrashyJson
-import io.github.crashy.crashlogs.*
+import io.github.crashy.crashlogs.CrashlogEntry
+import io.github.crashy.crashlogs.CrashlogId
+import io.github.crashy.crashlogs.DeletionKey
+import io.github.crashy.crashlogs.UncompressedLog
 import io.ktor.http.*
+import io.ktor.server.http.*
 import kotlinx.serialization.Serializable
 
 typealias UploadCrashlogRequest = UncompressedLog
@@ -40,7 +44,8 @@ sealed interface UploadCrashResponse : StringResponse {
     object CrashTooLargeError : UploadCrashResponse,
         StringResponse by textResponse("Too Large", HttpStatusCode.PayloadTooLarge)
 
-    object MalformedCrashError : UploadCrashResponse, StringResponse by textResponse("Invalid Crash", HttpStatusCode.BadRequest)
+    object MalformedCrashError : UploadCrashResponse,
+        StringResponse by textResponse("Invalid Crash", HttpStatusCode.BadRequest)
 
     /**
      * Too many crashes were uploaded in the last day (>1MB). We don't allow this to avoid overloading the server/storage.
@@ -53,11 +58,14 @@ sealed interface UploadCrashResponse : StringResponse {
 sealed interface GetCrashResponse : Response {
     object Archived : GetCrashResponse, Response by textResponse("Archived", HttpStatusCode.Processing)
     object DoesNotExist : GetCrashResponse, Response by textResponse("Does Not Exist", HttpStatusCode.NotFound)
-    class Success(log: CompressedLog) : GetCrashResponse {
-        //TODO: migrate tests to support the fact that this is not compressed aynmore
-        override val bytes: ByteArray = log.bytes
+    class Success(log: CrashlogEntry) : GetCrashResponse {
+        override val bytes: ByteArray = log.compressedLog.bytes
         override val statusCode: HttpStatusCode = HttpStatusCode.OK
         override val encoding: Encoding = Encoding.Brotli
         override val contentType = ContentType.Text.Plain
+        override val extraHeaders: Map<String, String> = mapOf(
+            "Last-Modified" to log.metadata.uploadDate.toHttpDateString(),
+            "Cache-Control" to "public, max-age=604800, immutable"
+        )
     }
 }

@@ -58,9 +58,9 @@ class EndpointTesting : TestClass {
         }
     }
 
-    //ID = 3055e214-4d1a-41fe-bf77-18ffb3bc836c, code = Idfmsk
+//ID = 0f0f6541-1210-4a67-b013-158db2659b15, code = q5xflD
     @Test
-    fun `Upload Crash`() = runBlocking {
+    fun `Upload Crash a`() = runBlocking {
         withBothClients {
             val (response, parsed) = uploadCrashAndParse(TestCrash.Fabric)
             assertEquals(HttpURLConnection.HTTP_OK, response.code)

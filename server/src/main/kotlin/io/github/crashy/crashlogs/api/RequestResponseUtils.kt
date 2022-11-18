@@ -15,6 +15,8 @@ interface Response {
     val statusCode: HttpStatusCode
     val encoding: Encoding
     val contentType: ContentType
+    val extraHeaders: Map<String,String>
+        get() = mapOf()
 }
 
 interface StringResponse : Response {

@@ -5,6 +5,7 @@ import io.github.crashy.crashlogs.storage.CrashlogCache
 import io.github.crashy.utils.randomString
 import java.nio.file.Path
 import java.nio.file.attribute.FileTime
+import java.time.Instant
 import kotlin.io.path.exists
 import kotlin.io.path.setAttribute
 
@@ -24,5 +25,6 @@ context (TestClock, Path)
 
 private fun createRandomMetadata() = CrashlogMetadata(
     DeletionKey.generate(),
+    Instant.ofEpochMilli(Instant.now().toEpochMilli()),
     CrashlogHeader(randomString(15), randomString(100))
 )

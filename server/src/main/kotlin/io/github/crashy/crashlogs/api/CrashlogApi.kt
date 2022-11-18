@@ -6,6 +6,7 @@ import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import io.github.crashy.crashlogs.storage.PeekCrashlogResult
 import io.github.crashy.staticDir
 import io.ktor.http.*
+import java.time.Instant
 import kotlin.io.path.readText
 
 
@@ -25,7 +26,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         val id = CrashlogId.generate()
         val key = DeletionKey.generate()
         val header = peekCrashHeader(request) ?: return UploadCrashResponse.MalformedCrashError
-        logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, header)))
+        logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, Instant.now(), header)))
 
         return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "https://crashy.net/${id.value}")
     }
@@ -35,7 +36,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         return when (val result = logs.getLog(logId)) {
             GetCrashlogResult.Archived -> GetCrashResponse.Archived
             GetCrashlogResult.DoesNotExist -> GetCrashResponse.DoesNotExist
-            is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log.compressedLog)
+            is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log)
         }
     }
 
