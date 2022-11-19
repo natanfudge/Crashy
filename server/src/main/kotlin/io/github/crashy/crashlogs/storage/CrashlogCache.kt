@@ -1,11 +1,11 @@
 package io.github.crashy.crashlogs.storage
 
 import io.github.crashy.CrashyJson
+import io.github.crashy.CrashyLogger
 import io.github.crashy.crashlogs.*
 import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
 import kotlin.io.path.*
-import kotlin.math.log
 
 //TODO: investigate whether it's possible to include external files in html file, and have those files be indexed by search engines
 // https://moz.com/beginners-guide-to-seo/how-search-engines-operate
@@ -38,6 +38,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         updateLastAccessDay(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.fromCrashesDir(id)
     }
+
     fun peek(id: CrashlogId): CrashlogMetadata? {
         val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
 
@@ -94,7 +95,11 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         // Only update last access day if the new day (today) is actually different from the old last access time
         if (oldLastAccessDay != today) {
             // Delete old lastDay file and create a new one at the updated day
-            locationOfLastAccessDay(id, oldLastAccessDay).deleteExisting()
+            val deleted = locationOfLastAccessDay(id, oldLastAccessDay).deleteIfExists()
+            if (!deleted) {
+                locationOfLastAccessDay(id, today).deleteIfExists()
+                CrashyLogger.warn("Could not find lastAccessDay of $id to delete.")
+            }
             storeLastAccessDay(id, today)
         }
     }
@@ -120,7 +125,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         val logFile = parentDir.compressedLogFile()
         val metadataFile = parentDir.crashMetadataFile()
         compressedLog.writeToFile(logFile)
-        metadataFile.writeText(CrashyJson.encodeToString(CrashlogMetadata.serializer(),metadata))
+        metadataFile.writeText(CrashyJson.encodeToString(CrashlogMetadata.serializer(), metadata))
     }
 
     private fun CrashlogEntry.Companion.fromCrashesDir(underId: CrashlogId): CrashlogEntry {
@@ -132,6 +137,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     private fun CrashlogEntry.Companion.peekDeletionKey(underId: CrashlogId): DeletionKey {
         return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder().deletionKey
     }
+
     private fun CrashlogEntry.Companion.peek(underId: CrashlogId): CrashlogMetadata {
         return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder()
     }
@@ -141,19 +147,18 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
     private fun CrashlogEntry.Companion.lastAccessDay(ofId: CrashlogId): LastAccessDay? {
-        val file = crashes.crashParentDir(ofId).compressedLogFile()
-        if(!file.exists()) return null
+        val file = crashes.crashParentDir(ofId).crashMetadataFile()
+        if (!file.exists()) return null
         return lastAccessDay(file)
     }
 
     companion object {
         @TestOnly
-        fun __testGetLogFile(cacheParentDir: Path, id: CrashlogId): Path {
-            return cacheParentDir.resolve("crashlogs").crashParentDir(id).compressedLogFile()
+        fun __testGetMetadataFile(cacheParentDir: Path, id: CrashlogId): Path {
+            return cacheParentDir.resolve("crashlogs").crashParentDir(id).crashMetadataFile()
         }
     }
 }
-
 
 
 private fun Path.crashParentDir(id: CrashlogId) = resolve(id.value.toString())
@@ -161,5 +166,5 @@ private fun Path.compressedLogFile() = resolve("crash.br")
 private fun Path.crashMetadataFile() = resolve("meta.json")
 
 private fun Path.readMetadataFromCrashEntryFolder(): CrashlogMetadata {
-    return CrashyJson.decodeFromString(CrashlogMetadata.serializer(),crashMetadataFile().readText())
+    return CrashyJson.decodeFromString(CrashlogMetadata.serializer(), crashMetadataFile().readText())
 }

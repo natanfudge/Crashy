@@ -39,13 +39,14 @@ async function httpCall(request: HttpRequest): Promise<Response> {
         "Pragma": "no-cache",
         "Expires": "0"
     } : {}
-    const response = await fetch(actualUrl, {
+    const requestObject: RequestInit = {
         method: request.method,
         body: request.body,
-        headers: {...noCacheHeaders, ...request.headers},
+        headers: { ...noCacheHeaders, ...request.headers},
         cache: noCache ? "no-cache" : undefined,
         mode: "cors"
-    })
+    }
+    const response = await fetch(actualUrl, requestObject)
 
     return response
 }

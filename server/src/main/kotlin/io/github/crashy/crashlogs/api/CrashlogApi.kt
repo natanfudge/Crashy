@@ -5,6 +5,7 @@ import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import io.github.crashy.crashlogs.storage.PeekCrashlogResult
 import io.github.crashy.staticDir
+import io.github.crashy.utils.replaceSequentially
 import io.ktor.http.*
 import java.time.Instant
 import kotlin.io.path.readText
@@ -43,23 +44,22 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     private val htmlTemplate = staticDir.resolve("index.html").readText()
     suspend fun getCrashPage(id: String): Response {
         val logId = CrashlogId.parse(id).getOrElse { return textResponse("Invalid id", HttpStatusCode.NotFound) }
-        return when (val result = logs.peek(logId)) {
-            //TODO: return proper html page for this
-            PeekCrashlogResult.Archived -> GetCrashResponse.Archived
-            //TODO: return proper html page for this
-            PeekCrashlogResult.DoesNotExist -> GetCrashResponse.DoesNotExist
+        val (title, description) = when (val result = logs.peek(logId)) {
+            //TODO: implement in frontend
+            PeekCrashlogResult.Archived -> "Archived Crash" to "This crash wasn't accessed in a long time"
+            //TODO: implement in frontend
+            PeekCrashlogResult.DoesNotExist -> "Invalid Crash Url" to "Looks like there's nothing here"
             is PeekCrashlogResult.Success -> {
                 val header = result.metadata.header
-                htmlResponse(
-                    //TODO: optimize
-                    htmlTemplate.replace("{DESCRIPTION}", header.exceptionDescription)
-                        .replace("{TITLE}", header.title)
-                        .replace("{ID}", id)
-                    ,
-                    code = HttpStatusCode.OK
-                )
+               header.title to header.exceptionDescription
             }
         }
+        return htmlResponse(
+            htmlTemplate.replaceSequentially(
+                listOf("{ID}" to id, "{DESCRIPTION}" to description, "{TITLE}" to title)
+            ),
+            code = HttpStatusCode.OK
+        )
     }
 
     fun deleteCrash(request: DeleteCrashlogRequest): DeleteCrashResult {

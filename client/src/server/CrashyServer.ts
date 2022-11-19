@@ -1,7 +1,7 @@
 // import {deflate, inflate} from "zlib";
 
 
-import {httpDelete, httpGet, httpPost} from "../fudge-commons/methods/Http";
+import {httpGet, httpPost} from "../fudge-commons/methods/Http";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -40,14 +40,14 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 
 export namespace CrashyServer {
-    const localTesting = false;
-    const domain = localTesting ? "localhost:5001/crashy-9dd87/europe-west1" : "europe-west1-crashy-9dd87.cloudfunctions.net";
+    const localTesting = true;
+    const domain = localTesting ? "localhost:80" : "europe-west1-crashy-9dd87.cloudfunctions.net";
     const http = localTesting ? "http" : "https"
     const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
         // return TestVerifyErrorCrash;
-        const response = await httpGet({url: `${urlPrefix}/getCrash/${id}`, noCache});
+        const response = await httpGet({url: `${urlPrefix}/${id}/raw.txt`, noCache});
         switch (response.status) {
             case HttpStatusCode.OK:
                 return response.text();
@@ -62,8 +62,9 @@ export namespace CrashyServer {
      * Returns true if code is correct and deletion is successful
      */
     export async function deleteCrash(id: string, code: string): Promise<DeleteCrashResponse> {
-        const response = await httpDelete({
-            url: `${urlPrefix}/deleteCrash`, parameters: {crashId: id, key: code}
+        const response = await httpPost({
+            body: JSON.stringify({id: id, key: code}),
+            url: `${urlPrefix}/deleteCrash`
         })
         switch (response.status) {
             case HttpStatusCode.OK:
@@ -82,7 +83,7 @@ export namespace CrashyServer {
         const response = await httpPost({
                 url: `${urlPrefix}/uploadCrash`,
                 body: compressedCrash,
-                headers: {"content-type": "application/gzip"}
+                headers: {"content-type": "text/plain", "content-encoding": "gzip"}
             }
         )
 

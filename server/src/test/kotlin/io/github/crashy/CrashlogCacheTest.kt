@@ -1,19 +1,18 @@
 package io.github.crashy
 
-import io.github.crashy.crashlogs.*
+import io.github.crashy.crashlogs.CompressedLog
+import io.github.crashy.crashlogs.CrashlogEntry
+import io.github.crashy.crashlogs.CrashlogId
 import io.github.crashy.crashlogs.storage.CrashlogCache
 import io.github.crashy.crashlogs.storage.NowDefinition
 import io.github.crashy.crashlogs.storage.RealClock
-import io.github.crashy.utils.randomString
 import kotlinx.coroutines.runBlocking
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.attribute.FileTime
 import java.time.ZonedDateTime
-import kotlin.io.path.setAttribute
 import kotlin.test.Test
 
 class TestClock : NowDefinition {
@@ -30,6 +29,11 @@ class TestClock : NowDefinition {
 class CrashlogCacheTest {
     @Test
     fun testCache() = testScope {
+        sense()
+    }
+
+    context (CrashlogCache, TestClock, Path)
+    suspend fun sense() {
         val id1 = CrashlogId.generate()
         expectThat(getForTest(id1)).isEqualTo(null)
 
@@ -113,7 +117,7 @@ class CrashlogCacheTest {
 
 
     context (CrashlogCache, TestClock, Path)
-            private fun getForTest(id: CrashlogId): CrashlogEntry? {
+    private fun getForTest(id: CrashlogId): CrashlogEntry? {
         val bytes = get(id)
         if (bytes != null) {
             alignFileWithTestTime(id)
@@ -122,12 +126,10 @@ class CrashlogCacheTest {
     }
 
     context (CrashlogCache, TestClock, Path)
-            private fun testStore(id: CrashlogId, log: CrashlogEntry) {
+    private fun testStore(id: CrashlogId, log: CrashlogEntry) {
         store(id, log)
         alignFileWithTestTime(id)
     }
-
-
 
 
 }

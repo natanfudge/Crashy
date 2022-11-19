@@ -35,15 +35,15 @@ fun Application.configureRouting() {
     val api = CrashlogApi(logStorage)
 
     routing {
+        // We have an options response for /uploadCrash so the browser will calm down.
+        options("/uploadCrash"){
+            call.response.header("Allow", "POST")
+            addDevCorsHeader()
+            call.response.header("Access-Control-Allow-Headers" , "content-encoding")
+            call.respondBytes(ByteArray(0), status = HttpStatusCode.OK)
+        }
         post<ByteArray>("/uploadCrash") {
-            val isGzipContentType = call.request.header("content-type") == "application/gzip"
             val isGzipContentEncoding = call.request.header("content-encoding") == "gzip"
-            if (isGzipContentType != isGzipContentEncoding) {
-                call.respondText(
-                    "Mismatching content encoding/type is not supported anymore",
-                    status = HttpStatusCode.UnsupportedMediaType
-                )
-            }
 
             val uncompressed = if (isGzipContentEncoding) it.decompressGzip() else it
 
@@ -64,20 +64,31 @@ fun Application.configureRouting() {
         }
 
         // Manually respond these files so the /{id} wildcard doesn't take over these endpoints
-        get("favicon.svg") {
+        route("favicon.svg") {
             call.respondFile(staticDir.resolve("favicon.svg").toFile())
         }
-        get("manifest.json") {
+        route("manifest.json") {
             call.respondFile(staticDir.resolve("manifest.json").toFile())
         }
 
-        get("/{id}") {
+        route("/{id}") {
             val id = call.parameters["id"]!!
             respond(api.getCrashPage(id))
         }
-        get("/{id}/raw") {
+        route("/{id}/raw.txt") {
             val id = call.parameters["id"]!!
             respond(api.getCrash(id))
+        }
+    }
+}
+
+private inline fun Routing.route(
+    string: String,
+    crossinline body: suspend PipelineContext<Unit, ApplicationCall>.() -> Unit
+) {
+    get(string) {
+        printCrashes {
+            body()
         }
     }
 }
@@ -89,13 +100,16 @@ private inline fun <reified T : Any> Routing.json(
     crossinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit
 ) {
     post(path) {
-        call.receiveStream().use {
-            try {
-                body(Json.decodeFromStream(it))
-            } catch (e: IllegalArgumentException) {
-                call.respondText("Error deserializing body", status = HttpStatusCode.UnsupportedMediaType)
+        printCrashes{
+            call.receiveStream().use {
+                try {
+                    body(Json.decodeFromStream(it))
+                } catch (e: IllegalArgumentException) {
+                    call.respondText("Error deserializing body", status = HttpStatusCode.UnsupportedMediaType)
+                }
             }
         }
+
     }
 }
 
@@ -108,7 +122,24 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Res
     for ((key, value) in response.extraHeaders) {
         call.response.header(key, value)
     }
+
+    addDevCorsHeader()
+
     call.respondBytes(
         response.bytes, status = response.statusCode, contentType = response.contentType
     )
+}
+
+private inline fun printCrashes(callback: () -> Unit) {
+    try {
+        callback()
+    }catch (e: Throwable){
+        e.printStackTrace()
+        throw e
+    }
+}
+
+private  fun PipelineContext<Unit, ApplicationCall>.addDevCorsHeader() {
+    // This makes it easier to test out the api in development since the React app runs in port 3000
+    call.response.header("Access-Control-Allow-Origin" , "http://localhost:3000")
 }

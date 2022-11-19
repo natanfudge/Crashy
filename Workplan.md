@@ -1,11 +1,14 @@
 
 # Workplan:
-- [ ] Implement web page serving
 - [ ] Migrate client to support new endpoints
+  - [ ] raw.txt (with history api)
+  - [ ] Delete - save the deletion key in cookie on upload
 - [ ] Verify uploaded crashlogs on the client side
 - [ ] Complete client mappings feature.
 - [ ] Move mappings selection, and make it not move when there's no version selection:  
-![img.png](img.png)
+- ![img.png](img.png)
+- [ ] Validate upload crash log at client
+- [ ] Migrate to react 18
 - [ ] Introduce backwards compatibility for old NEC versions:
   - Modify the old firebase uploadCrash endpoint to simply delegate the upload to the EC2 server. 
 - [ ] Migrate all crashes from firebase to EC2 

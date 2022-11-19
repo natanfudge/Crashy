@@ -128,7 +128,8 @@ tasks {
         into(sourceSets.main.get().output.resourcesDir!!.resolve("static"))
     }
 
-    processResources.get().dependsOn(syncClient)
+    //TODO: restore
+//    processResources.get().dependsOn(syncClient)
 
 
 

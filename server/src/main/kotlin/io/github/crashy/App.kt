@@ -3,24 +3,20 @@ package io.github.crashy
 import com.aayushatharva.brotli4j.Brotli4jLoader
 import com.codahale.metrics.jmx.JmxReporter
 import io.github.crashy.plugins.configureHTTP
-import io.github.crashy.plugins.configureMonitoring
-import io.github.crashy.configureRouting
-import io.ktor.serialization.kotlinx.json.*
+import io.github.crashy.plugins.configreLogging
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.metrics.dropwizard.*
 import io.ktor.server.netty.*
-import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.resources.*
-import io.netty.channel.ChannelHandlerContext
-import io.netty.channel.SimpleChannelInboundHandler
 import kotlinx.serialization.json.Json
+import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.security.KeyStore
 import java.util.concurrent.TimeUnit
 
 object App
 val CrashyJson = Json
+val CrashyLogger = LoggerFactory.getLogger(App::class.java)
 fun main() {
     Brotli4jLoader.ensureAvailability()
     copyResourcesForServing()
@@ -53,7 +49,7 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
     module {
         configureRouting()
         configureHTTP()
-        configureMonitoring()
+        configreLogging()
         install(DropwizardMetrics) {
             JmxReporter.forRegistry(registry)
                 .convertRatesTo(TimeUnit.SECONDS)

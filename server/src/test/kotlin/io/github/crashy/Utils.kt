@@ -11,7 +11,7 @@ import kotlin.io.path.setAttribute
 
 context (TestClock, Path)
          fun alignFileWithTestTime(id: CrashlogId) {
-    val crashFile = CrashlogCache.__testGetLogFile(this@Path, id)
+    val crashFile = CrashlogCache.__testGetMetadataFile(this@Path, id)
 
     // Update the lastAccessTime to match with the time we've advanced on the TestClock
    if(crashFile.exists()) crashFile.setAttribute("lastAccessTime", FileTime.from(now().toInstant()))
