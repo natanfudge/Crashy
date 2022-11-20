@@ -21,16 +21,28 @@ export function parsePageQuery(): Record<string, string> | undefined {
     return result;
 }
 
-export function updateUrl(newUrl: { search: string, pathname: string }) {
+export function updateUrl(data: any, newUrl: { search: string, pathname: string }) {
     const oldHref = window.location.href;
     const url = new URL(oldHref);
     url.search = newUrl.search;
     url.pathname = newUrl.pathname;
-    const newHref = removeSuffix(url.href, "?");
+    const newHref = url.href.removeSuffix("?")
     if (oldHref !== newHref) {
-        window.location.href = newHref;
+        console.log("Pushing to url " + url)
+        window.history.pushState(data,'', url)
+        // window.location.href = newHref;
     }
 }
+// export function updateUrl(newUrl: { search: string, pathname: string }) {
+//     const oldHref = window.location.href;
+//     const url = new URL(oldHref);
+//     url.search = newUrl.search;
+//     url.pathname = newUrl.pathname;
+//     const newHref = removeSuffix(url.href, "?");
+//     if (oldHref !== newHref) {
+//         window.location.href = newHref;
+//     }
+// }
 
 
 const ARG_SEPARATOR = "&"

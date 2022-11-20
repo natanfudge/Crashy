@@ -45,6 +45,7 @@ export function initPageArgs(): boolean {
     const partialArgs = query as Raw<PageArgs>;
 
     if (partialArgs.code !== undefined) {
+        // console.log("Setting cookie code: ")
         setCookieCrashCode(partialArgs.code)
     }
 
@@ -70,6 +71,9 @@ function parsePageCrashId(): string | undefined {
 
 
 export function goToUploadedCrash(crash: { id: string, code: string }) {
+    //TODO: surely nocache should be true?
+
+    // history.pushState({crashId: crash.id, crashCode: crash.code, nocache: false}, '', )
     updatePageArgs(args => {
         args.crashId = crash.id;
         args.code = crash.code;
@@ -97,7 +101,7 @@ function setPageArgs(args: PageArgs) {
     pageArgs = args;
     const {crashId, ...query} = args;
     const serializedQuery = serializePageArgs(query as unknown as TsObject);
-    updateUrl({search: serializedQuery, pathname: crashId ?? ""});
+    updateUrl(args, {search: serializedQuery, pathname: crashId ?? ""});
 }
 
 

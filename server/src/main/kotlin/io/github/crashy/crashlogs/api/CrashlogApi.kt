@@ -61,6 +61,8 @@ class CrashlogApi(private val logs: CrashlogStorage) {
             code = HttpStatusCode.OK
         )
     }
+    //TODO: fix GET http://raw.txt/ net::ERR_NAME_NOT_RESOLVED
+    //TODO: history api doesn't work well
 
     private val landingPage = htmlTemplate.replaceSequentially(
         listOf("{ID}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
