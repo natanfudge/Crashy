@@ -1,7 +1,6 @@
 
 # Workplan:
 - [ ] Migrate client to support new endpoints
-  - [ ] raw.txt (with history api)
   - [ ] Delete - save the deletion key in cookie on upload
 - [ ] Verify uploaded crashlogs on the client side
 - [ ] Complete client mappings feature.

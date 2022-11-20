@@ -1,23 +1,24 @@
 import { ScreenSize } from "../../../fudge-commons/methods/Gui";
 import {CrashProps, isCrashAttemptValid} from "../CrashReportPage";
 import {Delete, Subject} from "@mui/icons-material";
-import {AppbarColor, crashyTitleColor} from "../../Colors";
+import {AppbarColor, crashyTitleColor, OnBackgroundColor} from "../../Colors";
 import {LinkContent} from "../../../fudge-commons/simple/LinkContent";
 import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
 import {SimpleIconButton} from "../../../fudge-commons/simple/SimpleIconButton";
 import {NavigationDrawer} from "./NavigationDrawer";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
-import {setUrlRaw} from "../../../utils/PageUrl";
+import {getUrlCrashId, setUrlRaw} from "../../../utils/PageUrl";
 import {DeletePopup} from "./DeleteCrash";
 import {Row} from "../../../fudge-commons/simple/Flex";
 import {Text} from "../../../fudge-commons/simple/Text";
 import {Fragment} from "react";
+import {Link} from "@mui/material";
 
 
 export function CrashyAppBar({crash, sectionState, screen}: CrashProps & { screen: ScreenSize }) {
     const validCrash = isCrashAttemptValid(crash);
     const showDrawer = screen.isPhone && validCrash;
-    return <Row /*height={HeaderHeight}*/ style={{zIndex: 1201, position: showDrawer ? undefined : "fixed"}} width={"max"}
+    return <Row style={{zIndex: 1201, position: showDrawer ? undefined : "fixed"}} width={"max"}
                 backgroundColor={AppbarColor}>
         {showDrawer && <NavigationDrawer sectionState={sectionState} report={crash}/>}
 
@@ -36,10 +37,12 @@ export function CrashyAppBar({crash, sectionState, screen}: CrashProps & { scree
 }
 
 function ToolbarButtons() {
+    const crashId = getUrlCrashId()
     return <Fragment>
-        <SimpleIconButton onClick={() => setUrlRaw(true)}>
+        <Link className = "link" href={`/${crashId}/raw.txt`}
+              style={{color: OnBackgroundColor, padding: "8px", display: "inline-flex", justifyContent :"center"}}>
             <Subject/>
-        </SimpleIconButton>
+        </Link>
         <ExpandingIconButton padding={{right: 10}} icon={<Delete/>} sticky>
             <DeletePopup/>
         </ExpandingIconButton>

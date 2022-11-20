@@ -129,7 +129,7 @@ tasks {
     }
 
     //TODO: restore
-//    processResources.get().dependsOn(syncClient)
+    processResources.get().dependsOn(syncClient)
 
 
 

@@ -36,10 +36,10 @@ fun Application.configureRouting() {
 
     routing {
         // We have an options response for /uploadCrash so the browser will calm down.
-        options("/uploadCrash"){
+        options("/uploadCrash") {
             call.response.header("Allow", "POST")
             addDevCorsHeader()
-            call.response.header("Access-Control-Allow-Headers" , "content-encoding")
+            call.response.header("Access-Control-Allow-Headers", "content-encoding")
             call.respondBytes(ByteArray(0), status = HttpStatusCode.OK)
         }
         post<ByteArray>("/uploadCrash") {
@@ -71,11 +71,15 @@ fun Application.configureRouting() {
             call.respondFile(staticDir.resolve("manifest.json").toFile())
         }
 
+        route("/") {
+            respond(api.getLandingPage())
+        }
+
         route("/{id}") {
             val id = call.parameters["id"]!!
             respond(api.getCrashPage(id))
         }
-        route("/{id}/raw.txt") {
+        route("/{id}/raw.txt", "/{id}/raw") {
             val id = call.parameters["id"]!!
             respond(api.getCrash(id))
         }
@@ -83,12 +87,14 @@ fun Application.configureRouting() {
 }
 
 private inline fun Routing.route(
-    string: String,
+    vararg routes: String,
     crossinline body: suspend PipelineContext<Unit, ApplicationCall>.() -> Unit
 ) {
-    get(string) {
-        printCrashes {
-            body()
+    for (route in routes) {
+        get(route) {
+            printCrashes {
+                body()
+            }
         }
     }
 }
@@ -100,7 +106,7 @@ private inline fun <reified T : Any> Routing.json(
     crossinline body: suspend PipelineContext<Unit, ApplicationCall>.(T) -> Unit
 ) {
     post(path) {
-        printCrashes{
+        printCrashes {
             call.receiveStream().use {
                 try {
                     body(Json.decodeFromStream(it))
@@ -133,13 +139,13 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Res
 private inline fun printCrashes(callback: () -> Unit) {
     try {
         callback()
-    }catch (e: Throwable){
+    } catch (e: Throwable) {
         e.printStackTrace()
         throw e
     }
 }
 
-private  fun PipelineContext<Unit, ApplicationCall>.addDevCorsHeader() {
+private fun PipelineContext<Unit, ApplicationCall>.addDevCorsHeader() {
     // This makes it easier to test out the api in development since the React app runs in port 3000
-    call.response.header("Access-Control-Allow-Origin" , "http://localhost:3000")
+    call.response.header("Access-Control-Allow-Origin", "http://localhost:3000")
 }

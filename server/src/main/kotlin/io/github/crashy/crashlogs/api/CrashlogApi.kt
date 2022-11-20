@@ -62,6 +62,17 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         )
     }
 
+    private val landingPage = htmlTemplate.replaceSequentially(
+        listOf("{ID}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
+    )
+
+    suspend fun getLandingPage(): Response {
+        return htmlResponse(
+            landingPage,
+            code = HttpStatusCode.OK
+        )
+    }
+
     fun deleteCrash(request: DeleteCrashlogRequest): DeleteCrashResult {
         return logs.delete(request.id, request.key)
     }
