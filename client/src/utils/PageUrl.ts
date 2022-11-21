@@ -5,48 +5,70 @@ import {TsObject} from "../fudge-commons/types/Basic";
 import {useEffect, useState} from "react";
 
 
-interface PageArgs {
-    code?: string
-    crashId?: string
+// interface PageArgs {
+//     crashId?: string
+// }
+
+function parsePageCrashId(): string | undefined {
+    const pathName = window.location.pathname;
+    if (pathName.length <= 1) return undefined;
+    else return pathName.slice(1);
+}
+export function getUrlCrashId(): string | undefined{
+    return parsePageCrashId()
 }
 
 // When a crashy link is uploaded via Crashy, we need some way to signal the browser what the deletion key is.
 // The way do it is by appending ?code=<code> to the url.
 // The problem is that we don't then want the users to accidentally share that code when they sure the url with each other.
 // So we save the crash code, and refresh the url without the ?code.
+//TODO: test this
 export function consumeCrashCode(){
     const code = parsePageQuery()?.["code"]
-    if(code != null){
-
+    // A valid code is 6 characters
+    if(code != null && code.length === 6){
+        window.location.search = ""
+        setCookieCrashCode(code)
     }
 }
 
-
-const listeners : ((args: PageArgs) => void)[] = []
-
-export function setupPageArgs() {
-    // Listen to back button
-    window.onpopstate = callListeners
-}
-
-function callListeners(){
-    listeners.forEach((listener) => listener(window.history.state))
-}
-
-export function usePageArgs(): PageArgs {
-    const [args, setArgs] = useState(window.history.state);
-    useEffect(() => {
-        listeners.push(setArgs)
-    },[])
-    return args
-}
-
-export function replacePageArgs(args: Partial<PageArgs>) {
-    history.replaceState(args,'')
+export function goToUploadedCrash(crash: { id: string, code: string }) {
+    setCookieCrashCode(crash.code)
+    const newUrl = new URL(window.location.href)
+    newUrl.pathname = `/${crash.id}`
+    window.history.pushState({id: crash.id}, '', newUrl)
+    // Make the app update itself
     // @ts-ignore
-    // Call listeners
     window.onpopstate()
 }
+
+
+
+// const listeners : ((args: PageArgs) => void)[] = []
+//
+// export function setupPageArgs() {
+//     // Listen to back button
+//     window.onpopstate = callListeners
+// }
+//
+// function callListeners(){
+//     listeners.forEach((listener) => listener(window.history.state))
+// }
+//
+// export function usePageArgs(): PageArgs {
+//     const [args, setArgs] = useState(window.history.state);
+//     useEffect(() => {
+//         listeners.push(setArgs)
+//     },[])
+//     return args
+// }
+//
+// export function replacePageArgs(args: Partial<PageArgs>) {
+//     history.replaceState(args,'')
+//     // @ts-ignore
+//     // Call listeners
+//     window.onpopstate()
+// }
 
 // export function PageUrlProvider() {
 //
@@ -56,9 +78,9 @@ export function replacePageArgs(args: Partial<PageArgs>) {
 //     return getPageArgs().crashId;
 // }
 //
-export function getUrlNoCache(): boolean {
-    return getPageArgs().nocache;
-}
+// export function getUrlNoCache(): boolean {
+//     return getPageArgs().nocache;
+// }
 //
 // export function getUrlIsRaw(): boolean {
 //     return getPageArgs().raw;

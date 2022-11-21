@@ -9,9 +9,9 @@ import {useScreenSize} from "../../fudge-commons/methods/Gui";
 import {Surface} from "../../fudge-commons/simple/Surface";
 import {CrashyServer, UploadCrashError, UploadCrashResponse} from "../../server/CrashyServer";
 import {CloudUpload} from "@mui/icons-material";
-import {goToUploadedCrash} from "../../utils/PageUrl";
 import {Column, Row} from "../../fudge-commons/simple/Flex";
 import {SimpleTextField} from "../../fudge-commons/simple/SimpleTextField";
+import {goToUploadedCrash} from "../../utils/PageUrl";
 
 
 enum InitialUploadState {

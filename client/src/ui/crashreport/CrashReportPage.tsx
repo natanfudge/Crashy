@@ -6,7 +6,7 @@ import {Section, SectionState, SpecialSection} from "../../utils/Section";
 import {NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
 import {getCookieDeleted} from "../../utils/Cookies";
-import {getUrlCrashId, getUrlNoCache} from "../../utils/PageUrl";
+import {getUrlCrashId} from "../../utils/PageUrl";
 import {RichCrashReport} from "../../crash/model/RichCrashReport";
 import {useScreenSize} from "../../fudge-commons/methods/Gui";
 import {parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
@@ -39,8 +39,8 @@ export interface CrashProps {
 export function useCrash(): GetCrashAttempt {
     const [crash, setCrash] = useState<GetCrashAttempt>(undefined)
     useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!)
-        .then(res => setCrash(isSuccessfulGetCrashResponse(res) ? parseCrashReportRich(res) : res)).catch(e => setCrash(e))
-    ,[]
+            .then(res => setCrash(isSuccessfulGetCrashResponse(res) ? parseCrashReportRich(res) : res)).catch(e => setCrash(e))
+        , []
     )
     return crash;
 }

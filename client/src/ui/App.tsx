@@ -7,7 +7,6 @@ import {CrashyTheme} from "./Colors";
 import {CrashyCrashReportPage, InvalidCrashAttempt, isCrashAttemptValid, useCrash} from "./crashreport/CrashReportPage";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
 import {Text, TextTheme} from "../fudge-commons/simple/Text";
-import {getUrlIsRaw} from "../utils/PageUrl";
 import {ErrorBoundary} from "../fudge-commons/components/ErrorBoundary";
 
 
@@ -32,9 +31,7 @@ export default function App() {
 
 function CrashyUi() {
     const location = useLocation()
-    if (getUrlIsRaw()) {
-        return <CrashyRawUi/>
-    } else if (location === "/") {
+     if (location === "/") {
         return <Suspense fallback={<LinearProgress/>}>
             <CrashyHome/>
         </Suspense>
@@ -54,14 +51,14 @@ function useLocation(): string {
     return location
 }
 
-function CrashyRawUi() {
-    const crash = useCrash();
-    if (isCrashAttemptValid(crash)) {
-        return <Text padding={3} text={crash.rawText} whiteSpace={"pre-wrap"} wordBreak={"break-word"}/>
-    } else {
-        return <InvalidCrashAttempt attempt={crash}/>
-    }
-}
+// function CrashyRawUi() {
+//     const crash = useCrash();
+//     if (isCrashAttemptValid(crash)) {
+//         return <Text padding={3} text={crash.rawText} whiteSpace={"pre-wrap"} wordBreak={"break-word"}/>
+//     } else {
+//         return <InvalidCrashAttempt attempt={crash}/>
+//     }
+// }
 
 function CrashyUiFallback() {
     return <TextTheme>

@@ -21,14 +21,13 @@ export function parsePageQuery(): Record<string, string> | undefined {
     return result;
 }
 
-export function updateUrl(data: any, newUrl: { search: string, pathname: string }) {
+export function updateUrl(newUrl: { search: string, pathname: string }) {
     const oldHref = window.location.href;
     const url = new URL(oldHref);
     url.search = newUrl.search;
     url.pathname = newUrl.pathname;
     const newHref = url.href.removeSuffix("?")
     if (oldHref !== newHref) {
-        console.log("Pushing to url " + url)
         window.location.href = newHref;
     }
 }

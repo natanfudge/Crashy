@@ -7,7 +7,7 @@ import {CrashyLogo, ExpandingIconButton} from "../../utils/Crashy";
 import {SimpleIconButton} from "../../../fudge-commons/simple/SimpleIconButton";
 import {NavigationDrawer} from "./NavigationDrawer";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
-import {getUrlCrashId, setUrlRaw} from "../../../utils/PageUrl";
+import {getUrlCrashId} from "../../../utils/PageUrl";
 import {DeletePopup} from "./DeleteCrash";
 import {Row} from "../../../fudge-commons/simple/Flex";
 import {Text} from "../../../fudge-commons/simple/Text";
