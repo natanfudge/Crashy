@@ -89,9 +89,9 @@ function DeleteCrashButton({code,deleteState,setDeleteState}: {code: string, del
                      const newState = await deleteCrash(code)
                      setDeleteState(newState);
                      if (newState === DeleteState.Deleted) {
+                         // Mark this url as deleted so it won't be displayed anymore
                          setCookieDeleted(true);
                          window.location.reload();
-                         // setUrlNoCache(true);
                      }
                  }}>
 

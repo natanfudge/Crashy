@@ -36,10 +36,9 @@ export interface CrashProps {
     sectionState: SectionState
 }
 
-
 export function useCrash(): GetCrashAttempt {
     const [crash, setCrash] = useState<GetCrashAttempt>(undefined)
-    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!, getUrlNoCache())
+    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!)
         .then(res => setCrash(isSuccessfulGetCrashResponse(res) ? parseCrashReportRich(res) : res)).catch(e => setCrash(e))
     ,[]
     )

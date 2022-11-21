@@ -1,9 +1,9 @@
-import {objectFilter, objectMap, removeSuffix} from "./Javascript";
+import {recordFilter, recordToArray} from "../fudge-commons/methods/Javascript";
 
 export function serializePageArgs(args: Record<string, unknown>): string {
     const asRecord = args as unknown as Record<string, unknown>;
-    const noDefaults = objectFilter(asRecord, (key, value) => value !== undefined && value !== false);
-    return objectMap(noDefaults, (key, value) => value === true ? key : `${key}=${value}`).join(ARG_SEPARATOR)
+    const noDefaults = recordFilter(asRecord, (key, value) => value !== undefined && value !== false);
+    return recordToArray(noDefaults, (key, value) => value === true ? key : `${key}=${value}`).join(ARG_SEPARATOR)
 }
 
 export function parsePageQuery(): Record<string, string> | undefined {
@@ -29,10 +29,10 @@ export function updateUrl(data: any, newUrl: { search: string, pathname: string 
     const newHref = url.href.removeSuffix("?")
     if (oldHref !== newHref) {
         console.log("Pushing to url " + url)
-        window.history.pushState(data,'', url)
-        // window.location.href = newHref;
+        window.location.href = newHref;
     }
 }
+
 // export function updateUrl(newUrl: { search: string, pathname: string }) {
 //     const oldHref = window.location.href;
 //     const url = new URL(oldHref);

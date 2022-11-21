@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import '../App.css';
 
 import {createTheme, CssBaseline, LinearProgress, Link} from "@mui/material";
@@ -31,16 +31,27 @@ export default function App() {
 }
 
 function CrashyUi() {
-
+    const location = useLocation()
     if (getUrlIsRaw()) {
         return <CrashyRawUi/>
-    } else if (window.location.pathname === "/") {
+    } else if (location === "/") {
         return <Suspense fallback={<LinearProgress/>}>
             <CrashyHome/>
         </Suspense>
     } else {
         return <CrashyCrashReportPage/>;
     }
+}
+
+// Listen to onpopstate makes sure we update the page when the url changes.
+function useLocation(): string {
+    const [location,setLocation] = useState<string>(window.location.pathname)
+    useEffect(() => {
+        window.onpopstate = ((_) => {
+            setLocation(window.location.pathname)
+        })
+    },[])
+    return location
 }
 
 function CrashyRawUi() {

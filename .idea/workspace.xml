@@ -4,10 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
+    <list default="true" id="121bf2a8-b6e8-41f4-a34c-b6e15c659204" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/methods/PageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrlImpl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/DeleteCrash.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/DeleteCrash.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/EndpointTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/EndpointTesting.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,14 +74,6 @@
       </state>
     </system>
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Kotlin File" />
-        <option value="Kotlin Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -87,7 +86,7 @@
     </order>
   </component>
   <component name="ProjectId" id="2H8sz0xCkELEd4V9nv5D52wsd6X" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -96,53 +95,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;TODO_SCOPE&quot;: &quot;Crashy&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1668894345352&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/jmh-gradle-plugin/samples/simple-java/groovy-dsl&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.scopes&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "17",
+    "ktor.last.update.timestamp": "1667679023591",
+    "last_opened_file_path": "C:/Users/natan/Desktop/next-test",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "project.scopes",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Kotlin.Run Server">
-    <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.CrashlogCacheTest.testCache&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\client\src\utils" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.Client Development">
     <configuration name="CrashlogStorageTest.testStorage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -157,6 +137,29 @@
             <option value=":test" />
             <option value="--tests" />
             <option value="&quot;io.github.crashy.CrashlogStorageTest.testStorage&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="EndpointTesting" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.api.EndpointTesting&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -189,51 +192,33 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="EndpointTesting.Upload Crash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="server [buildClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
+        <option name="scriptParameters" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.api.EndpointTesting.Upload Crash&quot;" />
+            <option value="buildClient" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="ReplaceSequentially.testReplacement" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.ReplaceSequentially.testReplacement&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
+    <configuration name="AppKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.crashy.AppKt" />
+      <module name="io.github.crashy.Crashy.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="SwaggerCodegen">
       <option name="activeConfigurationType" value="FILE" />
@@ -254,14 +239,14 @@
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
-      <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
-      <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
-      <item itemvalue="Gradle.ReplaceSequentially.testReplacement" />
       <item itemvalue="Gradle.EndpointTesting.Upload Crash a" />
-      <item itemvalue="Gradle.EndpointTesting.Upload Crash" />
+      <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
+      <item itemvalue="Gradle.EndpointTesting" />
+      <item itemvalue="Gradle.server [buildClient]" />
       <item itemvalue="JUnit.All Tests" />
-      <item itemvalue="Kotlin.Server Development" />
       <item itemvalue="Kotlin.Run Server" />
+      <item itemvalue="Kotlin.Server Development" />
+      <item itemvalue="Kotlin.AppKt" />
       <item itemvalue="npm.Analyze Client Bundle" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="npm.Client Production" />
@@ -269,18 +254,18 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
-        <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
-        <item itemvalue="Gradle.ReplaceSequentially.testReplacement" />
+        <item itemvalue="Kotlin.AppKt" />
         <item itemvalue="Gradle.EndpointTesting.Upload Crash a" />
-        <item itemvalue="Gradle.EndpointTesting.Upload Crash" />
+        <item itemvalue="Gradle.server [buildClient]" />
+        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
+        <item itemvalue="Gradle.EndpointTesting" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="" />
+      <changelist id="121bf2a8-b6e8-41f4-a34c-b6e15c659204" name="Changes" comment="" />
       <created>1667678303931</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -288,9 +273,7 @@
       <workItem from="1667678305046" duration="85000" />
       <workItem from="1667678420613" duration="2000" />
       <workItem from="1667678462109" duration="5573000" />
-      <workItem from="1668893904197" duration="3315000" />
-      <workItem from="1668918624566" duration="322000" />
-      <workItem from="1668919051714" duration="2940000" />
+      <workItem from="1668367228335" duration="5455000" />
     </task>
     <servers />
   </component>
@@ -307,21 +290,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt</url>
-          <line>71</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-    <watches-manager>
-      <configuration name="GradleRunConfiguration">
-        <watch expression="file.exists()" />
-      </configuration>
-    </watches-manager>
   </component>
 </project>

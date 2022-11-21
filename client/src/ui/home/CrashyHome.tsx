@@ -39,7 +39,7 @@ export default function CrashyHome() {
                         setUploadState(response);
                         setDialogOpen(true);
                     } else {
-                        goToUploadedCrash({id: response.crashId, code: response.key})
+                        goToUploadedCrash({id: response.crashId, code: response.deletionKey})
                     }
                 }}
                         disabled={log === ""} size={"large"} variant={"contained"} color="primary" startIcon={

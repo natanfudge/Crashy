@@ -32,7 +32,7 @@ export type UploadCrashResponse = UploadCrashError | UploadCrashSuccess
 
 export interface UploadCrashSuccess {
     crashId: string
-    key: string
+    deletionKey: string
     crashUrl: string
 }
 
@@ -45,9 +45,9 @@ export namespace CrashyServer {
     const http = localTesting ? "http" : "https"
     const urlPrefix = `${http}://${domain}`
 
-    export async function getCrash(id: string, noCache: boolean): Promise<GetCrashResponse> {
+    export async function getCrash(id: string): Promise<GetCrashResponse> {
         // return TestVerifyErrorCrash;
-        const response = await httpGet({url: `${urlPrefix}/${id}/raw.txt`, noCache});
+        const response = await httpGet({url: `${urlPrefix}/${id}/raw.txt`});
         switch (response.status) {
             case HttpStatusCode.OK:
                 return response.text();
