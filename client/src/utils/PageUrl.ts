@@ -5,9 +5,6 @@ import {TsObject} from "../fudge-commons/types/Basic";
 import {useEffect, useState} from "react";
 
 
-// interface PageArgs {
-//     crashId?: string
-// }
 
 function parsePageCrashId(): string | undefined {
     const pathName = window.location.pathname;
@@ -18,7 +15,7 @@ export function getUrlCrashId(): string | undefined{
     return parsePageCrashId()
 }
 
-// When a crashy link is uploaded via Crashy, we need some way to signal the browser what the deletion key is.
+// When a crashy link is uploaded via Not Enough Crashes, we need some way to signal the browser what the deletion key is.
 // The way do it is by appending ?code=<code> to the url.
 // The problem is that we don't then want the users to accidentally share that code when they sure the url with each other.
 // So we save the crash code, and refresh the url without the ?code.

@@ -29,11 +29,11 @@ class TestClock : NowDefinition {
 class CrashlogCacheTest {
     @Test
     fun testCache() = testScope {
-        sense()
+        testCacheBody()
     }
 
     context (CrashlogCache, TestClock, Path)
-    suspend fun sense() {
+    suspend fun testCacheBody() {
         val id1 = CrashlogId.generate()
         expectThat(getForTest(id1)).isEqualTo(null)
 

@@ -17,6 +17,11 @@ import kotlin.test.Test
 class CrashlogStorageTest {
     @Test
     fun testStorage() = testScope {
+        testBody()
+    }
+
+    context (CrashlogStorage, TestClock, Path)
+            private suspend fun testBody() {
         val id1 = CrashlogId.generate()
         expectThat(getLog(id1)).isEqualTo(GetCrashlogResult.DoesNotExist)
 
@@ -100,7 +105,9 @@ class CrashlogStorageTest {
 
     @Test
     fun testArchived() = testScope {
-        expectThat(getLog(CrashlogId.parse("7fc76c2f-5dc0-402f-bec8-4869d86ef3f3").getOrThrow())).isEqualTo(GetCrashlogResult.Archived)
+        expectThat(getLog(CrashlogId.parse("7fc76c2f-5dc0-402f-bec8-4869d86ef3f3").getOrThrow())).isEqualTo(
+            GetCrashlogResult.Archived
+        )
     }
 
     private inline fun testScope(crossinline test: suspend context (CrashlogStorage, TestClock, Path) () -> Unit) {
@@ -166,7 +173,7 @@ class CrashlogStorageTest {
     context (CrashlogStorage, TestClock, Path)
             private fun testDelete(id: CrashlogId, deletionKey: DeletionKey): DeleteCrashResult {
         val res = delete(id, deletionKey)
-       alignFileWithTestTime(id)
+        alignFileWithTestTime(id)
         return res
     }
 

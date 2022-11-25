@@ -57,21 +57,12 @@ repositories {
 }
 
 val linuxOnly = configurations.create("linux")
-//}
-val brotliVersion = "1.8.0"
-//dependencies {
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-////    implementation 'com.nixxcode.jvmbrotli:jvmbrotli:0.2.0'
-//    implementation "com.aayushatharva.brotli4j:brotli4j:$brotliVersion"
-//    runtimeOnly("com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion")
+val brotliVersion = libs.versions.brotli.get()
+
 val brotliWindowsNatives = "com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion"
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
-    implementation("com.github.ben-manes.caffeine:caffeine:3.1.1")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.7.20")
-    implementation( "com.aayushatharva.brotli4j:brotli4j:$brotliVersion")
     runtimeOnly(brotliWindowsNatives)
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
@@ -80,6 +71,7 @@ dependencies {
 tasks.withType<ShadowJar> {
     configurations += linuxOnly
     dependencies {
+        // Don't include windows natives because we run on linux
         exclude(dependency(brotliWindowsNatives))
     }
 }
@@ -128,7 +120,6 @@ tasks {
         into(sourceSets.main.get().output.resourcesDir!!.resolve("static"))
     }
 
-    //TODO: restore
     processResources.get().dependsOn(syncClient)
 
 

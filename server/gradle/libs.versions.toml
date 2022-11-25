@@ -5,7 +5,8 @@
 main = [
     "ktor-core", "ktor-caching-headers", "ktor-compression", "ktor-default-headers", "ktor-call-logging",
     "ktor-server-serialization", "kotlinx-serialization-json", "ktor-server-content-negotiation",
-    "ktor-netty", "logback", "reflections", "s3", "ktor-server-resources", "dropwizard-jmx", "ktor-server-metrics"
+    "ktor-netty", "logback", "reflections", "s3", "ktor-server-resources", "dropwizard-jmx", "ktor-server-metrics",
+    "caffeine", "brotli"
 ]
 test = ["ktor-tests", "kotlin-test-junit", "strikt", "okhttp"]
 
@@ -20,17 +21,20 @@ gradle-node = {id = "com.github.node-gradle.node", version.ref = "gradle-node"}
 [versions]
 
 ktor = "2.2.0-eap-534"
-kotlin = "1.7.20"
-logback = "1.4.4"
+kotlin = "1.7.21"
+logback = "1.4.5"
 reflections = "0.10.2"
 shadow = "7.1.2"
 test-logger = "3.2.0"
 gradle-node = "3.5.0"
-aws = "0.17.9-beta"
+aws = "0.18.0-beta"
 strikt = "0.34.1"
 kotlin-serialization = "1.4.1"
 okhttp = "5.0.0-alpha.10"
-dropwizard = "4.2.9"
+dropwizard = "4.2.13"
+caffeine = "3.1.2"
+brotli = "1.8.0"
+
 [libraries]
 
 ktor-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
@@ -52,3 +56,5 @@ ktor-server-metrics = {group = "io.ktor", name = "ktor-server-metrics", version.
 dropwizard-jmx = {group = "io.dropwizard.metrics", name = "metrics-jmx", version.ref = "dropwizard"}
 kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref= "kotlin-serialization"}
 okhttp = {group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
+caffeine = {group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine"}
+brotli = {group = "com.aayushatharva.brotli4j", name = "brotli4j", version.ref = "brotli"}

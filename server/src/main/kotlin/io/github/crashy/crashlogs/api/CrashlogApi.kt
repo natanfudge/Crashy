@@ -56,16 +56,14 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         }
         return htmlResponse(
             htmlTemplate.replaceSequentially(
-                listOf("{ID}" to id, "{DESCRIPTION}" to description, "{TITLE}" to title)
+                listOf("{prefetch}" to "rel=\"prefetch\" href=\"$id/raw.txt\"", "{DESCRIPTION}" to description, "{TITLE}" to title)
             ),
             code = HttpStatusCode.OK
         )
     }
-    //TODO: fix GET http://raw.txt/ net::ERR_NAME_NOT_RESOLVED
-    //TODO: history api doesn't work well
 
     private val landingPage = htmlTemplate.replaceSequentially(
-        listOf("{ID}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
+        listOf("{prefetch}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
     )
 
     suspend fun getLandingPage(): Response {

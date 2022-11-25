@@ -12,6 +12,7 @@ import {CloudUpload} from "@mui/icons-material";
 import {Column, Row} from "../../fudge-commons/simple/Flex";
 import {SimpleTextField} from "../../fudge-commons/simple/SimpleTextField";
 import {goToUploadedCrash} from "../../utils/PageUrl";
+import {parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
 
 
 enum InitialUploadState {
@@ -25,7 +26,7 @@ export default function CrashyHome() {
     const [dialogOpen, setDialogOpen] = React.useState(false)
     const isLoading = uploadState === InitialUploadState.Loading
 
-    return <WrapMultiple height = "max" width = "max">
+    return <WrapMultiple height="max" width="max">
         <Surface height={"max"}>
             <Column padding={{bottom: 20}} alignItems={"center"} height={"max"}>
                 <HomeTitle/>
@@ -33,6 +34,14 @@ export default function CrashyHome() {
                 <CrashTextField error={isUploadCrashError(uploadState)} log={log} setLog={setLog}/>
 
                 <Button onClick={async () => {
+                    // Validate crash
+                    try {
+                       parseCrashReportRich(log)
+                    } catch (e) {
+                        setUploadState("Invalid Crash")
+                        setDialogOpen(true)
+                        return
+                    }
                     setUploadState(InitialUploadState.Loading)
                     const response = await CrashyServer.uploadCrash(await gzipAsync(log));
                     if (isUploadCrashError(response)) {
@@ -69,8 +78,8 @@ function isUploadCrashError(obj: UploadState): obj is UploadCrashError {
 function CrashTextField(props: { error: boolean, log: string, setLog: (value: string) => void }) {
     return <Wrap className={"crashy-text-field"} padding={{bottom: 10, right: 10, left: 10}} width={"max"} flexGrow={1}>
         <SimpleTextField error={props.error} value={props.log} onValueChanged={value => props.setLog(value)} multiline
-                   label={"Paste a crash log"} variant={"filled"}
-                   width = "max" height = "max"
+                         label={"Paste a crash log"} variant={"filled"}
+                         width="max" height="max"
 
         />
     </Wrap>;
@@ -79,8 +88,8 @@ function CrashTextField(props: { error: boolean, log: string, setLog: (value: st
 function HomeTitle() {
     const isPortrait = useScreenSize().isPortrait;
     return <Row>
-        <CrashyLogo size={isPortrait? 60: 100} margin={10}/>
-        <Text text="Crashy" fontFamily = "serif" variant={isPortrait? "h2": "h1"} color={crashyTitleColor}/>
+        <CrashyLogo size={isPortrait ? 60 : 100} margin={10}/>
+        <Text text="Crashy" fontFamily="serif" variant={isPortrait ? "h2" : "h1"} color={crashyTitleColor}/>
     </Row>;
 }
 
