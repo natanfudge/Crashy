@@ -5,20 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/All_JS_Tests.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Zip.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/methods/Zip.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/test/ExtensionsTest.test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/ProviderUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/ProviderUtils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/EdgeCaseTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/EnrichmentTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +121,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Jest.New Tests - TSrg1 mappings work">
+  <component name="RunManager" selected="Kotlin.Run Server">
     <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -276,7 +266,7 @@
       <workItem from="1668919051714" duration="3249000" />
       <workItem from="1669400948351" duration="194000" />
       <workItem from="1669401188014" duration="2257000" />
-      <workItem from="1669406915443" duration="5064000" />
+      <workItem from="1669406915443" duration="5757000" />
     </task>
     <servers />
   </component>

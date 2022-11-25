@@ -28,7 +28,7 @@
 - [ ] Fix critical crashy issues
 - [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
 - [ ] Monetization?
-
+- [ ] Implement archived crash retrieval
 
 
 

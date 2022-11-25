@@ -14,8 +14,6 @@ import kotlin.io.path.readText
 private const val MaxCrashSize = 100_000
 
 
-
-
 class CrashlogApi(private val logs: CrashlogStorage) {
     private val uploadLimiter = UploadLimiter()
     fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashResponse {
@@ -42,23 +40,35 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     }
 
     private val htmlTemplate = staticDir.resolve("index.html").readText()
+    private val notFound = Triple("Invalid Crash Url", "Looks like there's nothing here", HttpStatusCode.NotFound)
     suspend fun getCrashPage(id: String): Response {
-        val logId = CrashlogId.parse(id).getOrElse { return textResponse("Invalid id", HttpStatusCode.NotFound) }
-        val (title, description) = when (val result = logs.peek(logId)) {
-            //TODO: implement in frontend
-            PeekCrashlogResult.Archived -> "Archived Crash" to "This crash wasn't accessed in a long time"
-            //TODO: implement in frontend
-            PeekCrashlogResult.DoesNotExist -> "Invalid Crash Url" to "Looks like there's nothing here"
-            is PeekCrashlogResult.Success -> {
-                val header = result.metadata.header
-               header.title to header.exceptionDescription
+        val logId = CrashlogId.parse(id)
+        val (title, description, code) = when {
+            logId.isFailure -> notFound
+            else -> when (val result = logs.peek(logId.getOrThrow())) {
+                //TODO: implement in frontend
+                PeekCrashlogResult.Archived -> Triple(
+                    "Archived Crash",
+                    "This crash wasn't accessed in a long time",
+                    HttpStatusCode.Processing
+                )
+
+                PeekCrashlogResult.DoesNotExist -> notFound
+                is PeekCrashlogResult.Success -> {
+                    val header = result.metadata.header
+                    Triple(header.title, header.exceptionDescription, HttpStatusCode.OK)
+                }
             }
         }
         return htmlResponse(
             htmlTemplate.replaceSequentially(
-                listOf("{prefetch}" to "rel=\"prefetch\" href=\"$id/raw.txt\"", "{DESCRIPTION}" to description, "{TITLE}" to title)
+                listOf(
+                    "{prefetch}" to if(code == HttpStatusCode.OK) "rel=\"prefetch\" href=\"$id/raw.txt\"" else "",
+                    "{DESCRIPTION}" to description,
+                    "{TITLE}" to title
+                )
             ),
-            code = HttpStatusCode.OK
+            code = code
         )
     }
 
