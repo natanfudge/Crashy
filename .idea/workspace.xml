@@ -5,24 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/All_Tests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/All_Tests.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/scopes/Crashy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/scopes/Crashy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/All_JS_Tests.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Zip.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/methods/Zip.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/test/ExtensionsTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/ProviderUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/ProviderUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/EdgeCaseTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/EnrichmentTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,11 +116,12 @@
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "17",
     "ktor.last.update.timestamp": "1669401572104",
-    "last_opened_file_path": "C:/Users/natan/Desktop/jmh-gradle-plugin/samples/simple-java/groovy-dsl",
+    "last_opened_file_path": "C:/Users/natan/Desktop/crashy-vite",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/react-scripts",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
@@ -134,7 +131,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Kotlin.Run Server">
+  <component name="RunManager" selected="Jest.New Tests - TSrg1 mappings work">
     <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -181,73 +178,43 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="EndpointTesting.Upload Crash a" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.api.EndpointTesting.Upload Crash a&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
+    <configuration name="Mappings BFS works correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" />
+      <test-names>
+        <test-name value="Mappings BFS works correctly" />
+      </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="EndpointTesting.Upload Crash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.api.EndpointTesting.Upload Crash&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
+    <configuration name="New Tests - Srg mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="New Tests - Srg mappings work" />
+      </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="ReplaceSequentially.testReplacement" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.ReplaceSequentially.testReplacement&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
+    <configuration name="New Tests - TSrg1 mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="New Tests - TSrg1 mappings work" />
+      </test-names>
       <method v="2" />
     </configuration>
     <configuration default="true" type="SwaggerCodegen">
@@ -271,9 +238,10 @@
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
       <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
-      <item itemvalue="Gradle.ReplaceSequentially.testReplacement" />
-      <item itemvalue="Gradle.EndpointTesting.Upload Crash a" />
-      <item itemvalue="Gradle.EndpointTesting.Upload Crash" />
+      <item itemvalue="Jest.All JS Tests" />
+      <item itemvalue="Jest.Mappings BFS works correctly" />
+      <item itemvalue="Jest.New Tests - Srg mappings work" />
+      <item itemvalue="Jest.New Tests - TSrg1 mappings work" />
       <item itemvalue="JUnit.All Tests" />
       <item itemvalue="Kotlin.Server Development" />
       <item itemvalue="Kotlin.Run Server" />
@@ -284,11 +252,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.New Tests - TSrg1 mappings work" />
+        <item itemvalue="Jest.New Tests - Srg mappings work" />
+        <item itemvalue="Jest.Mappings BFS works correctly" />
         <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
         <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
-        <item itemvalue="Gradle.ReplaceSequentially.testReplacement" />
-        <item itemvalue="Gradle.EndpointTesting.Upload Crash a" />
-        <item itemvalue="Gradle.EndpointTesting.Upload Crash" />
       </list>
     </recent_temporary>
   </component>
@@ -307,7 +275,8 @@
       <workItem from="1668918624566" duration="322000" />
       <workItem from="1668919051714" duration="3249000" />
       <workItem from="1669400948351" duration="194000" />
-      <workItem from="1669401188014" duration="681000" />
+      <workItem from="1669401188014" duration="2257000" />
+      <workItem from="1669406915443" duration="5064000" />
     </task>
     <servers />
   </component>

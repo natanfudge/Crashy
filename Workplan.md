@@ -1,10 +1,20 @@
 
 # Workplan:
 - [ ] Complete client mappings feature.
-- [ ] Move mappings selection, and make it not move when there's no version selection:  
-- ![img.png](img.png)
-- [ ] Validate upload crash log at client
-- [ ] Migrate to react 18
+  - [ ] Tsrg mappings 
+    - [ ] Server side tsrg mappings endpoint
+      - [ ] Tsrg 1
+      - [ ] Tsrg 2
+      - [ ] Caching
+      - [ ] Filtering
+  - [ ] Mcp mappings (probably requires server to proxy as well?)
+  - [ ] Quilt mappings
+  - [ ] Mojmap mappings
+  - [ ] Handle version having no mappings?
+  - [ ] Move mappings selection, and make it not move when there's no version selection:
+    ![img.png](img.png)
+
+- [ ] Migrate to react 18 and strict mode
 - [ ] Migrate NEC to new api
   - [ ] Make sure `?code=` works well 
 - [ ] Introduce backwards compatibility for old NEC versions:

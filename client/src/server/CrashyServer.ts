@@ -2,6 +2,7 @@
 
 
 import {httpGet, httpPost} from "../fudge-commons/methods/Http";
+import {TestVerifyErrorCrash} from "../test/TestVerifyErrorCrash";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -46,7 +47,7 @@ export namespace CrashyServer {
     const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        // return TestVerifyErrorCrash;
+        return TestVerifyErrorCrash;
         const response = await httpGet({url: `${urlPrefix}/${id}/raw.txt`});
         switch (response.status) {
             case HttpStatusCode.OK:

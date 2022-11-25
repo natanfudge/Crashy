@@ -4,6 +4,7 @@ import {getIntermediaryMappings} from "./IntermediaryMappingsProvider";
 import {MappingsFilter} from "../MappingsFilter";
 import {Mappings} from "../Mappings";
 import {PromiseMemoryCache} from "../../fudge-commons/collections/PromiseMemoryCache";
+import {getSrgMappings} from "./SrgMappingsProvider";
 
 
 export type MappingsBuilds = string[];
@@ -18,7 +19,7 @@ export interface MappingsProvider {
     toNamespace: MappingsNamespace
 
     /**
-     * @deprecated Use getBuildsCached
+     * @deprecated Use getBuildsCached (overriding is ok)
      */
     getBuilds(minecraftVersion: string): Promise<MappingsBuilds>
 
@@ -76,8 +77,8 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
         return [];
     },
     async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        throw new Error("TODO")
-        // return getSrgMappings(version.minecraftVersion,filter);
+        // throw new Error("TODO")
+        return getSrgMappings(version.minecraftVersion,filter);
     }
 }
 

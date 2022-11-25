@@ -10,13 +10,14 @@ import {Queue} from "../../fudge-commons/collections/Queue";
  */
 export function resolveMappingsChain(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace): MappingsProvider[] | undefined {
     if(fromNamespace === toNamespace) return [];
-    return BFS(fromNamespace, toNamespace, allMappingsProviders);
+    return findShortestPath(fromNamespace, toNamespace, allMappingsProviders);
 }
 
 type PartialRecord<K extends keyof any, V> = Partial<Record<K, V>>
 type ShortLinks = PartialRecord<MappingsNamespace, { prev: MappingsNamespace, provider: MappingsProvider }>
 
-function BFS(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace, availableProviders: MappingsProvider[]): MappingsProvider[] | undefined {
+// This is the BFS algorithm
+function findShortestPath(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace, availableProviders: MappingsProvider[]): MappingsProvider[] | undefined {
     const graphAdj = makeAdjacencyList(availableProviders);
 
     const visited: Set<MappingsNamespace> = new Set([fromNamespace]);
@@ -55,7 +56,7 @@ function createPathFromShortLinks(shortLinks: ShortLinks, fromNamespace: Mapping
 type MappingsAdjacencyList = Record<MappingsNamespace, { node: MappingsNamespace, provider: MappingsProvider }[]>;
 
 function makeAdjacencyList(mappingsProviders: MappingsProvider[]): MappingsAdjacencyList {
-    const adjacencyList = toRecord(allMappingNamespaces, namespace => [namespace,[]]) as MappingsAdjacencyList;
+    const adjacencyList = allMappingNamespaces.toRecord(namespace => [namespace,[]]) as MappingsAdjacencyList;
 
     for (const provider of mappingsProviders) {
         // We store the provider so we can know later what provider we need to use to implement the edge

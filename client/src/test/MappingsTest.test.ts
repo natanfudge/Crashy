@@ -1,4 +1,4 @@
-import "../fudge-commons/src/util/Extensions"
+import "../fudge-commons/extensions/Extensions"
 
 import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
 import {getMappingForName} from "../mappings/resolve/MappingStrategy";
@@ -10,7 +10,7 @@ import {
     SrgToMcpMappingsProvider
 } from "../mappings/providers/MappingsProvider";
 
-import "../fudge-commons/src/util/ExtensionsImpl"
+import "../fudge-commons/extensions/ExtensionsImpl"
 import {BasicMappable, JavaClass, JavaMethod} from "../crash/model/Mappable";
 import {HashSet} from "../fudge-commons/collections/hashmap/HashSet";
 import {LoaderType} from "../crash/model/RichCrashReport";

@@ -7,7 +7,7 @@ import {
 } from "../mappings/providers/MappingsProvider";
 import {JavaClass, JavaMethod} from "../crash/model/Mappable";
 import {MappingAssertions, testMappingsProvider} from "./MappingsProviderTester";
-
+import "../fudge-commons/extensions/ExtensionsImpl"
 //remove this if it ever breaks (superseded by new tests)
 test("Yarn mappings can be retrieved via new method", async () => {
     const versions = await getYarnBuilds("1.18.1");
@@ -98,38 +98,7 @@ test("New Tests - Intermediary mappings work", async () => {
     await testMappingsProvider(OfficialToIntermediaryMappingsProvider,"1.18.1",assertions);
 })
 
-// Remove this if it ever breaks
-test("Srg mappings can be retrieved", async () => {
-    throw new Error("TODO")
-    // const mappings = await getSrgMappings("1.7.10", AllowAllMappings)
-    // expect(mappings.mapClass(JavaClass.dotSeperated("aky"), false))
-    //     .toEqual(JavaClass.dotSeperated("net.minecraft.block.BlockFarmland"))
-    //
-    // const result = mappings.mapSimpleMethod(JavaMethod.dotSeperated("zs", "b"), false)
-    // expect(
-    //     result.method.classIn.getUnmappedFullName() === "net.minecraft.inventory.Container" &&
-    //     ((result.method.getUnmappedMethodName() === "func_75142_b" && result.descriptor === "()V") ||
-    //         (result.method.getUnmappedMethodName() === "func_94529_b" && result.descriptor === "(I)I") ||
-    //         (result.method.getUnmappedMethodName() === "func_75137_b" && result.descriptor === "(II)V"))
-    // ).toBeTruthy()
-    //
-    // expect(mappings.mapDescriptoredMethod(
-    //     JavaMethod.dotSeperated("zs", "b").withDescriptor("(Laac;)V"), false)
-    // )
-    //     .toEqual(
-    //         JavaMethod.dotSeperated("net.minecraft.inventory.Container", "func_82847_b").withDescriptor("(Lnet.minecraft.inventory.ICrafting;)V"),
-    //     )
-    //
-    // expect(mappings.mapClass(JavaClass.dotSeperated("net.minecraft.block.BlockFarmland"), true))
-    //     .toEqual(JavaClass.dotSeperated("aky"))
-    //
-    // expect(mappings.mapSimpleMethod(JavaMethod.dotSeperated("net.minecraft.inventory.Container", "func_82847_b"), true))
-    //     .toEqual(JavaMethod.dotSeperated("zs", "b").withDescriptor("(Laac;)V"))
-    //
-    // expect(mappings.mapDescriptoredMethod(
-    //     JavaMethod.dotSeperated("net.minecraft.inventory.Container", "func_82847_b").withDescriptor("(Lnet.minecraft.inventory.ICrafting;)V"), true)
-    // ).toEqual(JavaMethod.dotSeperated("zs", "b").withDescriptor("(Laac;)V"),)
-}, 40000)
+
 //MD: zs/b ()V net/minecraft/inventory/Container/func_75142_b ()V
 // MD: zs/b (I)I net/minecraft/inventory/Container/func_94529_b (I)I
 // MD: zs/b (II)V net/minecraft/inventory/Container/func_75137_b (II)V
