@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
     runtimeOnly(brotliWindowsNatives)
+//    implementation("net.fabricmc:mapping-io:0.3.0")
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
 }

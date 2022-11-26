@@ -3,9 +3,6 @@ package io.github.crashy.crashlogs.storage
 import io.github.crashy.CrashyJson
 import io.github.crashy.CrashyLogger
 import io.github.crashy.crashlogs.*
-import io.github.crashy.utils.diskcache.DiskLruCache
-import okio.FileSystem
-import okio.Path.Companion.toOkioPath
 import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
 import kotlin.io.path.*
@@ -18,7 +15,8 @@ import kotlin.io.path.*
 
 class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     private val maxCrashlogCacheSize = 100_000 // 100
-    private val cache = DiskLruCache(FileSystem.SYSTEM,directory = parentDir.toOkioPath(), appVersion = 1, valueCount = 2, maxSize =  )
+
+    //    private val cache = DiskLruCache(FileSystem.SYSTEM,directory = parentDir.toOkioPath(), appVersion = 1, valueCount = 2, maxSize =  )
     init {
         require(parentDir.exists())
     }
