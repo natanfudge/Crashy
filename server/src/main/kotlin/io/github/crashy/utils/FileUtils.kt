@@ -7,8 +7,8 @@ import java.nio.file.Path
 
 
 
-fun Path.readNBytes(bytes: Int): ByteArray = Files.newByteChannel(this).use { sbc ->
-    Channels.newInputStream(sbc).use { inputStream ->
-        inputStream.readNBytes(bytes)
-    }
-}
+//fun Path.readNBytes(bytes: Int): ByteArray = Files.newByteChannel(this).use { sbc ->
+//    Channels.newInputStream(sbc).use { inputStream ->
+//        inputStream.readNBytes(bytes)
+//    }
+//}
