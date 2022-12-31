@@ -542,7 +542,6 @@
 //                    val clean = entry.cleanFiles[i]
 //                    fileSystem.atomicMove(dirty, clean)
 //                    val oldLength = entry.lengths[i]
-//                    // TODO check null behaviour
 //                    val newLength = fileSystem.metadata(clean).size ?: 0
 //                    entry.lengths[i] = newLength
 //                    size = size - oldLength + newLength
