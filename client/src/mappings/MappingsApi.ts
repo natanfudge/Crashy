@@ -17,6 +17,7 @@ export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: s
     switch (namespace) {
         case "Intermediary":
         case "Official":
+        case "Srg":
             return [];
         case "Yarn":
             return getBuildsCached(IntermediaryToYarnMappingsProvider, minecraftVersion)
@@ -28,11 +29,11 @@ export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: s
 export async function getMappingsCached(mappingsProvider: MappingsProvider, version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
     return mappingsCache.get(
         mappingsProvider.fromNamespace + mappingsProvider.toNamespace + version.build + version.minecraftVersion,
-        () => mappingsProvider.getMappings(version, filter)
-    ).catch(e => {
-        console.error("Could not get mappings", e);
-        return EmptyMappings;
-    });
+        () => mappingsProvider.getMappings(version, filter).catch(e => {
+            console.error("Could not get mappings", e);
+            return EmptyMappings;
+        }
+    ));
 }
 
 export function useAnyMappingsLoading(): boolean {

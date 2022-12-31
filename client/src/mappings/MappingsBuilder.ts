@@ -1,4 +1,3 @@
-
 import {ClassMappings, Mappings} from "./Mappings";
 import {MappingsImpl} from "./MappingsImpl";
 import {MappingsFilter} from "./MappingsFilter";
@@ -18,6 +17,8 @@ export class MappingsBuilder {
 
     // Returns undefined if this class's  methods are not needed (it's still put in the Dict for remapping)
     addClass(unmapped: string, mapped: string): JavaClass | undefined {
+        if (unmapped === undefined) throw new Error("Unmapped name must not be undefined")
+        if (mapped === undefined) throw new Error("mapped name must not be undefined")
         const unmappedClass = new JavaClass(unmapped, true)
         const mappedClass = new JavaClass(mapped, true);
         this.classMappings.put(unmappedClass, mappedClass)
@@ -32,9 +33,9 @@ export class MappingsBuilder {
     }
 
     remapDescriptor(descriptor: string): string {
-        return descriptor.replace(/L(.+?);/g, (match, p1: string) =>{
+        return descriptor.replace(/L(.+?);/g, (match, p1: string) => {
             const remapped = this.classMappings.get(new JavaClass(p1, true))
-                ?.getUnmappedFullName()?.replace(/"."/g, "/") ?? p1
+                ?.getUnmappedFullName()?.replaceAll(".", "/") ?? p1
             return `L${remapped};`
         });
     }

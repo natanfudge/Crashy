@@ -2,6 +2,7 @@
 import {equalsOfAnything} from "./EqualsImplementation";
 import {LinkedList} from "../LinkedList";
 import {hashCodeOfAnything} from "./Hashing";
+import {toRecord} from "../../methods/Javascript";
 
 const InitialCapacityPadding = 1.35;
 const DefaultCapacity = 16;
@@ -201,6 +202,10 @@ export class HashMap<K, V> implements MutableDict<K, V> {
             record[keyMap(k, v)] = valueMap(k, v);
         })
         return record;
+    }
+
+    toString(): string {
+        return JSON.stringify(this.toRecord(k => String(k), (k,v) => v))
     }
 
     // delete(key: K) {

@@ -19,7 +19,6 @@ export function getUrlCrashId(): string | undefined{
 // The way do it is by appending ?code=<code> to the url.
 // The problem is that we don't then want the users to accidentally share that code when they sure the url with each other.
 // So we save the crash code, and refresh the url without the ?code.
-//TODO: test this
 export function consumeCrashCode(){
     const code = parsePageQuery()?.["code"]
     // A valid code is 6 characters

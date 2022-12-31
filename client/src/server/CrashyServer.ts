@@ -56,7 +56,7 @@ export namespace CrashyServer {
             case HttpStatusCode.NotFound:
                 return GetCrashError.NoSuchCrashId
             default:
-                throw new Error("Unexpected status code: " + response.status)
+                throw requestError(response)
         }
     }
 
@@ -76,7 +76,7 @@ export namespace CrashyServer {
             case HttpStatusCode.NotFound:
                 return DeleteCrashResponse.NoSuchCrashId
             default:
-                throw new Error("Unexpected status code: " + response.status)
+                throw requestError(response)
         }
     }
 
@@ -98,7 +98,22 @@ export namespace CrashyServer {
             case HttpStatusCode.PayloadTooLarge:
                 return "Too Large"
             default:
-                throw new Error("Unexpected status code: " + response.status)
+                throw requestError(response)
         }
+    }
+
+    export async function getTsrg(mcVersion: string): Promise<string> {
+        const response = await httpGet({
+            url: `${urlPrefix}/getTsrg/${mcVersion}.tsrg`
+        })
+        if (response.status != HttpStatusCode.OK) {
+            throw requestError(response)
+        } else {
+            return response.text()
+        }
+    }
+
+    function requestError(response: Response): Error {
+        return new Error(`Unexpected status code: ${response.status} (text = ${response.text()})`)
     }
 }

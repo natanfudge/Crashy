@@ -58,8 +58,8 @@ export async function testMappingsProvider(provider: MappingsProvider, mcVersion
 
     for (const unmappedClass in assertions.classes) {
         const mappedClass = assertions.classes[unmappedClass];
-        expect(mappings.mapClass(JavaClass.dotSeperated(unmappedClass), false).getUnmappedFullName()).toEqual(mappedClass)
-        expect(mappings.mapClass(JavaClass.dotSeperated(mappedClass), true).getUnmappedFullName()).toEqual(unmappedClass)
+        expect(mappings.mapClass(JavaClass.anySeparation(unmappedClass), false).getUnmappedFullName()).toEqual(mappedClass)
+        expect(mappings.mapClass(JavaClass.anySeparation(mappedClass), true).getUnmappedFullName()).toEqual(unmappedClass)
     }
 
     //TODO: better method: specify all possible mappings of an obf method name and let the tester do the rest
@@ -93,7 +93,7 @@ export async function testMappingsProvider(provider: MappingsProvider, mcVersion
         expectToEqualAny(mappings.mapSimpleMethod(mappedSimpleMethod, true).getUnmappedFullName(), typedKeys(assertions.methods));
 
         expect(mappings.mapDescriptoredMethod(unmappedDescriptoredMethod,false).getUnmappedFullName()).toEqual(mappedMethod)
-        expect(mappings.mapDescriptoredMethod(mappedDescriptoredMethod,false).getUnmappedFullName()).toEqual(mappedMethod)
+        expect(mappings.mapDescriptoredMethod(mappedDescriptoredMethod,true).getUnmappedFullName()).toEqual(unmappedMethod)
     }
 
 //    expect(

@@ -5,6 +5,7 @@ import {MappingsBuilder} from "../MappingsBuilder";
 import {JavaClass} from "../../crash/model/Mappable";
 import {extractFromZip} from "../../fudge-commons/methods/Zip";
 import {strFromU8} from "fflate";
+import {CrashyServer} from "../../server/CrashyServer";
 
 export {}
 
@@ -15,35 +16,22 @@ enum SRGVersion {
 
 //https://files.minecraftforge.net/de/oceanlabs/mcp/mcp//mcp--srg.zip
 export async function getSrgMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings> {
-    const url = isOlderThan1_12_2(mcVersion)
-        ? `https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`
-        : `https://files.minecraftforge.net/maven/de/oceanlabs/mcp/mcp_config/${mcVersion}/mcp_config-${mcVersion}.zip`
-    const res = await fetch(url);
-    const unzipped = await extractFromZip(await res.arrayBuffer())
-    const oldSrg = srg1Path in unzipped
-    // TODO: tsrg path
-    const mappings = oldSrg? strFromU8(unzipped[srg1Path]) : ""
+    if (isOlderThan1_12_2(mcVersion)) {
+        const url = `https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`
+        const res = await fetch(url);
+        const unzipped = await extractFromZip(await res.arrayBuffer())
+        const mappings = strFromU8(unzipped[srg1Path]);
 
-    const srgVersion = oldSrg ? SRGVersion.SRG : mappings.startsWith("tsrg2") ? SRGVersion.TSRG2 : SRGVersion.TSRG
-
-    return loadSRGMappings(srgVersion, mappings, filter)
+        return loadSRG1Mappings(mappings, filter)
+    } else {
+        // Forge doesn't support CORS starting from 1.12.2 so we need to use the Crashy server as a proxy
+        const mappings = await CrashyServer.getTsrg(mcVersion)
+        return parseTsrg(mappings,filter)
+    }
 }
 
 const srg1Path = "joined.srg"
 
-
-function loadSRGMappings(srgVersion: SRGVersion, srg_mappings: string, filter: MappingsFilter): Mappings {
-    switch (srgVersion) {
-        case SRGVersion.SRG:
-            return loadSRG1Mappings(srg_mappings, filter);
-        case SRGVersion.TSRG:
-            throw new Error("TODO")
-        // return loadTSRG1Mappings(srg_mappings);
-        case SRGVersion.TSRG2:
-            throw new Error("TODO")
-        // return loadTSRG2Mappings(srg_mappings);
-    }
-}
 
 // Example: https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.7.10/mcp-1.7.10-srg.zip
 function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings {
@@ -75,11 +63,16 @@ function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings
     return builder.build();
 }
 
-function loadTSRG1Mappings(mappings: string, filter: MappingsFilter): Mappings {
-    const builder = new MappingsBuilder(filter);
+function parseTsrg(mappings: string, filter: MappingsFilter) {
+    const tsrg2 = mappings.startsWith("tsrg2")
     const lines = mappings.split("\n");
+    if (tsrg2) {
+        lines.shift()
+    }
+    const builder = new MappingsBuilder(filter);
     let currentClass: JavaClass | undefined = undefined;
     for (const line of lines) {
+        if (line === "") continue
         const indent = (/^\t*/.exec(line))![0];
         if (indent.length === 0) {
             // class, Example: a net/minecraft/client/renderer/Quaternion
@@ -89,61 +82,62 @@ function loadTSRG1Mappings(mappings: string, filter: MappingsFilter): Mappings {
             // Field or method
             const memberParts = line.trim().split(/\s+/);
 
-            if (memberParts.length === 2) {
+            const fieldLength = tsrg2? 3 : 2;
+
+            if (memberParts.length === fieldLength) {
                 // field, Example: a field_195895_a
             } else {
+                if(currentClass == null) {
+                    // class is not needed
+                    continue
+                    // throw new Error("A class was not read before reading the method (line = " + line + "). Tsrg2: " + tsrg2 + ". Part length: " + memberParts.length)
+                }
                 // Method, Example: a (La;)V func_195890_a
                 const [unmappedMethodName, unmappedDescriptor, mappedMethodName] = memberParts;
-                builder.addMethod(currentClass!, unmappedMethodName, unmappedDescriptor, unmappedMethodName);
+                builder.addMethod(currentClass!, unmappedMethodName, unmappedDescriptor, mappedMethodName);
             }
         }
     }
     return builder.build();
 }
 
-//
-// async function loadTSRG2Mappings(tsrg2_mappings: string): Mappings {
+// function parseTsrg1(mappings: string, filter: MappingsFilter): Mappings {
+//     return parseTsrg(filter, lines);
+// }
+// function parseTsrg2(mappings: string, filter: MappingsFilter): Mappings {
+//     const lines = mappings.split("\n");
+//     // Ignore header
+//     lines.shift()
+//     return parseTsrg(filter, lines);
+// }
+
+
+// function loadTSRG2Mappings(tsrg2_mappings: string, filter: MappingsFilter): Mappings {
+//     const builder = new MappingsBuilder(filter);
 //     const lines = tsrg2_mappings.split("\n");
+//     // Ignore the header
 //     lines.shift();
-//     let current_class: ClassData | null | undefined = null;
-//     let current_item: AbstractData | null | undefined = undefined;
-//     while (lines.length) {
-//         const current_line = <string>lines.shift();
-//         const indent = <string>current_line.match(/^\t*/)?.[0];
+//     let currentClass: JavaClass | null | undefined = null;
+//     for(const line of lines){
+//         const indent = line.match(/^\t*/)!![0];
 //         if (indent.length == 0) {
-//             const cParts = current_line.trim().split(/\s+/);
-//             current_class = await this.getOrAddClass(cParts[0], MappingTypes.OBF);
-//             if (current_class == null) {
-//                 continue;
-//             }
-//             current_class.addMapping(MappingTypes.SRG, cParts[1]);
+//             // zq net/minecraft/src/C_141897_ 141897
+//             const [unmappedName,mappedName] = line.trim().split(/\s+/);
+//             currentClass = builder.addClass(unmappedName,mappedName)
 //         } else if (indent.length == 1) {
-//             const fmParts = current_line.trim().split(/\s+/);
-//             //field
+//             const fmParts = line.trim().split(/\s+/);
 //             if (fmParts.length == 3) {
-//                 current_item = current_class?.getOrAddField(fmParts[0], null, MappingTypes.OBF);
-//                 current_item?.addMapping(MappingTypes.SRG, fmParts[1]);
-//                 if (!this.srgFields.has(fmParts[2])) this.srgFields.set(fmParts[2], []);
-//                 if (current_item) this.srgFields.get(fmParts[2])?.push(<FieldData>current_item);
-//                 //method
+//                 //field
 //             } else {
-//                 current_item = current_class?.getOrAddMethod(fmParts[0], fmParts[1], MappingTypes.OBF);
+//                 // method
+//                 const [unmappedMethodName,]
+//                 current_item = currentClass?.getOrAddMethod(fmParts[0], fmParts[1], MappingTypes.OBF);
 //                 current_item?.addMapping(MappingTypes.SRG, fmParts[2]);
 //                 if (!this.srgMethods.has(fmParts[3])) this.srgMethods.set(fmParts[3], []);
 //                 if (current_item) this.srgMethods.get(fmParts[3])?.push(<MethodData>current_item);
 //             }
-//             //param
 //         } else if (indent.length == 2) {
-//             const pParts = current_line.trim().split(/\s+/);
-//             // verify cus things like "static" are at this level too
-//             if (pParts.length == 4) {
-//                 if (current_item instanceof MethodData) {
-//                     if (!current_item.params.has(MappingTypes.SRG)) current_item.params.set(MappingTypes.SRG, new Map());
-//                     current_item.params.get(MappingTypes.SRG)?.set(parseInt(pParts[0]), pParts[2]);
-//                     if (!this.srgMethods.has(pParts[3])) this.srgMethods.set(pParts[3], []);
-//                     this.srgMethods.get(pParts[3])?.push(current_item);
-//                 }
-//             }
+//             // Parameter
 //         }
 //     }
 // }

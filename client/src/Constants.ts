@@ -1,2 +1,2 @@
-export const EnableAssertions = false;
+export const EnableAssertions = true;
 export const ClassMethodSeparator = "#"

@@ -5,15 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/MappingsModels.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/OkioUtils.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/diskcache/ImmutableDiskLruCache.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/MappingsCacheTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/foo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/All_Tests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/All_Tests.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/MappingStorage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/MappingCache.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/diskcache/CrashyDiskLruCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/diskcache/CrashyDiskLruCache.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Constants.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/PromiseMemoryCache.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/PromiseMemoryCache.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/EqualsImplementation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/EqualsImplementation.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsProviderTester.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/MappingsProviderTester.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/MappingsApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/MappingsApi.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +118,7 @@
     "TODO_SCOPE": "Crashy",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "17",
-    "ktor.last.update.timestamp": "1669495074322",
+    "ktor.last.update.timestamp": "1672516804207",
     "last_opened_file_path": "C:/Users/natan/Desktop/AlgorithmsGui",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -121,68 +129,40 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.scopes",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Gradle.MappingsCacheTest.testMappingsCache">
-    <configuration name="CrashlogStorageTest.testStorage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.CrashlogStorageTest.testStorage&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="MappingsCacheTest.testMappingsCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.MappingsCacheTest.testMappingsCache&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="Mappings BFS works correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RecentsManager">
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="io.github.crashy.api" />
+    </key>
+  </component>
+  <component name="RunManager" selected="npm.Client Development">
+    <configuration name="Forge crash report is enriched properly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/EnrichmentTest.test.ts" />
       <test-names>
-        <test-name value="Mappings BFS works correctly" />
+        <test-name value="Forge crash report is enriched properly" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="New Tests - Intermediary mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="New Tests - Intermediary mappings work" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -199,7 +179,7 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="New Tests - TSrg1 mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Tsrg mappings work in 1.17" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
@@ -208,7 +188,20 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" />
       <test-names>
-        <test-name value="New Tests - TSrg1 mappings work" />
+        <test-name value="Tsrg mappings work in 1.17" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Tsrg2 mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="Tsrg2 mappings work" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -231,12 +224,12 @@
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
-      <item itemvalue="Gradle.MappingsCacheTest.testMappingsCache" />
-      <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
       <item itemvalue="Jest.All JS Tests" />
-      <item itemvalue="Jest.Mappings BFS works correctly" />
+      <item itemvalue="Jest.Forge crash report is enriched properly" />
+      <item itemvalue="Jest.New Tests - Intermediary mappings work" />
       <item itemvalue="Jest.New Tests - Srg mappings work" />
-      <item itemvalue="Jest.New Tests - TSrg1 mappings work" />
+      <item itemvalue="Jest.Tsrg mappings work in 1.17" />
+      <item itemvalue="Jest.Tsrg2 mappings work" />
       <item itemvalue="JUnit.All Tests" />
       <item itemvalue="Kotlin.Server Development" />
       <item itemvalue="Kotlin.Run Server" />
@@ -247,11 +240,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.MappingsCacheTest.testMappingsCache" />
-        <item itemvalue="Jest.New Tests - TSrg1 mappings work" />
+        <item itemvalue="Jest.Tsrg mappings work in 1.17" />
+        <item itemvalue="Jest.Tsrg2 mappings work" />
+        <item itemvalue="Jest.Forge crash report is enriched properly" />
+        <item itemvalue="Jest.New Tests - Intermediary mappings work" />
         <item itemvalue="Jest.New Tests - Srg mappings work" />
-        <item itemvalue="Jest.Mappings BFS works correctly" />
-        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
       </list>
     </recent_temporary>
   </component>
@@ -273,7 +266,19 @@
       <workItem from="1669401188014" duration="2257000" />
       <workItem from="1669406915443" duration="6122000" />
       <workItem from="1669452478137" duration="3659000" />
-      <workItem from="1669495026660" duration="5665000" />
+      <workItem from="1669495026660" duration="6493000" />
+      <workItem from="1669900661793" duration="74000" />
+      <workItem from="1671198992104" duration="19000" />
+      <workItem from="1671513838630" duration="1350000" />
+      <workItem from="1672340305661" duration="1000" />
+      <workItem from="1672410583343" duration="2470000" />
+      <workItem from="1672420648633" duration="105000" />
+      <workItem from="1672433821104" duration="1179000" />
+      <workItem from="1672478379437" duration="1967000" />
+      <workItem from="1672488937948" duration="260000" />
+      <workItem from="1672492674573" duration="7851000" />
+      <workItem from="1672504572118" duration="1533000" />
+      <workItem from="1672516436857" duration="5133000" />
     </task>
     <servers />
   </component>
@@ -300,9 +305,29 @@
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/MappingsCacheTest.kt</url>
-          <line>51</line>
-          <option name="timeStamp" value="16" />
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-jvm/5.0.0-alpha.10/977c9669c89dfc58db842014411d82609f0db05d/okhttp-jvm-5.0.0-alpha.10-sources.jar!/jvmMain/okhttp3/internal/cache/DiskLruCache.kt</url>
+          <line>698</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-jvm/5.0.0-alpha.10/977c9669c89dfc58db842014411d82609f0db05d/okhttp-jvm-5.0.0-alpha.10-sources.jar!/jvmMain/okhttp3/internal/cache/DiskLruCache.kt</url>
+          <line>582</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/2d2338937cea04ac5321bc89f1ffdc93345df448/okhttp-4.9.3-sources.jar!/okhttp3/internal/cache/DiskLruCache.kt</url>
+          <line>568</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/2d2338937cea04ac5321bc89f1ffdc93345df448/okhttp-4.9.3-sources.jar!/okhttp3/internal/cache/DiskLruCache.kt</url>
+          <line>569</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/2d2338937cea04ac5321bc89f1ffdc93345df448/okhttp-4.9.3-sources.jar!/okhttp3/internal/cache/DiskLruCache.kt</url>
+          <line>535</line>
+          <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -311,5 +336,9 @@
         <watch expression="file.exists()" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

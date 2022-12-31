@@ -13,8 +13,10 @@ export class PromiseMemoryCache<T> {
     private invokeListeners() {
         for (const listener of this.promisesListeners) listener();
     }
+    //FIXME: we get loading mappings... when the value is already cached
 
     async get(key: string, orProduce: () => Promise<T>): Promise<T> {
+        // console.log("Requesting key: " + key)
         const cached = this.cache[key];
         if (cached !== undefined) {
             return cached;
@@ -23,6 +25,7 @@ export class PromiseMemoryCache<T> {
         // Try to reuse the recent, last time the value of this key was requested.
         const ongoingPromise = this.ongoingPromises[key];
         if (ongoingPromise !== undefined) {
+            // console.log("We have ongoing promise")
             return ongoingPromise;
         }
 
@@ -37,6 +40,7 @@ export class PromiseMemoryCache<T> {
                 this.invokeListeners();
             }
         );
+        // console.log("Promise for key " + key + " fulfilled")
         // Promise fulfilled - we can now use the cache instead and we don't need to store the promise anymore.
         this.cache[key] = value;
 

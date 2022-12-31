@@ -1,4 +1,3 @@
-
 import {ClassMethodSeparator, EnableAssertions} from "../../Constants";
 import {MappingStrategy} from "./MappingStrategy";
 import {Mappings} from "../../mappings/Mappings";
@@ -15,25 +14,41 @@ export interface Mappable<To extends AnyMappable> {
 }
 
 
-export type JavaClassJsObject = {packageName: string, simpleName: string};
+export type JavaClassJsObject = { packageName: string, simpleName: string };
+
 export class JavaClass implements Mappable<JavaClass> {
     // Stored in dot.qualified.format
     private readonly _fullUnmappedName: string
+
+    // Will be undefined until first access
     private _packageName?: string
     private _simpleName?: string
 
     constructor(fullName: string, slashSeperated: boolean) {
-        if (EnableAssertions && ((fullName.includes("/") && !slashSeperated) || (fullName.includes(".") && slashSeperated)) && (!fullName.startsWith("java.base"))) {
-            throw new Error("Unexpected slash/period when defined otherwise")
+        // java.base gets a pass
+        if (EnableAssertions && !fullName.startsWith("java.base")) {
+            // If there is no / or . then the separation can't be wrong
+            if (fullName.includes("/") || fullName.includes(".")) {
+                // If slash seperated - must include '/'. Not slash seperated - must include '.'.
+                if (slashSeperated && !fullName.includes("/") || !slashSeperated && !fullName.includes(".")){
+                    throw new Error("Unexpected slash/period when defined otherwise")
+                }
+            }
         }
+
         this._fullUnmappedName = slashSeperated ? fullName.replace(/\//g, ".") : fullName;
     }
 
-    static dotSeperated(fullName: string) {
+    static dotSeperated(fullName: string): JavaClass {
         return new JavaClass(fullName, false)
     }
 
-    static slashSeperated(fullName: string) {
+    static anySeparation(fullName: string): JavaClass {
+        const slashes = fullName.includes("/");
+        return new JavaClass(fullName, slashes)
+    }
+
+    static slashSeperated(fullName: string): JavaClass {
         return new JavaClass(fullName, true)
     }
 
@@ -117,7 +132,8 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
     static dotSeperated(classIn: string, name: string) {
         return new JavaMethod(JavaClass.dotSeperated(classIn), name)
     }
-    static dotSeperatedObject(obj: {name: string, classIn: JavaClassJsObject}) {
+
+    static dotSeperatedObject(obj: { name: string, classIn: JavaClassJsObject }) {
         return new JavaMethod(JavaClass.dotSeperatedObject(obj.classIn), obj.name)
     }
 
@@ -171,12 +187,19 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
 
 export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
     method: JavaMethod;
+    // Descriptors use slash/based/qualification for class names
     descriptor: string;
 
     constructor(method: JavaMethod, descriptor: string) {
+        if(EnableAssertions && descriptor.includes(".")) {
+            throw new Error("Descriptor is supposed to use slash/based/qualification")
+        }
         this.method = method;
         this.descriptor = descriptor;
     }
+    // static parseAnyQualification(method: string): DescriptoredMethod {
+    //     return DescriptoredMethod.parse(method.replaceAll("/","."))
+    // }
 
     static parse(dotQualifiedMethod: string): DescriptoredMethod {
         const [method, descWithoutParen] = dotQualifiedMethod.splitToTwo("(");
@@ -199,3 +222,14 @@ export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
         return mappings.mapDescriptoredMethod(this, reverse);
     }
 }
+
+// interface MethodDescriptor {
+//     args: Type[]
+//     returnType: Type
+// }
+//
+// type Type = PrimitiveType | ArrayType | JavaClass
+// interface ArrayType {
+//     elementType: Type
+// }
+// type PrimitiveType = "B" | "C" | "D" | "F" | "I" | "J" | "S" | "Z"

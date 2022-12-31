@@ -24,7 +24,6 @@ export function equalsOfAnything(thingA: unknown, thingB: unknown): boolean {
 const EqualsFunction = "equals"
 
 
-//TODO: test new equals stuff with javamethods and javaclasses
 function objectEquals(objectA: TsObject | null, objectB: TsObject | null): boolean {
     if (objectA === null) return objectB === null;
     if (objectB === null) return false;
