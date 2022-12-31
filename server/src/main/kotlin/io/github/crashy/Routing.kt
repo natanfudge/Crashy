@@ -4,6 +4,7 @@ import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.api.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
+import io.github.crashy.mappings.MappingsProvider
 import io.github.crashy.utils.decompressGzip
 import io.ktor.client.utils.*
 import io.ktor.http.*
@@ -24,65 +25,76 @@ import java.nio.file.Paths
 import kotlin.io.use
 
 fun Application.configureRouting() {
+    val crashyDir = Paths.get(System.getProperty("user.home"), ".crashy")
     val logStorage = runBlocking {
         CrashlogStorage.create(
             bucket = "crashy-crashlogs",
-            appDataDir = Paths.get(System.getProperty("user.home"), ".crashy"),
+            appDataDir = crashyDir,
             clock = RealClock
         )
     }
+    val mappingsProvider = MappingsProvider(crashyDir.resolve("mappings"))
 
-    val api = CrashlogApi(logStorage)
+    val crashlogs = CrashlogApi(logStorage)
+    val mappings = MappingsApi(mappingsProvider)
 
     routing {
         // We have an options response for /uploadCrash so the browser will calm down.
-        options("/uploadCrash") {
-            call.response.header("Allow", "POST")
-            addDevCorsHeader()
-            call.response.header("Access-Control-Allow-Headers", "content-encoding")
-            call.respondBytes(ByteArray(0), status = HttpStatusCode.OK)
+        crashlogEndpoints(crashlogs)
+        route("/getTsrg/{mcVersion}.tsrg") {
+            val mcVersion = call.parameters["mcVersion"]!!
+            respond(mappings.getTsrg(mcVersion))
         }
-        post<ByteArray>("/uploadCrash") {
-            val isGzipContentEncoding = call.request.header("content-encoding") == "gzip"
+    }
+}
 
-            val uncompressed = if (isGzipContentEncoding) it.decompressGzip() else it
+private fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
+    options("/uploadCrash") {
+        call.response.header("Allow", "POST")
+        addDevCorsHeader()
+        call.response.header("Access-Control-Allow-Headers", "content-encoding")
+        call.respondBytes(ByteArray(0), status = HttpStatusCode.OK)
+    }
+    post<ByteArray>("/uploadCrash") {
+        val isGzipContentEncoding = call.request.header("content-encoding") == "gzip"
 
-            respond(api.uploadCrash(UncompressedLog(uncompressed), ip = call.request.origin.remoteAddress))
-        }
-        json<DeleteCrashlogRequest>("/deleteCrash") {
-            respond(api.deleteCrash(it))
-        }
-        // Used for testing
-        json<GetCrashRequest>("/getCrash") {
-            respond(api.getCrash(it.value.toString()))
-        }
-        preCompressed {
-            singlePageApplication {
-                useResources = false
-                filesPath = staticDir.toString()
-            }
-        }
+        val uncompressed = if (isGzipContentEncoding) it.decompressGzip() else it
 
-        // Manually respond these files so the /{id} wildcard doesn't take over these endpoints
-        route("favicon.svg") {
-            call.respondFile(staticDir.resolve("favicon.svg").toFile())
+        respond(crashlogs.uploadCrash(UncompressedLog(uncompressed), ip = call.request.origin.remoteAddress))
+    }
+    json<DeleteCrashlogRequest>("/deleteCrash") {
+        respond(crashlogs.deleteCrash(it))
+    }
+    // Used for testing
+    json<GetCrashRequest>("/getCrash") {
+        respond(crashlogs.getCrash(it.value.toString()))
+    }
+    preCompressed {
+        singlePageApplication {
+            useResources = false
+            filesPath = staticDir.toString()
         }
-        route("manifest.json") {
-            call.respondFile(staticDir.resolve("manifest.json").toFile())
-        }
+    }
 
-        route("/") {
-            respond(api.getLandingPage())
-        }
+    // Manually respond these files so the /{id} wildcard doesn't take over these endpoints
+    route("favicon.svg") {
+        call.respondFile(staticDir.resolve("favicon.svg").toFile())
+    }
+    route("manifest.json") {
+        call.respondFile(staticDir.resolve("manifest.json").toFile())
+    }
 
-        route("/{id}") {
-            val id = call.parameters["id"]!!
-            respond(api.getCrashPage(id))
-        }
-        route("/{id}/raw.txt", "/{id}/raw") {
-            val id = call.parameters["id"]!!
-            respond(api.getCrash(id))
-        }
+    route("/") {
+        respond(crashlogs.getLandingPage())
+    }
+
+    route("/{id}") {
+        val id = call.parameters["id"]!!
+        respond(crashlogs.getCrashPage(id))
+    }
+    route("/{id}/raw.txt", "/{id}/raw") {
+        val id = call.parameters["id"]!!
+        respond(crashlogs.getCrash(id))
     }
 }
 

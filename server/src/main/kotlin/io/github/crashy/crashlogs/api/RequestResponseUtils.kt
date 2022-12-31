@@ -26,10 +26,19 @@ interface StringResponse : Response {
     override val encoding: Encoding
         get() = Encoding.None
 }
+interface ByteResponse : Response {
+    override val encoding: Encoding
+        get() = Encoding.None
+}
 
 fun textResponse(string: String, code: HttpStatusCode) = object : StringResponse {
     override val statusCode: HttpStatusCode = code
     override val string = string
+    override val contentType: ContentType = ContentType.Text.Plain
+}
+fun textAsBytesResponse(bytes: ByteArray) = object : ByteResponse {
+    override val statusCode: HttpStatusCode = HttpStatusCode.OK
+    override val bytes: ByteArray = bytes
     override val contentType: ContentType = ContentType.Text.Plain
 }
 

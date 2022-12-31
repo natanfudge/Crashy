@@ -69,18 +69,12 @@ class HttpTest private constructor(
     private val domain = if (local) "localhost" else TODO()
     private val pathPrefix = "$scheme://$domain:$port"
 
-    suspend fun downloadDatabaseOverview(password: String): TestHttpResponse {
-        val path = "downloadDatabaseOverview"
-
-        return client.get(url = "$domain/$path" + httpParameters("password" to password))
-    }
-
     suspend fun uploadCrash(crash: TestCrash, headers: Map<String, String> = mapOf()): TestHttpResponse {
         val path = "uploadCrash"
 
         val crashText = getCrashLogContents(crash)
 
-        return client.post(url = "$pathPrefix/$path", crashText, useGzip = useGzip, headers)
+        return post(path, crashText, useGzip = useGzip, headers)
     }
 
     private fun httpParameters(vararg parameters: Pair<String, String?>): String {
@@ -96,13 +90,21 @@ class HttpTest private constructor(
 
 //        val body = DeleteCrashlogRequest(id = CrashlogId.fromString(id), key = DeletionKey.fromString(key))
 
-        return client.post("$pathPrefix/$path", body = body, useGzip = false)
+        return post(path, body = body)
     }
 
     suspend fun getCrash(id: String): TestHttpResponse {
         val path = "getCrash"
 
-        return client.post("$pathPrefix/${path}", body = "\"$id\"", useGzip = false)
+        return post(path, body = "\"$id\"")
+    }
+    suspend fun getTsrg(mcVersion: String): TestHttpResponse {
+        val path = "getTsrg/$mcVersion.tsrg"
+        return client.get("$pathPrefix/$path")
+    }
+
+     suspend fun post(path: String, body: String, useGzip: Boolean = false, headers: Map<String, String> = mapOf()) : TestHttpResponse {
+        return client.post("$pathPrefix/$path", body = body, useGzip = useGzip, headers)
     }
 
 //    private fun testRequest(request: Request) {

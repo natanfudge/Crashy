@@ -56,15 +56,15 @@ class MappingsCacheTest {
     private fun MappingsCache.expectValue(
         id: MappingsId,
         mappings: String
-    ) = expectThat(get(id)).isEqualTo(mappings)
+    ) = expectThat(get(id)).isEqualTo(mappings.toByteArray())
 
     private fun MappingsCache.testInsertion(
         id: MappingsId,
         mappings: String
     ) {
-        store(id, mappings)
+        store(id, mappings.toByteArray())
         Thread.sleep(100)
-         expectThat(get(id)).isEqualTo(mappings)
+         expectThat(get(id)).isEqualTo(mappings.toByteArray())
     }
 
     context (MappingsCache)
