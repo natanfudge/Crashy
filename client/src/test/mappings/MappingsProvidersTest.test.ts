@@ -2,7 +2,7 @@ import {getYarnBuilds, getYarnMappings} from "../../mappings/providers/YarnMappi
 import {getIntermediaryMappings} from "../../mappings/providers/IntermediaryMappingsProvider";
 import {AllowAllMappings} from "../../mappings/MappingsFilter";
 import {
-    IntermediaryToYarnMappingsProvider, OfficialToIntermediaryMappingsProvider,
+    IntermediaryToYarnMappingsProvider, OfficialToIntermediaryMappingsProvider, OfficialToMojmapMappingsProvider,
     OfficialToSrgMappingsProvider
 } from "../../mappings/providers/MappingsProvider";
 import {JavaClass, JavaMethod} from "../../crash/model/Mappable";
@@ -198,4 +198,32 @@ test("Tsrg mappings work in 1.17", async () => {
 test("Mcp mapping builds can be fetched", async() => {
     const builds = await getMcpBuilds("1.14.2")
     expect(builds).toEqual([53])
+})
+// net.minecraft.core.BlockPos -> gp:
+// net.minecraft.core.Direction$Axis -> gv$a:
+// net.minecraft.core.BlockPos$MutableBlockPos -> gp$a:
+// net.minecraft.core.Direction -> gv:
+// net.minecraft.world.level.BlockGetter -> cjc:
+test("Mojang mappings work", async () => {
+    const assertions: MappingAssertions = {
+        classes: {"k":"net.minecraft.BlockUtil"},
+        methods: {
+            "k#a(Lgp;Lgv$a;ILgv$a;ILjava/util/function/Predicate;)Lk$a;":
+                "net.minecraft.BlockUtil#getLargestRectangleAround(" +
+                "Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/Direction$Axis;" +
+                "ILnet/minecraft/core/Direction$Axis;ILjava/util/function/Predicate;" +
+                ")Lnet/minecraft/BlockUtil$FoundRectangle;",
+            "k#a(Ljava/util/function/Predicate;Lgp$a;Lgv;I)I":
+                "net.minecraft.BlockUtil#getLimit(" +
+                "Ljava/util/function/Predicate;Lnet/minecraft/core/BlockPos$MutableBlockPos;Lnet/minecraft/core/Direction;I" +
+                ")I",
+            "k#a([I)Lcom/mojang/datafixers/util/Pair;":"net.minecraft.BlockUtil#getMaxRectangleLocation([I)Lcom/mojang/datafixers/util/Pair;",
+            "k#a(Lcjc;Lgp;Lcmt;Lgv;Lcmt;)Ljava/util/Optional;":"net.minecraft.BlockUtil#getTopConnectedBlock(" +
+                "Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;" +
+                "Lnet/minecraft/world/level/block/Block;Lnet/minecraft/core/Direction;" +
+                "Lnet/minecraft/world/level/block/Block;" +
+                ")Ljava/util/Optional;",
+        }
+    }
+    await testMappingsProvider(OfficialToMojmapMappingsProvider,"1.19.3",assertions);
 })

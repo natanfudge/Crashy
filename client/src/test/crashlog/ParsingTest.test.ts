@@ -9,6 +9,7 @@ import { CrashReport } from "../../crash/model/CrashReport";
 import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
 import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../../crash/model/RichCrashReport";
 import {parseCrashReport, parseCrashReportImpl} from "../../crash/parser/CrashReportParser";
+import {NecFabricCrash} from "../testlogs/NecFabricCrash";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -300,4 +301,12 @@ test("Broken section crash is recognized as broken", () => {
     expect(() => {
         parseCrashReportImpl(BrokenSectionCrash,true);
     }).toThrowError("Expected '-- ' but got '['");
+})
+
+
+test("Nec Fabric crash log is parsed correctly", () => {
+    const report = parseCrashReport(NecFabricCrash);
+    const enriched = enrichCrashReport(report);
+
+    expect(enriched.deobfuscated).toEqual(true)
 })

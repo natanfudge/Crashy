@@ -95,13 +95,6 @@ export async function testMappingsProvider(provider: MappingsProvider, mcVersion
         expect(mappings.mapDescriptoredMethod(unmappedDescriptoredMethod,false).getUnmappedFullName()).toEqual(mappedMethod)
         expect(mappings.mapDescriptoredMethod(mappedDescriptoredMethod,true).getUnmappedFullName()).toEqual(unmappedMethod)
     }
-
-//    expect(
-//         result.method.classIn.getUnmappedFullName() === "net.minecraft.class_276" &&
-//         ((result.method.getUnmappedMethodName() === "method_1232" && result.descriptor === "(I)V") ||
-//             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(IIZ)V") ||
-//             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(FFFF)V"))
-//     ).toBeTruthy()
 }
 
 function expectToEqualAny<T>(target: T, toAny: T[]) {

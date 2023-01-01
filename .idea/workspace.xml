@@ -5,52 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/1.10.2Crash.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/BarebonesFabricCrash.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/test/resources/1.12.2_crash.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/NecFabricCrash.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/forge/CorsProxy.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/forge/McpMappingsProvider.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/McpTest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/McpApiTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashSet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashSet.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/Mappings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/Mappings.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsNamespace.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsNamespace.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/YarnMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/YarnMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/BarebonesFabricCrash.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/1.12.2Crash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/BrokenSectionCrash.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/BrokenSectionCrash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/BrokenTimeCrash.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/BrokenTimeCrash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsProviderTester.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProviderTester.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsProvidersTest.test.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/TestBuggyParseCrash.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/TestBuggyParseCrash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/TestCrashReel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/TestCrashReel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/TestCrashes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/TestCrashes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/TestEmptySectionCrash.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/TestEmptySectionCrash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/TestNullCausedByMessageCrash.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/TestNullCausedByMessageCrash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/TestVerifyErrorCrash.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/TestVerifyErrorCrash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/foo" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/intermediaries.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/srgMappings.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/testdata.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/testdata.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/tsrgMappings.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProviderTester.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProviderTester.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/journal" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/journal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Routing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/MappingsApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/MappingsApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/MappingsProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/MappingsProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/tsrg/TsrgMappingsProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/forge/TsrgMappingsProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/TsrgTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/TsrgTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/TsrgApiTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/TsrgApiTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/utils/HttpTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/utils/HttpTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,8 +127,8 @@
     "TODO_SCOPE": "Crashy",
     "WebServerToolWindowFactoryState": "false",
     "jdk.selected.JAVA_MODULE": "17",
-    "ktor.last.update.timestamp": "1672516804207",
-    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client/src/test",
+    "ktor.last.update.timestamp": "1672603575011",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client/src/test/testlogs",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -165,6 +145,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\mappings\providers" />
     </key>
@@ -176,48 +157,39 @@
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
       <recent name="io.github.crashy.api" />
     </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="io.github.crashy.api" />
+      <recent name="io.github.crashy" />
+    </key>
   </component>
-  <component name="RunManager" selected="Jest.Mappings BFS works correctly (1)">
-    <configuration name="1.10.2 Forge crash parse doesn't fail" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Jest.All JS Tests">
+    <configuration name="Mojang mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" />
       <test-names>
-        <test-name value="1.10.2 Forge crash parse doesn't fail" />
+        <test-name value="Mojang mappings work" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="1.12.2 Forge crash is parsed correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Nec Fabric crash log is parsed correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
       <test-names>
-        <test-name value="1.12.2 Forge crash is parsed correctly" />
+        <test-name value="Nec Fabric crash log is parsed correctly" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="1.12.2 Forge crash parse doesn't fail" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" />
-      <test-names>
-        <test-name value="1.12.2 Forge crash parse doesn't fail" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Mappings BFS works correctly (1)" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Remapping from yarn to mojmap works correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
@@ -226,21 +198,37 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
       <test-names>
-        <test-name value="Mappings BFS works correctly" />
+        <test-name value="Remapping from yarn to mojmap works correctly" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Mappings BFS works correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Tsrg2 mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/MappingsTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" />
       <test-names>
-        <test-name value="Mappings BFS works correctly" />
+        <test-name value="Tsrg2 mappings work" />
       </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="script" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
+      <test-names>
+        <test-name value="script" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Debug Client" type="JavascriptDebugType" uri="http://localhost:3000/">
       <method v="2" />
     </configuration>
     <configuration default="true" type="SwaggerCodegen">
@@ -262,12 +250,13 @@
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
+      <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
-      <item itemvalue="Jest.1.10.2 Forge crash parse doesn't fail" />
-      <item itemvalue="Jest.1.12.2 Forge crash is parsed correctly" />
-      <item itemvalue="Jest.1.12.2 Forge crash parse doesn't fail" />
-      <item itemvalue="Jest.Mappings BFS works correctly (1)" />
-      <item itemvalue="Jest.Mappings BFS works correctly" />
+      <item itemvalue="Jest.Nec Fabric crash log is parsed correctly" />
+      <item itemvalue="Jest.Mojang mappings work" />
+      <item itemvalue="Jest.Remapping from yarn to mojmap works correctly" />
+      <item itemvalue="Jest.script" />
+      <item itemvalue="Jest.Tsrg2 mappings work" />
       <item itemvalue="JUnit.All Tests" />
       <item itemvalue="Kotlin.Server Development" />
       <item itemvalue="Kotlin.Run Server" />
@@ -278,11 +267,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.Mappings BFS works correctly (1)" />
-        <item itemvalue="Jest.1.10.2 Forge crash parse doesn't fail" />
-        <item itemvalue="Jest.1.12.2 Forge crash parse doesn't fail" />
-        <item itemvalue="Jest.1.12.2 Forge crash is parsed correctly" />
-        <item itemvalue="Jest.Mappings BFS works correctly" />
+        <item itemvalue="Jest.Nec Fabric crash log is parsed correctly" />
+        <item itemvalue="Jest.Remapping from yarn to mojmap works correctly" />
+        <item itemvalue="Jest.Mojang mappings work" />
+        <item itemvalue="Jest.Tsrg2 mappings work" />
+        <item itemvalue="Jest.script" />
       </list>
     </recent_temporary>
   </component>
@@ -322,7 +311,7 @@
       <workItem from="1672565868641" duration="1278000" />
       <workItem from="1672573504441" duration="3707000" />
       <workItem from="1672581171598" duration="2374000" />
-      <workItem from="1672583633627" duration="4882000" />
+      <workItem from="1672583633627" duration="14050000" />
     </task>
     <servers />
   </component>
@@ -380,16 +369,10 @@
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
-          <line>169</line>
+          <url>file://$PROJECT_DIR$/client/src/crash/model/Mappable.ts</url>
+          <line>202</line>
           <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
-          <line>195</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="34" />
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -112,6 +112,16 @@ export namespace CrashyServer {
             return response.text()
         }
     }
+    export async function getMcp(mcVersion: string, build: string): Promise<string> {
+        const response = await httpGet({
+            url: `${urlPrefix}/getMcp/${mcVersion}/${build}.csv`
+        })
+        if (response.status != HttpStatusCode.OK) {
+            throw requestError(response)
+        } else {
+            return response.text()
+        }
+    }
 
     function requestError(response: Response): Error {
         return new Error(`Unexpected status code: ${response.status} (text = ${response.text()})`)

@@ -220,7 +220,8 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
             skipNumber(8)
         } else {
             name = readUntilChar(":");
-            skipString(": ");
+            skipString(":");
+            if(current() === " ") skip();
         }
 
         // Forge completely fucked up the indentation with this one so we just give up and put everything in this element

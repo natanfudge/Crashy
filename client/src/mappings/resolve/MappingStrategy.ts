@@ -164,6 +164,7 @@ async function mappingViaProviderStep<T extends boolean>(
         minecraftVersion: version.minecraftVersion,
         build: await resolveUsedBuild(last, version, dirProvider),
     }, filter);
+
     const reverse = dirProvider.reverse;
 
     return unmapped => unmapped.remap(mappings, reverse)

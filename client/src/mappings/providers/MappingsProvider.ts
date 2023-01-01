@@ -6,7 +6,7 @@ import {EmptyMappings, Mappings} from "../Mappings";
 import {PromiseMemoryCache} from "../../fudge-commons/collections/PromiseMemoryCache";
 import {getSrgMappings} from "./SrgMappingsProvider";
 import {getMcpBuilds, getMcpMappings, mcpSupportsMcVersion} from "./McpMappingsProvider";
-import {mojmapSupportedMinecraftVersion} from "./MojangMappingsProvider";
+import {getMojangMappings, mojmapSupportedMinecraftVersion} from "./MojangMappingsProvider";
 
 
 export type MappingsBuilds = string[];
@@ -52,23 +52,23 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
 }
 
 
-export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
-    fromNamespace: "Intermediary",
-    toNamespace: "Quilt",
-    async getBuilds(minecraftVersion: string): Promise<string[]> {
-        // const builds = await getYarnBuilds(minecraftVersion)
-        // return builds.map(build => build.version)
-        throw new Error("TODO")
-    },
-    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        // return getYarnMappings(build)
-        throw new Error("TODO")
-    },
-    supportsMinecraftVersion(version: string): boolean {
-        //TODO
-        return false;
-    }
-}
+// export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
+//     fromNamespace: "Intermediary",
+//     toNamespace: "Quilt",
+//     async getBuilds(minecraftVersion: string): Promise<string[]> {
+//         // const builds = await getYarnBuilds(minecraftVersion)
+//         // return builds.map(build => build.version)
+//         throw new Error("TODO")
+//     },
+//     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
+//         // return getYarnMappings(build)
+//         throw new Error("TODO")
+//     },
+//     supportsMinecraftVersion(version: string): boolean {
+//         //TODO
+//         return false;
+//     }
+// }
 
 export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
@@ -125,10 +125,10 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
     toNamespace: "MojMap",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
-        throw new Error("TODO")
+        return [];
     },
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        throw new Error("TODO")
+        return getMojangMappings(version.minecraftVersion,filter)
     },
     supportsMinecraftVersion(version: string): boolean {
         //TODO: test that mojmap doesn't show in versions older than 1.14.4
@@ -139,11 +139,11 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
 // This is the order it will show up in the UI
  const allMappingsProviders: MappingsProvider[] = [
     IntermediaryToYarnMappingsProvider,
-    IntermediaryToQuiltMappingsProvider,
-    OfficialToIntermediaryMappingsProvider,
+    // IntermediaryToQuiltMappingsProvider,
+     SrgToMcpMappingsProvider,
+     OfficialToMojmapMappingsProvider,
+     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
-    SrgToMcpMappingsProvider,
-     OfficialToMojmapMappingsProvider
 ]
 
 export function getMappingProviders(mcVersion: string): MappingsProvider[] {

@@ -10,7 +10,7 @@ export type AnyMappable = Mappable<any>
 export type BasicMappable = JavaClass | JavaMethod
 
 export function isJavaMethod(mappable: BasicMappable): mappable is JavaMethod {
-    return "method" in mappable;
+    return "classIn" in mappable;
 }
 
 export interface Mappable<To extends AnyMappable> {

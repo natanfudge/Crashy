@@ -102,6 +102,10 @@ class HttpTest private constructor(
         val path = "getTsrg/$mcVersion.tsrg"
         return client.get("$pathPrefix/$path")
     }
+    suspend fun getMcp(mcVersion: String, build: Int): TestHttpResponse {
+        val path = "getMcp/$mcVersion/$build.csv"
+        return client.get("$pathPrefix/$path")
+    }
 
      suspend fun post(path: String, body: String, useGzip: Boolean = false, headers: Map<String, String> = mapOf()) : TestHttpResponse {
         return client.post("$pathPrefix/$path", body = body, useGzip = useGzip, headers)

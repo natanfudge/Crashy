@@ -45,6 +45,11 @@ fun Application.configureRouting() {
             val mcVersion = call.parameters["mcVersion"]!!
             respond(mappings.getTsrg(mcVersion))
         }
+        route("/getMcp/{mcVersion}/{build}.csv") {
+            val mcVersion = call.parameters["mcVersion"]!!
+            val build = call.parameters["build"]!!.toInt()
+            respond(mappings.getMcp(mcVersion, build))
+        }
     }
 }
 

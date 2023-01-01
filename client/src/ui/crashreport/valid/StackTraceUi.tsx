@@ -76,8 +76,8 @@ function CausationButton(props: { text: string, onClick: ClickCallback }) {
 function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage, mappingContext: MappingContext }) {
     const [open, setOpen] = useState(false)
     const mappingMethod = useMappingForName(title.class, mappingContext);
-    const text = open ? title.class.fullName(mappingMethod) : title.class.simpleName(mappingMethod);
 
+    const text = open ? title.class.fullName(mappingMethod) : title.class.simpleName(mappingMethod);
     return <TextTheme wordBreak={"break-word"} variant={"h5"}>
         <SimpleSpan text={text} color={open ? undefined : clickableColor}
                     onClick={() => setOpen(!open)}/>
@@ -86,21 +86,7 @@ function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage
         </Fragment>}
     </TextTheme>
 }
-function useTraceUpdate(props: Record<string,unknown>) {
-    const prev = useRef(props);
-    useEffect(() => {
-        const changedProps = Object.entries(props).reduce((ps: Record<string, unknown>, [k, v]) => {
-            if (prev.current[k] !== v) {
-                ps[k] = [prev.current[k], v];
-            }
-            return ps;
-        }, {});
-        if (Object.keys(changedProps).length > 0) {
-            console.log('Changed props:', changedProps);
-        }
-        prev.current = props;
-    });
-}
+
 export function StackTraceElementUi({
                                         traceElement,
                                         withMarginLeft,

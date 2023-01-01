@@ -38,6 +38,8 @@ export class MappingsImpl implements Mappings {
         const maps = this.getMappings(reverse);
         return maps.get(className)?.mappedClassName ?? className;
     }
+    // reverse: srg class + srg descriptor -> obf class + obf descriptor
+    // Not reverse: obf class + obf descriptor -> srg class + srg descriptor
 
     mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethod {
         const classMappings = this.getMappings(reverse).get(methodName.classIn);
@@ -71,6 +73,7 @@ function reverseMappingData(data: SingleDirectionMappingData): SingleDirectionMa
         (unmappedClass, mappings) => {
             const reversed: ClassMappings = {
                 mappedClassName: unmappedClass,
+                // obf class + desc -> srg class + desc
                 methods: mappings.methods.map(
                     (_, mappedName) => mappedName,
                     (unmappedName) => unmappedName

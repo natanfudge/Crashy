@@ -52,17 +52,9 @@ class McpMappings implements Mappings {
     }
 }
 
-//TODO: cors proxy...
 export async function getMcpMappings(mcVersion: string, build: string, filter: MappingsFilter): Promise<Mappings | undefined> {
     // Download mappings
-    const url = `https://files.minecraftforge.net/maven/de/oceanlabs/mcp/mcp_stable/${build}-${mcVersion}/mcp_stable-${build}-${mcVersion}.zip`
-    const res = await fetch(url);
-    console.log("res: ", res)
-    if(res.status != HttpStatusCode.OK){
-        throw new Error(`Unexpected response when trying to fetch mcp mappings. Status code: ${res.status}, text: ${await res.text()}`)
-    }
-    const unzipped = await extractFromZip(await res.arrayBuffer())
-    const mappings = strFromU8(unzipped["methods.csv"]);
+    const mappings = await CrashyServer.getMcp(mcVersion,build)
 
     // Parse mappings
     const lines = mappings.split("\n")
@@ -75,6 +67,7 @@ export async function getMcpMappings(mcVersion: string, build: string, filter: M
             entries[srgName] = mcpName
         }
     }
+    // console.log("Mappings", mappings)
     return new McpMappings(entries)
 }
 
