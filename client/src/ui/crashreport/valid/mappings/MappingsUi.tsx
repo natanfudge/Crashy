@@ -9,6 +9,7 @@ import {Column} from "../../../../fudge-commons/simple/Flex";
 import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
 import {useState} from "react";
 import {useScreenSize} from "../../../../fudge-commons/methods/Gui";
+import {getMappingNamespaces} from "../../../../mappings/MappingsNamespace";
 
 
 export function WithMappings({controller, children}:
@@ -42,7 +43,7 @@ export function useMappingsState(minecraftVersion: string): MutableMappingsState
     // for now and what the available versions load we will set it to the first available one.
     const [state, setState] = useState<MappingsState>(
         {
-            namespace: "Yarn",
+            namespace: getMappingNamespaces(minecraftVersion)[0],
             build: DesiredBuildProblem.BuildsLoading
         }
     )

@@ -21,7 +21,7 @@ class StringBuilder {
 }
 
 export function parseCrashReport(rawReport: string): CrashReport {
-    return parseCrashReportImpl(rawReport, false);
+    return parseCrashReportImpl(rawReport, true);
 }
 
 export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
@@ -56,7 +56,6 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     const sections = parseSections();
 
     return {
-        // systemDetails,
         sections,
         description,
         time,
@@ -66,6 +65,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     };
 
     function parseWittyComment(): string {
+        skipUntilAfterChar("/")
         skipChars(["/", " "]);
         return readLine();
     }
@@ -98,7 +98,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
     function parseExceptionDetails(): ExceptionDetails {
-        const details: Record<string,string[]> = {};
+        const details: Record<string, string[]> = {};
         const startIndex = cursor;
         while (nextIsString("  ")) {
             skipString("  ")
@@ -212,15 +212,40 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     function parseSectionElement(): { detail: string, name: string } {
         // Skip leading tab
         skip();
-        const name = readUntilChar(":");
-        skipString(": ");
+
+        let name: string;
+        // Weird old Forge special case: it details the mods with a 'UCHIJAA' prefix
+        if (nextIsString("UCHIJAA")) {
+            name = "UCHIJAA"
+            skipNumber(8)
+        } else {
+            name = readUntilChar(":");
+            skipString(": ");
+        }
+
+        // Forge completely fucked up the indentation with this one so we just give up and put everything in this element
+        if (name == "Loaded coremods (and transformers)") {
+            return {
+                detail: readToEnd(),
+                name
+            }
+        }
+
         let detail = readLine();
         // Read multiline details
-        while (!isEof() && currentAndNext() === "\t\t") {
-            // Skip first leading tab, skip other leading tabs because they have semantic value
+        let currentAndNextValue: string = currentAndNext()
+
+        while (!isEof() && currentAndNextValue === "\t\t"
+        //*** Old Forge special case: Forge (in 1.12.2 at least) has this weird table in system details that fucks up
+        // the system details section, so we include the table as a part of 'States' by checking for '\t|' / '\n\t|'
+        || currentAndNextValue === "\t|" || nextIsString("\n\t|")) {
+            // Skip first leading tab, don't skip other leading tabs because they have semantic value
             skip();
             detail += ("\n" + readLine());
+            currentAndNextValue = currentAndNext();
         }
+        // The stupid forge table leaves a trailing new line
+        if (current() === "\n") skip()
         return {detail, name};
     }
 
@@ -306,6 +331,14 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return current() + next();
     }
 
+    // function peekCharAhead(distance: number): string {
+    //     return rawReport[cursor + distance]
+    // }
+    //
+    // function peekSubstringAhead(distance: number): string {
+    //     return rawReport.substring(cursor, cursor + distance)
+    // }
+
     function skipUntilAfterChar(char: string) {
         while (current() !== char && !isEof()) {
             skip();
@@ -330,21 +363,12 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         });
     }
 
+    function readToEnd(): string {
+        return buildString((str) => {
+            while (!isEof()) {
+                str.append(readCurrent());
+            }
+        });
+    }
 }
 
-//
-// function pullSystemDetailsFrom(sections: CrashReportSection[]) {
-//     // The system details is parsed as a section, but the data structure we want treats system details in a special way,
-//     // so we pull it out and put it in its own object.
-//     const systemDetailsSectionAsNormalSection = sections.find((section) => section.title === "System Details")!
-//     // Remove system details from the sections list
-//     sections.splice(sections.indexOf(systemDetailsSectionAsNormalSection), 1)
-//     const systemDetailsSections: StringMap = {}
-//     for (const element of systemDetailsSectionAsNormalSection.details!) {
-//         systemDetailsSections[element.name] = element.detail
-//     }
-//     const systemDetails: SystemDetails = {
-//         sections: systemDetailsSections
-//     }
-//     return systemDetails;
-// }

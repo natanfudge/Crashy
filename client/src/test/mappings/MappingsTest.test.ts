@@ -1,31 +1,31 @@
-import "../fudge-commons/extensions/Extensions"
+import "../../fudge-commons/extensions/Extensions"
 
-import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
-import {getMappingForName} from "../mappings/resolve/MappingStrategy";
-import {resolveMappingsChain} from "../mappings/resolve/MappingsResolver";
+import {getYarnBuilds, getYarnMappings} from "../../mappings/providers/YarnMappingsProvider";
+import {getMappingForName} from "../../mappings/resolve/MappingStrategy";
+import {resolveMappingsChain} from "../../mappings/resolve/MappingsResolver";
 import {
-    IntermediaryToQuiltMappingsProvider,
+    IntermediaryToQuiltMappingsProvider, IntermediaryToYarnMappingsProvider,
     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
     SrgToMcpMappingsProvider
-} from "../mappings/providers/MappingsProvider";
+} from "../../mappings/providers/MappingsProvider";
 
-import "../fudge-commons/extensions/ExtensionsImpl"
-import {BasicMappable, JavaClass, JavaMethod} from "../crash/model/Mappable";
-import {HashSet} from "../fudge-commons/collections/hashmap/HashSet";
-import {LoaderType} from "../crash/model/RichCrashReport";
+import "../../fudge-commons/extensions/ExtensionsImpl"
+import {BasicMappable, JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {LoaderType} from "../../crash/model/RichCrashReport";
 
 
 
 //TODO: test it does the shortest path by adding more providers
 test("Mappings BFS works correctly", () => {
-    const path1 = resolveMappingsChain("Mcp", "Quilt")
-    expect(path1).toEqual([SrgToMcpMappingsProvider, OfficialToSrgMappingsProvider, OfficialToIntermediaryMappingsProvider, IntermediaryToQuiltMappingsProvider])
+    const path1 = resolveMappingsChain("Mcp", "Yarn", "1.14.4")
+    expect(path1).toEqual([SrgToMcpMappingsProvider, OfficialToSrgMappingsProvider, OfficialToIntermediaryMappingsProvider, IntermediaryToYarnMappingsProvider])
 
-    const path2 = resolveMappingsChain("Official", "Quilt")
-    expect(path2).toEqual([OfficialToIntermediaryMappingsProvider, IntermediaryToQuiltMappingsProvider])
+    const path2 = resolveMappingsChain("Official", "Yarn", "1.14.4")
+    expect(path2).toEqual([OfficialToIntermediaryMappingsProvider, IntermediaryToYarnMappingsProvider])
 
-    const path3 = resolveMappingsChain("Intermediary", "Srg")
+    const path3 = resolveMappingsChain("Intermediary", "Srg", "1.14.4")
     expect(path3).toEqual([OfficialToIntermediaryMappingsProvider, OfficialToSrgMappingsProvider])
 })
 

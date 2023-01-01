@@ -1,13 +1,14 @@
-import {getYarnBuilds, getYarnMappings} from "../mappings/providers/YarnMappingsProvider";
-import {getIntermediaryMappings} from "../mappings/providers/IntermediaryMappingsProvider";
-import {AllowAllMappings} from "../mappings/MappingsFilter";
+import {getYarnBuilds, getYarnMappings} from "../../mappings/providers/YarnMappingsProvider";
+import {getIntermediaryMappings} from "../../mappings/providers/IntermediaryMappingsProvider";
+import {AllowAllMappings} from "../../mappings/MappingsFilter";
 import {
     IntermediaryToYarnMappingsProvider, OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider
-} from "../mappings/providers/MappingsProvider";
-import {JavaClass, JavaMethod} from "../crash/model/Mappable";
+} from "../../mappings/providers/MappingsProvider";
+import {JavaClass, JavaMethod} from "../../crash/model/Mappable";
 import {MappingAssertions, testMappingsProvider} from "./MappingsProviderTester";
-import "../fudge-commons/extensions/ExtensionsImpl"
+import "../../fudge-commons/extensions/ExtensionsImpl"
+import {getMcpBuilds} from "../../mappings/providers/McpMappingsProvider";
 //remove this if it ever breaks (superseded by new tests)
 test("Yarn mappings can be retrieved via new method", async () => {
     const versions = await getYarnBuilds("1.18.1");
@@ -57,7 +58,7 @@ test("Intermediary mappings can be retrieved", async () => {
     expect(mappings.mapClass(JavaClass.dotSeperated("aqb"), false)).toEqual(JavaClass.dotSeperated("net.minecraft.class_1234"))
     const result = mappings.mapSimpleMethod(JavaMethod.dotSeperated("dqx", "a"), false)
     expect(
-        result.method.classIn.getUnmappedFullName() === "net.minecraft.class_276" &&
+        result.method.classIn.getUnmappedFullClassName() === "net.minecraft.class_276" &&
         ((result.method.getUnmappedMethodName() === "method_1232" && result.descriptor === "(I)V") ||
             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(IIZ)V") ||
             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(FFFF)V"))
@@ -193,3 +194,8 @@ test("Tsrg mappings work in 1.17", async () => {
     }
     await testMappingsProvider(OfficialToSrgMappingsProvider,"1.17",assertions);
 }, 40000)
+
+test("Mcp mapping builds can be fetched", async() => {
+    const builds = await getMcpBuilds("1.14.2")
+    expect(builds).toEqual([53])
+})

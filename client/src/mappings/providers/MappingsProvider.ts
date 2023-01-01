@@ -1,10 +1,12 @@
 import {MappingsNamespace} from "../MappingsNamespace";
-import {getYarnBuilds, getYarnMappings} from "./YarnMappingsProvider";
+import {getYarnBuilds, getYarnMappings, yarnSupportsMcVersion} from "./YarnMappingsProvider";
 import {getIntermediaryMappings} from "./IntermediaryMappingsProvider";
 import {MappingsFilter} from "../MappingsFilter";
-import {Mappings} from "../Mappings";
+import {EmptyMappings, Mappings} from "../Mappings";
 import {PromiseMemoryCache} from "../../fudge-commons/collections/PromiseMemoryCache";
 import {getSrgMappings} from "./SrgMappingsProvider";
+import {getMcpBuilds, getMcpMappings, mcpSupportsMcVersion} from "./McpMappingsProvider";
+import {mojmapSupportedMinecraftVersion} from "./MojangMappingsProvider";
 
 
 export type MappingsBuilds = string[];
@@ -13,6 +15,7 @@ export interface MappingsVersion {
     minecraftVersion: string
     build: string
 }
+
 //TODO: what happens when mappings don't exist for a version?
 export interface MappingsProvider {
     fromNamespace: MappingsNamespace
@@ -23,13 +26,14 @@ export interface MappingsProvider {
      */
     getBuilds(minecraftVersion: string): Promise<MappingsBuilds>
 
+    supportsMinecraftVersion(version: string): boolean
+
     /**
      * The build is the full version name of the mappings, e.g. 1.18.1+build.13
+     * @deprecated use getMappingsCached (overriding is ok)
      */
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings>
 }
-
-
 
 
 export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
@@ -40,7 +44,10 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
         return builds.map(build => build.version)
     },
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        return getYarnMappings(version.build,filter)
+        return getYarnMappings(version.build, filter)
+    },
+    supportsMinecraftVersion(version: string): boolean {
+        return yarnSupportsMcVersion(version);
     }
 }
 
@@ -56,6 +63,10 @@ export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
         // return getYarnMappings(build)
         throw new Error("TODO")
+    },
+    supportsMinecraftVersion(version: string): boolean {
+        //TODO
+        return false;
     }
 }
 
@@ -66,10 +77,15 @@ export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
         return [];
     },
     async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        return getIntermediaryMappings(version.minecraftVersion,filter);
+        return getIntermediaryMappings(version.minecraftVersion, filter);
+    },
+    supportsMinecraftVersion(version: string): boolean {
+        // Intermediary came around the same time that yarn did
+        return yarnSupportsMcVersion(version);
     }
 }
 
+const snapshotRegex = RegExp("(rc)|(w)|(pre)")
 export const OfficialToSrgMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
     toNamespace: "Srg",
@@ -77,8 +93,13 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
         return [];
     },
     async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        // throw new Error("TODO")
-        return getSrgMappings(version.minecraftVersion,filter);
+        return await getSrgMappings(version.minecraftVersion, filter) ?? EmptyMappings;
+    },
+    supportsMinecraftVersion(version: string): boolean {
+        //TODO: test that srg doesn't show in snapshots
+
+        // Avoid snapshots
+        return !snapshotRegex.test(version);
     }
 }
 
@@ -86,10 +107,17 @@ export const SrgToMcpMappingsProvider: MappingsProvider = {
     fromNamespace: "Srg",
     toNamespace: "Mcp",
     async getBuilds(minecraftVersion: string): Promise<string[]> {
-        throw new Error("TODO")
+        const builds = await getMcpBuilds(minecraftVersion)
+        if (builds == undefined) return []
+        return builds.map(num => String(num))
     },
-    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        throw new Error("TODO")
+    async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
+        return await getMcpMappings(version.minecraftVersion, version.build, filter) ?? EmptyMappings
+    },
+    supportsMinecraftVersion(version: string): boolean {
+        //TODO: test that mcp doesn't show in versions older than 1.15
+
+        return mcpSupportsMcVersion(version)
     }
 }
 
@@ -101,16 +129,26 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
     },
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
         throw new Error("TODO")
+    },
+    supportsMinecraftVersion(version: string): boolean {
+        //TODO: test that mojmap doesn't show in versions older than 1.14.4
+        return mojmapSupportedMinecraftVersion(version);
     }
 }
 
-export const allMappingsProviders: MappingsProvider[] = [
+// This is the order it will show up in the UI
+ const allMappingsProviders: MappingsProvider[] = [
     IntermediaryToYarnMappingsProvider,
     IntermediaryToQuiltMappingsProvider,
     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
-    SrgToMcpMappingsProvider
+    SrgToMcpMappingsProvider,
+     OfficialToMojmapMappingsProvider
 ]
+
+export function getMappingProviders(mcVersion: string): MappingsProvider[] {
+    return allMappingsProviders.filter(provider => provider.supportsMinecraftVersion(mcVersion))
+}
 
 const buildsCache = new PromiseMemoryCache<MappingsBuilds>();
 
@@ -118,9 +156,9 @@ export async function getBuildsCached(provider: MappingsProvider, minecraftVersi
     // noinspection JSDeprecatedSymbols
     return buildsCache.get(
         provider.fromNamespace + provider.toNamespace + minecraftVersion,
-        () => provider.getBuilds(minecraftVersion)
-    ).catch(e => {
-        console.error("Could not get mapping builds", e);
-        return [];
-    })
+        () => provider.getBuilds(minecraftVersion).catch(e => {
+            console.error("Could not get mapping builds", e);
+            return [];
+        })
+    )
 }

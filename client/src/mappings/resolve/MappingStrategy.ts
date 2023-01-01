@@ -71,7 +71,7 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
 export async function getMappingForName(name: BasicMappable, context: MappingContext): Promise<MappingStrategy> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
     const originalNamespace = detectMappingNamespace(name, context);
-    const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace);
+    const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace, context.minecraftVersion);
     if (mappingChain === undefined) {
         throw new Error(`Cannot find path from namespace '${originalNamespace}' to namespace '${context.desiredNamespace}'`)
     }

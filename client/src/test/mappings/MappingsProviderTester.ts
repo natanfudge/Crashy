@@ -31,11 +31,11 @@
 //             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(IIZ)V") ||
 //             (result.method.getUnmappedMethodName() === "method_1234" && result.descriptor === "(FFFF)V"))
 //     ).toBeTruthy()
-import { AllowAllMappings } from "../mappings/MappingsFilter";
-import {MappingsProvider} from "../mappings/providers/MappingsProvider";
-import {DescriptoredMethod, JavaClass} from "../crash/model/Mappable";
-import {equalsOfAnything} from "../fudge-commons/collections/hashmap/EqualsImplementation";
-import {typedKeys} from "../fudge-commons/methods/Typescript";
+import { AllowAllMappings } from "../../mappings/MappingsFilter";
+import {MappingsProvider} from "../../mappings/providers/MappingsProvider";
+import {DescriptoredMethod, JavaClass} from "../../crash/model/Mappable";
+import {equalsOfAnything} from "../../fudge-commons/collections/hashmap/EqualsImplementation";
+import {typedKeys} from "../../fudge-commons/methods/Typescript";
 
 export interface MappingAssertions {
     classes: Record<string, string>
@@ -58,8 +58,8 @@ export async function testMappingsProvider(provider: MappingsProvider, mcVersion
 
     for (const unmappedClass in assertions.classes) {
         const mappedClass = assertions.classes[unmappedClass];
-        expect(mappings.mapClass(JavaClass.anySeparation(unmappedClass), false).getUnmappedFullName()).toEqual(mappedClass)
-        expect(mappings.mapClass(JavaClass.anySeparation(mappedClass), true).getUnmappedFullName()).toEqual(unmappedClass)
+        expect(mappings.mapClass(JavaClass.anySeparation(unmappedClass), false).getUnmappedFullClassName()).toEqual(mappedClass)
+        expect(mappings.mapClass(JavaClass.anySeparation(mappedClass), true).getUnmappedFullClassName()).toEqual(unmappedClass)
     }
 
     //TODO: better method: specify all possible mappings of an obf method name and let the tester do the rest

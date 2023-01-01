@@ -16,9 +16,9 @@ export class MappingsImpl implements Mappings {
     }
 
     serialize(): SerializedMappings {
-        return this.mappings.toRecord(unmappedClass => unmappedClass.getUnmappedFullName(),
+        return this.mappings.toRecord(unmappedClass => unmappedClass.getUnmappedFullClassName(),
             (_, {mappedClassName, methods}) => ({
-                c: mappedClassName.getUnmappedFullName(),
+                c: mappedClassName.getUnmappedFullClassName(),
                 m: methods.toArray((unmappedMethod, mappedMethod) =>{
                     const unmapped = unmappedMethod.method.getUnmappedMethodName();
                     const mapped = mappedMethod.method.getUnmappedMethodName();

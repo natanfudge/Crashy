@@ -9,6 +9,10 @@ export type AnyMappable = Mappable<any>
 // These are the mappables that appear in a crash report
 export type BasicMappable = JavaClass | JavaMethod
 
+export function isJavaMethod(mappable: BasicMappable): mappable is JavaMethod {
+    return "method" in mappable;
+}
+
 export interface Mappable<To extends AnyMappable> {
     remap(mappings: Mappings, reverse: boolean): To
 }
@@ -56,7 +60,7 @@ export class JavaClass implements Mappable<JavaClass> {
         return this.dotSeperated(obj.packageName + "." + obj.simpleName)
     }
 
-    getUnmappedFullName() {
+    getUnmappedFullClassName() {
         return this._fullUnmappedName;
     }
 
@@ -152,7 +156,7 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
     }
 
     getUnmappedFullName(): string {
-        return this.classIn.getUnmappedFullName() + ClassMethodSeparator + this.getUnmappedMethodName();
+        return this.classIn.getUnmappedFullClassName() + ClassMethodSeparator + this.getUnmappedMethodName();
     }
 
     fullName(mappings: MappingStrategy): string {
@@ -169,6 +173,10 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
 
     withClass(classIn: JavaClass): JavaMethod {
         return new JavaMethod(classIn, this.getUnmappedMethodName())
+    }
+
+    withUnmappedName(name: string): JavaMethod {
+        return new JavaMethod(this.classIn, name);
     }
 
 
@@ -216,6 +224,10 @@ export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
 
     withClass(classIn: JavaClass): DescriptoredMethod {
         return new DescriptoredMethod(this.method.withClass(classIn), this.descriptor)
+    }
+
+    withMethodName(methodName: string) : DescriptoredMethod {
+        return new DescriptoredMethod(this.method.withUnmappedName(methodName), this.descriptor)
     }
 
     remap(mappings: Mappings, reverse: boolean): DescriptoredMethod {

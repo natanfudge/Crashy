@@ -10,8 +10,8 @@ export interface Mappings {
     mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethod
 
     mapDescriptoredMethod(methodName: DescriptoredMethod, reverse: boolean): DescriptoredMethod
-
-    serialize(): SerializedMappings
+    //
+    // serialize(): SerializedMappings
 }
 
 export type SerializedMappings = Record<string, ClassMappingsEntry>

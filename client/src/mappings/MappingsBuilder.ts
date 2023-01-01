@@ -35,7 +35,7 @@ export class MappingsBuilder {
     remapDescriptor(descriptor: string): string {
         return descriptor.replace(/L(.+?);/g, (match, p1: string) => {
             const remapped = this.classMappings.get(new JavaClass(p1, true))
-                ?.getUnmappedFullName()?.replaceAll(".", "/") ?? p1
+                ?.getUnmappedFullClassName()?.replaceAll(".", "/") ?? p1
             return `L${remapped};`
         });
     }

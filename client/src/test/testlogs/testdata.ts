@@ -1,6 +1,6 @@
-import {JavaClass, JavaMethod} from "../crash/model/Mappable";
-import {CrashReport, StackTrace, StackTraceElement} from "../crash/model/CrashReport";
-import {LoaderType, OperatingSystemType, RichCrashReport} from "../crash/model/RichCrashReport";
+import {JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {CrashReport, StackTrace, StackTraceElement} from "../../crash/model/CrashReport";
+import {LoaderType, OperatingSystemType, RichCrashReport} from "../../crash/model/RichCrashReport";
 
 
 const testStackTrace: StackTrace = {

@@ -3,6 +3,7 @@ import {equalsOfAnything} from "./EqualsImplementation";
 import {LinkedList} from "../LinkedList";
 import {hashCodeOfAnything} from "./Hashing";
 import {toRecord} from "../../methods/Javascript";
+import {HashSet} from "./HashSet";
 
 const InitialCapacityPadding = 1.35;
 const DefaultCapacity = 16;
@@ -89,6 +90,16 @@ export class HashMap<K, V> implements MutableDict<K, V> {
     map<NK, NV>(keyMap: (key: K, value: V) => NK, valueMap: (key: K, value: V) => NV): HashMap<NK, NV> {
         const newMap = new HashMap<NK, NV>(this.capacity);
         this.forEach((key, value) => newMap.put(keyMap(key, value), valueMap(key, value)))
+        return newMap;
+    }
+
+    filter(filterer: (key: K, value: V) => boolean) : HashMap<K, V>{
+        const newMap = new HashMap<K,V>(this.capacity);
+        this.forEach((key, value) =>{
+            if(filterer(key,value)){
+                newMap.put(key,value)
+            }
+        })
         return newMap;
     }
 

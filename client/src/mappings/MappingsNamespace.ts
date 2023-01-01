@@ -1,6 +1,9 @@
 // export enum MappingsNamespace {
 //     Yarn, Official, MojMap, Intermediary, Srg, Mcp, Quilt
 // }
+import {Mappings} from "./Mappings";
+import { getMappingProviders} from "./providers/MappingsProvider";
+
 export type MappingsNamespace = "Yarn" | "Official" | "MojMap" | "Intermediary" | "Srg" | "Mcp" | "Quilt";
 
 export function mappingsName(type: MappingsNamespace): string {
@@ -22,13 +25,20 @@ export function mappingsName(type: MappingsNamespace): string {
     }
 }
 
-export const allMappingNamespaces: MappingsNamespace[] = [
-    "Yarn",
-    "MojMap",
-    "Mcp",
-    "Quilt",
-    "Intermediary",
-    "Srg",
-    "Official"
-];
+export function getMappingNamespaces(mcVersion: string): MappingsNamespace[] {
+    const namespaces =  getMappingProviders(mcVersion).map(provider => provider.toNamespace);
+    // Official should always be available
+    namespaces.push("Official")
+    return namespaces
+}
+
+// export const allMappingNamespaces: MappingsNamespace[] = [
+//     "Yarn",
+//     "MojMap",
+//     "Mcp",
+//     "Quilt",
+//     "Intermediary",
+//     "Srg",
+//     "Official"
+// ];
 

@@ -1,14 +1,14 @@
-import {testFabricCrashReport, testForgeCrashReport} from "./TestCrashes";
-import {TestBuggyParseCrash} from "./TestBuggyParseCrash";
-import {BarebonesFabricCrash} from "./BarebonesFabricCrash";
-import {TestVerifyErrorCrash} from "./TestVerifyErrorCrash";
-import {BrokenTimeCrash} from "./BrokenTimeCrash";
-import {TestEmptySectionCrash} from "./TestEmptySectionCrash";
-import {BrokenSectionCrash} from "./BrokenSectionCrash";
-import { CrashReport } from "../crash/model/CrashReport";
-import {enrichCrashReport} from "../crash/parser/CrashReportEnricher";
-import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../crash/model/RichCrashReport";
-import {parseCrashReport, parseCrashReportImpl} from "../crash/parser/CrashReportParser";
+import {testFabricCrashReport, testForgeCrashReport} from "../testlogs/TestCrashes";
+import {TestBuggyParseCrash} from "../testlogs/TestBuggyParseCrash";
+import {BarebonesFabricCrash} from "../testlogs/BarebonesFabricCrash";
+import {TestVerifyErrorCrash} from "../testlogs/TestVerifyErrorCrash";
+import {BrokenTimeCrash} from "../testlogs/BrokenTimeCrash";
+import {TestEmptySectionCrash} from "../testlogs/TestEmptySectionCrash";
+import {BrokenSectionCrash} from "../testlogs/BrokenSectionCrash";
+import { CrashReport } from "../../crash/model/CrashReport";
+import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
+import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../../crash/model/RichCrashReport";
+import {parseCrashReport, parseCrashReportImpl} from "../../crash/parser/CrashReportParser";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")

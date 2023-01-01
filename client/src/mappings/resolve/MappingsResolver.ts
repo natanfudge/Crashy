@@ -1,6 +1,5 @@
-import {allMappingNamespaces, MappingsNamespace} from "../MappingsNamespace";
-import {MappingsProvider, allMappingsProviders} from "../providers/MappingsProvider";
-import {toRecord} from "../../fudge-commons/methods/Javascript";
+import {MappingsNamespace} from "../MappingsNamespace";
+import {getMappingProviders, MappingsProvider} from "../providers/MappingsProvider";
 import {Queue} from "../../fudge-commons/collections/Queue";
 
 /**
@@ -8,9 +7,9 @@ import {Queue} from "../../fudge-commons/collections/Queue";
  * We need to find a sequence of mappings that can eventually reach from 'fromNamespace' to 'toNamespace'.
  * This problem is equivalent to finding a path in a non-directed graph (because if we can map from a to b we can map from b to a), where we try to reach from the 'fromNamespace' node to the 'toNamespace' node.
  */
-export function resolveMappingsChain(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace): MappingsProvider[] | undefined {
-    if(fromNamespace === toNamespace) return [];
-    return findShortestPath(fromNamespace, toNamespace, allMappingsProviders);
+export function resolveMappingsChain(fromNamespace: MappingsNamespace, toNamespace: MappingsNamespace, minecraftVersion: string): MappingsProvider[] | undefined {
+    if (fromNamespace === toNamespace) return [];
+    return findShortestPath(fromNamespace, toNamespace, getMappingProviders(minecraftVersion));
 }
 
 type PartialRecord<K extends keyof any, V> = Partial<Record<K, V>>
@@ -33,7 +32,7 @@ function findShortestPath(fromNamespace: MappingsNamespace, toNamespace: Mapping
             const neighborNode = neighbor.node;
             if (visited.has(neighborNode)) continue;
             shortLinks[neighborNode] = {prev: node, provider: neighbor.provider}
-            if (neighborNode === toNamespace) return createPathFromShortLinks(shortLinks,fromNamespace, toNamespace);
+            if (neighborNode === toNamespace) return createPathFromShortLinks(shortLinks, fromNamespace, toNamespace);
 
 
             visited.add(neighborNode)
@@ -56,7 +55,11 @@ function createPathFromShortLinks(shortLinks: ShortLinks, fromNamespace: Mapping
 type MappingsAdjacencyList = Record<MappingsNamespace, { node: MappingsNamespace, provider: MappingsProvider }[]>;
 
 function makeAdjacencyList(mappingsProviders: MappingsProvider[]): MappingsAdjacencyList {
-    const adjacencyList = allMappingNamespaces.toRecord(namespace => [namespace,[]]) as MappingsAdjacencyList;
+    const adjacencyList = mappingsProviders.toRecord(provider => [provider.toNamespace, []]) as MappingsAdjacencyList;
+    // Fill out the remaining namespaces that might not exist in the list of 'toNamespace's
+    mappingsProviders.forEach(provider => {
+        adjacencyList[provider.fromNamespace] = []
+    })
 
     for (const provider of mappingsProviders) {
         // We store the provider so we can know later what provider we need to use to implement the edge

@@ -6,7 +6,7 @@ import {buildsOf} from "../../../../mappings/MappingsApi";
 import {DropdownSelection} from "../../../../fudge-commons/components/DropdownSelection";
 import {useScreenSize} from "../../../../fudge-commons/methods/Gui";
 import {CircularProgress} from "@mui/material";
-import {allMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
+import {getMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
 import {Column, Row} from "../../../../fudge-commons/simple/Flex";
 import {ItemSelection, SelectionType} from "../../../../fudge-commons/components/Selection";
 import {indexOfOrThrow} from "../../../../fudge-commons/methods/Javascript";
@@ -46,26 +46,27 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
+    const mappingNamespaces = getMappingNamespaces(minecraftVersion)
     return <Column style={{float: "right"}} justifyContent={"end"}>
         <Row padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}}
-                         margin={{left: isPortrait ? 0 : 15}}>
+             margin={{left: isPortrait ? 0 : 15}}>
 
-        <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
-                       values={allMappingNamespaces.map(type => mappingsName(type))}
-                       index={indexOfOrThrow(allMappingNamespaces, mappings.namespace)}
-                       onIndexChange={i => {
-                           const newNamespace = allMappingNamespaces[i];
-                           onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
-                       }}/>
+            <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
+                           values={mappingNamespaces.map(type => mappingsName(type))}
+                           index={indexOfOrThrow(mappingNamespaces, mappings.namespace)}
+                           onIndexChange={i => {
+                               const newNamespace = mappingNamespaces[i];
+                               onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
+                           }}/>
 
 
-        {builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
-            {builds.length > 0 &&
-                <BuildSelection mappingsLoading={mappingsLoading} isPortrait={isPortrait} builds={builds}
-                                mappings={mappings}
-                                onMappingsChange={onMappingsChange}/>}
-        </Fragment>}
-    </Row>
+            {builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
+                {builds.length > 0 &&
+                    <BuildSelection mappingsLoading={mappingsLoading} isPortrait={isPortrait} builds={builds}
+                                    mappings={mappings}
+                                    onMappingsChange={onMappingsChange}/>}
+            </Fragment>}
+        </Row>
         {mappingsLoading &&
             <Text padding={{left: 8, right: 3}} className={"blinking_text"} align={"center"} fontWeight={"bold"}
                   text={"Loading Mappings..."}/>}

@@ -1,7 +1,7 @@
 import {MappingsNamespace} from "./MappingsNamespace";
 import {
     getBuildsCached,
-    IntermediaryToYarnMappingsProvider,
+    getMappingProviders,
     MappingsBuilds,
     MappingsProvider,
     MappingsVersion
@@ -12,28 +12,21 @@ import {useEffect, useState} from "react";
 import {PromiseMemoryCache} from "../fudge-commons/collections/PromiseMemoryCache";
 
 
-
 export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {
-    switch (namespace) {
-        case "Intermediary":
-        case "Official":
-        case "Srg":
-            return [];
-        case "Yarn":
-            return getBuildsCached(IntermediaryToYarnMappingsProvider, minecraftVersion)
-        default:
-            throw new Error("TODO")
-    }
+    if (namespace === "Official") return [];
+    const provider = getMappingProviders(minecraftVersion).find(provider => provider.toNamespace == namespace);
+    if (provider == undefined) throw new Error("Can't find builds for unrecognized mapping namespace: " + namespace)
+    return getBuildsCached(provider, minecraftVersion)
 }
 
 export async function getMappingsCached(mappingsProvider: MappingsProvider, version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
     return mappingsCache.get(
         mappingsProvider.fromNamespace + mappingsProvider.toNamespace + version.build + version.minecraftVersion,
         () => mappingsProvider.getMappings(version, filter).catch(e => {
-            console.error("Could not get mappings", e);
-            return EmptyMappings;
-        }
-    ));
+                console.error("Could not get mappings", e);
+                return EmptyMappings;
+            }
+        ));
 }
 
 export function useAnyMappingsLoading(): boolean {

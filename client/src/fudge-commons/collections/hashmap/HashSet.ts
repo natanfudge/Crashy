@@ -38,6 +38,10 @@ export class HashSet<T> {
         return new HashSet<NT>(this._map.map(mapper, _ => 1))
     }
 
+    filter(filterer: (value: T) => boolean): HashSet<T> {
+        return new HashSet(this._map.filter(filterer))
+    }
+
     forEach(iterator: (value: T) => void): void {
         this._map.forEach(iterator);
     }

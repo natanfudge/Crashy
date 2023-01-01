@@ -56,6 +56,7 @@ function isNecDeobfuscated(report: CrashReport): boolean {
 const JavaVersionTitle = "Java Version";
 const MinecraftVersionTitle = "Minecraft Version";
 const ForgeLoaderTitle = "Forge";
+const FMLTitle = "FML";
 const FabricLoaderId = "fabricloader";
 const OperatingSystemTitle = "Operating System";
 const IsModdedTitle = "Is Modded"
@@ -112,6 +113,15 @@ function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]):
             version: version
         };
     } else {
+        const fmlEntry = systemDetails[FMLTitle]
+        if(fmlEntry != undefined){
+            return {
+                type: LoaderType.Forge,
+                // Actually parsing the version is too much effort for such an old minecraft version
+                version: "(FML)"
+            }
+        }
+
         if (mods !== undefined) {
             // If mods exists, and not forge, then it's definitely Fabric and we have the version available
             const fabricLoaderMod = mods.find((mod) => mod.id === FabricLoaderId)!;
