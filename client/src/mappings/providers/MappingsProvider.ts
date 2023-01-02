@@ -16,7 +16,6 @@ export interface MappingsVersion {
     build: string
 }
 
-//TODO: what happens when mappings don't exist for a version?
 export interface MappingsProvider {
     fromNamespace: MappingsNamespace
     toNamespace: MappingsNamespace
@@ -58,14 +57,11 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
 //     async getBuilds(minecraftVersion: string): Promise<string[]> {
 //         // const builds = await getYarnBuilds(minecraftVersion)
 //         // return builds.map(build => build.version)
-//         throw new Error("TODO")
 //     },
 //     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
 //         // return getYarnMappings(build)
-//         throw new Error("TODO")
 //     },
 //     supportsMinecraftVersion(version: string): boolean {
-//         //TODO
 //         return false;
 //     }
 // }
@@ -96,7 +92,6 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
         return await getSrgMappings(version.minecraftVersion, filter) ?? EmptyMappings;
     },
     supportsMinecraftVersion(version: string): boolean {
-        //TODO: test that srg doesn't show in snapshots
 
         // Avoid snapshots
         return !snapshotRegex.test(version);
@@ -115,8 +110,6 @@ export const SrgToMcpMappingsProvider: MappingsProvider = {
         return await getMcpMappings(version.minecraftVersion, version.build, filter) ?? EmptyMappings
     },
     supportsMinecraftVersion(version: string): boolean {
-        //TODO: test that mcp doesn't show in versions older than 1.15
-
         return mcpSupportsMcVersion(version)
     }
 }
@@ -131,7 +124,6 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
         return getMojangMappings(version.minecraftVersion,filter)
     },
     supportsMinecraftVersion(version: string): boolean {
-        //TODO: test that mojmap doesn't show in versions older than 1.14.4
         return mojmapSupportedMinecraftVersion(version);
     }
 }

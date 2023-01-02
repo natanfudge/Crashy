@@ -1,5 +1,5 @@
-import io.github.crashy.api.utils.IHttpClient
-import io.github.crashy.api.utils.TestHttpResponse
+package io.github.crashy.api.utils
+
 import java.io.ByteArrayOutputStream
 import java.net.URI
 import java.net.http.HttpClient
@@ -13,7 +13,7 @@ class Java11HttpClient : IHttpClient {
     private val client = HttpClient.newHttpClient()
 
     override suspend fun get(url: String): TestHttpResponse {
-        TODO("Not yet implemented")
+        throw Exception("Not yet implemented")
     }
 
     private suspend fun HttpClient.sendSuspend(request: HttpRequest) =
@@ -45,6 +45,6 @@ class Java11HttpClient : IHttpClient {
     }
 
     override suspend fun delete(url: String): TestHttpResponse {
-        TODO("Not yet implemented")
+        throw Exception("Not yet implemented")
     }
 }

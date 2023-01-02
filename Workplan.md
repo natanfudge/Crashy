@@ -1,16 +1,7 @@
 
 # Workplan:
+- [ ] Test on real server
 - [ ] Complete client mappings feature.
-  - [ ] Tsrg mappings 
-    - [ ] Server side tsrg mappings endpoint
-      - [ ] Tsrg 1
-      - [ ] Tsrg 2
-      - [ ] Caching
-      - [ ] Filtering
-  - [ ] Mcp mappings (probably requires server to proxy as well?)
-  - [ ] Quilt mappings
-  - [ ] Mojmap mappings
-  - [ ] Handle version having no mappings?
   - [ ] Move mappings selection, and make it not move when there's no version selection:
     ![img.png](img.png)
 
@@ -29,7 +20,10 @@
 - [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
 - [ ] Monetization?
 - [ ] Implement archived crash retrieval
-
+  - [ ] Implement 'archived' page
+  - [ ] Implement 'restoring...' page
+  - [ ] Implement actual restoration
+- [ ] Test on real server
 
 
 # Final goals:

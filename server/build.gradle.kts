@@ -123,8 +123,8 @@ tasks {
 
     processResources.get().dependsOn(syncClient)
 
-
-
+    //TODO: create new testJar ShadowJar task that creates a separate binary for testing,
+    // that has the windows deps instead of the linux deps so we can test the jars on the windows machine.
 
     afterEvaluate {
 

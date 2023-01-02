@@ -1,5 +1,6 @@
 import TestCrash.*
 import io.github.crashy.api.utils.IHttpClient
+import io.github.crashy.api.utils.Java11HttpClient
 import io.github.crashy.api.utils.OkHttpTestClient
 import io.github.crashy.api.utils.TestHttpResponse
 import org.intellij.lang.annotations.Language
