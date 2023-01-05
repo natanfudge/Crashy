@@ -56,7 +56,7 @@ fun Application.configureRouting() {
 private fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
     options("/uploadCrash") {
         call.response.header("Allow", "POST")
-        addDevCorsHeader()
+        addCorsHeader()
         call.response.header("Access-Control-Allow-Headers", "content-encoding")
         call.respondBytes(ByteArray(0), status = HttpStatusCode.OK)
     }
@@ -146,7 +146,7 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Res
         call.response.header(key, value)
     }
 
-    addDevCorsHeader()
+    addCorsHeader()
 
     call.respondBytes(
         response.bytes, status = response.statusCode, contentType = response.contentType
@@ -162,7 +162,7 @@ private inline fun printCrashes(callback: () -> Unit) {
     }
 }
 
-private fun PipelineContext<Unit, ApplicationCall>.addDevCorsHeader() {
+private fun PipelineContext<Unit, ApplicationCall>.addCorsHeader() {
     // This makes it easier to test out the api in development since the React app runs in port 3000
-    call.response.header("Access-Control-Allow-Origin", "http://localhost:3000")
+    call.response.header("Access-Control-Allow-Origin", "*")
 }

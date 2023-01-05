@@ -1,8 +1,5 @@
 
 # Workplan:
-- [ ] Set up the server as a subdomain for testing
-- [ ] Set up SSL
-- [ ] Test discord shows links properly
 - [ ] Try and see if crash report contents can be searched via google
   - [ ] If not - make it so!
 - [ ] Migrate NEC to new api
@@ -24,6 +21,7 @@
   - [ ] Implement actual restoration
 - [ ] Test on real server
 - [ ] Publish Crashy as the main domain
+- [ ] Enable SSL with crashy.net as the domain
 - [ ] Do some sufficient testing
 - [ ] Migrate new NEC client to original Crashy domain
 - [ ] Publish new NEC client

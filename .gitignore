@@ -11,4 +11,5 @@ lib/
 aws/generated
 build/
 server/src/main/resources/keystore.jks
-server/src/main/resources/keystore_password.txt
+server/src/main/resources/fake_keystore_password.txt
+server/src/main/resources/letsencrypt_keystore_password.txt

@@ -42,7 +42,7 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 export namespace CrashyServer {
     const localTesting = false;
-    const domain = localTesting ? "localhost:80" : "ec2-3-75-204-155.eu-central-1.compute.amazonaws.com";
+    const domain = localTesting ? "localhost:80" : "beta.crashy.net";
     const http = localTesting ? "http" : "https"
     const urlPrefix = `${http}://${domain}`
 

@@ -26,7 +26,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.test.logger)
     alias(libs.plugins.shadow)
-   alias(libs.plugins.gradle.node)
+    alias(libs.plugins.gradle.node)
 
 }
 
@@ -72,7 +72,6 @@ dependencies {
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
 }
-
 
 
 val clientDir = projectDir.parentFile.resolve("client")
@@ -122,7 +121,7 @@ tasks {
     processResources.get().dependsOn(syncClient)
 
     withType<ShadowJar> {
-        inputs.property("main",mainClassName)
+        inputs.property("main", mainClassName)
         manifest.attributes(mapOf("Main-Class" to mainClassName))
     }
 
@@ -158,7 +157,6 @@ tasks {
             workingDir(windowsShadowJarFile.parent)
             commandLine("java", "-jar", windowsShadowJarFile.name)
         }
-
 
 
         /**
@@ -218,19 +216,16 @@ tasks {
                 if (keyPair == null) error("Environment variable EC2_KEYPAIR is not set!")
                 if (domain == null) error("Project variable ec2_domain is not set!")
 
-                println(remoteCleanupCommand)
-                println(javaCommand)
-
                 // Create the server jar directory that will be transferred to the server
                 serverDir.toFile().mkdirs()
-                shadowJarFile.copyTo(serverDir.resolve(shadowJarFile.name).toFile())
+                shadowJarFile.copyTo(serverDir.resolve(shadowJarFile.name).toFile(), overwrite = true)
 
                 // SSH into ec2
                 // stop process
                 // delete everything
                 // scp new file
                 // start process
-                ssh(host = domain, username = "ec2-user", keyPair = File(keyPair)) {
+                Utils.ssh(host = domain, username = "ec2-user", keyPair = File(keyPair)) {
                     scp(from = serverDir, to = fullJarsDir)
                     execute(remoteCleanupCommand)
                     execute(javaCommand)
@@ -240,6 +235,16 @@ tasks {
         }
     }
 
+}
+
+object Utils {
+    fun ssh(host: String, username: String, keyPair: File, session: SSHSession.() -> Unit) {
+        println("SSHing to $host...")
+        SshClient(host, 22, username, keyPair).use {
+            println("SSH successful")
+            SSHSession(it).apply(session)
+        }
+    }
 }
 
 fun String.trimNewlines() = replace("\n", "").replace("\r", "")
@@ -254,14 +259,6 @@ fun runCommand(command: String): String {
     return proc.inputStream.bufferedReader().readText()
 }
 
-
-fun ssh(host: String, username: String, keyPair: File, session: SSHSession.() -> Unit) {
-    println("SSHing to $host...")
-    SshClient(host, 22, username, keyPair).use {
-        println("SSH successful")
-        SSHSession(it).apply(session)
-    }
-}
 
 class SSHSession(private val ssh: SshClient) {
     fun scp(from: java.nio.file.Path, to: String) {
