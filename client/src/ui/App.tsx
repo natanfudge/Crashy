@@ -8,6 +8,7 @@ import {CrashyCrashReportPage} from "./crashreport/CrashReportPage";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
 import {TextTheme} from "../fudge-commons/simple/Text";
 import {ErrorBoundary} from "../fudge-commons/components/ErrorBoundary";
+import {createRoot} from "react-dom/client";
 
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))

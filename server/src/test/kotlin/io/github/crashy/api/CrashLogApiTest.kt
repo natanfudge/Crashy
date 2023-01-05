@@ -3,7 +3,6 @@ package io.github.crashy.api
 import ClientLibrary
 import HttpTest
 import HttpTest.Companion.httpTest
-import TestClass
 import TestCrash
 import getCrashLogContents
 import io.github.crashy.api.utils.TestHttpResponse
@@ -20,9 +19,7 @@ import java.util.*
 import kotlin.test.assertEquals
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class CrashLogApiTest : TestClass {
-    override val useRealServer: Boolean = false
-
+class CrashLogApiTest  {
     private inline fun withBothClients(
         ssl: Boolean = false,
         cache: Boolean = true,

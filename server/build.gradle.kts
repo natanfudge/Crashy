@@ -30,8 +30,10 @@ plugins {
 
 }
 
+val mainClassName = "io.github.crashy.AppKt"
+
 application {
-    mainClass.set("io.github.crashy.ApplicationKt")
+    mainClass.set(mainClassName)
 }
 group = "io.github.crashy"
 version = "0.0.2"
@@ -57,6 +59,7 @@ repositories {
 }
 
 val linuxOnly = configurations.create("linux")
+val windowsOnly = configurations.create("windows")
 val brotliVersion = libs.versions.brotli.get()
 
 val brotliWindowsNatives = "com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion"
@@ -64,18 +67,13 @@ dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
     runtimeOnly(brotliWindowsNatives)
+    windowsOnly(brotliWindowsNatives)
 //    implementation("net.fabricmc:mapping-io:0.3.0")
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
 }
 
-tasks.withType<ShadowJar> {
-    configurations += linuxOnly
-    dependencies {
-        // Don't include windows natives because we run on linux
-        exclude(dependency(brotliWindowsNatives))
-    }
-}
+
 
 val clientDir = projectDir.parentFile.resolve("client")
 node {
@@ -97,7 +95,7 @@ tasks {
      * Requirement: NPM client project present in ../client
      */
     val buildClient by register<NpmTask>("buildClient") {
-        group = "client"
+        group = "crashy setup"
 
 //        dependsOn(npmInstall)
 
@@ -115,7 +113,7 @@ tasks {
 
 
     val syncClient = register<Sync>("syncClientResources") {
-        group = "client"
+        group = "crashy setup"
         dependsOn(buildClient)
         from("../client/build")
         into(sourceSets.main.get().output.resourcesDir!!.resolve("static"))
@@ -123,21 +121,45 @@ tasks {
 
     processResources.get().dependsOn(syncClient)
 
-    //TODO: create new testJar ShadowJar task that creates a separate binary for testing,
-    // that has the windows deps instead of the linux deps so we can test the jars on the windows machine.
+    withType<ShadowJar> {
+        inputs.property("main",mainClassName)
+        manifest.attributes(mapOf("Main-Class" to mainClassName))
+    }
+
+    // Linux jar for EC2
+    named<ShadowJar>("shadowJar") {
+        configurations += linuxOnly
+        dependencies {
+            // Don't include windows natives because we run on linux
+            exclude(dependency(brotliWindowsNatives))
+        }
+    }
+
+    // Windows jar for testing
+    val windowsServerJar by registering(ShadowJar::class) {
+        archiveClassifier.set("windows")
+        from(sourceSets.main.get().output)
+        // Exclude linux deps
+        configurations = shadowJar.get().configurations.filter { it != linuxOnly }
+        // Include windows deps
+        configurations += windowsOnly
+        group = "crashy setup"
+    }
 
     afterEvaluate {
 
-        val shadowJarFiles = shadowJar.get().outputs.files
-        val shadowJarFile = shadowJarFiles.singleFile
+        val windowsShadowJarFiles = windowsServerJar.get().outputs.files
+        val windowsShadowJarFile = windowsShadowJarFiles.singleFile
 
-        register<Exec>("runFatServerJar") {
-            group = "server"
-            dependsOn(shadowJar)
+        register<Exec>("runWindowsServerJar") {
+            group = "crashy"
+            dependsOn(windowsServerJar)
 
-            workingDir(shadowJarFile.parent)
-            commandLine("java", "-jar", shadowJarFile.name)
+            workingDir(windowsShadowJarFile.parent)
+            commandLine("java", "-jar", windowsShadowJarFile.name)
         }
+
+
 
         /**
          * Name: Upload to EC2
@@ -156,7 +178,10 @@ tasks {
          * - Using Shadow.
          */
         val uploadToEc2 = register("uploadToEc2") {
-            group = "ec2"
+            val shadowJarFiles = shadowJar.get().outputs.files
+            val shadowJarFile = shadowJarFiles.singleFile
+
+            group = "crashy"
             dependsOn(shadowJar)
 
             // We put it in a directory with a random id, so it won't clash with the previous one.
@@ -188,9 +213,13 @@ tasks {
             // Kill old java process, remove all old files, delete empty directories
             val remoteCleanupCommand = "$killCommand ; $removeCommand && $cleanDirsCommand"
 
+
             doFirst {
                 if (keyPair == null) error("Environment variable EC2_KEYPAIR is not set!")
                 if (domain == null) error("Project variable ec2_domain is not set!")
+
+                println(remoteCleanupCommand)
+                println(javaCommand)
 
                 // Create the server jar directory that will be transferred to the server
                 serverDir.toFile().mkdirs()
@@ -252,7 +281,7 @@ class SSHSession(private val ssh: SshClient) {
             override fun progressed(bytesSoFar: Long) {
                 println(
                     "Uploaded $bytesSoFar/$bytesTotal bytes " +
-                            if (bytesTotal == 0L) "" else "(${bytesSoFar.toDouble() / bytesTotal}%)"
+                            if (bytesTotal == 0L) "" else "(${bytesSoFar.toDouble() / bytesTotal * 100}%)"
                 )
 //                    progressBar.stepTo(bytesSoFar)
             }

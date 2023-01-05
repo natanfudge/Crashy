@@ -1,17 +1,15 @@
 package io.github.crashy.api
 
 import HttpTest.Companion.httpTest
-import TestClass
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 
-class TsrgApiTest: TestClass {
-    override val useRealServer: Boolean = false
+class TsrgApiTest {
 
     private fun getAtVersion(version: String): String? = runBlocking {
-        with(httpTest()){
+        with(httpTest()) {
             getTsrg(version).body
         }
     }
@@ -23,12 +21,13 @@ class TsrgApiTest: TestClass {
     }
 
     @Test
-    fun get1_18_1(){
+    fun get1_18_1() {
         val mappings = getAtVersion("1.18.1")!!
         expectThat(mappings.take(10)).isEqualTo("tsrg2 obf ")
     }
+
     @Test
-    fun getBS(){
+    fun getBS() {
         val mappings = getAtVersion("69420")
         expectThat(mappings).isEqualTo("No such Minecraft version")
     }

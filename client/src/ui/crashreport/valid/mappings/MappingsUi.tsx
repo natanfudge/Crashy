@@ -30,7 +30,6 @@ function MappingSelectionLayout({children, selection}: { selection: JSX.Element 
     const screen = useScreenSize();
     return screen.isPortrait ? <Column>{selection}{children}</Column> :
         <div style={{width: "100%"}} >
-
             {selection}
             {children}
         </div>

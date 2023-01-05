@@ -118,8 +118,6 @@ export interface TraceLine {
     number?: number
 }
 
-//TODO: cache build getters for 1 day, cache mappings forever
-
 
 export interface CrashContext {
     javaVersion: string

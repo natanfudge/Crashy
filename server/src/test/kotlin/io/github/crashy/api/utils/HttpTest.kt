@@ -1,4 +1,5 @@
 import TestCrash.*
+import io.github.crashy.api.ApiTesting.UseRealServer
 import io.github.crashy.api.utils.IHttpClient
 import io.github.crashy.api.utils.Java11HttpClient
 import io.github.crashy.api.utils.OkHttpTestClient
@@ -36,10 +37,6 @@ enum class ClientLibrary {
     Apache
 }
 
-interface TestClass {
-    val useRealServer: Boolean
-}
-
 
 class HttpTest private constructor(
     local: Boolean = true,
@@ -49,11 +46,11 @@ class HttpTest private constructor(
     private val clientLibrary: ClientLibrary = ClientLibrary.OkHttp
 ) {
     companion object {
-        fun TestClass.httpTest(
+        fun httpTest(
             ssl: Boolean = false,
             cache: Boolean = true,
             useGzip: Boolean = true,
-            clientLibrary: ClientLibrary = ClientLibrary.OkHttp, local: Boolean = !useRealServer
+            clientLibrary: ClientLibrary = ClientLibrary.OkHttp, local: Boolean = !UseRealServer
         ): HttpTest {
             return HttpTest(local = local, ssl = ssl, cache = cache, useGzip = useGzip, clientLibrary = clientLibrary)
         }
@@ -67,7 +64,7 @@ class HttpTest private constructor(
     private val port = if (ssl) 443 else 80
     private val scheme = if (ssl) "https" else "http"
 
-    private val domain = if (local) "localhost" else TODO()
+    private val domain = if (local) "localhost" else "ec2-3-75-204-155.eu-central-1.compute.amazonaws.com"
     private val pathPrefix = "$scheme://$domain:$port"
 
     suspend fun uploadCrash(crash: TestCrash, headers: Map<String, String> = mapOf()): TestHttpResponse {

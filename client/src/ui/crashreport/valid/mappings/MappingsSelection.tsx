@@ -47,25 +47,41 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
     const mappingNamespaces = getMappingNamespaces(minecraftVersion)
+
+    function Builds() {
+        return builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
+            {builds.length > 0 &&
+                <BuildSelection mappingsLoading={mappingsLoading} isPortrait={isPortrait} builds={builds}
+                                mappings={mappings}
+                                onMappingsChange={onMappingsChange}/>}
+        </Fragment>
+    }
+
+    function Namespaces() {
+        return <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
+                              values={mappingNamespaces.map(type => mappingsName(type))}
+                              index={indexOfOrThrow(mappingNamespaces, mappings.namespace)}
+                              onIndexChange={i => {
+                                  const newNamespace = mappingNamespaces[i];
+                                  onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
+                              }}/>
+    }
+
     return <Column style={{float: "right"}} justifyContent={"end"}>
-        <Row padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5}}
+        <Row padding={{top: isPortrait ? 0 : 8, left: isPortrait ? 0 : 5, right: 15}}
              margin={{left: isPortrait ? 0 : 15}}>
 
-            <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
-                           values={mappingNamespaces.map(type => mappingsName(type))}
-                           index={indexOfOrThrow(mappingNamespaces, mappings.namespace)}
-                           onIndexChange={i => {
-                               const newNamespace = mappingNamespaces[i];
-                               onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
-                           }}/>
+            {/*In portrait place namespaces before builds, in desktop place builds before namespaces.*/}
+            {isPortrait ? <Fragment>
+                {Namespaces()}
+                {Builds()}
+            </Fragment> : <Fragment>
+                {Builds()}
+                {Namespaces()}
+            </Fragment>
+            }
 
 
-            {builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
-                {builds.length > 0 &&
-                    <BuildSelection mappingsLoading={mappingsLoading} isPortrait={isPortrait} builds={builds}
-                                    mappings={mappings}
-                                    onMappingsChange={onMappingsChange}/>}
-            </Fragment>}
         </Row>
         {mappingsLoading &&
             <Text padding={{left: 8, right: 3}} className={"blinking_text"} align={"center"} fontWeight={"bold"}

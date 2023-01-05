@@ -16,8 +16,8 @@ sealed interface GetMappingsResponse : Response {
 }
 
 class MappingsApi(private val mappings: MappingsProvider) {
-    //TODO: optimize: parse mappings and only provide methods and classes (the cache should also only store methods/classes)
-    //TODO: optimize: provide a filter and only return mappings fitting the filter
+    // optimize: parse mappings and only provide methods and classes (the cache should also only store methods/classes)
+    // optimize: provide a filter and only return mappings fitting the filter
     suspend fun getTsrg(mcVersion: String): GetMappingsResponse {
         val tsrg = mappings.getTsrg(mcVersion)
         return responseOf(tsrg)

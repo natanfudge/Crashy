@@ -1,11 +1,8 @@
 
 # Workplan:
-- [ ] Test on real server
-- [ ] Complete client mappings feature.
-  - [ ] Move mappings selection, and make it not move when there's no version selection:
-    ![img.png](img.png)
-
-- [ ] Migrate to react 18 and strict mode
+- [ ] Set up the server as a subdomain for testing
+- [ ] Set up SSL
+- [ ] Test discord shows links properly
 - [ ] Migrate NEC to new api
   - [ ] Make sure `?code=` works well 
 - [ ] Introduce backwards compatibility for old NEC versions:
@@ -24,7 +21,10 @@
   - [ ] Implement 'restoring...' page
   - [ ] Implement actual restoration
 - [ ] Test on real server
-
+- [ ] Publish Crashy as the main domain
+- [ ] Do some sufficient testing
+- [ ] Migrate new NEC client to original Crashy domain
+- [ ] Publish new NEC client
 
 # Final goals:
 - Crashy pages served directly from the server, including the crash data itself with it, making response times very fast, and allowing previews of crashes in links

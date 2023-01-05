@@ -1,7 +1,7 @@
-//TODO: maybe improve this to calculate height AOT (would require reimplementing InfiniteScroll I think)
 import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
+//maybe improve this to calculate height AOT (would require reimplementing InfiniteScroll I think)
 export function LazyColumn<T>({data, childProvider}: { data: T[], childProvider: (item: T, index: number) => JSX.Element }) {
     const batchSize = 25;
     const [activeAmount, setActiveAmount] = React.useState(batchSize)

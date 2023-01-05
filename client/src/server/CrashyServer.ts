@@ -2,6 +2,7 @@
 
 
 import {httpGet, httpPost} from "../fudge-commons/methods/Http";
+import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -40,8 +41,8 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 
 export namespace CrashyServer {
-    const localTesting = true;
-    const domain = localTesting ? "localhost:80" : "europe-west1-crashy-9dd87.cloudfunctions.net";
+    const localTesting = false;
+    const domain = localTesting ? "localhost:80" : "ec2-3-75-204-155.eu-central-1.compute.amazonaws.com";
     const http = localTesting ? "http" : "https"
     const urlPrefix = `${http}://${domain}`
 

@@ -62,7 +62,7 @@ export async function testMappingsProvider(provider: MappingsProvider, mcVersion
         expect(mappings.mapClass(JavaClass.anySeparation(mappedClass), true).getUnmappedFullClassName()).toEqual(unmappedClass)
     }
 
-    //TODO: better method: specify all possible mappings of an obf method name and let the tester do the rest
+    //: better method: specify all possible mappings of an obf method name and let the tester do the rest
 
     for (const unmappedMethod in assertions.methods) {
         const mappedMethod = assertions.methods[unmappedMethod];

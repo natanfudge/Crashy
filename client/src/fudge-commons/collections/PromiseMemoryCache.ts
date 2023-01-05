@@ -13,10 +13,8 @@ export class PromiseMemoryCache<T> {
     private invokeListeners() {
         for (const listener of this.promisesListeners) listener();
     }
-    //FIXME: we get loading mappings... when the value is already cached
 
     async get(key: string, orProduce: () => Promise<T>): Promise<T> {
-        // console.log("Requesting key: " + key)
         const cached = this.cache[key];
         if (cached !== undefined) {
             return cached;
