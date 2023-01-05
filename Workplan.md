@@ -3,6 +3,8 @@
 - [ ] Set up the server as a subdomain for testing
 - [ ] Set up SSL
 - [ ] Test discord shows links properly
+- [ ] Try and see if crash report contents can be searched via google
+  - [ ] If not - make it so!
 - [ ] Migrate NEC to new api
   - [ ] Make sure `?code=` works well 
 - [ ] Introduce backwards compatibility for old NEC versions:
