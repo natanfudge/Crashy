@@ -30,16 +30,10 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         val header = peekCrashHeader(request) ?: return UploadCrashResponse.MalformedCrashError
         logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, Instant.now(), header)))
 
-        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "$httpPrefix://$domain/${id.value}?code=${key}")
+        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "$httpPrefix://${Crashy.domain}/${id.value}?code=${key}")
     }
 
     private val httpPrefix = if(Crashy.build == Local) "http" else "https"
-
-    private val domain = when(Crashy.build){
-        Local -> "localhost:80"
-        Beta -> "beta.crashy.net"
-        Release -> "crashy.net"
-    }
 
     suspend fun getCrash(id: String): Response {
         val logId = CrashlogId.parse(id).getOrElse { return textResponse("Invalid id", HttpStatusCode.NotFound) }

@@ -4,7 +4,7 @@
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "serve": "npm run build:watch | firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -15,6 +15,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "axios": "^0.21.1",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0"
   },

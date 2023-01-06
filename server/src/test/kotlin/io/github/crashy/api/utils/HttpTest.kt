@@ -1,5 +1,6 @@
 import TestCrash.*
-import io.github.crashy.api.ApiTesting.UseRealServer
+import io.github.crashy.Crashy
+import io.github.crashy.api.ApiTesting
 import io.github.crashy.api.utils.IHttpClient
 import io.github.crashy.api.utils.Java11HttpClient
 import io.github.crashy.api.utils.OkHttpTestClient
@@ -39,20 +40,17 @@ enum class ClientLibrary {
 
 
 class HttpTest private constructor(
-    local: Boolean = true,
-    ssl: Boolean = false,
     private val cache: Boolean = true,
     private val useGzip: Boolean = true,
     private val clientLibrary: ClientLibrary = ClientLibrary.OkHttp
 ) {
     companion object {
         fun httpTest(
-            ssl: Boolean = false,
             cache: Boolean = true,
             useGzip: Boolean = true,
-            clientLibrary: ClientLibrary = ClientLibrary.OkHttp, local: Boolean = !UseRealServer
+            clientLibrary: ClientLibrary = ClientLibrary.OkHttp
         ): HttpTest {
-            return HttpTest(local = local, ssl = ssl, cache = cache, useGzip = useGzip, clientLibrary = clientLibrary)
+            return HttpTest(cache = cache, useGzip = useGzip, clientLibrary = clientLibrary)
         }
     }
 
@@ -61,11 +59,11 @@ class HttpTest private constructor(
         ClientLibrary.Apache -> Java11HttpClient()
     }
 
-    private val port = if (ssl) 443 else 80
-    private val scheme = if (ssl) "https" else "http"
+//    private val port = if (ssl) 443 else 80
+    private val scheme = if (ApiTesting.isLocal()) "http" else "https"
 
-    private val domain = if (local) "localhost" else "ec2-3-75-204-155.eu-central-1.compute.amazonaws.com"
-    private val pathPrefix = "$scheme://$domain:$port"
+    private val domain = ApiTesting.domain()
+    private val pathPrefix = "$scheme://$domain"
 
     suspend fun uploadCrash(crash: TestCrash, headers: Map<String, String> = mapOf()): TestHttpResponse {
         val path = "uploadCrash"
@@ -96,16 +94,23 @@ class HttpTest private constructor(
 
         return post(path, body = "\"$id\"")
     }
+
     suspend fun getTsrg(mcVersion: String): TestHttpResponse {
         val path = "getTsrg/$mcVersion.tsrg"
         return client.get("$pathPrefix/$path")
     }
+
     suspend fun getMcp(mcVersion: String, build: Int): TestHttpResponse {
         val path = "getMcp/$mcVersion/$build.csv"
         return client.get("$pathPrefix/$path")
     }
 
-     suspend fun post(path: String, body: String, useGzip: Boolean = false, headers: Map<String, String> = mapOf()) : TestHttpResponse {
+    suspend fun post(
+        path: String,
+        body: String,
+        useGzip: Boolean = false,
+        headers: Map<String, String> = mapOf()
+    ): TestHttpResponse {
         return client.post("$pathPrefix/$path", body = body, useGzip = useGzip, headers)
     }
 

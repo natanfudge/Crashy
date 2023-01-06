@@ -2,6 +2,7 @@ package io.github.crashy
 
 import com.aayushatharva.brotli4j.Brotli4jLoader
 import com.codahale.metrics.jmx.JmxReporter
+import io.github.crashy.Crashy.Build.*
 import io.github.crashy.plugins.configreLogging
 import io.github.crashy.plugins.configureHTTP
 import io.ktor.server.application.*
@@ -26,12 +27,21 @@ object Crashy {
 
     //TODO: update build.txt to release
     val build = readBuild()
+
+    fun isLocal() = build == Local
+
+    val domain = when(build){
+        Local -> "localhost:80"
+        Beta -> "beta.crashy.net"
+        Release -> "crashy.net"
+    }
+
     private fun readBuild(): Build {
         // Build file is only included in the jar uploaded to EC2
-        val buildFile = Crashy::class.java.getResource("/build.txt") ?: return Build.Local
+        val buildFile = Crashy::class.java.getResource("/build.txt") ?: return Local
         return when (val build = buildFile.readText()) {
-            "beta" -> Build.Beta
-            "release" -> Build.Release
+            "beta" -> Beta
+            "release" -> Release
             else -> error("Unexpected crashy build: $build")
         }
     }
@@ -48,7 +58,9 @@ fun main() {
     embeddedServer(Netty, environment = createAppEnvironment()).start(wait = true)
 }
 
-private val realServerKeystoreFile = Paths.get("/etc/cert/crashy_keystore.jks")
+private val keyStoreName = if (Crashy.build == Release) "crashy_release_keystore" else "crashy_keystore"
+
+private val realServerKeystoreFile = Paths.get("/etc/cert/$keyStoreName.jks")
 private val isRealServer = realServerKeystoreFile.exists()
 
 private fun createAppEnvironment() = applicationEngineEnvironment {
@@ -79,7 +91,7 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
         configureHTTP()
         configreLogging()
 
-        if (Crashy.build != Crashy.Build.Local) {
+        if (Crashy.build != Local) {
             install(HttpsRedirect) {
                 sslPort = 443
                 permanentRedirect = true

@@ -1,4 +1,5 @@
-import * as functions from "firebase-functions/v2";
+import * as functions from "firebase-functions";
+import axios from "axios";
 
 /**
  * We have a new uploadCrash endpoint to redirect old users of the API to the new API
@@ -7,11 +8,9 @@ import * as functions from "firebase-functions/v2";
 const betaBuild = true;
 const domain = betaBuild ? "beta.crashy.net" : "crashy.net";
 //TODO:  I think I want to upload to both old and new at first.
-//TODO: use v2 functions https://firebase.google.com/docs/functions/beta/get-started
-export const uploadcrashnew = functions.https.onRequest({region: "europe-west1"}, async (request, response) => {
-
-    const newResponse = await fetch(`https://${domain}/uploadCrash`, {body: request.body})
-    const newResponseBody = JSON.parse(await newResponse.text()) as NewUploadCrashResponse
+export const uploadCrashNew = functions.region("europe-west1").https.onRequest(async (request, response) => {
+    const newResponse = await axios.post(`https://${domain}/uploadCrash`, request.body, {headers: {"content-encoding": "gzip"}})
+    const newResponseBody = newResponse.data as NewUploadCrashResponse
 
     const legacyResponse: LegacyUploadCrashResponse = {
         crashId: newResponseBody.crashId,

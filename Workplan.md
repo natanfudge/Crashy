@@ -1,20 +1,18 @@
 
 # Workplan:
-
+- [ ] Fix invalid requests giving 500 instead of proper error codes
+- [ ] Fix NEC not working with the beta release
 - [ ] Try and see if crash report contents can be searched via google
   - [ ] Solve 'Soft 404' https://search.google.com/search-console/inspect?resource_id=sc-domain%3Abeta.crashy.net&id=YfBWru4eMDMLpcQ5LzmEYw&alt_id=xoRjr_kqsY93Vsfrd9_lww
-- [ ] Introduce backwards compatibility for old NEC versions:
-  - Modify the old firebase uploadCrash endpoint to simply delegate the upload to the EC2 server. 
-- [ ] Migrate all crashes from firebase to EC2 
-  - Old crashes transfer to S3
-  - New crashes transfer to SSD
 - [ ] Start automatically evicting
+  - [ ] Add a way of calling evictOld() on demand
+  - [ ] Call evictOld() once every month
 - [ ] Add logging
   - [ ] Gather all of the relevant data of each request and log it in an organized structure
-  - [ ] Log in console
+  - [ ] Write log messages in console output
   - [ ] Allow easy access of recent logs in the ec2 instance
   - [ ] Allow viewing of logs by request 
-- [ ] Implement archive retrieval
+  - [ ] Allow seeing the amount of total used SSD and S3 space 
 - [ ] Fix critical crashy issues
 - [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
 - [ ] Monetization?
@@ -22,16 +20,31 @@
   - [ ] Implement 'archived' page
   - [ ] Implement 'restoring...' page
   - [ ] Implement actual restoration
-- [ ] Test on real server
-- [ ] Publish Crashy as the main domain
-- [ ] Enable SSL with crashy.net as the domain
-- [ ] Do some sufficient testing
-- [ ] Migrate new NEC client to original Crashy domain
-- [ ] Publish new NEC client
+- [ ] Implement and test method of transfering crashlogs from firebase to EC2/S3
+  - Write in the 'parallel uploading' section how we will actually do it
+- [ ] Do some sufficient testing on real server
 - [ ] Parallel uploading of everything:
-  - [ ] Update NEC to support crashy.net
+  - [ ] Research how to change crashy.net to point to the ec2 IP in namecheap
+  - [ ] Update crashy.net to new server
+    - [ ] Set `build.txt` to `release`
+    - [ ] Run `Upload Server`
+    - [ ] Update namecheap record 
+    - [ ] Run tests on release server
   - [ ] Update server to have SSL matching crashy.net and set build.txt to release
-  - [ ] Update firebase upload function to redirect to new server (the rest of the endpoints can be deleted) 
+    - [ ] Use certbot to generate PEM certificate https://certbot.eff.org/instructions?ws=other&os=ubuntufocal
+    - [ ] Convert PEM to PKCS12 using openssl `pkcs12 -export -in cert.pem -inkey key.pem -out keystore_release.p12 -name "CrashyCertificate"`
+    - [ ] Convert PKCS12 to JKS using keytool `keytool -importkeystore -srckeystore keystore_release.p12 -srcstoretype pkcs12 -destkeystore /etc/cert/crashy_release_keystore.jks"`
+    - [ ] Test https
+  - [ ] Update firebase upload function to redirect to new server
+    - In `compat/`, set `betaBuild` to `false`
+    - Change the name of `uploadCrashNew` to `uploadCrash`
+    - Upload: `firebase deploy --only functions`
+  - [ ] Download all existing crashlogs and upload them to the new server. 
+    - [ ] Old logs send directly to S3
+    - [ ] New logs send to SSD
+  - [ ] Update NEC to support crashy.net
+    - [ ] Upload branch newCrashy
+  - [ ] Once everything works - shut down old site and functions
 
 # Final goals:
 - Crashy pages served directly from the server, including the crash data itself with it, making response times very fast, and allowing previews of crashes in links

@@ -41,12 +41,8 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 
 export namespace CrashyServer {
-    // const localTesting = false;
-    // const domain = localTesting ? "localhost:80" : "beta.crashy.net";
-    // const http = localTesting ? "http" : "https"
     const origin = window.location.origin;
     const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
-    // const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
         // return TestVerifyErrorCrash;

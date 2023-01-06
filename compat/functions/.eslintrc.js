@@ -35,6 +35,7 @@ module.exports = {
         "indent": 0,
         "key-spacing": 0,
         "spaced-comment": 0,
-        "comma-spacing": 0
+        "comma-spacing": 0,
+        "quotes": 0
     },
 };

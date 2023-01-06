@@ -21,12 +21,11 @@ import kotlin.test.assertEquals
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class CrashLogApiTest  {
     private inline fun withBothClients(
-        ssl: Boolean = false,
         cache: Boolean = true,
         useGzip: Boolean = true, code: HttpTest.() -> Unit
     ) {
-        with(httpTest(ssl = ssl, cache, useGzip, ClientLibrary.OkHttp), code)
-        with(httpTest(ssl = ssl, cache, useGzip, ClientLibrary.Apache), code)
+        with(httpTest( cache, useGzip, ClientLibrary.OkHttp), code)
+        with(httpTest(cache, useGzip, ClientLibrary.Apache), code)
     }
 
     @Test

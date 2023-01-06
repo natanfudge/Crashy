@@ -5,9 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/compat/compat.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/journal" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/journal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/utils/HttpTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/utils/HttpTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,30 +115,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "TODO_SCOPE": "Crashy",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "17",
-    "ktor.last.update.timestamp": "1673023593458",
-    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/compat",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/react-scripts",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.scopes",
-    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;Crashy&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1673023593458&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/compat&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/react-scripts&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.scopes&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
@@ -147,7 +159,30 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.lint">
+  <component name="RunManager" selected="JUnit.All Server Tests">
+    <configuration name="CrashLogApiTest.Delete Crash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.api.CrashLogApiTest.Delete Crash&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="McpApiTest.get1_14_4" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -183,27 +218,6 @@
         <option name="taskNames">
           <list>
             <option value="runWindowsServerJar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="server [windowsServerJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="windowsServerJar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -256,9 +270,9 @@
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
+      <item itemvalue="Gradle.CrashLogApiTest.Delete Crash" />
       <item itemvalue="Gradle.McpApiTest.get1_14_4" />
       <item itemvalue="Gradle.server [runWindowsServerJar]" />
-      <item itemvalue="Gradle.server [windowsServerJar]" />
       <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
       <item itemvalue="JUnit.All Server Tests" />
@@ -272,11 +286,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.lint" />
+        <item itemvalue="Gradle.CrashLogApiTest.Delete Crash" />
         <item itemvalue="npm.serve" />
+        <item itemvalue="npm.lint" />
         <item itemvalue="Gradle.McpApiTest.get1_14_4" />
         <item itemvalue="Gradle.server [runWindowsServerJar]" />
-        <item itemvalue="Gradle.server [windowsServerJar]" />
       </list>
     </recent_temporary>
   </component>
@@ -327,7 +341,8 @@
       <workItem from="1673012293226" duration="451000" />
       <workItem from="1673012777003" duration="4796000" />
       <workItem from="1673022440093" duration="5492000" />
-      <workItem from="1673030403982" duration="2563000" />
+      <workItem from="1673030403982" duration="2827000" />
+      <workItem from="1673038776571" duration="3903000" />
     </task>
     <servers />
   </component>
@@ -348,11 +363,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt</url>
-          <line>74</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-jvm/5.0.0-alpha.10/977c9669c89dfc58db842014411d82609f0db05d/okhttp-jvm-5.0.0-alpha.10-sources.jar!/jvmMain/okhttp3/internal/cache/DiskLruCache.kt</url>
           <line>698</line>
@@ -382,11 +392,6 @@
           <url>file://$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/utils/HttpTest.kt</url>
           <line>104</line>
           <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt</url>
-          <line>57</line>
-          <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts</url>
