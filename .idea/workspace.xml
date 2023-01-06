@@ -5,14 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Upload_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Routing.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -270,7 +264,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.McpApiTest.get1_14_4" />
-        <item itemvalue="Gradle.Upload Server" />
         <item itemvalue="Gradle.server [runWindowsServerJar]" />
         <item itemvalue="Gradle.server [windowsServerJar]" />
         <item itemvalue="Jest.Nec Fabric crash log is parsed correctly" />
@@ -317,7 +310,9 @@
       <workItem from="1672634181703" duration="915000" />
       <workItem from="1672934504681" duration="7135000" />
       <workItem from="1672945008724" duration="958000" />
-      <workItem from="1672953697559" duration="3585000" />
+      <workItem from="1672953697559" duration="3675000" />
+      <workItem from="1672993570004" duration="1271000" />
+      <workItem from="1673003396818" duration="451000" />
     </task>
     <servers />
   </component>
