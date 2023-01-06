@@ -29,10 +29,10 @@ export function consumeCrashCode(){
 }
 
 export function goToUploadedCrash(crash: { id: string, code: string }) {
-    setCookieCrashCode(crash.code)
     const newUrl = new URL(window.location.href)
     newUrl.pathname = `/${crash.id}`
     window.history.pushState({id: crash.id}, '', newUrl)
+    setCookieCrashCode(crash.code)
     // Make the app update itself
     // @ts-ignore
     window.onpopstate()

@@ -26,10 +26,11 @@ class CrashlogApi(private val logs: CrashlogStorage) {
 
         val id = CrashlogId.generate()
         val key = DeletionKey.generate()
+        println("Uploading crash log with deletion key $key")
         val header = peekCrashHeader(request) ?: return UploadCrashResponse.MalformedCrashError
         logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, Instant.now(), header)))
 
-        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "$httpPrefix://$domain/${id.value}")
+        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "$httpPrefix://$domain/${id.value}?code=${key}")
     }
 
     private val httpPrefix = if(Crashy.build == Local) "http" else "https"

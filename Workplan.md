@@ -1,8 +1,6 @@
 
 # Workplan:
 
-- [ ] Migrate NEC to new api
-  - [ ] Make sure `?code=` works well 
 - [ ] Try and see if crash report contents can be searched via google
   - [ ] Solve 'Soft 404' https://search.google.com/search-console/inspect?resource_id=sc-domain%3Abeta.crashy.net&id=YfBWru4eMDMLpcQ5LzmEYw&alt_id=xoRjr_kqsY93Vsfrd9_lww
 - [ ] Introduce backwards compatibility for old NEC versions:
@@ -12,6 +10,10 @@
   - New crashes transfer to SSD
 - [ ] Start automatically evicting
 - [ ] Add logging
+  - [ ] Gather all of the relevant data of each request and log it in an organized structure
+  - [ ] Log in console
+  - [ ] Allow easy access of recent logs in the ec2 instance
+  - [ ] Allow viewing of logs by request 
 - [ ] Implement archive retrieval
 - [ ] Fix critical crashy issues
 - [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
@@ -26,6 +28,10 @@
 - [ ] Do some sufficient testing
 - [ ] Migrate new NEC client to original Crashy domain
 - [ ] Publish new NEC client
+- [ ] Parallel uploading of everything:
+  - [ ] Update NEC to support crashy.net
+  - [ ] Update server to have SSL matching crashy.net and set build.txt to release
+  - [ ] Update firebase upload function to redirect to new server (the rest of the endpoints can be deleted) 
 
 # Final goals:
 - Crashy pages served directly from the server, including the crash data itself with it, making response times very fast, and allowing previews of crashes in links

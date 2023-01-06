@@ -66,6 +66,8 @@ val brotliWindowsNatives = "com.aayushatharva.brotli4j:native-windows-x86_64:$br
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
+    implementation("io.ktor:ktor-server-http-redirect:${libs.versions.ktor.get()}")
+    implementation("io.ktor:ktor-server-http-redirect-jvm:2.2.1")
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)
 //    implementation("net.fabricmc:mapping-io:0.3.0")

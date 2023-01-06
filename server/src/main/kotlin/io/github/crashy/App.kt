@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.metrics.dropwizard.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.httpsredirect.*
 import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -77,6 +78,14 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
         configureRouting()
         configureHTTP()
         configreLogging()
+
+        if (Crashy.build != Crashy.Build.Local) {
+            install(HttpsRedirect) {
+                sslPort = 443
+                permanentRedirect = true
+            }
+        }
+
         install(DropwizardMetrics) {
             JmxReporter.forRegistry(registry)
                 .convertRatesTo(TimeUnit.SECONDS)

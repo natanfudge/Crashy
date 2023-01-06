@@ -25,7 +25,7 @@ const CodeLength = 6;
 
 
 export function DeletePopup() {
-    const storedCrashCode = React.useMemo(() => getCookieCrashCode(), []);
+    const storedCrashCode = getCookieCrashCode()
     return storedCrashCode === undefined ? <UserSuppliedCodeDeletePopup/> :
         <PreSuppliedCodeDeletePopup code={storedCrashCode}/>
 }

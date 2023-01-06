@@ -4,11 +4,13 @@ export interface Cookie {
     name: string
     value: string
     expires: Date
+    path?: string
     // path: string
 }
 
 export function setCookie(cookie: Cookie) {
-    document.cookie = `${cookie.name}=${encodeURIComponent(cookie.value)};expires=${cookie.expires.toUTCString()};path=${window.location.pathname}`
+    console.log("Setting cookie with pathname " + window.location.pathname, cookie)
+    document.cookie = `${cookie.name}=${encodeURIComponent(cookie.value)};expires=${cookie.expires.toUTCString()};path=${cookie.path ?? window.location.pathname}`
 }
 
 export function getCookieValue(name: string): string | undefined {

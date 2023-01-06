@@ -45,20 +45,21 @@ export namespace CrashyServer {
     // const domain = localTesting ? "localhost:80" : "beta.crashy.net";
     // const http = localTesting ? "http" : "https"
     const origin = window.location.origin;
+    const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
     // const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
         // return TestVerifyErrorCrash;
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
         if (document.title === "Invalid Crash Url") return GetCrashError.NoSuchCrashId;
-        const response = await httpGet({url: `${origin}/${id}/raw.txt`});
+        const response = await httpGet({url: `${crashyOrigin}/${id}/raw.txt`});
         switch (response.status) {
             case HttpStatusCode.OK:
                 return response.text();
             case HttpStatusCode.NotFound:
                 return GetCrashError.NoSuchCrashId
             default:
-                throw requestError(response)
+                throw await requestError(response)
         }
     }
 
@@ -68,7 +69,7 @@ export namespace CrashyServer {
     export async function deleteCrash(id: string, code: string): Promise<DeleteCrashResponse> {
         const response = await httpPost({
             body: JSON.stringify({id: id, key: code}),
-            url: `${origin}/deleteCrash`
+            url: `${crashyOrigin}/deleteCrash`
         })
         switch (response.status) {
             case HttpStatusCode.OK:
@@ -78,13 +79,13 @@ export namespace CrashyServer {
             case HttpStatusCode.NotFound:
                 return DeleteCrashResponse.NoSuchCrashId
             default:
-                throw requestError(response)
+                throw await requestError(response)
         }
     }
 
     export async function uploadCrash(compressedCrash: Uint8Array): Promise<UploadCrashResponse> {
         const response = await httpPost({
-                url: `${origin}/uploadCrash`,
+                url: `${crashyOrigin}/uploadCrash`,
                 body: compressedCrash,
                 headers: {"content-type": "text/plain", "content-encoding": "gzip"}
             }
@@ -99,32 +100,32 @@ export namespace CrashyServer {
             case HttpStatusCode.PayloadTooLarge:
                 return "Too Large"
             default:
-                throw requestError(response)
+                throw await requestError(response)
         }
     }
 
     export async function getTsrg(mcVersion: string): Promise<string> {
         const response = await httpGet({
-            url: `${origin}/getTsrg/${mcVersion}.tsrg`
+            url: `${crashyOrigin}/getTsrg/${mcVersion}.tsrg`
         })
         if (response.status != HttpStatusCode.OK) {
-            throw requestError(response)
+            throw await requestError(response)
         } else {
             return response.text()
         }
     }
     export async function getMcp(mcVersion: string, build: string): Promise<string> {
         const response = await httpGet({
-            url: `${origin}/getMcp/${mcVersion}/${build}.csv`
+            url: `${crashyOrigin}/getMcp/${mcVersion}/${build}.csv`
         })
         if (response.status != HttpStatusCode.OK) {
-            throw requestError(response)
+            throw await requestError(response)
         } else {
             return response.text()
         }
     }
 
-    function requestError(response: Response): Error {
-        return new Error(`Unexpected status code: ${response.status} (text = ${response.text()})`)
+    async function requestError(response: Response): Promise<Error> {
+        return new Error(`Unexpected status code: ${response.status} (text = ${await response.text()})`)
     }
 }
