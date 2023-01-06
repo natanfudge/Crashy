@@ -110,6 +110,8 @@ tasks {
 //        commandLine("npm", "run", "build")
     }
 
+    val resourcesDir = sourceSets.main.get().output.resourcesDir!!
+
 
     val syncClient = register<Sync>("syncClientResources") {
         group = "crashy setup"
@@ -132,6 +134,8 @@ tasks {
             // Don't include windows natives because we run on linux
             exclude(dependency(brotliWindowsNatives))
         }
+
+        from("build.txt")
     }
 
     // Windows jar for testing

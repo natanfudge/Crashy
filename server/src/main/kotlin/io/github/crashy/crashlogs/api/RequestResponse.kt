@@ -1,6 +1,6 @@
 package io.github.crashy.crashlogs.api
 
-import io.github.crashy.CrashyJson
+import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.CrashlogEntry
 import io.github.crashy.crashlogs.CrashlogId
 import io.github.crashy.crashlogs.DeletionKey
@@ -33,7 +33,7 @@ sealed interface UploadCrashResponse : StringResponse {
          */
         val crashyUrl: String
     ) : UploadCrashResponse {
-        override val string get() = CrashyJson.encodeToString(serializer(), this)
+        override val string get() = Crashy.json.encodeToString(serializer(), this)
         override val statusCode: HttpStatusCode get() = HttpStatusCode.OK
         override val contentType get() = ContentType.Application.Json
     }

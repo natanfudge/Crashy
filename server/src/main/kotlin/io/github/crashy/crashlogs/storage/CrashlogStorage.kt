@@ -8,7 +8,7 @@ import aws.sdk.kotlin.services.s3.model.NoSuchKey
 import aws.sdk.kotlin.services.s3.putObject
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.decodeToString
-import io.github.crashy.CrashyJson
+import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import java.nio.file.Path
 import kotlin.io.path.*
@@ -71,7 +71,7 @@ class CrashlogStorage private constructor(
             // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
             val body = s3Result.body ?: error("Could not get crashlog body")
 
-            val crashlog = CrashyJson.decodeFromString(CrashlogEntry.serializer(), body.decodeToString())
+            val crashlog = Crashy.json.decodeFromString(CrashlogEntry.serializer(), body.decodeToString())
             cache.store(id, crashlog)
             s3.deleteObject {
                 bucket = bucketName
@@ -97,7 +97,7 @@ class CrashlogStorage private constructor(
             s3.putObject {
                 bucket = bucketName
                 key = id.s3Key()
-                body = ByteStream.fromString(CrashyJson.encodeToString(CrashlogEntry.serializer(), log))
+                body = ByteStream.fromString(Crashy.json.encodeToString(CrashlogEntry.serializer(), log))
             }
         }
     }

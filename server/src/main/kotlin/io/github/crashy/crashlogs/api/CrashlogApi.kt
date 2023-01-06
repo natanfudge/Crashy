@@ -1,5 +1,7 @@
 package io.github.crashy.crashlogs.api
 
+import io.github.crashy.Crashy
+import io.github.crashy.Crashy.Build.*
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
@@ -27,7 +29,15 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         val header = peekCrashHeader(request) ?: return UploadCrashResponse.MalformedCrashError
         logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, Instant.now(), header)))
 
-        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "https://crashy.net/${id.value}")
+        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "$httpPrefix://$domain/${id.value}")
+    }
+
+    private val httpPrefix = if(Crashy.build == Local) "http" else "https"
+
+    private val domain = when(Crashy.build){
+        Local -> "localhost:80"
+        Beta -> "beta.crashy.net"
+        Release -> "crashy.net"
     }
 
     suspend fun getCrash(id: String): Response {

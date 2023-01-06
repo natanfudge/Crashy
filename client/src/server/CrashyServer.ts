@@ -41,16 +41,17 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 
 export namespace CrashyServer {
-    const localTesting = false;
-    const domain = localTesting ? "localhost:80" : "beta.crashy.net";
-    const http = localTesting ? "http" : "https"
-    const urlPrefix = `${http}://${domain}`
+    // const localTesting = false;
+    // const domain = localTesting ? "localhost:80" : "beta.crashy.net";
+    // const http = localTesting ? "http" : "https"
+    const origin = window.location.origin;
+    // const urlPrefix = `${http}://${domain}`
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
         // return TestVerifyErrorCrash;
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
         if (document.title === "Invalid Crash Url") return GetCrashError.NoSuchCrashId;
-        const response = await httpGet({url: `${urlPrefix}/${id}/raw.txt`});
+        const response = await httpGet({url: `${origin}/${id}/raw.txt`});
         switch (response.status) {
             case HttpStatusCode.OK:
                 return response.text();
@@ -67,7 +68,7 @@ export namespace CrashyServer {
     export async function deleteCrash(id: string, code: string): Promise<DeleteCrashResponse> {
         const response = await httpPost({
             body: JSON.stringify({id: id, key: code}),
-            url: `${urlPrefix}/deleteCrash`
+            url: `${origin}/deleteCrash`
         })
         switch (response.status) {
             case HttpStatusCode.OK:
@@ -82,9 +83,8 @@ export namespace CrashyServer {
     }
 
     export async function uploadCrash(compressedCrash: Uint8Array): Promise<UploadCrashResponse> {
-
         const response = await httpPost({
-                url: `${urlPrefix}/uploadCrash`,
+                url: `${origin}/uploadCrash`,
                 body: compressedCrash,
                 headers: {"content-type": "text/plain", "content-encoding": "gzip"}
             }
@@ -105,7 +105,7 @@ export namespace CrashyServer {
 
     export async function getTsrg(mcVersion: string): Promise<string> {
         const response = await httpGet({
-            url: `${urlPrefix}/getTsrg/${mcVersion}.tsrg`
+            url: `${origin}/getTsrg/${mcVersion}.tsrg`
         })
         if (response.status != HttpStatusCode.OK) {
             throw requestError(response)
@@ -115,7 +115,7 @@ export namespace CrashyServer {
     }
     export async function getMcp(mcVersion: string, build: string): Promise<string> {
         const response = await httpGet({
-            url: `${urlPrefix}/getMcp/${mcVersion}/${build}.csv`
+            url: `${origin}/getMcp/${mcVersion}/${build}.csv`
         })
         if (response.status != HttpStatusCode.OK) {
             throw requestError(response)

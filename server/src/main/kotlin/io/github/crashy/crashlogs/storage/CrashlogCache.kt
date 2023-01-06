@@ -1,7 +1,7 @@
 package io.github.crashy.crashlogs.storage
 
-import io.github.crashy.CrashyJson
-import io.github.crashy.CrashyLogger
+
+import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
@@ -101,7 +101,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
             val deleted = locationOfLastAccessDay(id, oldLastAccessDay).deleteIfExists()
             if (!deleted) {
                 locationOfLastAccessDay(id, today).deleteIfExists()
-                CrashyLogger.warn("Could not find lastAccessDay of $id to delete.")
+                Crashy.logger.warn("Could not find lastAccessDay of $id to delete.")
             }
             storeLastAccessDay(id, today)
         }
@@ -128,7 +128,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         val logFile = parentDir.compressedLogFile()
         val metadataFile = parentDir.crashMetadataFile()
         compressedLog.writeToFile(logFile)
-        metadataFile.writeText(CrashyJson.encodeToString(CrashlogMetadata.serializer(), metadata))
+        metadataFile.writeText(Crashy.json.encodeToString(CrashlogMetadata.serializer(), metadata))
     }
 
     private fun CrashlogEntry.Companion.fromCrashesDir(underId: CrashlogId): CrashlogEntry {
@@ -169,5 +169,5 @@ private fun Path.compressedLogFile() = resolve("crash.br")
 private fun Path.crashMetadataFile() = resolve("meta.json")
 
 private fun Path.readMetadataFromCrashEntryFolder(): CrashlogMetadata {
-    return CrashyJson.decodeFromString(CrashlogMetadata.serializer(), crashMetadataFile().readText())
+    return Crashy.json.decodeFromString(CrashlogMetadata.serializer(), crashMetadataFile().readText())
 }

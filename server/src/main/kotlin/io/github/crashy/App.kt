@@ -9,6 +9,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.metrics.dropwizard.*
 import io.ktor.server.netty.*
 import kotlinx.serialization.json.Json
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.nio.file.Paths
@@ -18,13 +19,34 @@ import kotlin.io.path.exists
 
 object App
 
-val CrashyJson = Json
-val CrashyLogger = LoggerFactory.getLogger(App::class.java)
+object Crashy {
+    val json = Json
+    val logger: Logger = LoggerFactory.getLogger(App::class.java)
+
+    //TODO: update build.txt to release
+    val build = readBuild()
+    private fun readBuild(): Build {
+        // Build file is only included in the jar uploaded to EC2
+        val buildFile = Crashy::class.java.getResource("/build.txt") ?: return Build.Local
+        return when (val build = buildFile.readText()) {
+            "beta" -> Build.Beta
+            "release" -> Build.Release
+            else -> error("Unexpected crashy build: $build")
+        }
+    }
+
+    enum class Build {
+        Local, Beta, Release
+    }
+}
+
+
 fun main() {
     Brotli4jLoader.ensureAvailability()
-    copyResourcesForServing()
+    copyStaticResourcesForServing()
     embeddedServer(Netty, environment = createAppEnvironment()).start(wait = true)
 }
+
 private val realServerKeystoreFile = Paths.get("/etc/cert/crashy_keystore.jks")
 private val isRealServer = realServerKeystoreFile.exists()
 
@@ -39,7 +61,7 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
         if (keyStore != null) {
             sslConnector(
                 keyStore = keyStore,
-                keyAlias = if(isRealServer) "CrashyCertificate" else "sampleAlias",
+                keyAlias = if (isRealServer) "CrashyCertificate" else "sampleAlias",
                 keyStorePassword = { keystorePassword },
                 privateKeyPassword = { keystorePassword }
             ) {
@@ -66,7 +88,7 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
 }
 
 private fun getKeystorePassword(): CharArray? {
-    val password = if(isRealServer) "/letsencrypt_keystore_password.txt" else "/fake_keystore_password.txt"
+    val password = if (isRealServer) "/letsencrypt_keystore_password.txt" else "/fake_keystore_password.txt"
     return App::class.java.getResourceAsStream(password)
         ?.readAllBytes()?.toString(Charset.defaultCharset())?.toCharArray()
 }

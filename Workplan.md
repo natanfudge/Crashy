@@ -1,11 +1,10 @@
 
 # Workplan:
-- [ ] Try and see if crash report contents can be searched via google
-  - [ ] Solve 'Soft 404' https://search.google.com/search-console/inspect?resource_id=sc-domain%3Abeta.crashy.net&id=YfBWru4eMDMLpcQ5LzmEYw&alt_id=xoRjr_kqsY93Vsfrd9_lww
-  - [ ] If not - make it so!
+
 - [ ] Migrate NEC to new api
   - [ ] Make sure `?code=` works well 
-- [ ] See what we can do to make pages appear in google search
+- [ ] Try and see if crash report contents can be searched via google
+  - [ ] Solve 'Soft 404' https://search.google.com/search-console/inspect?resource_id=sc-domain%3Abeta.crashy.net&id=YfBWru4eMDMLpcQ5LzmEYw&alt_id=xoRjr_kqsY93Vsfrd9_lww
 - [ ] Introduce backwards compatibility for old NEC versions:
   - Modify the old firebase uploadCrash endpoint to simply delegate the upload to the EC2 server. 
 - [ ] Migrate all crashes from firebase to EC2 
