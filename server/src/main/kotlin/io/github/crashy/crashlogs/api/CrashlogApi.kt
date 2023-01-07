@@ -1,12 +1,13 @@
 package io.github.crashy.crashlogs.api
 
 import io.github.crashy.Crashy
-import io.github.crashy.Crashy.Build.*
+import io.github.crashy.Crashy.Build.Local
+import io.github.crashy.Crashy.StaticDir
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import io.github.crashy.crashlogs.storage.PeekCrashlogResult
-import io.github.crashy.staticDir
+import io.github.crashy.utils.log.LogContext
 import io.github.crashy.utils.replaceSequentially
 import io.ktor.http.*
 import java.time.Instant
@@ -18,22 +19,31 @@ private const val MaxCrashSize = 100_000
 
 class CrashlogApi(private val logs: CrashlogStorage) {
     private val uploadLimiter = UploadLimiter()
+
+    context(LogContext)
     fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashResponse {
         if (request.size > MaxCrashSize) return UploadCrashResponse.CrashTooLargeError
         if (!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashResponse.RateLimitedError
 
-        println("Accepted size: ${request.size}")
+        logData("Accepted size") { request.size }
 
         val id = CrashlogId.generate()
         val key = DeletionKey.generate()
-        println("Uploading crash log with deletion key $key")
+        logData("Generated ID") { id }
+        logData("Deletion Key") { key }
+
         val header = peekCrashHeader(request) ?: return UploadCrashResponse.MalformedCrashError
         logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, Instant.now(), header)))
 
-        return UploadCrashResponse.Success(id, deletionKey = key, crashyUrl = "$httpPrefix://${Crashy.domain}/${id.value}?code=${key}")
+        return UploadCrashResponse.Success(
+            id,
+            deletionKey = key,
+            crashyUrl = "$httpPrefix://${Crashy.domain}/${id.value}?code=${key}"
+        )
+
     }
 
-    private val httpPrefix = if(Crashy.build == Local) "http" else "https"
+    private val httpPrefix = if (Crashy.build == Local) "http" else "https"
 
     suspend fun getCrash(id: String): Response {
         val logId = CrashlogId.parse(id).getOrElse { return textResponse("Invalid id", HttpStatusCode.NotFound) }
@@ -44,7 +54,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         }
     }
 
-    private val htmlTemplate = staticDir.resolve("index.html").readText()
+    private val htmlTemplate = StaticDir.resolve("index.html").readText()
     private val notFound = Triple("Invalid Crash Url", "Looks like there's nothing here", HttpStatusCode.NotFound)
     suspend fun getCrashPage(id: String): Response {
         val logId = CrashlogId.parse(id)
@@ -68,7 +78,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         return htmlResponse(
             htmlTemplate.replaceSequentially(
                 listOf(
-                    "{prefetch}" to if(code == HttpStatusCode.OK) "rel=\"prefetch\" href=\"$id/raw.txt\"" else "",
+                    "{prefetch}" to if (code == HttpStatusCode.OK) "rel=\"prefetch\" href=\"$id/raw.txt\"" else "",
                     "{DESCRIPTION}" to description,
                     "{TITLE}" to title
                 )

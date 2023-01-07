@@ -9,19 +9,6 @@ import org.slf4j.event.Level
 fun Application.configreLogging() {
     install(CallLogging) {
         level = Level.INFO
-
-
-//        format {call ->
-//            val defaultLog = when (val status = call.response.status() ?: "Unhandled") {
-//                HttpStatusCode.Found -> "${colored(status as HttpStatusCode)}: " +
-//                        "${call.request.toLogStringWithColors()} -> ${call.response.headers[HttpHeaders.Location]}"
-//                "Unhandled" -> "${colored(status)}: ${call.request.toLogStringWithColors()}"
-//                else -> "${colored(status as HttpStatusCode)}: ${call.request.toLogStringWithColors()}"
-//            }
-//
-//            "Port"
-//
-//        }
     }
 }
 

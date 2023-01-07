@@ -3,7 +3,6 @@ package io.github.crashy.crashlogs.api
 import io.github.crashy.mappings.MappingsProvider
 import io.ktor.http.*
 
-//typealias GetTsrgRequest = String
 
 sealed interface GetMappingsResponse : Response {
     class Success(override val bytes: ByteArray) : GetMappingsResponse, Response by textAsBytesResponse(bytes){

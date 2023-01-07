@@ -19,6 +19,7 @@ object UUIDSerializer : KSerializer<UUID> {
 
     override fun serialize(encoder: Encoder, value: UUID) = encoder.encodeString(value.toString())
 }
+
 object InstantSerializer : KSerializer<Instant> {
     override val descriptor: SerialDescriptor = Long.serializer().descriptor
 
@@ -36,7 +37,7 @@ fun ByteArray.decompressGzip(): ByteArray {
 
 private val brotliInitialized = AtomicBoolean(false)
 fun ByteArray.decompressBrotli(): ByteArray {
-    if(brotliInitialized.compareAndSet(false, true)){
+    if (brotliInitialized.compareAndSet(false, true)) {
         Brotli4jLoader.ensureAvailability()
     }
     return com.aayushatharva.brotli4j.decoder.Decoder.decompress(this).decompressedData

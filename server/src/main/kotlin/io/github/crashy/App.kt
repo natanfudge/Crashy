@@ -5,14 +5,13 @@ import com.codahale.metrics.jmx.JmxReporter
 import io.github.crashy.Crashy.Build.*
 import io.github.crashy.plugins.configreLogging
 import io.github.crashy.plugins.configureHTTP
+import io.github.crashy.routing.configureRouting
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.engine.*
 import io.ktor.server.metrics.dropwizard.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.httpsredirect.*
-import kotlinx.serialization.json.Json
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.nio.file.Paths
 import java.security.KeyStore
@@ -21,36 +20,6 @@ import kotlin.io.path.exists
 
 object App
 
-object Crashy {
-    val json = Json
-    val logger: Logger = LoggerFactory.getLogger(App::class.java)
-
-    //TODO: update build.txt to release
-    val build = readBuild()
-
-    fun isLocal() = build == Local
-
-    val domain = when(build){
-        Local -> "localhost:80"
-        Beta -> "beta.crashy.net"
-        Release -> "crashy.net"
-    }
-
-    private fun readBuild(): Build {
-        // Build file is only included in the jar uploaded to EC2
-        val buildFile = Crashy::class.java.getResource("/build.txt") ?: return Local
-        return when (val build = buildFile.readText()) {
-            "beta" -> Beta
-            "release" -> Release
-            else -> error("Unexpected crashy build: $build")
-        }
-    }
-
-    enum class Build {
-        Local, Beta, Release
-    }
-}
-
 
 fun main() {
     Brotli4jLoader.ensureAvailability()
@@ -58,33 +27,12 @@ fun main() {
     embeddedServer(Netty, environment = createAppEnvironment()).start(wait = true)
 }
 
-private val keyStoreName = if (Crashy.build == Release) "crashy_release_keystore" else "crashy_keystore"
-
-private val realServerKeystoreFile = Paths.get("/etc/cert/$keyStoreName.jks")
-private val isRealServer = realServerKeystoreFile.exists()
-
 private fun createAppEnvironment() = applicationEngineEnvironment {
     connector {
         port = 80
         host = "0.0.0.0"
     }
-    val keystorePassword = getKeystorePassword()
-    if (keystorePassword != null) {
-        val keyStore = getKeystore(keystorePassword)
-        if (keyStore != null) {
-            sslConnector(
-                keyStore = keyStore,
-                keyAlias = if (isRealServer) "CrashyCertificate" else "sampleAlias",
-                keyStorePassword = { keystorePassword },
-                privateKeyPassword = { keystorePassword }
-            ) {
-                port = 443
-                host = "0.0.0.0"
-            }
-        }
-    } else {
-        println("Warning: Could not find Keystore password, SSL will not be enabled.")
-    }
+    configureSSL()
 
     module {
         configureRouting()
@@ -105,22 +53,20 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
                 .build()
                 .start()
         }
+
+        install(Authentication) {
+            form("auth-form") {
+                userParamName = "username"
+                passwordParamName = "password"
+                validate { credentials ->
+                    if (credentials.name == "jetbrains" && credentials.password == "foobar") {
+                        UserIdPrincipal(credentials.name)
+                    } else {
+                        null
+                    }
+                }
+            }
+        }
     }
 }
 
-private fun getKeystorePassword(): CharArray? {
-    val password = if (isRealServer) "/letsencrypt_keystore_password.txt" else "/fake_keystore_password.txt"
-    return App::class.java.getResourceAsStream(password)
-        ?.readAllBytes()?.toString(Charset.defaultCharset())?.toCharArray()
-}
-
-private fun getKeystore(password: CharArray): KeyStore? {
-    if (realServerKeystoreFile.exists()) {
-        return KeyStore.getInstance(realServerKeystoreFile.toFile(), password)
-    } else {
-        val keystoreFile = App::class.java.getResourceAsStream("/keystore.jks") ?: return null
-        val keystore = KeyStore.getInstance(KeyStore.getDefaultType())
-        keystore.load(keystoreFile, password)
-        return keystore
-    }
-}

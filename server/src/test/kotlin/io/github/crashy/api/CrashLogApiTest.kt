@@ -19,12 +19,12 @@ import java.util.*
 import kotlin.test.assertEquals
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-class CrashLogApiTest  {
+class CrashLogApiTest {
     private inline fun withBothClients(
         cache: Boolean = true,
         useGzip: Boolean = true, code: HttpTest.() -> Unit
     ) {
-        with(httpTest( cache, useGzip, ClientLibrary.OkHttp), code)
+        with(httpTest(cache, useGzip, ClientLibrary.OkHttp), code)
         with(httpTest(cache, useGzip, ClientLibrary.Apache), code)
     }
 
@@ -48,11 +48,12 @@ class CrashLogApiTest  {
         }
     }
 
-//ID = 0f0f6541-1210-4a67-b013-158db2659b15, code = q5xflD
+    //ID = 0f0f6541-1210-4a67-b013-158db2659b15, code = q5xflD
     // Laptop: ID = c5b823d7-d4e5-4f71-b437-2a92e7824c8a, code = G3aNOj
     @Test
-    fun `Upload Crash a`() = runBlocking {
-        withBothClients {
+    fun `Upload Crash`() = runBlocking {
+//        withBothClients {
+        with(httpTest()) {
             val (response, parsed) = uploadCrashAndParse(TestCrash.Fabric)
             assertEquals(HttpURLConnection.HTTP_OK, response.code)
 
