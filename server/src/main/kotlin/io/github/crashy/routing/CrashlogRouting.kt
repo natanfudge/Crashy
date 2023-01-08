@@ -4,6 +4,8 @@ import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.UncompressedLog
 import io.github.crashy.crashlogs.api.CrashlogApi
 import io.github.crashy.crashlogs.api.DeleteCrashlogRequest
+import io.github.crashy.crashlogs.api.GetCrashRequest
+import io.github.crashy.utils.decompressGzip
 import io.github.crashy.utils.log.CrashyLogger
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -47,22 +49,22 @@ fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
     }
 
     // Manually respond these files so the /{id} wildcard doesn't take over these endpoints
-    route("favicon.svg") {
+    crashyRoute("favicon.svg") {
         call.respondFile(Crashy.StaticDir.resolve("favicon.svg").toFile())
     }
-    route("manifest.json") {
+    crashyRoute("manifest.json") {
         call.respondFile(Crashy.StaticDir.resolve("manifest.json").toFile())
     }
 
-    route("/") {
+    crashyRoute("/") {
         respond(crashlogs.getLandingPage())
     }
 
-    route("/{id}") {
+    crashyRoute("/{id}") {
         val id = call.parameters["id"]!!
         respond(crashlogs.getCrashPage(id))
     }
-    route("/{id}/raw.txt", "/{id}/raw") {
+    crashyRoute("/{id}/raw.txt", "/{id}/raw") {
         val id = call.parameters["id"]!!
         respond(crashlogs.getCrash(id))
     }

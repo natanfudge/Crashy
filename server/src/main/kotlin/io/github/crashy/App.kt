@@ -35,9 +35,20 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
     configureSSL()
 
     module {
-        configureRouting()
-        configureHTTP()
-        configreLogging()
+        install(Authentication) {
+            form("auth-form") {
+                userParamName = "username"
+                passwordParamName = "password"
+                validate { credentials ->
+                    if (credentials.name == "jetbrains" && credentials.password == "foobar") {
+                        UserIdPrincipal(credentials.name)
+                    } else {
+                        null
+                    }
+                }
+                challenge("/login")
+            }
+        }
 
         if (Crashy.build != Local) {
             install(HttpsRedirect) {
@@ -53,20 +64,12 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
                 .build()
                 .start()
         }
+        configureHTTP()
+        configreLogging()
 
-        install(Authentication) {
-            form("auth-form") {
-                userParamName = "username"
-                passwordParamName = "password"
-                validate { credentials ->
-                    if (credentials.name == "jetbrains" && credentials.password == "foobar") {
-                        UserIdPrincipal(credentials.name)
-                    } else {
-                        null
-                    }
-                }
-            }
-        }
+        configureRouting()
+
+
     }
 }
 

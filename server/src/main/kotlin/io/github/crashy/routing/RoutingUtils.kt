@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 
 
-private inline fun <reified R : Any> Routing.crashyPost(
+inline fun <reified R : Any> Routing.crashyPost(
     path: String,
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>) (R) -> Unit
 ) {
@@ -26,7 +26,7 @@ private inline fun <reified R : Any> Routing.crashyPost(
     }
 }
 
-private inline fun Routing.route(
+ inline fun Routing.crashyRoute(
     vararg routes: String,
     crossinline body: suspend PipelineContext<Unit, ApplicationCall>.() -> Unit
 ) {

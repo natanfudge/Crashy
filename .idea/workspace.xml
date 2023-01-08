@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="" />
+    <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Routing.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -144,7 +153,7 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Upload Server">
+  <component name="RunManager" selected="Kotlin.Run Server">
     <configuration name="CrashLogApiTest.Get Crash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -348,6 +357,8 @@
       <workItem from="1673112694475" duration="319000" />
       <workItem from="1673115379413" duration="796000" />
       <workItem from="1673122422173" duration="597000" />
+      <workItem from="1673127026043" duration="10000" />
+      <workItem from="1673151944992" duration="2079000" />
     </task>
     <servers />
   </component>
@@ -398,6 +409,36 @@
           <line>104</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
+          <line>27</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/AuthenticationContext.kt</url>
+          <line>104</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
+          <line>46</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
+          <line>48</line>
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
+          <line>47</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
+          <line>60</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts</url>
           <line>20</line>
@@ -416,9 +457,6 @@
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
-      <configuration name="JetRunConfigurationType">
-        <watch expression="Ansi.ansi().fg(color).a(this).reset().toString()" />
-      </configuration>
       <configuration name="JavaScriptTestRunnerJest">
         <watch expression="current()" />
       </configuration>

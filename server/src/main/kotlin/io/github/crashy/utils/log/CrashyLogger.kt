@@ -3,7 +3,6 @@ package io.github.crashy.utils.log
 import io.github.crashy.Crashy
 import io.github.crashy.utils.log.LogContext.Severity.*
 import org.fusesource.jansi.Ansi
-import org.fusesource.jansi.AnsiConsole
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -40,6 +39,7 @@ object CrashyLogger {
 }
 
 private fun LogResult.renderToString(colored: Boolean): String {
+    if (logs.isEmpty()) return ""
     fun Any.colored(color: Ansi.Color?): String {
         if (!colored || color == null) return toString()
         return Ansi.ansi().fg(color).a(this).reset().toString()
@@ -101,17 +101,22 @@ private fun LogResult.renderToString(colored: Boolean): String {
 
 object ConsoleLogRenderer : LogRenderer {
     override fun render(log: LogResult) {
-        println(log.renderToString(colored = true))
+        val rendered = log.renderToString(colored = true)
+        if (rendered != "") println(rendered)
     }
 }
 
 //TODO: evict old logs (maybe automatically delete over 30 days old)
 object FileLogRenderer : LogRenderer {
-    val logDir = Crashy.HomeDir.resolve("logs").resolve(Instant.now().systemDate().replace("/",".")).createDirectories()
+    val logDir =
+        Crashy.HomeDir.resolve("logs").resolve(Instant.now().systemDate().replace("/", ".")).createDirectories()
+
     override fun render(log: LogResult) {
+        val rendered = log.renderToString(colored = false)
+        if (rendered == "") return
         val logFile = logDir.resolve(log.name.replace("/", "") + ".log")
         if (!logFile.exists()) logFile.createFile()
-        logFile.appendText(log.renderToString(colored = false) + "\n")
+        logFile.appendText(rendered + "\n")
     }
 }
 

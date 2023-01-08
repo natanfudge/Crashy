@@ -69,6 +69,7 @@ dependencies {
     implementation("io.ktor:ktor-server-http-redirect:${libs.versions.ktor.get()}")
     implementation("org.fusesource.jansi:jansi:2.4.0")
     implementation("io.ktor:ktor-server-auth:${libs.versions.ktor.get()}")
+    implementation("io.ktor:ktor-server-html-builder:${libs.versions.ktor.get()}")
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)
 //    implementation("net.fabricmc:mapping-io:0.3.0")
