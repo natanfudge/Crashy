@@ -28,10 +28,6 @@ fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
 
         val uncompressed = if (isGzipContentEncoding) it.decompressGzip() else it
 
-        CrashyLogger.startCall("foo") {
-            logData("Compression") { isGzipContentEncoding }
-        }
-
         respond(crashlogs.uploadCrash(UncompressedLog(uncompressed), ip = call.request.origin.remoteAddress))
     }
     json<DeleteCrashlogRequest>("/deleteCrash") {

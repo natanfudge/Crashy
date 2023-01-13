@@ -1,6 +1,8 @@
 package io.github.crashy.crashlogs.api
 
+import io.github.crashy.Crashy
 import io.ktor.http.*
+import io.ktor.server.http.*
 
 enum class Encoding {
     Brotli, None
@@ -46,4 +48,9 @@ fun htmlResponse(string: String, code: HttpStatusCode) = object : StringResponse
     override val statusCode: HttpStatusCode = code
     override val string = string
     override val contentType: ContentType = ContentType.Text.Html
+//    override val extraHeaders: Map<String, String>
+//        get() = mapOf(
+//            "Last-Modified" to Crashy.ServerStartTime.toHttpDateString(),
+//            "Cache-Control" to "public, max-age=604800"
+//        )
 }

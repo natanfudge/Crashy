@@ -233,7 +233,7 @@ test("Crash that was found to be badly parsed is parsed correctly", () => {
     const report = parseCrashReport(TestBuggyParseCrash)
     expect(report.sections.length).toEqual(5)
     const enriched = enrichCrashReport(report);
-    expect(enriched.context.time).toEqual(new Date(2021, 10, 3, 12, 22))
+    expect(enriched.context.time).toEqual(new Date(2021, 9, 3, 12, 22))
 })
 
 test("Barebones Fabric crash is parsed correctly", () => {
@@ -254,7 +254,7 @@ test("VerifyError crash is parsed correctly", () => {
 
     const enriched = enrichCrashReport(report);
     //2021-10-25, 10:07 a.m.
-    expect(enriched.context.time).toEqual(new Date(2021,10,25,10,7))
+    expect(enriched.context.time).toEqual(new Date(2021,9,25,10,7))
     const details = enriched.stackTrace.details!;
     expect(details.location).toEqual({
         methodSignature: "net/minecraft/class_5944.<init>(Lnet/minecraft/class_5912;Ljava/lang/String;Lnet/minecraft/class_293;)V",
@@ -288,7 +288,7 @@ test("Time is parsed correctly in edge case", () => {
     const report = parseCrashReport(BrokenTimeCrash);
     const enriched = enrichCrashReport(report);
     expect(enriched.context.time.getFullYear()).toEqual(2021);
-    expect(enriched.context.time.getMonth()).toEqual(10);
+    expect(enriched.context.time.getMonth()).toEqual(9);
     expect(enriched.context.time.getDate()).toEqual(21);
 })
 

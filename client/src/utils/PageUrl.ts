@@ -1,9 +1,5 @@
-
-import {parsePageQuery, serializePageArgs, updateUrl} from "./PageUrlImpl";
+import {parsePageQuery} from "./PageUrlImpl";
 import {setCookieCrashCode} from "./Cookies";
-import {TsObject} from "../fudge-commons/types/Basic";
-import {useEffect, useState} from "react";
-
 
 
 function parsePageCrashId(): string | undefined {
@@ -11,7 +7,8 @@ function parsePageCrashId(): string | undefined {
     if (pathName.length <= 1) return undefined;
     else return pathName.slice(1);
 }
-export function getUrlCrashId(): string | undefined{
+
+export function getUrlCrashId(): string | undefined {
     return parsePageCrashId()
 }
 
@@ -19,11 +16,14 @@ export function getUrlCrashId(): string | undefined{
 // The way do it is by appending ?code=<code> to the url.
 // The problem is that we don't then want the users to accidentally share that code when they sure the url with each other.
 // So we save the crash code, and refresh the url without the ?code.
-export function consumeCrashCode(){
+export function consumeCrashCode() {
     const code = parsePageQuery()?.["code"]
     // A valid code is 6 characters
-    if(code != null && code.length === 6){
-        window.location.search = ""
+    if (code != null && code.length === 6) {
+        const newUrl = new URL(window.location.href)
+        newUrl.search = ""
+        window.history.replaceState({}, "", newUrl)
+        // window.location.search = ""
         setCookieCrashCode(code)
     }
 }
@@ -37,7 +37,6 @@ export function goToUploadedCrash(crash: { id: string, code: string }) {
     // @ts-ignore
     window.onpopstate()
 }
-
 
 
 // const listeners : ((args: PageArgs) => void)[] = []

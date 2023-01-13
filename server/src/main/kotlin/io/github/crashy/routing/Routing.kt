@@ -1,18 +1,30 @@
 package io.github.crashy.routing
 
+import io.github.crashy.auth.routeAuthentication
 import io.github.crashy.crashlogs.api.CrashlogApi
 import io.github.crashy.crashlogs.api.MappingsApi
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
 import io.github.crashy.mappings.MappingsProvider
+import io.github.crashy.utils.log.CrashyLogger
+import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.html.*
+import io.ktor.server.plugins.cachingheaders.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.runBlocking
-import kotlinx.html.*
+import kotlinx.coroutines.*
 import java.nio.file.Paths
+import java.time.Instant
+import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.io.path.exists
+import kotlin.io.path.readText
+
+object Routes {
+    const val Logs = "/logs"
+}
 
 fun Application.configureRouting() {
     val crashyDir = Paths.get(System.getProperty("user.home"), ".crashy")
@@ -26,6 +38,7 @@ fun Application.configureRouting() {
     val mappingsProvider = MappingsProvider(crashyDir.resolve("mappings"))
 
     val crashlogs = CrashlogApi(logStorage)
+    scheduleTasks(logStorage)
     val mappings = MappingsApi(mappingsProvider)
 
     routing {
@@ -33,42 +46,44 @@ fun Application.configureRouting() {
         crashlogEndpoints(crashlogs)
         mappingEndpoints(mappings)
 
-        authenticate("auth-form"){
-            get("/logs"){
-                call.respondText("Secret shit")
+        routeAuthentication()
+
+        authenticate("auth-session") {
+            get(Routes.Logs) {
+                call.respondText(getLogs(call))
             }
         }
 
-        get("/login") {
-            call.respondHtml {
-                body {
-                    form(method = FormMethod.post, action = "/logs") {
-                        label {
-                            +"Username:"
-                            textInput(name = "user")
-                        }
-                        label {
-                            +"Password:"
-                            passwordInput(name = "password")
-                        }
-                        submitInput()
-                    }
-                }
-            }
-        }
 
 
     }
 }
 
-private fun Routing.mappingEndpoints(mappings: MappingsApi) {
-    crashyRoute("/getTsrg/{mcVersion}.tsrg") {
-        val mcVersion = call.parameters["mcVersion"]!!
-        respond(mappings.getTsrg(mcVersion))
-    }
-    crashyRoute("/getMcp/{mcVersion}/{build}.csv") {
-        val mcVersion = call.parameters["mcVersion"]!!
-        val build = call.parameters["build"]!!.toInt()
-        respond(mappings.getMcp(mcVersion, build))
+private fun getLogs(call: ApplicationCall): String {
+    val endpoint = call.parameters["e"] ?: return "Missing endpoint parameter"
+    val logs = CrashyLogger.logsOfEndpoint(endpoint)
+    if (!logs.exists()) return "No such endpoint '$endpoint'"
+    if (logs.parent != CrashyLogger.todayLogDir) return "Woah there son"
+    return logs.readText()
+}
+
+
+@OptIn(DelicateCoroutinesApi::class)
+private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
+    val timer = Timer()
+    // Runs once every day
+    timer.schedule(Day) {
+        GlobalScope.launch(Dispatchers.IO) {
+            CrashyLogger.startCall("scheduleTasks") {
+                logData("Schedule Time") { Instant.now() }
+                CrashyLogger.deleteOldLogs()
+                crashlogStorage.evictOld()
+            }
+        }
+    }.apply {
+        // Run once at startup
+        run()
     }
 }
+
+private const val Day = 1000 * 60 * 60 * 24L

@@ -10,6 +10,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.pipeline.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -20,35 +22,38 @@ inline fun <reified R : Any> Routing.crashyPost(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>) (R) -> Unit
 ) {
     post<R>(path) { body ->
-        CrashyLogger.startCall(path) { logContext ->
+        CrashyLogger.startCallWithContextAsParam(path) { logContext ->
             handler(logContext, this@post, body)
         }
     }
 }
 
- inline fun Routing.crashyRoute(
+inline fun Routing.crashyRoute(
     vararg routes: String,
-    crossinline body: suspend PipelineContext<Unit, ApplicationCall>.() -> Unit
+    crossinline body: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>) () -> Unit
 ) {
     for (route in routes) {
         get(route) {
-            CrashyLogger.startCall(route){
-                body()
+            CrashyLogger.startCallWithContextAsParam(route) {
+                body(it, this@get)
             }
         }
     }
 }
 
 @OptIn(ExperimentalSerializationApi::class)
- inline fun <reified T : Any> Routing.json(
+inline fun <reified T : Any> Routing.json(
     path: String,
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>)(T) -> Unit
 ) {
     post(path) {
-        CrashyLogger.startCall(path) { log ->
+        CrashyLogger.startCallWithContextAsParam(path) { log ->
             call.receiveStream().use { body ->
                 try {
-                    handler(log, this@post, Json.decodeFromStream(body))
+                    val decoded = withContext<T>(Dispatchers.IO) {
+                        Json.decodeFromStream(body)
+                    }
+                    handler(log, this@post, decoded)
                 } catch (e: IllegalArgumentException) {
                     call.respondText("Error deserializing body", status = HttpStatusCode.UnsupportedMediaType)
                 }
@@ -58,7 +63,7 @@ inline fun <reified R : Any> Routing.crashyPost(
 }
 
 
- suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Response) {
+suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Response) {
     when (response.encoding) {
         Encoding.Brotli -> call.response.header(HttpHeaders.ContentEncoding, "br")
         Encoding.None -> {}
@@ -75,7 +80,7 @@ inline fun <reified R : Any> Routing.crashyPost(
 }
 
 
- fun PipelineContext<Unit, ApplicationCall>.addCorsHeader() {
+fun PipelineContext<Unit, ApplicationCall>.addCorsHeader() {
     // This makes it easier to test out the api in development since the React app runs in port 3000
     call.response.header("Access-Control-Allow-Origin", "*")
 }

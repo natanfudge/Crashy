@@ -3,6 +3,7 @@ package io.github.crashy.crashlogs.storage
 
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
+import io.github.crashy.utils.log.LogContext
 import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
 import kotlin.io.path.*
@@ -14,9 +15,6 @@ import kotlin.io.path.*
 
 
 class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
-    private val maxCrashlogCacheSize = 100_000 // 100
-
-    //    private val cache = DiskLruCache(FileSystem.SYSTEM,directory = parentDir.toOkioPath(), appVersion = 1, valueCount = 2, maxSize =  )
     init {
         require(parentDir.exists())
     }
@@ -70,20 +68,21 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         locationOfLastAccessDay(id, lastAccessDay).deleteExisting()
     }
 
+    context(LogContext)
     suspend fun evictOld(onEvicted: suspend (CrashlogId, CrashlogEntry) -> Unit) {
         val existingDays = lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
         val thirtyDaysAgo = clock.now().minusDays(30)
         val oldDays = existingDays.filter { it.toGmtZonedDateTime().isBefore(thirtyDaysAgo) }
-        println("Evicting crashes from days: $oldDays")
+        logInfo { "Evicting crashes from days: $oldDays" }
         for (oldDay in oldDays) {
             val crashesDir = locationOfAllLastAccessDay(oldDay)
             val crashIds = crashesDir.listDirectoryEntries()
-            println("Evicting ${crashIds.size} crashes from $oldDay.")
+            logInfo { "Evicting ${crashIds.size} crashes from $oldDay." }
             for (crashIdFile in crashIds) {
                 val crashId = CrashlogId.fromFileName(crashIdFile)
                 // Archive crash to s3
                 onEvicted(crashId, CrashlogEntry.fromCrashesDir(crashId))
-                println("Archived $crashId to S3.")
+                logInfo { "Archived $crashId to S3." }
                 // Delete LastAccessDay -> crashId record from disk
                 crashIdFile.deleteExisting()
                 // Delete the crash files themselves

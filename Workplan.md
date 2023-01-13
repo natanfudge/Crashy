@@ -1,18 +1,5 @@
 
 # Workplan:
-- [ ] Fix invalid requests giving 500 instead of proper error codes
-- [ ] Fix NEC not working with the beta release
-- [ ] Try and see if crash report contents can be searched via google
-  - [ ] Solve 'Soft 404' https://search.google.com/search-console/inspect?resource_id=sc-domain%3Abeta.crashy.net&id=YfBWru4eMDMLpcQ5LzmEYw&alt_id=xoRjr_kqsY93Vsfrd9_lww
-- [ ] Start automatically evicting
-  - [ ] Add a way of calling evictOld() on demand
-  - [ ] Call evictOld() once every month
-- [ ] Add logging
-  - [ ] Gather all of the relevant data of each request and log it in an organized structure
-  - [ ] Write log messages in console output
-  - [ ] Allow easy access of recent logs in the ec2 instance
-  - [ ] Allow viewing of logs by request 
-  - [ ] Allow seeing the amount of total used SSD and S3 space 
 - [ ] Fix critical crashy issues
 - [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
 - [ ] Monetization?
@@ -45,6 +32,8 @@
   - [ ] Update NEC to support crashy.net
     - [ ] Upload branch newCrashy
   - [ ] Once everything works - shut down old site and functions
+
+- 
 
 # Final goals:
 - Crashy pages served directly from the server, including the crash data itself with it, making response times very fast, and allowing previews of crashes in links

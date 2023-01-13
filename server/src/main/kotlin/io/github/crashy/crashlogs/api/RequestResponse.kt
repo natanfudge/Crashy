@@ -65,7 +65,7 @@ sealed interface GetCrashResponse : Response {
         override val contentType = ContentType.Text.Plain
         override val extraHeaders: Map<String, String> = mapOf(
             "Last-Modified" to log.metadata.uploadDate.toHttpDateString(),
-            "Cache-Control" to "public, max-age=604800, immutable"
+            "Cache-Control" to "public, max-age=6048000, immutable"
         )
     }
 }

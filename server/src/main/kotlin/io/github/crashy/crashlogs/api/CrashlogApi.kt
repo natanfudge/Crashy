@@ -22,10 +22,15 @@ class CrashlogApi(private val logs: CrashlogStorage) {
 
     context(LogContext)
     fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashResponse {
-        if (request.size > MaxCrashSize) return UploadCrashResponse.CrashTooLargeError
-        if (!uploadLimiter.requestUpload(ip, request.size)) return UploadCrashResponse.RateLimitedError
-
         logData("Accepted size") { request.size }
+        if (request.size > MaxCrashSize) {
+            logInfo { "Crash size was ${request.size} which is over the max of $MaxCrashSize" }
+            return UploadCrashResponse.CrashTooLargeError
+        }
+        if (!uploadLimiter.requestUpload(ip, request.size)) {
+            logInfo { "IP $ip is being rate limited" }
+            return UploadCrashResponse.RateLimitedError
+        }
 
         val id = CrashlogId.generate()
         val key = DeletionKey.generate()
@@ -45,17 +50,26 @@ class CrashlogApi(private val logs: CrashlogStorage) {
 
     private val httpPrefix = if (Crashy.build == Local) "http" else "https"
 
+    context(LogContext)
     suspend fun getCrash(id: String): Response {
-        val logId = CrashlogId.parse(id).getOrElse { return textResponse("Invalid id", HttpStatusCode.NotFound) }
-        return when (val result = logs.getLog(logId)) {
+        logData("ID") { id }
+        val logId = CrashlogId.parse(id).getOrElse {
+            logInfo { "No such ID is stored" }
+            return textResponse("Invalid id", HttpStatusCode.NotFound)
+        }
+        val response = when (val result = logs.getLog(logId)) {
             GetCrashlogResult.Archived -> GetCrashResponse.Archived
             GetCrashlogResult.DoesNotExist -> GetCrashResponse.DoesNotExist
             is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log)
         }
+
+        logData("Response") { response::class.toString() }
+        return response
     }
 
     private val htmlTemplate = StaticDir.resolve("index.html").readText()
     private val notFound = Triple("Invalid Crash Url", "Looks like there's nothing here", HttpStatusCode.NotFound)
+    context(LogContext)
     suspend fun getCrashPage(id: String): Response {
         val logId = CrashlogId.parse(id)
         val (title, description, code) = when {
@@ -75,6 +89,12 @@ class CrashlogApi(private val logs: CrashlogStorage) {
                 }
             }
         }
+
+        logData("ID") { id }
+        logData("Title") { title }
+        logData("Description") { description }
+        logData("Code") { code }
+
         return htmlResponse(
             htmlTemplate.replaceSequentially(
                 listOf(
@@ -91,15 +111,20 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         listOf("{prefetch}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
     )
 
-    suspend fun getLandingPage(): Response {
+    fun getLandingPage(): Response {
         return htmlResponse(
             landingPage,
             code = HttpStatusCode.OK
         )
     }
 
+    context(LogContext)
     fun deleteCrash(request: DeleteCrashlogRequest): DeleteCrashResult {
-        return logs.delete(request.id, request.key)
+        logData("ID") { request.id }
+        logData("Code") { request.key }
+        val result = logs.delete(request.id, request.key)
+        logData("Result") { result.name }
+        return result
     }
 }
 

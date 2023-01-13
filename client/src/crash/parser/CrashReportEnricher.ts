@@ -163,9 +163,10 @@ function parseCrashDate(dateStr: string): Date {
     const yearNumber = parseInt(year);
     // Add the 2000s when the 20 at the start is omitted, e.g. "08/20/21"
     const actualYear = yearNumber < 1920 ? yearNumber + 2000 : yearNumber;
+
     return new Date(
         actualYear,
-        parseInt(month),
+        parseInt(month) - 1, // Javascript Date month is 0-indexed
         parseInt(day),
         fullHour,
         parseInt(removeSuffix(minutesStr, " PM")) // minutes

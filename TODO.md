@@ -1,0 +1,2 @@
+- Improve log viewer - it might not work very well with a lot of requests in a day. 
+- Consider backing up logs to s3 as soon as they are uploaded - right now termination of the EC2 means all of the recent logs get lost. 

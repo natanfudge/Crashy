@@ -4,12 +4,12 @@ GET
 HTTP/1.1 200 OK
 10
 Cache-Control: public, max-age=604800, immutable
-Access-Control-Allow-Origin: http://localhost:3000
+Access-Control-Allow-Origin: *
 X-Engine: Ktor
-Date: Sat, 31 Dec 2022 14:30:29 GMT
+Date: Fri, 13 Jan 2023 13:17:10 GMT
 Server: Ktor/2.2.1
 Content-Length: 4661545
 Content-Type: text/plain
 Connection: keep-alive
-OkHttp-Sent-Millis: 1672497027892
-OkHttp-Received-Millis: 1672497029293
+OkHttp-Sent-Millis: 1673615829228
+OkHttp-Received-Millis: 1673615831002

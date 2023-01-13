@@ -124,6 +124,8 @@ test("Srg mappings work", async () => {
     }
     await testMappingsProvider(OfficialToSrgMappingsProvider,"1.7.10",assertions);
 })
+//TODO: run js tests again
+
 // zq net/minecraft/village/VillageCollection
 // 	a ()V func_75544_a
 // 	a (Lamu;)V func_82566_a

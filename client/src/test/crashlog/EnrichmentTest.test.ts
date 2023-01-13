@@ -66,7 +66,7 @@ export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
     const time = enriched.context.time;
     //20/08/2021, 7:41
     expect(time).toEqual(
-        new Date(2021, 8, 20, 7, 41)
+        new Date(2021, 7, 20, 7, 41)
     )
 
     expect(enriched.context.loader).toEqual({
@@ -224,7 +224,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
     const time = enriched.context.time;
     //15.08.21 17:36
     expect(time).toEqual(
-        new Date(2021, 8, 15, 17, 36)
+        new Date(2021, 7, 15, 17, 36)
     )
 
     expect(enriched.context.loader).toEqual({

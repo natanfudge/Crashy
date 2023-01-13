@@ -1,15 +1,20 @@
 package io.github.crashy.utils
 
 import com.aayushatharva.brotli4j.Brotli4jLoader
+import io.github.crashy.Crashy
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
+import java.nio.charset.Charset
+import java.nio.file.Path
+import java.nio.file.attribute.BasicFileAttributes
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPInputStream
+import kotlin.io.path.readAttributes
 
 
 object UUIDSerializer : KSerializer<UUID> {
@@ -50,3 +55,7 @@ fun randomString(length: Int) = buildString {
         append(characters.random())
     }
 }
+
+fun getResource(path: String): String? = Crashy::class.java.getResourceAsStream(path)?.readBytes()?.toString(Charset.defaultCharset())
+
+fun Path.lastAccessInstant() = readAttributes<BasicFileAttributes>().lastAccessTime().toInstant()

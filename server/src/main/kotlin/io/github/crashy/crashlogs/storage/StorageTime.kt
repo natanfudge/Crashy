@@ -1,5 +1,6 @@
 package io.github.crashy.crashlogs.storage
 
+import io.github.crashy.utils.lastAccessInstant
 import java.nio.file.Path
 import java.nio.file.attribute.BasicFileAttributes
 import java.time.ZoneId
@@ -40,6 +41,6 @@ object RealClock: NowDefinition {
 private val utc = ZoneId.of("UTC")
 
 fun  lastAccessDay(file: Path): LastAccessDay {
-    val accessInstant = file.readAttributes<BasicFileAttributes>().lastAccessTime().toInstant()
-    return LastAccessDay.fromDate(ZonedDateTime.ofInstant(accessInstant, ZoneOffset.UTC))
+    return LastAccessDay.fromDate(ZonedDateTime.ofInstant(file.lastAccessInstant(), ZoneOffset.UTC))
 }
+

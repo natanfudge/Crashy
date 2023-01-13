@@ -3,6 +3,8 @@ package io.github.crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
+import io.github.crashy.utils.log.CrashyLogger
+import io.github.crashy.utils.log.LogContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -20,8 +22,8 @@ class CrashlogStorageTest {
         testBody()
     }
 
-    context (CrashlogStorage, TestClock, Path)
-            private suspend fun testBody() {
+    context (CrashlogStorage, TestClock, Path, LogContext)
+    private suspend fun testBody() {
         val id1 = CrashlogId.generate()
         expectThat(getLog(id1)).isEqualTo(GetCrashlogResult.DoesNotExist)
 
@@ -110,14 +112,16 @@ class CrashlogStorageTest {
         )
     }
 
-    private inline fun testScope(crossinline test: suspend context (CrashlogStorage, TestClock, Path) () -> Unit) {
+    private inline fun testScope(crossinline test: suspend context (CrashlogStorage, TestClock, Path, LogContext) () -> Unit) {
         runBlocking {
             val clock = TestClock()
             val dir = withContext(Dispatchers.IO) {
                 Files.createTempDirectory("test")
             }
             val cache = CrashlogStorage.create(bucket = "crashy-test-crashlogs", clock, dir)
-            test(cache, clock, dir.resolve("cache"))
+            CrashyLogger.startCallWithContextAsParam("test_crashlog_storage") {
+                test(cache, clock, dir.resolve("cache"), it)
+            }
         }
 
     }
@@ -134,7 +138,7 @@ class CrashlogStorageTest {
 //            .get(CrashlogEntry::copyLog)
 //    }
     context (CrashlogStorage, TestClock, Path)
-            private suspend fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
+    private suspend fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
         val result = getLog(id)
         if (result is GetCrashlogResult.Success) {
             alignFileWithTestTime(id)
@@ -165,13 +169,13 @@ class CrashlogStorageTest {
 //    }
 
     context (CrashlogStorage, TestClock, Path)
-            private fun testStore(id: CrashlogId, log: CrashlogEntry) {
+    private fun testStore(id: CrashlogId, log: CrashlogEntry) {
         store(id, log)
         alignFileWithTestTime(id)
     }
 
     context (CrashlogStorage, TestClock, Path)
-            private fun testDelete(id: CrashlogId, deletionKey: DeletionKey): DeleteCrashResult {
+    private fun testDelete(id: CrashlogId, deletionKey: DeletionKey): DeleteCrashResult {
         val res = delete(id, deletionKey)
         alignFileWithTestTime(id)
         return res

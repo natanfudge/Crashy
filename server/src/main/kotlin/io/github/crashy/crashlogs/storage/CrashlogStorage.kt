@@ -10,6 +10,7 @@ import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.decodeToString
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
+import io.github.crashy.utils.log.LogContext
 import java.nio.file.Path
 import kotlin.io.path.*
 
@@ -90,7 +91,7 @@ class CrashlogStorage private constructor(
         // to have viewed it just now, which means he pulled it out of the S3 into the cache.
         return cache.delete(id, key)
     }
-
+    context(LogContext)
     suspend fun evictOld() {
         cache.evictOld { id, log ->
             // Once objects are evicted from the cache, we store them on the S3.

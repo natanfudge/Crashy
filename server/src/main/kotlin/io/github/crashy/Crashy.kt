@@ -5,11 +5,14 @@ import kotlinx.serialization.json.Json
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
+import java.time.Instant
 import kotlin.io.path.toPath
 
 object Crashy {
     val json = Json
     val logger: Logger = LoggerFactory.getLogger(App::class.java)
+
+    val ServerStartTime = Instant.now()
 
     //TODO: update build.txt to release
     val build = readBuild()

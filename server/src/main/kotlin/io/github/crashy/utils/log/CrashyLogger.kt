@@ -1,15 +1,15 @@
 package io.github.crashy.utils.log
 
 import io.github.crashy.Crashy
+import io.github.crashy.utils.lastAccessInstant
 import io.github.crashy.utils.log.LogContext.Severity.*
 import org.fusesource.jansi.Ansi
+import java.nio.file.Path
+import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import kotlin.io.path.appendText
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createFile
-import kotlin.io.path.exists
+import kotlin.io.path.*
 
 fun main() {
     val red = "\u001b[37;1m"
@@ -22,7 +22,13 @@ fun main() {
 
 
 object CrashyLogger {
-    inline fun <T> startCall(name: String, call: (LogContext) -> T): T {
+    inline fun <T> startCall(name: String, call: LogContext.() -> T): T {
+        return startCallWithContextAsParam(name, call)
+    }
+
+    // Context receivers are bugging out so we pass LogContext as a parameter for some use cases
+    // (try removing this with K2)
+    inline fun <T> startCallWithContextAsParam(name: String, call: (LogContext) -> T): T {
         val context = LogContext(name, Instant.now())
         val value = try {
             call(context)
@@ -35,6 +41,25 @@ object CrashyLogger {
             FileLogRenderer.render(log)
         }
         return value
+    }
+
+    private val allLogsDir = Crashy.HomeDir.resolve("logs")
+
+    val todayLogDir = allLogsDir.resolve(Instant.now().systemDate().replace("/", ".")).createDirectories()
+
+    fun logsOfEndpoint(endpoint: String): Path {
+        return todayLogDir.resolve(endpoint.replace("/", "") + ".log")
+    }
+
+    context(LogContext) @OptIn(ExperimentalPathApi::class)
+    fun deleteOldLogs() {
+        // Delete all log dirs that are over 30 days old
+        allLogsDir.forEachDirectoryEntry { logDirOfDay ->
+            if (logDirOfDay.lastAccessInstant().plus(Duration.ofDays(30)).isBefore(Instant.now())) {
+                logDirOfDay.deleteRecursively()
+                logInfo { "Deleted logs at $logDirOfDay" }
+            }
+        }
     }
 }
 
@@ -106,15 +131,11 @@ object ConsoleLogRenderer : LogRenderer {
     }
 }
 
-//TODO: evict old logs (maybe automatically delete over 30 days old)
 object FileLogRenderer : LogRenderer {
-    val logDir =
-        Crashy.HomeDir.resolve("logs").resolve(Instant.now().systemDate().replace("/", ".")).createDirectories()
-
     override fun render(log: LogResult) {
         val rendered = log.renderToString(colored = false)
         if (rendered == "") return
-        val logFile = logDir.resolve(log.name.replace("/", "") + ".log")
+        val logFile = CrashyLogger.logsOfEndpoint(log.name)
         if (!logFile.exists()) logFile.createFile()
         logFile.appendText(rendered + "\n")
     }

@@ -25,7 +25,7 @@ module.exports = {
         "import",
     ],
     rules: {
-        "quotes": ["error", "double"],
+        "quotes": 0,
         "max-len": 0,
         "semi": 0,
         "padded-blocks": 0,
@@ -36,6 +36,5 @@ module.exports = {
         "key-spacing": 0,
         "spaced-comment": 0,
         "comma-spacing": 0,
-        "quotes": 0
     },
 };

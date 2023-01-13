@@ -66,7 +66,8 @@ function CrashContextElement(props: { image: string, text: string, color: string
 function formatTime(time: Date) {
     const hour = time.getHours();
     const minutes = time.getMinutes() > 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
-    return `${time.getDate()}/${time.getMonth()}/${time.getFullYear() - 2000} ${hour}:${minutes}`;
+    // Javascript Date month is 0-indexed
+    return `${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear() - 2000} ${hour}:${minutes}`;
 }
 
 function getOperatingSystemIcon(operatingSystem: OperatingSystemType): string {
