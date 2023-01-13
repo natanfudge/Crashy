@@ -67,7 +67,16 @@ function formatTime(time: Date) {
     const hour = time.getHours();
     const minutes = time.getMinutes() > 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
     // Javascript Date month is 0-indexed
-    return `${time.getDate()}/${time.getMonth() + 1}/${time.getFullYear() - 2000} ${hour}:${minutes}`;
+    return `${twoCharacters(time.getDate())}/${twoCharacters(time.getMonth() + 1)}/${time.getFullYear() - 2000} ${twoCharacters(hour)}:${twoCharactersStr(minutes)}`;
+}
+
+function twoCharacters(num: number): string {
+    const str = String(num)
+    return twoCharactersStr(str)
+}
+function twoCharactersStr(str: string): string {
+    if (str.length < 2) return `0${str}`
+    else return str
 }
 
 function getOperatingSystemIcon(operatingSystem: OperatingSystemType): string {

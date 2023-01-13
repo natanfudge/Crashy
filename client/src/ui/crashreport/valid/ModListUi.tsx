@@ -6,9 +6,11 @@ import {Text, TextTheme} from "../../../fudge-commons/simple/Text";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {LazyColumn} from "../../../fudge-commons/components/LazyColumn";
 import {useState} from "react";
+import {useScreenSize} from "../../../fudge-commons/methods/Gui";
 
 
 export function ModListUi({mods}: { mods: Mod[] }) {
+    const screenSize = useScreenSize()
     const modsPrioritizingSuspectedMods = mods.sort((modA, modB) => {
             // noinspection JSRemoveUnnecessaryParentheses
             if ((modA.isSuspected && modB.isSuspected) || (!modA.isSuspected && !modB.isSuspected)) {
@@ -28,7 +30,7 @@ export function ModListUi({mods}: { mods: Mod[] }) {
     )
 
     const [idsEnabled, setIdsEnabled] = useState(false);
-    const [versionsEnabled, setVersionsEnabled] = useState(false);
+    const [versionsEnabled, setVersionsEnabled] = useState(!screenSize.isPhone);
 
     return <Column margin={{top: 20}} width={"max"}>
         <Column>

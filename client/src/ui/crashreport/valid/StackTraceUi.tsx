@@ -1,19 +1,25 @@
-
 import {WithMappings} from "./mappings/MappingsUi";
-import {MappingContext, MappingStrategy, useMappingFor, useMappingForName} from "../../../mappings/resolve/MappingStrategy";
+import {
+    MappingContext,
+    MappingStrategy,
+    useMappingFor,
+    useMappingForName
+} from "../../../mappings/resolve/MappingStrategy";
 import {MappingsController} from "./mappings/MappingsController";
 import {SimpleSpan, Text, TextTheme} from "../../../fudge-commons/simple/Text";
 import {
     RichCrashReport,
-    RichStackTrace, RichStackTraceElement,
+    RichStackTrace,
+    RichStackTraceElement,
     StackTraceMessage,
     unfoldRichStackTrace
 } from "../../../crash/model/RichCrashReport";
-import {Fragment, useEffect, useRef, useState} from "react";
-import {clickableColor, fadedOutColor} from "../../Colors";
+import {Fragment, useState} from "react";
+import {ActiveColor, clickableColor, fadedOutColor} from "../../Colors";
 import {ClickCallback} from "../../../fudge-commons/simple/GuiTypes";
 import {Button, Divider, Typography} from "@mui/material";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
+import {JavaClass} from "../../../crash/model/Mappable";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
     const causerList = unfoldRichStackTrace(report.stackTrace);
@@ -26,9 +32,12 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
     return <Column width={"max"}>
         <WithMappings controller={mappingsController}>
             <div>
-                {causerList.length > 1 && CausationButtons(currentCauserIndex, causerList, setCauserIndex)}
+                {causerList.length > 1 && <CausationButtons causerList={causerList}
+                                                            mappings={mappings}
+                                                            onCauserIndexChanged={setCauserIndex}
+                                                            currentCauserIndex={currentCauserIndex}/>}
 
-                    <StackTraceMessageUi title={currentTrace.title} mappingContext={mappings}/>
+                <StackTraceMessageUi title={currentTrace.title} mappingContext={mappings}/>
 
                 <Divider/>
                 <StackTraceElementsUi elements={currentTrace.elements} mappings={mappings}/>
@@ -48,28 +57,62 @@ export function StackTraceElementsUi(props: { elements: RichStackTraceElement[],
     </div>
 }
 
-function CausationButtons(currentCauserIndex: number, causerList: RichStackTrace[], onCauserIndexChanged: (index: number) => void) {
-    //TODO: I'm reworking these (next implementation needs to use mappings)
-    return <Fragment/>
-    // return <Row>
-    //     <Spacer width={5}/>
-    //     {currentCauserIndex > 0 && <CausationButton
-    //         text={`Caused: ${causerList[currentCauserIndex - 1].title.class.getSimpleName()}`}
-    //         onClick={() => onCauserIndexChanged(currentCauserIndex - 1)}
-    //     />}
-    //     {currentCauserIndex > 0 && <Spacer width={20}/>}
-    //     {currentCauserIndex < causerList.length - 1 && <CausationButton
-    //         text={`Caused By: ${causerList[currentCauserIndex + 1].title.class.getSimpleName()}`}
-    //         onClick={() => onCauserIndexChanged(currentCauserIndex + 1)}
-    //     />}
-    // </Row>;
+function CausationButtons(props: {
+    currentCauserIndex: number,
+    causerList: RichStackTrace[],
+    onCauserIndexChanged: (index: number) => void,
+    mappings: MappingContext
+}) {
+    return <div  style = {{flexFlow: "wrap", display: "flex", flexDirection: "row"}}>
+        {props.causerList.map((causer, i) => {
+            const causerClass = props.causerList[i].title.class
+            return <CausationButton key = {i} selected={props.currentCauserIndex === i} index={i}
+                                    causer={causerClass}
+                                    totalAmount={props.causerList.length} mappings={props.mappings}
+                                    onClick={() => props.onCauserIndexChanged(i)}/>;
+        })}
+    </div>
+}
+
+function causationButtonPrefix(index: number, totalAmount: number): string {
+    switch (index) {
+        case 0:
+            // First exception
+            return "Top-level Exception"
+        case 1:
+            // The one that caused the first exception
+            return "Caused By"
+        case totalAmount - 1:
+            // Many exceptions, the last one is the root cause
+            return "Root Cause"
+        case 2:
+            // third but not last
+            return "Third Exception"
+        default:
+            // 4th, 5th, etc
+            return `${index}th Exception`
+    }
 }
 
 
-function CausationButton(props: { text: string, onClick: ClickCallback }) {
-    return <Button style={{wordBreak: "break-word"}} disableRipple={true} variant={"outlined"} size={"small"}
+function CausationButton(props: { causer: JavaClass, mappings: MappingContext, index: number, totalAmount: number, selected: boolean, onClick: ClickCallback }) {
+    const mappingMethod = useMappingForName(props.causer, props.mappings)
+    const prefix = causationButtonPrefix(props.index, props.totalAmount)
+    return <Button style={{
+        wordBreak: "break-word",
+        margin: 4,
+        backgroundColor: props.selected ? ActiveColor : undefined,
+        // color: "#ff5e5e"
+    }} disableRipple={true} variant={"outlined"} size={"small"}
                    onClick={(e) => props.onClick(e.currentTarget)}>
-        {props.text}
+        {`${prefix}: `}
+        <p style = {{color:"#ff5e5e", marginLeft: 4}}>
+            {`${props.causer.simpleName(mappingMethod)}`}
+        </p>
+        {/*<TextTheme color={}>*/}
+        {/*    */}
+        {/*</TextTheme>*/}
+
     </Button>
 }
 
@@ -78,7 +121,8 @@ function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage
     const mappingMethod = useMappingForName(title.class, mappingContext);
 
     const text = open ? title.class.fullName(mappingMethod) : title.class.simpleName(mappingMethod);
-    return <TextTheme wordBreak={"break-word"} variant={"h5"}>
+    const variant = title.message === undefined || title.message.length < 150 ? "h5" : "body1"
+    return <TextTheme wordBreak={"break-word"} variant={variant}>
         <SimpleSpan text={text} color={open ? undefined : clickableColor}
                     onClick={() => setOpen(!open)}/>
         {title.message !== undefined && <Fragment>
@@ -116,7 +160,7 @@ function getTraceElementText(traceElement: RichStackTraceElement, open: boolean,
         return traceElement.method.fullName(mappings) + ` (${inBracketText})`
     } else {
         const inBracketText = traceElement.line.number === undefined ? "Native Method" : `Line ${traceElement.line.number}`
-        return traceElement.method.simpleName(mappings)+ ` (${inBracketText})`
+        return traceElement.method.simpleName(mappings) + ` (${inBracketText})`
     }
 }
 

@@ -17,3 +17,5 @@ export function LazyColumn<T>({data, childProvider}: { data: T[], childProvider:
         {active.map((item, index) => childProvider(item, index))}
     </InfiniteScroll>
 }
+
+//TODO: implement AOTLazyFlowRow: like the old lazycolumn but puts a couple items on the same lines and calculates height AOT

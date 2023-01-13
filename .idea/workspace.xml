@@ -5,44 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/TestBadDate.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/auth/Authentication.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/MappingEndpoints.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compat/functions/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/.eslintrc.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/http_cache/319e4661cdd81b2cc166a405506cbf58.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/319e4661cdd81b2cc166a405506cbf58.0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/http_cache/42b9a9afc7aa3985ef62bcfdb93ac37e.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/42b9a9afc7aa3985ef62bcfdb93ac37e.0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/http_cache/b1d11915ff98b13d847dfd36408b2c44.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/b1d11915ff98b13d847dfd36408b2c44.0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/http_cache/b50594b5367af52aff84fbcc953c8507.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/b50594b5367af52aff84fbcc953c8507.0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/http_cache/d635493bd28433f66cef5f046a1ddf45.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/d635493bd28433f66cef5f046a1ddf45.0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/http_cache/facb8fd84f0116678822176ce8e9bf5b.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/facb8fd84f0116678822176ce8e9bf5b.0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/http_cache/journal" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/journal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponseUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponseUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/StorageTime.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/StorageTime.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/plugins/HTTP.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/plugins/HTTP.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/plugins/logging.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/plugins/logging.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/Colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/Colors.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +152,7 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.All JS Tests">
+  <component name="RunManager" selected="npm.Client Development">
     <configuration name="CrashLogApiTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -231,29 +199,6 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="CrashLogApiTest.Upload Crash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.api.CrashLogApiTest.Upload Crash&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="Date is parsed correctly in 2021-12-24 format" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -264,6 +209,19 @@
       <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
       <test-names>
         <test-name value="Date is parsed correctly in 2021-12-24 format" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="TSrg1 mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="TSrg1 mappings work" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -302,10 +260,10 @@
       <item itemvalue="Gradle.Upload Server" />
       <item itemvalue="Gradle.CrashLogApiTest" />
       <item itemvalue="Gradle.CrashLogApiTest.Get Crash" />
-      <item itemvalue="Gradle.CrashLogApiTest.Upload Crash" />
       <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
       <item itemvalue="Jest.Date is parsed correctly in 2021-12-24 format" />
+      <item itemvalue="Jest.TSrg1 mappings work" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
       <item itemvalue="npm.Analyze Client Bundle" />
@@ -316,11 +274,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.TSrg1 mappings work" />
         <item itemvalue="Jest.Date is parsed correctly in 2021-12-24 format" />
         <item itemvalue="npm.deploy" />
         <item itemvalue="Gradle.CrashLogApiTest" />
         <item itemvalue="Gradle.CrashLogApiTest.Get Crash" />
-        <item itemvalue="Gradle.CrashLogApiTest.Upload Crash" />
       </list>
     </recent_temporary>
   </component>
@@ -388,7 +346,7 @@
       <workItem from="1673595363365" duration="1000" />
       <workItem from="1673604004059" duration="874000" />
       <workItem from="1673607161376" duration="832000" />
-      <workItem from="1673611170891" duration="11324000" />
+      <workItem from="1673611170891" duration="15970000" />
     </task>
     <servers />
   </component>
@@ -481,7 +439,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
-          <line>179</line>
+          <line>166</line>
           <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="72" />
         </line-breakpoint>

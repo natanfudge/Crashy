@@ -3,6 +3,8 @@
 
 import {httpGet, httpPost} from "../fudge-commons/methods/Http";
 import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
+import {BrokenSectionCrash} from "../test/testlogs/BrokenSectionCrash";
+import {testFabricCrashReport} from "../test/testlogs/TestCrashes";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -46,6 +48,7 @@ export namespace CrashyServer {
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
         // return TestVerifyErrorCrash;
+        return testFabricCrashReport;
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
         if (document.title === "Invalid Crash Url") return GetCrashError.NoSuchCrashId;
         const response = await httpGet({url: `${crashyOrigin}/${id}/raw.txt`});
