@@ -7,6 +7,7 @@ import {
     StringMap
 } from "../model/CrashReport";
 import "../../fudge-commons/extensions/ExtensionsImpl"
+import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
 
 class StringBuilder {
     str: string
@@ -154,7 +155,6 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
                 skip();
                 continue;
             }
-            //TODO: if it doesn't begin with '-- ' assume it's part of the previous entry
             sections.push(parseSection());
         }
         return sections;
@@ -162,7 +162,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
 
     function parseSection(): CrashReportSection {
         skipString("-- ")
-        // skipChars(["-", " "]);
+
         const title = readUntilNextChar("-");
         // Skip ' --'
         skipLine();
@@ -210,10 +210,77 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return stacktrace;
     }
 
+
     function parseSectionElement(): { detail: string, name: string } {
+        let name = parseSectionName();
+
+        let detail = readLine()
+
+        while (!isEof()) {
+            const nextLine = peekLine();
+            if (nextLine === "" || nextLine === "\t") {
+                // Empty line - end of element/section
+                skipLine()
+                break;
+            } else if (
+                // Start of new element
+                ( nextLine[0] === "\t" && isUpperCase(nextLine[1]) && nextLine.includes(": ")) ||
+                // Start of Stack Trace
+                nextLine === "Stacktrace:" ||
+                // Start of new section
+                nextLine.startsWith("-- ")
+            ) {
+                break
+            } else {
+                // Multiline element
+                // Skip first leading tab, don't skip other leading tabs because they have semantic value
+                detail += ("\n") + nextLine.removePrefix("\t")
+                skipLine()
+            }
+        }
+
+        return {name, detail}
+
+
+        // return name
+
+
+        //
+        // // Forge completely fucked up the indentation with this one so we just give up and put everything in this element
+        // if (name == "Loaded coremods (and transformers)") {
+        //     return {
+        //         detail: readToEnd(),
+        //         name
+        //     }
+        // }
+        //
+        // let detail = readLine();
+        // // Read multiline details
+        // let currentAndNextValue: string = currentAndNext()
+        //
+        // while (!isEof() && currentAndNextValue === "\t\t"
+        // //*** Old Forge special case: Forge (in 1.12.2 at least) has this weird table in system details that fucks up
+        // // the system details section, so we include the table as a part of 'States' by checking for '\t|' / '\n\t|'
+        // || currentAndNextValue === "\t|" || nextIsString("\n\t|")) {
+        //     // Skip first leading tab, don't skip other leading tabs because they have semantic value
+        //     skip();
+        //     detail += ("\n" + readLine());
+        //     currentAndNextValue = currentAndNext();
+        // }
+        // // The stupid forge table leaves a trailing new line
+        // if (current() === "\n") skip()
+        // return {detail, name};
+    }
+
+
+
+    function isUpperCase(char: string): boolean {
+        return upperCaseLetters.contains(char)
+    }
+
+    function parseSectionName() {
         // Skip leading tab
         skip();
-
         let name: string;
         // Weird old Forge special case: it details the mods with a 'UCHIJAA' prefix
         if (nextIsString("UCHIJAA")) {
@@ -222,34 +289,12 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         } else {
             name = readUntilChar(":");
             skipString(":");
-            if(current() === " ") skip();
+            if (current() === " ") skip();
         }
-
-        // Forge completely fucked up the indentation with this one so we just give up and put everything in this element
-        if (name == "Loaded coremods (and transformers)") {
-            return {
-                detail: readToEnd(),
-                name
-            }
-        }
-
-        let detail = readLine();
-        // Read multiline details
-        let currentAndNextValue: string = currentAndNext()
-
-        while (!isEof() && currentAndNextValue === "\t\t"
-        //*** Old Forge special case: Forge (in 1.12.2 at least) has this weird table in system details that fucks up
-        // the system details section, so we include the table as a part of 'States' by checking for '\t|' / '\n\t|'
-        || currentAndNextValue === "\t|" || nextIsString("\n\t|")) {
-            // Skip first leading tab, don't skip other leading tabs because they have semantic value
-            skip();
-            detail += ("\n" + readLine());
-            currentAndNextValue = currentAndNext();
-        }
-        // The stupid forge table leaves a trailing new line
-        if (current() === "\n") skip()
-        return {detail, name};
+        return name;
     }
+
+    // function
 
 
     function skipChars(chars: string[]) {
@@ -262,10 +307,18 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return rawReport[cursor];
     }
 
+    //TODO: implement peekLine() to check complex stuff
     function readLine(): string {
         const value = readUntilEither(["\r", "\n"]);
         skipLine();
         return value;
+    }
+
+    /**
+     * Doesn't include newlines
+     */
+    function peekLine(): string {
+        return peekUntilEither(["\r", "\n"])
     }
 
     function skip() {
@@ -323,6 +376,10 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return cursor >= rawReport.length;
     }
 
+    function isEofAtDistance(distance: number): boolean {
+        return cursor + distance >= rawReport.length;
+    }
+
     function readCurrent(): string {
         const value = current();
         skip();
@@ -365,6 +422,20 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         });
     }
 
+    function peekUntilEither(chars: string[]): string {
+        let distance = 0;
+        return buildString((str) => {
+            while (!(chars.includes(peek(distance))) && !isEofAtDistance(distance)) {
+                str.append(peek(distance));
+                distance++
+            }
+        });
+    }
+
+    function peek(distance: number): string {
+        return rawReport[cursor + distance]
+    }
+
     function readToEnd(): string {
         return buildString((str) => {
             while (!isEof()) {
@@ -373,4 +444,5 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         });
     }
 }
-
+const upperCaseLetters = HashSet.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+    "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")

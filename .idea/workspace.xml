@@ -5,19 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/RenderingOverlayProblematicCrash.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/utils/Preferences.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/VisibleSelection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/components/VisibleSelection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/extensions/Extensions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/extensions/Extensions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/extensions/ExtensionsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/extensions/ExtensionsImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,66 +153,69 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.RenderingOverlayProblematicCrash can be parsed">
-    <configuration name="CrashLogApiTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.api.CrashLogApiTest&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="Date is parsed correctly in 2021-12-24 format" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="npm.Client Development">
+    <configuration name="Broken section crash is parsed well enough" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
       <test-names>
-        <test-name value="Date is parsed correctly in 2021-12-24 format" />
+        <test-name value="Broken section crash is parsed well enough" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="RenderingOverlayProblematicCrash can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Broken section crash is recognized as broken" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
       <test-names>
-        <test-name value="RenderingOverlayProblematicCrash can be parsed" />
+        <test-name value="Broken section crash is recognized as broken" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="TSrg1 mappings work" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Crash with weird section formatting is parsed correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
       <test-names>
-        <test-name value="TSrg1 mappings work" />
+        <test-name value="Crash with weird section formatting is parsed correctly" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Fabric crash report is enriched properly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" />
+      <test-names>
+        <test-name value="Fabric crash report is enriched properly" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Weird date crash that is parsed correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-names>
+        <test-name value="Weird date crash that is parsed correctly" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -242,41 +238,31 @@
       <option name="specificationPath" value="C:\Users\natan\Desktop\Crashy\server\src\main\resources\openapi\documentation.json" />
       <method v="2" />
     </configuration>
-    <configuration name="deploy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/compat/functions/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="deploy" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
-      <item itemvalue="Gradle.CrashLogApiTest" />
       <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
-      <item itemvalue="Jest.RenderingOverlayProblematicCrash can be parsed" />
-      <item itemvalue="Jest.Date is parsed correctly in 2021-12-24 format" />
-      <item itemvalue="Jest.TSrg1 mappings work" />
+      <item itemvalue="Jest.Broken section crash is parsed well enough" />
+      <item itemvalue="Jest.Broken section crash is recognized as broken" />
+      <item itemvalue="Jest.Crash with weird section formatting is parsed correctly" />
+      <item itemvalue="Jest.Fabric crash report is enriched properly" />
+      <item itemvalue="Jest.Weird date crash that is parsed correctly" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
       <item itemvalue="npm.Analyze Client Bundle" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="npm.Client Production" />
       <item itemvalue="npm.Client Profiling" />
-      <item itemvalue="npm.deploy" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.RenderingOverlayProblematicCrash can be parsed" />
-        <item itemvalue="Jest.TSrg1 mappings work" />
-        <item itemvalue="Jest.Date is parsed correctly in 2021-12-24 format" />
-        <item itemvalue="npm.deploy" />
-        <item itemvalue="Gradle.CrashLogApiTest" />
+        <item itemvalue="Jest.Broken section crash is parsed well enough" />
+        <item itemvalue="Jest.Broken section crash is recognized as broken" />
+        <item itemvalue="Jest.Crash with weird section formatting is parsed correctly" />
+        <item itemvalue="Jest.Fabric crash report is enriched properly" />
+        <item itemvalue="Jest.Weird date crash that is parsed correctly" />
       </list>
     </recent_temporary>
   </component>
@@ -346,6 +332,8 @@
       <workItem from="1673607161376" duration="832000" />
       <workItem from="1673611170891" duration="17276000" />
       <workItem from="1673652815915" duration="5528000" />
+      <workItem from="1673687682359" duration="2757000" />
+      <workItem from="1673694524602" duration="2332000" />
     </task>
     <servers />
   </component>

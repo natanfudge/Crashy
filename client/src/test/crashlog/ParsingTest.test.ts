@@ -5,7 +5,7 @@ import {TestVerifyErrorCrash} from "../testlogs/TestVerifyErrorCrash";
 import {BrokenTimeCrash} from "../testlogs/BrokenTimeCrash";
 import {TestEmptySectionCrash} from "../testlogs/TestEmptySectionCrash";
 import {BrokenSectionCrash} from "../testlogs/BrokenSectionCrash";
-import { CrashReport } from "../../crash/model/CrashReport";
+import {CrashReport} from "../../crash/model/CrashReport";
 import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
 import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../../crash/model/RichCrashReport";
 import {parseCrashReport, parseCrashReportImpl} from "../../crash/parser/CrashReportParser";
@@ -229,7 +229,7 @@ test("Fabric crash report is parsed correctly", () => {
     const report = parseCrashReport(testFabricCrashReport)
     testFabricCrashReportParse(report);
 })
-test("Crash that was found to be badly parsed is parsed correctly", () => {
+test("Crash with weird section formatting is parsed correctly", () => {
     const report = parseCrashReport(TestBuggyParseCrash)
     expect(report.sections.length).toEqual(5)
     const enriched = enrichCrashReport(report);
@@ -254,7 +254,7 @@ test("VerifyError crash is parsed correctly", () => {
 
     const enriched = enrichCrashReport(report);
     //2021-10-25, 10:07 a.m.
-    expect(enriched.context.time).toEqual(new Date(2021,9,25,10,7))
+    expect(enriched.context.time).toEqual(new Date(2021, 9, 25, 10, 7))
     const details = enriched.stackTrace.details!;
     expect(details.location).toEqual({
         methodSignature: "net/minecraft/class_5944.<init>(Lnet/minecraft/class_5912;Ljava/lang/String;Lnet/minecraft/class_293;)V",
@@ -297,10 +297,9 @@ test("Empty space crash is parsed correctly", () => {
     expect(report.sections.length).toEqual(3)
 })
 
-test("Broken section crash is recognized as broken", () => {
-    expect(() => {
-        parseCrashReportImpl(BrokenSectionCrash,true);
-    }).toThrowError("Expected '-- ' but got '['");
+test("Broken section crash is parsed well enough", () => {
+    const parsed = parseCrashReportImpl(BrokenSectionCrash, true);
+    expect(parsed.sections[2].details!["Graphics mode"]).toEqual("fancy")
 })
 
 

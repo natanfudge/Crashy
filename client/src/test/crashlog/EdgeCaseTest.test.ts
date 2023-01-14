@@ -25,4 +25,5 @@ test("Date is parsed correctly in 2021-12-24 format", () => {
 
 test("RenderingOverlayProblematicCrash can be parsed", () => {
     const enriched = parseCrashReportRich(RenderingOverlayProblematicCrash)
+    expect(enriched.sections[2].details!["Recovery"]).toEqual("Yes")
 })
