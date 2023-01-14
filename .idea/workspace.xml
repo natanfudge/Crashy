@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/SeeminglyInnocentCrashTest.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +149,7 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.Seemingly innocent crash log can be parsed">
+  <component name="RunManager" selected="npm.Client Development">
     <configuration name="Broken section crash is parsed well enough" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -334,7 +330,7 @@
       <workItem from="1673652815915" duration="5528000" />
       <workItem from="1673687682359" duration="2757000" />
       <workItem from="1673694524602" duration="2638000" />
-      <workItem from="1673700066510" duration="1276000" />
+      <workItem from="1673700066510" duration="1660000" />
     </task>
     <servers />
   </component>

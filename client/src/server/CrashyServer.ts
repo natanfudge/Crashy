@@ -48,7 +48,7 @@ export namespace CrashyServer {
     const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        // return TestVerifyErrorCrash;
+        return TestVerifyErrorCrash;
         // return testFabricCrashReport;
         // return SeeminglyInnocentCrashTest.replaceAll("    ", "\t")
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
