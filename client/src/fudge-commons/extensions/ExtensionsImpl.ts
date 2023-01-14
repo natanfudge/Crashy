@@ -66,15 +66,14 @@ String.prototype.removeBeforeLastExclusive = function (this: string, removeBefor
         return this.slice(index + 1);
     }
 }
-Array.prototype.toRecord = function <T, K extends TsKey, V>(this: Array<T>, map: (element: T, index:number) => [K, V]): Record<K, V> {
+Array.prototype.toRecord = function <T, K extends TsKey, V>(this: Array<T>, map: (element: T, index: number) => [K, V]): Record<K, V> {
     const record = {} as Record<K, V>;
-    this.forEach((element,index)=>{
-        const [key, value] = map(element,index);
+    this.forEach((element, index) => {
+        const [key, value] = map(element, index);
         record[key] = value;
     })
     return record;
 }
-
 
 
 Array.prototype.arrayEquals = function <T>(this: T[], b: T[]): boolean {
@@ -118,3 +117,25 @@ Array.prototype.none = function <T>(this: T[], test: (item: T) => boolean): bool
     return true;
 }
 
+Array.prototype.sum = function <T>(this: T[], numberMap: (item: T) => number): number {
+    let sum = 0;
+    for(const item of this){
+        sum += numberMap(item)
+    }
+    return sum;
+}
+
+Array.prototype.splitBy = function <T>(this: T[], predicate: (item: T, index: number) => boolean): [Array<T>, Array<T>] {
+    const arr1 : T[] = [];
+    const arr2: T[] = [];
+    let i = 0;
+    for(const item of this){
+        if(predicate(item, i)){
+            arr1.push(item)
+        } else{
+            arr2.push(item)
+        }
+        i++
+    }
+    return [arr1,arr2]
+}

@@ -154,6 +154,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
                 skip();
                 continue;
             }
+            //TODO: if it doesn't begin with '-- ' assume it's part of the previous entry
             sections.push(parseSection());
         }
         return sections;

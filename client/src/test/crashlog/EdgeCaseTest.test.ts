@@ -6,6 +6,7 @@ import {enrichCrashReport, parseCrashReportRich} from "../../crash/parser/CrashR
 import {parseCrashReport} from "../../crash/parser/CrashReportParser";
 import "../../fudge-commons/extensions/ExtensionsImpl"
 import {TestBadDate} from "../testlogs/TestBadDate";
+import {RenderingOverlayProblematicCrash} from "../testlogs/RenderingOverlayProblematicCrash";
 test("Windows newlines can be handled", () => {
     const parsed = parseCrashReport(testFabricCrashReportUsingWindowsLines)
     const enriched = enrichCrashReport(parsed);
@@ -20,4 +21,8 @@ test("Date is parsed correctly in 2021-12-24 format", () => {
     expect(time.getFullYear()).toEqual(2021)
     expect(time.getMonth()).toEqual(11)
     expect(time.getDate()).toEqual(24)
+})
+
+test("RenderingOverlayProblematicCrash can be parsed", () => {
+    const enriched = parseCrashReportRich(RenderingOverlayProblematicCrash)
 })

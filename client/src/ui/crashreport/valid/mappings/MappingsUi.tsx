@@ -10,6 +10,7 @@ import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
 import {useState} from "react";
 import {useScreenSize} from "../../../../fudge-commons/methods/Gui";
 import {getMappingNamespaces} from "../../../../mappings/MappingsNamespace";
+import {getUserPreferences, setUserPreferences} from "../../../../utils/Preferences";
 
 
 export function WithMappings({controller, children}:
@@ -40,15 +41,21 @@ export type MutableMappingsState = [MappingsState, (newState: MappingsState) => 
 export function useMappingsState(minecraftVersion: string): MutableMappingsState {
     // Initially, immediately show a mapping, and since getting what versions are available takes time, we'll set the version to undefined
     // for now and what the available versions load we will set it to the first available one.
+    const namespaces = getMappingNamespaces(minecraftVersion);
+    const initialNamespace = namespaces.find(namespace => getUserPreferences().defaultMappingNamespace === namespace)
+        ?? namespaces[0]
     const [state, setState] = useState<MappingsState>(
         {
-            namespace: getMappingNamespaces(minecraftVersion)[0],
+            namespace: initialNamespace,
             build: DesiredBuildProblem.BuildsLoading
         }
     )
 
     const actualState = withBuild(state, useBuildFor(state, minecraftVersion));
-    return [actualState, setState];
+    return [actualState, (newState) => {
+        setUserPreferences({defaultMappingNamespace: newState.namespace})
+        setState(newState)
+    }];
 }
 
 function useBuildFor(state: MappingsState, minecraftVersion: string): DesiredBuild {

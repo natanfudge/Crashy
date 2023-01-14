@@ -25,7 +25,7 @@ export function VisibleSelection({
         borderRadius: 7,
     }}>
         {actualValues.map((value, i) =>
-            <VisibleSelectionButton last={i === actualValues.length - 1} key={i * 2 + 1} active={i === currentIndex}
+            <VisibleSelectionButton last={i === actualValues.length - 1} key={i * 2 + 1} active={!showAll || i === currentIndex}
                                     onClick={() => onValueChange(i)}
                                     enabled = {showAll}
                                     text={value}/>)

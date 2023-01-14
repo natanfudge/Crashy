@@ -5,12 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/RenderingOverlayProblematicCrash.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/utils/Preferences.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/Colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/Colors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/VisibleSelection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/components/VisibleSelection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/extensions/Extensions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/extensions/Extensions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/extensions/ExtensionsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/extensions/ExtensionsImpl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +90,7 @@
         <option value="Kotlin Interface" />
         <option value="Kotlin File" />
         <option value="Kotlin Class" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -152,7 +160,7 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Client Development">
+  <component name="RunManager" selected="Jest.RenderingOverlayProblematicCrash can be parsed">
     <configuration name="CrashLogApiTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -176,29 +184,6 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="CrashLogApiTest.Get Crash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.api.CrashLogApiTest.Get Crash&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="Date is parsed correctly in 2021-12-24 format" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -209,6 +194,19 @@
       <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
       <test-names>
         <test-name value="Date is parsed correctly in 2021-12-24 format" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="RenderingOverlayProblematicCrash can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
+      <test-names>
+        <test-name value="RenderingOverlayProblematicCrash can be parsed" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -259,9 +257,9 @@
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
       <item itemvalue="Gradle.CrashLogApiTest" />
-      <item itemvalue="Gradle.CrashLogApiTest.Get Crash" />
       <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
+      <item itemvalue="Jest.RenderingOverlayProblematicCrash can be parsed" />
       <item itemvalue="Jest.Date is parsed correctly in 2021-12-24 format" />
       <item itemvalue="Jest.TSrg1 mappings work" />
       <item itemvalue="JUnit.All Server Tests" />
@@ -274,11 +272,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.RenderingOverlayProblematicCrash can be parsed" />
         <item itemvalue="Jest.TSrg1 mappings work" />
         <item itemvalue="Jest.Date is parsed correctly in 2021-12-24 format" />
         <item itemvalue="npm.deploy" />
         <item itemvalue="Gradle.CrashLogApiTest" />
-        <item itemvalue="Gradle.CrashLogApiTest.Get Crash" />
       </list>
     </recent_temporary>
   </component>
@@ -346,7 +344,8 @@
       <workItem from="1673595363365" duration="1000" />
       <workItem from="1673604004059" duration="874000" />
       <workItem from="1673607161376" duration="832000" />
-      <workItem from="1673611170891" duration="15970000" />
+      <workItem from="1673611170891" duration="17276000" />
+      <workItem from="1673652815915" duration="5528000" />
     </task>
     <servers />
   </component>
@@ -431,17 +430,6 @@
           <url>file://$PROJECT_DIR$/client/src/crash/model/Mappable.ts</url>
           <line>202</line>
           <option name="timeStamp" value="49" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/utils/Cookies.ts</url>
-          <line>16</line>
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
-          <line>166</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="72" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

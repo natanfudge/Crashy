@@ -36,6 +36,7 @@ declare global {
         firstOr<V>(or: () => V): T | V
 
         drop(amount: number): Array<T>
+        splitBy(predicate: (item: T, index: number) => boolean): [Array<T>, Array<T>]
 
         // Happens synchronously, every item is evaluated after the previous one
         mapSync<NT>(map: (item: T, index: number) => Promise<NT>): Promise<Array<NT>>
@@ -45,6 +46,8 @@ declare global {
         none(test: (item: T) => boolean): boolean
 
         toRecord<K extends TsKey, V>(map: (element: T, index: number) => [K, V]): Record<K, V>;
+
+        sum(numberMap: (item: T) => number): number;
 
     }
 }

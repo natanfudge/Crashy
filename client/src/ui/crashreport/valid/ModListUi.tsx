@@ -7,6 +7,7 @@ import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {LazyColumn} from "../../../fudge-commons/components/LazyColumn";
 import {useState} from "react";
 import {useScreenSize} from "../../../fudge-commons/methods/Gui";
+import {getUserPreferences, setUserPreferences} from "../../../utils/Preferences";
 
 
 export function ModListUi({mods}: { mods: Mod[] }) {
@@ -29,8 +30,13 @@ export function ModListUi({mods}: { mods: Mod[] }) {
         }
     )
 
-    const [idsEnabled, setIdsEnabled] = useState(false);
-    const [versionsEnabled, setVersionsEnabled] = useState(!screenSize.isPhone);
+
+    const [idsEnabled, setIdsEnabled] = useState(getUserPreferences().showModIds === "true");
+    const [versionsEnabled, setVersionsEnabled] = useState(getUserPreferences().showModVersions === "true" ?? !screenSize.isPhone);
+
+
+    const [firstHalfOfMods, secondHalfOfMods] = screenSize.isPhone ? [modsPrioritizingSuspectedMods, []] :
+        modsPrioritizingSuspectedMods.splitBy((_, i) => i < mods.length / 2)
 
     return <Column margin={{top: 20}} width={"max"}>
         <Column>
@@ -41,31 +47,56 @@ export function ModListUi({mods}: { mods: Mod[] }) {
                 <Spacer flexGrow={1}/>
                 <FormGroup>
                     <FormControlLabel control={
-                        <Switch checked={idsEnabled} onChange={e => setIdsEnabled(e.target.checked)}/>
+                        <Switch checked={idsEnabled} onChange={e => {
+                            setIdsEnabled(e.target.checked);
+                            setUserPreferences({showModIds: e.target.checked ? "true" : "false"})
+                        }}/>
                     } label="Show Mod IDs"/>
                     <FormControlLabel control={
-                        <Switch checked={versionsEnabled} onChange={e => setVersionsEnabled(e.target.checked)}/>
+                        <Switch checked={versionsEnabled} onChange={e => {
+                            setVersionsEnabled(e.target.checked);
+                            setUserPreferences({showModVersions: e.target.checked ? "true" : "false"})
+                        }}/>
                     } label="Show Versions"/>
                 </FormGroup>
             </Row>
 
             <SimpleDivider width={"max"}/>
         </Column>
-        <LazyColumn data={modsPrioritizingSuspectedMods}
-                    childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}
-                                                 showVersions={versionsEnabled}/>}/>
+        <Row>
+            <LazyColumn data={firstHalfOfMods}
+                        childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}
+                                                     showVersions={versionsEnabled}/>}/>
+            <LazyColumn data={secondHalfOfMods}
+                        childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}
+                                                     showVersions={versionsEnabled}/>}/>
+        </Row>
+
 
     </Column>
 }
 
+//         <LazyColumn data={partitionedMods}
+//                     childProvider={
+//                         mods => <Row>
+//                             {mods.map(mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}
+//                                                     showVersions={versionsEnabled}/>)}
+//                         </Row>
+//                     }/>
+
 
 function ModUi({mod, showIds, showVersions}: { mod: Mod, showIds: boolean, showVersions: boolean }) {
-    return <Row>
-        <TextTheme wordBreak={"break-all"} variant={"h6"} alignSelf={"start"}
-                   color={mod.isSuspected ? "red" : undefined}>
-            <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
-            {showIds && <span style={{fontSize: 14, whiteSpace: "pre", wordBreak: "break-all"}}> ({mod.id})</span>}
+    return <TextTheme padding={{horizontal: 10}} wordBreak={"break-all"} variant={"h6"} alignSelf={"start"}
+                      color={mod.isSuspected ? "red" : undefined}>
+        <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
+        {showIds && <span style={{fontSize: 14, whiteSpace: "pre", wordBreak: "break-all"}}> ({mod.id})</span>}
 
-        </TextTheme>
-    </Row>;
+    </TextTheme>
+
+}
+
+function modStringLength(mod: Mod, showVersions: boolean, showIds: boolean): number {
+    const string = mod.name + (showVersions ? (" " + mod.version) : "")
+        + (mod.isSuspected ? " - may have caused crash" : "") + (showIds ? mod.id : "")
+    return string.length
 }

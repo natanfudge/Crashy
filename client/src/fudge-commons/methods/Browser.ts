@@ -1,4 +1,6 @@
 import {Rect} from "../types/Gui";
+import {recordForEach} from "./Javascript";
+import {StringMap} from "../../crash/model/CrashReport";
 
 export interface Cookie {
     name: string
@@ -20,6 +22,34 @@ export function getCookieValue(name: string): string | undefined {
     const [key, value] = targetCookie.split("=")
     return value;
 }
+
+const complexCookiePrefix = "__"
+
+export function getComplexCookie<T extends object>(name: string): T | undefined {
+    // Complex cookies are stored as {complexName}__{fieldKey1}={fieldValue1}; {complexName}__{fieldKey2}={fieldValue2}
+    const complexPrefix = name + complexCookiePrefix
+    const cookies = document.cookie.split("; ");
+    const cookieParts = cookies.filter(row => row.startsWith(complexPrefix))
+    if (cookieParts.isEmpty()) return undefined;
+    const obj: T = {} as T;
+    for (const cookiePart of cookieParts) {
+        const withoutPrefix = cookiePart.removePrefix(complexPrefix)
+        const [key, value] = withoutPrefix.split("=")
+        // @ts-ignore
+        obj[key] = value
+    }
+
+    return obj;
+}
+
+export function setComplexCookie<T extends Record<string,unknown>>(name: string, value: T, expires: Date) {
+    const complexPrefix = name + complexCookiePrefix
+    recordForEach(value, (k, v) => {
+        if(typeof v !== "string") throw new Error("Complex cookie keys should only be strings")
+        setCookie({name: complexPrefix + k, value: v, expires: expires, path: "/"})
+    })
+}
+
 
 export function getDocumentRelativeRect(element?: Element | null): Rect { // crossbrowser version
     if (element === undefined || element === null) return {left: 0, top: 0, width: 0, height: 0}
