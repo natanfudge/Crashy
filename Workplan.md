@@ -1,12 +1,6 @@
 
 # Workplan:
-- [ ] Fix critical crashy issues
-- [ ] Use <a> links + history api for navigation so different pages can be accessed and also google will index these pages. 
 - [ ] Monetization?
-- [ ] Implement archived crash retrieval
-  - [ ] Implement 'archived' page
-  - [ ] Implement 'restoring...' page
-  - [ ] Implement actual restoration
 - [ ] Implement and test method of transfering crashlogs from firebase to EC2/S3
   - Write in the 'parallel uploading' section how we will actually do it
 - [ ] Do some sufficient testing on real server

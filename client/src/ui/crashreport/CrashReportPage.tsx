@@ -3,7 +3,7 @@ import {LinearProgress} from "@mui/material";
 import {CrashyServer, GetCrashError, isSuccessfulGetCrashResponse} from "../../server/CrashyServer";
 import {Wrap} from "../../fudge-commons/simple/SimpleDiv";
 import {Section, SectionState, SpecialSection} from "../../utils/Section";
-import {NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
+import {CrashArchivedScreen, NoSuchCrashScreen} from "./invalid/NoSuchCrashScreen";
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
 import {getCookieDeleted} from "../../utils/Cookies";
 import {getUrlCrashId} from "../../utils/PageUrl";
@@ -55,7 +55,7 @@ function CrashReportPageContent({crash, sectionState}: CrashProps) {
 }
 
 export function isCrashAttemptValid(attempt: GetCrashAttempt): attempt is RichCrashReport {
-    return !getCookieDeleted() && attempt !== undefined && attempt !== GetCrashError.NoSuchCrashId && !(attempt instanceof Error);
+    return !getCookieDeleted() && attempt !== undefined && typeof attempt === "object" && "rawText" in attempt
 }
 
 export function InvalidCrashAttempt({attempt}: { attempt: Exclude<GetCrashAttempt, string> }) {
@@ -63,8 +63,9 @@ export function InvalidCrashAttempt({attempt}: { attempt: Exclude<GetCrashAttemp
         return <NoSuchCrashScreen/>
     } else if (attempt === undefined) {
         return <LinearProgress/>
+    } else if (attempt === GetCrashError.Archived) {
+        return <CrashArchivedScreen/>
     } else {
-        // console.log("ALO")
         console.error(attempt)
         return <CrashErroredScreen/>
     }

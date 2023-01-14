@@ -2,17 +2,16 @@ package io.github.crashy.crashlogs.storage
 
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.deleteObject
-import aws.sdk.kotlin.services.s3.model.GetObjectRequest
-import aws.sdk.kotlin.services.s3.model.InvalidObjectState
-import aws.sdk.kotlin.services.s3.model.NoSuchKey
+import aws.sdk.kotlin.services.s3.model.*
 import aws.sdk.kotlin.services.s3.putObject
+import aws.sdk.kotlin.services.s3.restoreObject
 import aws.smithy.kotlin.runtime.content.ByteStream
 import aws.smithy.kotlin.runtime.content.decodeToString
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.utils.log.LogContext
 import java.nio.file.Path
-import kotlin.io.path.*
+import kotlin.io.path.createDirectories
 
 
 class CrashlogStorage private constructor(
@@ -41,7 +40,7 @@ class CrashlogStorage private constructor(
         val cachedResult = cache.peek(id)
         if (cachedResult != null) return PeekCrashlogResult.Success(cachedResult)
         // Then try to get it from the S3 storage
-        return when(val s3Result = getFromS3(id)){
+        return when (val s3Result = getFromS3(id)) {
             GetCrashlogResult.Archived -> PeekCrashlogResult.Archived
             GetCrashlogResult.DoesNotExist -> PeekCrashlogResult.DoesNotExist
             is GetCrashlogResult.Success -> PeekCrashlogResult.Success(s3Result.log.metadata)
@@ -57,8 +56,8 @@ class CrashlogStorage private constructor(
     }
 
     private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult {
+        val s3Key = id.s3Key()
         try {
-            val s3Key = id.s3Key()
             val s3Result = try {
                 s3.getObject {
                     this.ifNoneMatch
@@ -81,7 +80,21 @@ class CrashlogStorage private constructor(
 
             return GetCrashlogResult.Success(crashlog)
         } catch (e: InvalidObjectState) {
-            //TODO: implement restoration
+            try {
+                s3.restoreObject {
+                    bucket = bucketName
+                    key = s3Key
+                    restoreRequest = RestoreRequest {
+                        days = 90
+                        glacierJobParameters {
+                            tier = Tier.Standard
+                        }
+                    }
+
+                }
+            } catch (e: S3Exception) {
+                if (e.sdkErrorMetadata.errorCode != "RestoreAlreadyInProgress") throw e
+            }
             return GetCrashlogResult.Archived
         }
     }
@@ -91,6 +104,7 @@ class CrashlogStorage private constructor(
         // to have viewed it just now, which means he pulled it out of the S3 into the cache.
         return cache.delete(id, key)
     }
+
     context(LogContext)
     suspend fun evictOld() {
         cache.evictOld { id, log ->
@@ -118,6 +132,7 @@ sealed interface GetCrashlogResult {
         override fun toString(): String = "GetCrashlogResponse.Archived"
     }
 }
+
 sealed interface PeekCrashlogResult {
     class Success(val metadata: CrashlogMetadata) : PeekCrashlogResult
     object DoesNotExist : PeekCrashlogResult {

@@ -56,7 +56,7 @@ sealed interface UploadCrashResponse : StringResponse {
 
 
 sealed interface GetCrashResponse : Response {
-    object Archived : GetCrashResponse, Response by textResponse("Archived", HttpStatusCode.Processing)
+    object Archived : GetCrashResponse, Response by textResponse("Archived", HttpStatusCode.OK)
     object DoesNotExist : GetCrashResponse, Response by textResponse("Does Not Exist", HttpStatusCode.NotFound)
     class Success(log: CrashlogEntry) : GetCrashResponse {
         override val bytes: ByteArray = log.compressedLog.bytes

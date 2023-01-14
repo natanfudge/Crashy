@@ -181,5 +181,11 @@ class CrashlogStorageTest {
         return res
     }
 
+    @Test
+    fun `Archived Crash`() = testScope {
+        val archivedId = CrashlogId.parse("2e7f2fa3-c057-4c35-a337-b4c06a71d08d").getOrThrow()
+        val response = getLog(archivedId)
+        expectThat(response).isEqualTo(GetCrashlogResult.Archived)
+    }
 
 }

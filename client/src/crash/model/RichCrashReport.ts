@@ -12,6 +12,8 @@ export interface RichCrashReport {
     sections: RichCrashReportSection[]
 }
 
+
+
 export interface RichCrashReportSection {
     name: string,
     details?: StringMap

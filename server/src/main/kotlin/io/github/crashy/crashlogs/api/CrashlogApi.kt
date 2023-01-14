@@ -79,7 +79,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
                 PeekCrashlogResult.Archived -> Triple(
                     "Archived Crash",
                     "This crash wasn't accessed in a long time",
-                    HttpStatusCode.Processing
+                    HttpStatusCode.OK
                 )
 
                 PeekCrashlogResult.DoesNotExist -> notFound

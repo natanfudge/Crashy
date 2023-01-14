@@ -6,7 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/invalid/NoSuchCrashScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/invalid/NoSuchCrashScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,6 +160,29 @@
     </key>
   </component>
   <component name="RunManager" selected="npm.Client Development">
+    <configuration name="CrashlogStorageTest.Archived Crash" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.CrashlogStorageTest.Archived Crash&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="Broken section crash is parsed well enough" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -189,19 +222,6 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Fabric crash report is enriched properly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" />
-      <test-names>
-        <test-name value="Fabric crash report is enriched properly" />
-      </test-names>
-      <method v="2" />
-    </configuration>
     <configuration name="Seemingly innocent crash log can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -238,13 +258,13 @@
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
+      <item itemvalue="Gradle.CrashlogStorageTest.Archived Crash" />
       <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
       <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
       <item itemvalue="Jest.Broken section crash is parsed well enough" />
       <item itemvalue="Jest.Broken section crash is recognized as broken" />
       <item itemvalue="Jest.Crash with weird section formatting is parsed correctly" />
-      <item itemvalue="Jest.Fabric crash report is enriched properly" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
       <item itemvalue="npm.Analyze Client Bundle" />
@@ -254,11 +274,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.CrashlogStorageTest.Archived Crash" />
         <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
         <item itemvalue="Jest.Broken section crash is parsed well enough" />
         <item itemvalue="Jest.Broken section crash is recognized as broken" />
         <item itemvalue="Jest.Crash with weird section formatting is parsed correctly" />
-        <item itemvalue="Jest.Fabric crash report is enriched properly" />
       </list>
     </recent_temporary>
   </component>
@@ -330,7 +350,10 @@
       <workItem from="1673652815915" duration="5528000" />
       <workItem from="1673687682359" duration="2757000" />
       <workItem from="1673694524602" duration="2638000" />
-      <workItem from="1673700066510" duration="1660000" />
+      <workItem from="1673700066510" duration="2000000" />
+      <workItem from="1673708168931" duration="3323000" />
+      <workItem from="1673714604704" duration="303000" />
+      <workItem from="1673718345543" duration="1710000" />
     </task>
     <servers />
   </component>
@@ -419,13 +442,11 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
           <line>340</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="68" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
           <line>108</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="73" />
         </line-breakpoint>
       </breakpoints>

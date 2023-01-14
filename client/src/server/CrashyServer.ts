@@ -2,10 +2,6 @@
 
 
 import {httpGet, httpPost} from "../fudge-commons/methods/Http";
-import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
-import {BrokenSectionCrash} from "../test/testlogs/BrokenSectionCrash";
-import {testFabricCrashReport} from "../test/testlogs/TestCrashes";
-import {SeeminglyInnocentCrashTest} from "../test/testlogs/SeeminglyInnocentCrashTest";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -23,7 +19,8 @@ export function isSuccessfulGetCrashResponse(crash: GetCrashResponse | undefined
 }
 
 export enum GetCrashError {
-    NoSuchCrashId
+    NoSuchCrashId,
+    Archived
 }
 
 export enum DeleteCrashResponse {
@@ -48,15 +45,18 @@ export namespace CrashyServer {
     const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        return TestVerifyErrorCrash;
+        // return TestVerifyErrorCrash;
         // return testFabricCrashReport;
         // return SeeminglyInnocentCrashTest.replaceAll("    ", "\t")
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
         if (document.title === "Invalid Crash Url") return GetCrashError.NoSuchCrashId;
+        if (document.title === "Archived Crash") return GetCrashError.Archived
         const response = await httpGet({url: `${crashyOrigin}/${id}/raw.txt`});
         switch (response.status) {
             case HttpStatusCode.OK:
-                return response.text();
+                const text = await response.text()
+                if (text === "Archived") return GetCrashError.Archived
+                return text;
             case HttpStatusCode.NotFound:
                 return GetCrashError.NoSuchCrashId
             default:
@@ -115,6 +115,7 @@ export namespace CrashyServer {
             return response.text()
         }
     }
+
     export async function getMcp(mcVersion: string, build: string): Promise<string> {
         const response = await httpGet({
             url: `${crashyOrigin}/getMcp/${mcVersion}/${build}.csv`

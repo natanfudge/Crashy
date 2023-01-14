@@ -68,10 +68,12 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         locationOfLastAccessDay(id, lastAccessDay).deleteExisting()
     }
 
+    private val daysToEvictCrash = 30L
+
     context(LogContext)
     suspend fun evictOld(onEvicted: suspend (CrashlogId, CrashlogEntry) -> Unit) {
         val existingDays = lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
-        val thirtyDaysAgo = clock.now().minusDays(30)
+        val thirtyDaysAgo = clock.now().minusDays(daysToEvictCrash)
         val oldDays = existingDays.filter { it.toGmtZonedDateTime().isBefore(thirtyDaysAgo) }
         logInfo { "Evicting crashes from days: $oldDays" }
         for (oldDay in oldDays) {
