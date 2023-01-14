@@ -57,6 +57,7 @@ const JavaVersionTitle = "Java Version";
 const MinecraftVersionTitle = "Minecraft Version";
 const ForgeLoaderTitle = "Forge";
 const FMLTitle = "FML";
+const ModLauncherTitle = "ModLauncher";
 const FabricLoaderId = "fabricloader";
 const OperatingSystemTitle = "Operating System";
 const IsModdedTitle = "Is Modded"
@@ -112,42 +113,52 @@ function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]):
             type: LoaderType.Forge,
             version: version
         };
-    } else {
-        const fmlEntry = systemDetails[FMLTitle]
-        if(fmlEntry != undefined){
-            return {
-                type: LoaderType.Forge,
-                // Actually parsing the version is too much effort for such an old minecraft version
-                version: "(FML)"
-            }
-        }
+    }
 
-        if (mods !== undefined) {
-            // If mods exists, and not forge, then it's definitely Fabric and we have the version available
-            const fabricLoaderMod = mods.find((mod) => mod.id === FabricLoaderId)!;
+    const modLauncherEntry = systemDetails[ModLauncherTitle]
+    if (modLauncherEntry !== undefined) {
+        // Sometimes forge doesn't show up and we have 'Mod Launcher' instead
+        return {
+            type: LoaderType.Forge,
+            version: modLauncherEntry
+        }
+    }
+
+    const fmlEntry = systemDetails[FMLTitle]
+    if (fmlEntry != undefined) {
+        return {
+            type: LoaderType.Forge,
+            // Actually parsing the version is too much effort for such an old minecraft version
+            version: "(FML)"
+        }
+    }
+
+    if (mods !== undefined) {
+        // If mods exists, and not forge, then it's definitely Fabric and we have the version available
+        const fabricLoaderMod = mods.find((mod) => mod.id === FabricLoaderId)!;
+        return {
+            type: LoaderType.Fabric,
+            version: fabricLoaderMod.version
+        };
+    } else {
+        const isModded = systemDetails[IsModdedTitle];
+        if (isModded.startsWith("Definitely")) {
+            // Minecraft says it's modded, so it's gotta be fabric.
+            //TODO: for loaders other than forge/fabric, we need to check the brand that this detail gives.
             return {
                 type: LoaderType.Fabric,
-                version: fabricLoaderMod.version
-            };
+                // No way to know what Fabric Loader version this is
+                version: undefined
+            }
         } else {
-            const isModded = systemDetails[IsModdedTitle];
-            if (isModded.startsWith("Definitely")) {
-                // Minecraft says it's modded, so it's gotta be fabric.
-                //TODO: for loaders other than forge/fabric, we need to check the brand that this detail gives.
-                return {
-                    type: LoaderType.Fabric,
-                    // No way to know what Fabric Loader version this is
-                    version: undefined
-                }
-            } else {
-                return {
-                    type: LoaderType.Vanilla,
-                    version: undefined
-                }
+            return {
+                type: LoaderType.Vanilla,
+                version: undefined
             }
         }
-
     }
+
+
 }
 
 function parseCrashDate(dateStr: string): Date {

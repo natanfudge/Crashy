@@ -7,6 +7,7 @@ import {parseCrashReport} from "../../crash/parser/CrashReportParser";
 import "../../fudge-commons/extensions/ExtensionsImpl"
 import {TestBadDate} from "../testlogs/TestBadDate";
 import {RenderingOverlayProblematicCrash} from "../testlogs/RenderingOverlayProblematicCrash";
+import {SeeminglyInnocentCrashTest} from "../testlogs/SeeminglyInnocentCrashTest";
 test("Windows newlines can be handled", () => {
     const parsed = parseCrashReport(testFabricCrashReportUsingWindowsLines)
     const enriched = enrichCrashReport(parsed);
@@ -26,4 +27,9 @@ test("Date is parsed correctly in 2021-12-24 format", () => {
 test("RenderingOverlayProblematicCrash can be parsed", () => {
     const enriched = parseCrashReportRich(RenderingOverlayProblematicCrash)
     expect(enriched.sections[2].details!["Recovery"]).toEqual("Yes")
+})
+
+test("Seemingly innocent crash log can be parsed", () => {
+    const enriched = parseCrashReportRich(SeeminglyInnocentCrashTest.replaceAll("    ","\t"))
+    expect(enriched.context.loader.version).toEqual("9.1.3+9.1.3+main.9b69c82a")
 })

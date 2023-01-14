@@ -161,6 +161,8 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
     function parseSection(): CrashReportSection {
+        skipEmptyLine()
+        skipEmptyLine()
         skipString("-- ")
 
         const title = readUntilNextChar("-");
@@ -330,7 +332,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
     function skipEmptyLine() {
-        if (current() === "\n" || current() === "\r") skipLine();
+        if (current() === "\n" || current() === "\r" || currentAndNext() === " \n") skipLine();
     }
 
     function skipString(string: string) {

@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/SeeminglyInnocentCrashTest.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +116,7 @@
     &quot;TODO_SCOPE&quot;: &quot;Crashy&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1673604742872&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1673697113773&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/compat&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -153,7 +153,7 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Client Development">
+  <component name="RunManager" selected="Jest.Seemingly innocent crash log can be parsed">
     <configuration name="Broken section crash is parsed well enough" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -206,16 +206,16 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Weird date crash that is parsed correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Seemingly innocent crash log can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
       <test-names>
-        <test-name value="Weird date crash that is parsed correctly" />
+        <test-name value="Seemingly innocent crash log can be parsed" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -244,11 +244,11 @@
       <item itemvalue="Gradle.Upload Server" />
       <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
+      <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
       <item itemvalue="Jest.Broken section crash is parsed well enough" />
       <item itemvalue="Jest.Broken section crash is recognized as broken" />
       <item itemvalue="Jest.Crash with weird section formatting is parsed correctly" />
       <item itemvalue="Jest.Fabric crash report is enriched properly" />
-      <item itemvalue="Jest.Weird date crash that is parsed correctly" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
       <item itemvalue="npm.Analyze Client Bundle" />
@@ -258,11 +258,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
         <item itemvalue="Jest.Broken section crash is parsed well enough" />
         <item itemvalue="Jest.Broken section crash is recognized as broken" />
         <item itemvalue="Jest.Crash with weird section formatting is parsed correctly" />
         <item itemvalue="Jest.Fabric crash report is enriched properly" />
-        <item itemvalue="Jest.Weird date crash that is parsed correctly" />
       </list>
     </recent_temporary>
   </component>
@@ -333,7 +333,8 @@
       <workItem from="1673611170891" duration="17276000" />
       <workItem from="1673652815915" duration="5528000" />
       <workItem from="1673687682359" duration="2757000" />
-      <workItem from="1673694524602" duration="2332000" />
+      <workItem from="1673694524602" duration="2638000" />
+      <workItem from="1673700066510" duration="1276000" />
     </task>
     <servers />
   </component>
@@ -419,11 +420,25 @@
           <line>202</line>
           <option name="timeStamp" value="49" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
+          <line>340</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
+          <line>108</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="JavaScriptTestRunnerJest">
         <watch expression="current()" />
+        <watch expression="rawReport.substring(cursor - 15, cursor + 150)" language="TypeScript" />
+        <watch expression="rawReport.substring(cursor, cursor + 100)" language="TypeScript" />
       </configuration>
       <configuration name="GradleRunConfiguration">
         <watch expression="file.exists()" />
