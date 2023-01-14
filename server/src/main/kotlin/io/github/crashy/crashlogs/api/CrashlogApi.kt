@@ -37,7 +37,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         logData("Generated ID") { id }
         logData("Deletion Key") { key }
 
-        val header = peekCrashHeader(request) ?: return UploadCrashResponse.MalformedCrashError
+        val header = CrashlogHeader.readFromLog(request) ?: return UploadCrashResponse.MalformedCrashError
         logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, Instant.now(), header)))
 
         return UploadCrashResponse.Success(
@@ -75,7 +75,6 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         val (title, description, code) = when {
             logId.isFailure -> notFound
             else -> when (val result = logs.peek(logId.getOrThrow())) {
-                //TODO: implement in frontend
                 PeekCrashlogResult.Archived -> Triple(
                     "Archived Crash",
                     "This crash wasn't accessed in a long time",
@@ -128,14 +127,5 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     }
 }
 
-private fun peekCrashHeader(log: UncompressedLog): CrashlogHeader? {
-    // 1000 bytes saves a lot of time and should be enough in all cases
-    val start = log.peek(bytes = 1000)
-    val lines = start.split("\n")
-    val descriptionLine = lines.indexOfFirst { it.startsWith("Description:") }
-    if (descriptionLine == -1) return null
-    val description = lines[descriptionLine].removePrefix("Description:").trim()
-    val exception = lines[descriptionLine + 2].trim()
-    return CrashlogHeader(description, exception)
-}
+
 

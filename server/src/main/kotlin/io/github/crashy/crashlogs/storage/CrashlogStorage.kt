@@ -10,7 +10,11 @@ import aws.smithy.kotlin.runtime.content.decodeToString
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.utils.log.LogContext
+import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.nio.file.Path
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.io.path.createDirectories
 
 
@@ -55,12 +59,30 @@ class CrashlogStorage private constructor(
         return getFromS3(id)
     }
 
-    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult {
+    private val activeS3LogRequests = ConcurrentHashMap<CrashlogId,Deferred<GetCrashlogResult>>()
+
+    val scope = CoroutineScope(Dispatchers.IO)
+
+//    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult {
+//        // In case multiple people request the same ID from S3, only call the S3 API once and sync between the requests.
+//        val deferred = activeS3LogRequests.computeIfAbsent(id) {
+//            scope.async {
+//                val value = getFromS3Impl(id)
+//                // We are done with this request, remove it
+//                activeS3LogRequests.remove(id)
+//                value
+//            }
+//        }
+//        return deferred.await()
+//    }
+
+    val mutex = Mutex()
+
+    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult  = mutex.withLock{
         val s3Key = id.s3Key()
         try {
             val s3Result = try {
                 s3.getObject {
-                    this.ifNoneMatch
                     bucket = bucketName
                     key = s3Key
                 }
@@ -71,6 +93,7 @@ class CrashlogStorage private constructor(
             // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
             val body = s3Result.body ?: error("Could not get crashlog body")
 
+            //TODO: crashes with IllegalStateException... I think the fix is to switch to java sdk.
             val crashlog = Crashy.json.decodeFromString(CrashlogEntry.serializer(), body.decodeToString())
             cache.store(id, crashlog)
             s3.deleteObject {
@@ -114,6 +137,7 @@ class CrashlogStorage private constructor(
                 key = id.s3Key()
                 body = ByteStream.fromString(Crashy.json.encodeToString(CrashlogEntry.serializer(), log))
             }
+
         }
     }
 
@@ -144,7 +168,7 @@ sealed interface PeekCrashlogResult {
     }
 }
 
-private fun CrashlogId.s3Key() = value.toString()
+
 //private fun CompressedCrashlog.toByteStream() = ByteStream.fromBytes(bytes)
 
 // Fix up the weird s3 kotlin api

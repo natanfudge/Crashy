@@ -3,9 +3,11 @@ package io.github.crashy.crashlogs
 import com.aayushatharva.brotli4j.decoder.Decoder
 import com.aayushatharva.brotli4j.decoder.DecoderJNI.Status.DONE
 import com.aayushatharva.brotli4j.encoder.Encoder
+import io.github.crashy.compat.firestoreIdToUUID
 import io.github.crashy.crashlogs.api.StringResponse
 import io.github.crashy.utils.InstantSerializer
 import io.github.crashy.utils.UUIDSerializer
+import io.github.crashy.utils.compressBrotli
 import io.github.crashy.utils.randomString
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
@@ -26,6 +28,7 @@ value class DeletionKey private constructor(private val value: String) {
     companion object {
         private const val Length = 6
         fun generate() = DeletionKey(randomString(Length))
+        fun fromExisting(key: String) = DeletionKey(key)
     }
 }
 
@@ -40,12 +43,16 @@ value class CrashlogId private constructor(@Serializable(with = UUIDSerializer::
         fun generate() = CrashlogId(UUID.randomUUID())
 
         fun parse(string: String): Result<CrashlogId> = try {
-            Result.success(CrashlogId(UUID.fromString(string)))
+            val id = if (string.length == 20) firestoreIdToUUID(string) else UUID.fromString(string)
+            Result.success(CrashlogId(id))
         } catch (e: IllegalArgumentException) {
             Result.failure(e)
         }
     }
 }
+
+ fun CrashlogId.s3Key() = value.toString()
+
 
 @Serializable
 data class CrashlogMetadata(
@@ -55,7 +62,20 @@ data class CrashlogMetadata(
 )
 
 @Serializable
-data class CrashlogHeader(val title: String, val exceptionDescription: String)
+data class CrashlogHeader(val title: String, val exceptionDescription: String) {
+    companion object {
+        fun readFromLog(log: UncompressedLog): CrashlogHeader? {
+            // 1000 bytes saves a lot of time and should be enough in all cases
+            val start = log.peek(bytes = 1000)
+            val lines = start.split("\n")
+            val descriptionLine = lines.indexOfFirst { it.startsWith("Description:") }
+            if (descriptionLine == -1) return null
+            val description = lines[descriptionLine].removePrefix("Description:").trim()
+            val exception = lines[descriptionLine + 2].trim()
+            return CrashlogHeader(description, exception)
+        }
+    }
+}
 
 /**
  * We only use brotli compression
@@ -67,7 +87,7 @@ value class CompressedLog private constructor(val bytes: ByteArray) {
         fun createRandom() = CompressedLog(Random.nextBytes(100))
         fun readFromFile(file: Path) = CompressedLog(file.readBytes())
 
-        fun compress(bytes: ByteArray) = CompressedLog(Encoder.compress(bytes))
+        fun compress(bytes: ByteArray) = CompressedLog(bytes.compressBrotli())
     }
 
     fun writeToFile(file: Path) {

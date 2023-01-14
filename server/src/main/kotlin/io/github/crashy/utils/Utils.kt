@@ -33,20 +33,7 @@ object InstantSerializer : KSerializer<Instant> {
     override fun serialize(encoder: Encoder, value: Instant) = encoder.encodeLong(value.toEpochMilli())
 }
 
-// decompress a Gzip file into a byte arrays
-fun ByteArray.decompressGzip(): ByteArray {
-    return GZIPInputStream(inputStream()).buffered().use { stream ->
-        stream.readAllBytes()
-    }
-}
 
-private val brotliInitialized = AtomicBoolean(false)
-fun ByteArray.decompressBrotli(): ByteArray {
-    if (brotliInitialized.compareAndSet(false, true)) {
-        Brotli4jLoader.ensureAvailability()
-    }
-    return com.aayushatharva.brotli4j.decoder.Decoder.decompress(this).decompressedData
-}
 
 private const val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 

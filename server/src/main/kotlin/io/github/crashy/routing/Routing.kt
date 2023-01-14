@@ -77,7 +77,8 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
             CrashyLogger.startCall("scheduleTasks") {
                 logData("Schedule Time") { Instant.now() }
                 CrashyLogger.deleteOldLogs()
-                crashlogStorage.evictOld()
+                //TODO: restore
+//                crashlogStorage.evictOld()
             }
         }
     }.apply {
