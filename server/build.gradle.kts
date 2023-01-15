@@ -70,6 +70,8 @@ dependencies {
     implementation("org.fusesource.jansi:jansi:2.4.0")
     implementation("io.ktor:ktor-server-auth:${libs.versions.ktor.get()}")
     implementation("io.ktor:ktor-server-html-builder:${libs.versions.ktor.get()}")
+    implementation("software.amazon.awssdk:bom:2.19.17")
+    implementation("software.amazon.awssdk:s3:2.19.13")
     testImplementation ("com.google.firebase:firebase-admin:9.1.1")
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)

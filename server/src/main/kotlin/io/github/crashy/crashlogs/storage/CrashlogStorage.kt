@@ -1,37 +1,43 @@
 package io.github.crashy.crashlogs.storage
 
-import aws.sdk.kotlin.services.s3.S3Client
-import aws.sdk.kotlin.services.s3.deleteObject
-import aws.sdk.kotlin.services.s3.model.*
-import aws.sdk.kotlin.services.s3.putObject
-import aws.sdk.kotlin.services.s3.restoreObject
-import aws.smithy.kotlin.runtime.content.ByteStream
-import aws.smithy.kotlin.runtime.content.decodeToString
+import software.amazon.awssdk.services.s3.model.S3Object
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.utils.log.LogContext
+import io.github.crashy.utils.suspend
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import software.amazon.awssdk.core.ResponseBytes
+import software.amazon.awssdk.core.ResponseInputStream
+import software.amazon.awssdk.core.async.AsyncResponseTransformer
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.s3.S3AsyncClient
+import software.amazon.awssdk.services.s3.S3Client
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
+import software.amazon.awssdk.services.s3.model.GetObjectResponse
 import java.nio.file.Path
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.io.path.createDirectories
 
 
 class CrashlogStorage private constructor(
-    private val s3: S3Client,
+//    private val s3: S3Client,
     appDataDir: Path,
     private val bucketName: String,
     clock: NowDefinition
 ) : AutoCloseable {
-    companion object {
-        suspend fun create(bucket: String, clock: NowDefinition, appDataDir: Path): CrashlogStorage {
-            val client = S3Client.fromEnvironment {
-                region = "eu-central-1"
-            }
-            return CrashlogStorage(client, appDataDir, bucket, clock)
-        }
-    }
+    val s3 = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
+//    companion object {
+//        suspend fun create(bucket: String, clock: NowDefinition, appDataDir: Path): CrashlogStorage {
+//
+//
+//            val client = S3Client.fromEnvironment {
+//                region = "eu-central-1"
+//            }
+//            return CrashlogStorage(client, appDataDir, bucket, clock)
+//        }
+//    }
 
     private val cache = CrashlogCache(parentDir = appDataDir.resolve("cache").createDirectories(), clock)
 
@@ -83,6 +89,8 @@ class CrashlogStorage private constructor(
         try {
             val s3Result = try {
                 s3.getObject {
+                    bucket(bucketName)
+                    key(s3Key)
                     bucket = bucketName
                     key = s3Key
                 }
@@ -172,5 +180,8 @@ sealed interface PeekCrashlogResult {
 //private fun CompressedCrashlog.toByteStream() = ByteStream.fromBytes(bytes)
 
 // Fix up the weird s3 kotlin api
-private suspend fun S3Client.getObject(requestBuilder: GetObjectRequest.Builder.() -> Unit) =
-    getObject(GetObjectRequest { requestBuilder() }) { it }
+private suspend fun S3AsyncClient.getObject(requestBuilder: GetObjectRequest.Builder.() -> Unit): ResponseBytes<GetObjectResponse> {
+    val request = GetObjectRequest.builder().apply(requestBuilder).build()
+    return getObject(request, AsyncResponseTransformer.toBytes()).suspend()
+}
+

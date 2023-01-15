@@ -1,7 +1,7 @@
 package io.github.crashy.utils
 
-import com.aayushatharva.brotli4j.Brotli4jLoader
 import io.github.crashy.Crashy
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -12,8 +12,9 @@ import java.nio.file.Path
 import java.nio.file.attribute.BasicFileAttributes
 import java.time.Instant
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.zip.GZIPInputStream
+import java.util.concurrent.CompletableFuture
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.io.path.readAttributes
 
 
@@ -34,7 +35,6 @@ object InstantSerializer : KSerializer<Instant> {
 }
 
 
-
 private const val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
 fun randomString(length: Int) = buildString {
@@ -43,6 +43,17 @@ fun randomString(length: Int) = buildString {
     }
 }
 
-fun getResource(path: String): String? = Crashy::class.java.getResourceAsStream(path)?.readBytes()?.toString(Charset.defaultCharset())
+fun getResource(path: String): String? =
+    Crashy::class.java.getResourceAsStream(path)?.readBytes()?.toString(Charset.defaultCharset())
 
 fun Path.lastAccessInstant() = readAttributes<BasicFileAttributes>().lastAccessTime().toInstant()
+
+suspend fun <T> CompletableFuture<T>.suspend() = suspendCancellableCoroutine<T> { cont ->
+    whenCompleteAsync { value, e ->
+        if (value != null) {
+            cont.resume(value)
+        } else {
+            cont.resumeWithException(e)
+        }
+    }
+}
