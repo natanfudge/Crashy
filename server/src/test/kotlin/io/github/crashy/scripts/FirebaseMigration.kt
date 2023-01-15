@@ -1,8 +1,5 @@
 package io.github.crashy.scripts
 
-import aws.sdk.kotlin.services.s3.S3Client
-import aws.sdk.kotlin.services.s3.putObject
-import aws.smithy.kotlin.runtime.content.ByteStream
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.Timestamp
 import com.google.cloud.firestore.Blob
@@ -12,10 +9,13 @@ import com.google.firebase.cloud.FirestoreClient
 import io.github.crashy.Crashy
 import io.github.crashy.compat.firestoreIdToUUID
 import io.github.crashy.crashlogs.*
+import io.github.crashy.crashlogs.storage.putObjectSuspend
 import io.github.crashy.utils.decompressGzip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.s3.S3AsyncClient
 import strikt.api.expectThat
 import strikt.assertions.isNotEqualTo
 import kotlin.test.Test
@@ -40,9 +40,7 @@ class FirebaseMigration {
             future.get()
         }.documents
 
-        val s3Client = S3Client.fromEnvironment {
-            region = "eu-central-1"
-        }
+        val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
 
 
         for (doc in docs) {
@@ -66,10 +64,9 @@ class FirebaseMigration {
             val crashlogId = CrashlogId.parse(doc.id).getOrThrow()
 
             println("Migrating crash log [${doc.id} -> $crashlogId]")
-            s3Client.putObject {
-                bucket = "crashy-crashlogs"
-                key = crashlogId.s3Key()
-                body = ByteStream.fromString(Crashy.json.encodeToString(CrashlogEntry.serializer(), entry))
+            s3Client.putObjectSuspend(Crashy.json.encodeToString(CrashlogEntry.serializer(), entry)) {
+                bucket("crashy-crashlogs")
+                key(crashlogId.s3Key())
             }
             println("Migration complete")
         }

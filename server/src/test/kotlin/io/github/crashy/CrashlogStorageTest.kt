@@ -118,7 +118,7 @@ class CrashlogStorageTest {
             val dir = withContext(Dispatchers.IO) {
                 Files.createTempDirectory("test")
             }
-            val cache = CrashlogStorage.create(bucket = "crashy-test-crashlogs", clock, dir)
+            val cache = CrashlogStorage(dir, bucketName = "crashy-test-crashlogs", clock)
             CrashyLogger.startCallWithContextAsParam("test_crashlog_storage") {
                 test(cache, clock, dir.resolve("cache"), it)
             }
@@ -183,7 +183,7 @@ class CrashlogStorageTest {
 
     @Test
     fun `Archived Crash`() = testScope {
-        val archivedId = CrashlogId.parse("2e7f2fa3-c057-4c35-a337-b4c06a71d08d").getOrThrow()
+        val archivedId = CrashlogId.parse("0e412d80-234d-47b7-ae3b-03e0bf59442a").getOrThrow()
         val response = getLog(archivedId)
         expectThat(response).isEqualTo(GetCrashlogResult.Archived)
     }

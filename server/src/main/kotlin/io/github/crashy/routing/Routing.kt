@@ -29,8 +29,8 @@ object Routes {
 fun Application.configureRouting() {
     val crashyDir = Paths.get(System.getProperty("user.home"), ".crashy")
     val logStorage = runBlocking {
-        CrashlogStorage.create(
-            bucket = "crashy-crashlogs",
+        CrashlogStorage(
+            bucketName = "crashy-crashlogs",
             appDataDir = crashyDir,
             clock = RealClock
         )
