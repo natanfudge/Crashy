@@ -13,8 +13,8 @@ import java.nio.file.attribute.BasicFileAttributes
 import java.time.Instant
 import java.util.*
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletionException
 import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 import kotlin.io.path.readAttributes
 
 
@@ -48,12 +48,20 @@ fun getResource(path: String): String? =
 
 fun Path.lastAccessInstant() = readAttributes<BasicFileAttributes>().lastAccessTime().toInstant()
 
-suspend fun <T> CompletableFuture<T>.suspend() = suspendCancellableCoroutine<T> { cont ->
+suspend fun <T> CompletableFuture<T>.suspendResult(): Result<T> = suspendCancellableCoroutine { cont ->
     whenCompleteAsync { value, e ->
         if (value != null) {
-            cont.resume(value)
+            cont.resume(Result.success(value))
         } else {
-            cont.resumeWithException(e)
+            val error = if (e is CompletionException) {
+                e.cause!!
+            } else e
+            cont.resume(Result.failure(error))
         }
     }
 }
+
+suspend fun <T> CompletableFuture<T>.suspend(): T {
+    return suspendResult().getOrThrow()
+}
+

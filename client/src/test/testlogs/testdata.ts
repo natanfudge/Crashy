@@ -54,6 +54,7 @@ const testCrashReport: CrashReport = {
                 "Level dimension": "minecraft:overworld"
             },
             stacktrace: testElementStackTrace,
+            additionalInfo: {}
         },
         {
             title: "System Details",
@@ -61,8 +62,9 @@ const testCrashReport: CrashReport = {
                 "Minecraft Version": "1.16.5",
                 "Minecraft Version ID": "1.16.5",
                 "Operating System": "Windows 7 (x86) version 6.1"
-            }
-        }
+            },
+            additionalInfo: {}
+        },
     ],
 }
 

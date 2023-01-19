@@ -26,6 +26,9 @@ export interface CrashReportSection {
     title: string
     details?: StringMap
     stacktrace?: StackTraceElement[]
+    //TODO: display in UI
+    additionalInfo: StringMap
     thread?: string
 }
+
 

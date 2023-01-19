@@ -172,11 +172,12 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         const thread = parseSectionThread();
         const details = parseSectionDetails();
         const stacktrace = parseSectionStacktrace();
+        const additionalInfo = parseSectionAdditionalInfo()
 
         // Skip empty line
         skipEmptyLine();
 
-        return {thread, title, details, stacktrace};
+        return {thread, title, details, stacktrace, additionalInfo};
     }
 
     function parseSectionThread() {
@@ -212,6 +213,37 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return stacktrace;
     }
 
+    // Parses more things of the form KEY: VALUE
+    //                                     VALUE
+    function parseSectionAdditionalInfo(): StringMap {
+        const additionalInfoKeys: StringMap = {}
+        // '-' Marks the start of a new section
+        while (current() != "-" && !isWhitespace(current()) && !isEof()) {
+            const additionalInfoKey = readUntilChar(":")
+            skipEmptyLine()
+            let nextLine = readLine()
+            let info = nextLine
+            while (nextLine != "") {
+                nextLine = readLine()
+                info += nextLine
+            }
+            additionalInfoKeys[additionalInfoKey] = info
+        }
+        return additionalInfoKeys
+    }
+
+    function isWhitespace(char: string): boolean {
+        switch (char){
+            case "\n":
+            case "\r":
+            case " ":
+            case "\t":
+                return true
+            default:
+                return false
+        }
+    }
+
 
     function parseSectionElement(): { detail: string, name: string } {
         let name = parseSectionName();
@@ -226,7 +258,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
                 break;
             } else if (
                 // Start of new element
-                ( nextLine[0] === "\t" && isUpperCase(nextLine[1]) && nextLine.includes(": ")) ||
+                (nextLine[0] === "\t" && isUpperCase(nextLine[1]) && nextLine.includes(": ")) ||
                 // Start of Stack Trace
                 nextLine === "Stacktrace:" ||
                 // Start of new section
@@ -275,7 +307,6 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
 
-
     function isUpperCase(char: string): boolean {
         return upperCaseLetters.contains(char)
     }
@@ -290,7 +321,6 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
             skipNumber(8)
         } else {
             name = readUntilChar(":");
-            skipString(":");
             if (current() === " ") skip();
         }
         return name;
@@ -408,12 +438,17 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         skip();
     }
 
+    /**
+     * Does not include the char itself, but skips it
+     */
     function readUntilChar(char: string): string {
-        return buildString((str) => {
+        const result = buildString((str) => {
             while (current() !== char && !isEof()) {
                 str.append(readCurrent());
             }
         });
+        skip()
+        return result;
     }
 
     function readUntilEither(chars: string[]): string {
@@ -446,5 +481,6 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         });
     }
 }
+
 const upperCaseLetters = HashSet.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
     "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z")

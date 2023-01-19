@@ -4,6 +4,7 @@ import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.utils.log.LogContext
 import io.github.crashy.utils.suspend
+import io.github.crashy.utils.suspendResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -85,41 +86,46 @@ class CrashlogStorage(
 
     private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult = mutex.withLock {
         val s3Key = id.s3Key()
-        val s3Result = try {
-            s3.getObject {
-                bucket(bucketName)
-                key(s3Key)
-            }
-        } catch (e: NoSuchKeyException) {
-            return GetCrashlogResult.DoesNotExist
-        } catch (e: InvalidObjectStateException) {
-            //TODO: test this
-            try {
-                val res = s3.restoreObjectSuspend {
-                    bucket(bucketName)
-                    key(s3Key)
-                    restoreRequest {
-                        RestoreRequest.builder()
-                            .days(10)
-                            .glacierJobParameters {
-                                GlacierJobParameters.builder()
-                                    .tier(Tier.STANDARD)
-                            }
-                    }
-
-                }
-                println(res)
-            } catch (e: S3Exception) {
-                val x = 2
-//                if (e. .sdkErrorMetadata.errorCode != "RestoreAlreadyInProgress") throw e
-            }
-            return GetCrashlogResult.Archived
+        when (val s3Result = s3.getObject {
+            bucket(bucketName)
+            key(s3Key)
+        }) {
+            is AnyGetObjectResponse.Success -> return pullLogFromS3(s3Result, id, s3Key)
+            AnyGetObjectResponse.NoSuchKey -> return GetCrashlogResult.DoesNotExist
+            AnyGetObjectResponse.InvalidObjectState -> return restoreCrashlog(s3Key)
+            is AnyGetObjectResponse.UnexpectedError -> throw s3Result.e
         }
 
-        // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
-        val body = s3Result.asByteArray() ?: error("Could not get crashlog body")
+    }
 
-        //TODO: crashes with IllegalStateException... I think the fix is to switch to java sdk.
+    private suspend fun restoreCrashlog(s3Key: String): GetCrashlogResult.Archived {
+        try {
+            s3.restoreObjectSuspend {
+                bucket(bucketName)
+                key(s3Key)
+                restoreRequest { r ->
+                    r.days(10)
+                        .glacierJobParameters {
+                            it.tier(Tier.STANDARD)
+                        }
+                }
+            }
+            val x = 2
+        } catch (e: S3Exception) {
+            if (e.awsErrorDetails().errorCode() != "RestoreAlreadyInProgress") throw e
+            val x = 2
+        }
+        return GetCrashlogResult.Archived
+    }
+
+    private suspend fun pullLogFromS3(
+        s3Result: AnyGetObjectResponse.Success,
+        id: CrashlogId,
+        s3Key: String
+    ): GetCrashlogResult.Success {
+        // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
+        val body = s3Result.bytes.asByteArray() ?: error("Could not get crashlog body")
+
         val crashlog = Crashy.json.decodeFromString(CrashlogEntry.serializer(), body.decodeToString())
         cache.store(id, crashlog)
         s3.deleteObjectSuspend {
@@ -179,9 +185,23 @@ sealed interface PeekCrashlogResult {
 //private fun CompressedCrashlog.toByteStream() = ByteStream.fromBytes(bytes)
 
 // Fix up the weird s3 kotlin api
-private suspend fun S3AsyncClient.getObject(requestBuilder: GetObjectRequest.Builder.() -> Unit): ResponseBytes<GetObjectResponse> {
+private suspend fun S3AsyncClient.getObject(requestBuilder: GetObjectRequest.Builder.() -> Unit): AnyGetObjectResponse {
     val request = GetObjectRequest.builder().apply(requestBuilder).build()
-    return getObject(request, AsyncResponseTransformer.toBytes()).suspend()
+    val res = getObject(request, AsyncResponseTransformer.toBytes()).suspendResult()
+    return when (val exception = res.exceptionOrNull()) {
+        null -> AnyGetObjectResponse.Success(res.getOrThrow())
+        is NoSuchKeyException -> AnyGetObjectResponse.NoSuchKey
+        is InvalidObjectStateException -> AnyGetObjectResponse.InvalidObjectState
+        else -> AnyGetObjectResponse.UnexpectedError(exception)
+    }
+
+}
+
+private sealed interface AnyGetObjectResponse {
+    class Success(val bytes: ResponseBytes<GetObjectResponse>) : AnyGetObjectResponse
+    object NoSuchKey : AnyGetObjectResponse
+    object InvalidObjectState : AnyGetObjectResponse
+    class UnexpectedError(val e: Throwable) : AnyGetObjectResponse
 }
 
 private suspend fun S3AsyncClient.deleteObjectSuspend(requestBuilder: DeleteObjectRequest.Builder.() -> Unit): DeleteObjectResponse {

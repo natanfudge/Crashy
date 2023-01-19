@@ -29,7 +29,9 @@ export function CrashyCrashReportPage() {
     </Fragment>
 }
 
-export type GetCrashAttempt = RichCrashReport | undefined | Error | GetCrashError
+export type GetCrashNetworkAttempt = RichCrashReport | undefined | Error | GetCrashError
+export type GetCrashAttempt = GetCrashNetworkAttempt | "Parsing Failed"
+
 
 export interface CrashProps {
     crash: GetCrashAttempt
@@ -38,11 +40,18 @@ export interface CrashProps {
 
 export function useCrash(): GetCrashAttempt {
     const [crash, setCrash] = useState<GetCrashAttempt>(undefined)
-    useEffect(() => void CrashyServer.getCrash(getUrlCrashId()!)
-            .then(res => setCrash(isSuccessfulGetCrashResponse(res) ? parseCrashReportRich(res) : res)).catch(e => setCrash(e))
-        , []
-    )
+    useEffect(() => void getCrash(setCrash), [])
     return crash;
+}
+
+async function getCrash(setCrash: (attempt: GetCrashAttempt) => void) {
+    let response = await CrashyServer.getCrash(getUrlCrashId()!)
+    try {
+        setCrash(isSuccessfulGetCrashResponse(response) ? parseCrashReportRich(response) : response)
+    } catch (e) {
+        console.log(e)
+        setCrash("Parsing Failed")
+    }
 }
 
 function CrashReportPageContent({crash, sectionState}: CrashProps) {
@@ -58,17 +67,22 @@ export function isCrashAttemptValid(attempt: GetCrashAttempt): attempt is RichCr
     return !getCookieDeleted() && attempt !== undefined && typeof attempt === "object" && "rawText" in attempt
 }
 
-export function InvalidCrashAttempt({attempt}: { attempt: Exclude<GetCrashAttempt, string> }) {
+export function InvalidCrashAttempt({attempt}: { attempt: Exclude<GetCrashAttempt, RichCrashReport> }) {
     if (getCookieDeleted() || attempt === GetCrashError.NoSuchCrashId) {
         return <NoSuchCrashScreen/>
     } else if (attempt === undefined) {
         return <LinearProgress/>
     } else if (attempt === GetCrashError.Archived) {
         return <CrashArchivedScreen/>
+    } else if (attempt === "Parsing Failed") {
+        return <CrashErroredScreen
+            description={"Parsing Failed for this crash log, please submit this to Crashy at https://github.com/natanfudge/Crashy/issues/new (you can still view the log by adding /raw.txt to the url)"}/>
     } else {
         console.error(attempt)
-        return <CrashErroredScreen/>
+        return <CrashErroredScreen
+            description={"Something went wrong trying to get the crash log. Check your internet connection."}/>
     }
+
 }
 
 

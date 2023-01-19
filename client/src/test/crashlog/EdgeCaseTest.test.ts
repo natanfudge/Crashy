@@ -1,4 +1,3 @@
-
 import {testFabricCrashReportEnrich} from "./EnrichmentTest.test";
 import {testFabricCrashReportParse} from "./ParsingTest.test";
 import {testFabricCrashReportUsingWindowsLines} from "../testlogs/TestCrashes";
@@ -8,6 +7,8 @@ import "../../fudge-commons/extensions/ExtensionsImpl"
 import {TestBadDate} from "../testlogs/TestBadDate";
 import {RenderingOverlayProblematicCrash} from "../testlogs/RenderingOverlayProblematicCrash";
 import {SeeminglyInnocentCrashTest} from "../testlogs/SeeminglyInnocentCrashTest";
+import {firstMigratedLog} from "../testlogs/FirstMigratedLog";
+
 test("Windows newlines can be handled", () => {
     const parsed = parseCrashReport(testFabricCrashReportUsingWindowsLines)
     const enriched = enrichCrashReport(parsed);
@@ -30,6 +31,11 @@ test("RenderingOverlayProblematicCrash can be parsed", () => {
 })
 
 test("Seemingly innocent crash log can be parsed", () => {
-    const enriched = parseCrashReportRich(SeeminglyInnocentCrashTest.replaceAll("    ","\t"))
+    const enriched = parseCrashReportRich(SeeminglyInnocentCrashTest.replaceAll("    ", "\t"))
     expect(enriched.context.loader.version).toEqual("9.1.3+9.1.3+main.9b69c82a")
+})
+
+test("First migrated crash can be parsed", () => {
+    const enriched = parseCrashReportRich(firstMigratedLog)
+    expect(enriched.sections)
 })
