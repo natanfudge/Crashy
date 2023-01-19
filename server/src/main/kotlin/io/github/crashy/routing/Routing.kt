@@ -1,5 +1,6 @@
 package io.github.crashy.routing
 
+import io.github.crashy.auth.AuthSessionName
 import io.github.crashy.auth.routeAuthentication
 import io.github.crashy.crashlogs.api.CrashlogApi
 import io.github.crashy.crashlogs.api.MappingsApi
@@ -48,9 +49,9 @@ fun Application.configureRouting() {
 
         routeAuthentication()
 
-        authenticate("auth-session") {
+        authenticate(AuthSessionName) {
             get(Routes.Logs) {
-                call.respondText(getLogs(call))
+                respond(crashlogs.getLandingPage())
             }
         }
 
@@ -77,8 +78,7 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
             CrashyLogger.startCall("scheduleTasks") {
                 logData("Schedule Time") { Instant.now() }
                 CrashyLogger.deleteOldLogs()
-                //TODO: restore
-//                crashlogStorage.evictOld()
+                crashlogStorage.evictOld()
             }
         }
     }.apply {

@@ -2,7 +2,6 @@ import {MappingsNamespace} from "../mappings/MappingsNamespace";
 import {getComplexCookie, setComplexCookie} from "../fudge-commons/methods/Browser";
 
 export interface UserPreferences {
-    // TODO: implement
     defaultMappingNamespace: string
     showModIds: string
     // Undefined - true on desktop, false on mobile

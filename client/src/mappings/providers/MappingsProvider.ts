@@ -144,7 +144,6 @@ export function getMappingProviders(mcVersion: string): MappingsProvider[] {
 
 const buildsCache = new PromiseMemoryCache<MappingsBuilds>();
 
-//TODO: add a way to refresh builds and automatically invalidate cached builds after 1 day
 export async function getBuildsCached(provider: MappingsProvider, minecraftVersion: string): Promise<MappingsBuilds> {
     // noinspection JSDeprecatedSymbols
     return buildsCache.get(

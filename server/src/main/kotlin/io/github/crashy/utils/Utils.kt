@@ -34,6 +34,19 @@ object InstantSerializer : KSerializer<Instant> {
     override fun serialize(encoder: Encoder, value: Instant) = encoder.encodeLong(value.toEpochMilli())
 }
 
+object OneWayThrowableSerializer: KSerializer<Throwable>{
+    override val descriptor: SerialDescriptor = String.serializer().descriptor
+
+    override fun deserialize(decoder: Decoder): Throwable {
+        throw UnsupportedOperationException("OneWayThrowableSerializer only serializes")
+    }
+
+    override fun serialize(encoder: Encoder, value: Throwable) {
+       encoder.encodeString(value.stackTraceToString())
+    }
+
+}
+
 
 private const val characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 

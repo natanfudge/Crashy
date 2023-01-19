@@ -7,7 +7,6 @@ import axios from "axios";
 
 const betaBuild = true;
 const domain = betaBuild ? "beta.crashy.net" : "crashy.net";
-//TODO:  I think I want to upload to both old and new at first.
 export const uploadCrashNew = functions.region("europe-west1").https.onRequest(async (request, response) => {
     const newResponse = await axios.post(`https://${domain}/uploadCrash`, request.body, {headers: {"content-encoding": "gzip"}})
     const newResponseBody = newResponse.data as NewUploadCrashResponse

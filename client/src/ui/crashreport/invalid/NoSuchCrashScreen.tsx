@@ -10,7 +10,6 @@ export function NoSuchCrashScreen() {
                                description={"Looks like there's nothing here. Maybe you got the URL wrong?"}/>
 }
 
-//TODO: check back on 00b639b2-c8ce-43f7-843d-e1cceebb8899
 export function CrashArchivedScreen() {
     return <InvalidCrashScreen title={"Archived"} description={"No one has touched this crash log in a long long while... We will find it for you, but it will take some time. Check back later."}/>
 }

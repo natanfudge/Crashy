@@ -8,10 +8,10 @@ import {CrashyCrashReportPage} from "./crashreport/CrashReportPage";
 import {CrashyNewIssueUrl} from "./utils/Crashy";
 import {TextTheme} from "../fudge-commons/simple/Text";
 import {ErrorBoundary} from "../fudge-commons/components/ErrorBoundary";
-import {createRoot} from "react-dom/client";
 
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
+const ServerLogs = React.lazy(() => import("./dev/ServerLogs"))
 
 export default function App() {
     const outerTheme = createTheme(CrashyTheme);
@@ -30,9 +30,14 @@ function CrashyUi() {
         return <Suspense fallback={<LinearProgress/>}>
             <CrashyHome/>
         </Suspense>
+    } else if (location === "/logs") {
+        return <Suspense fallback={<LinearProgress/>}>
+            <ServerLogs/>
+        </Suspense>
     } else {
         return <CrashyCrashReportPage/>;
     }
+
 }
 
 // Listen to onpopstate makes sure we update the page when the url changes.

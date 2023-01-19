@@ -339,7 +339,6 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return rawReport[cursor];
     }
 
-    //TODO: implement peekLine() to check complex stuff
     function readLine(): string {
         const value = readUntilEither(["\r", "\n"]);
         skipLine();

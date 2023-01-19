@@ -72,6 +72,11 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder:${libs.versions.ktor.get()}")
     implementation("software.amazon.awssdk:bom:2.19.17")
     implementation("software.amazon.awssdk:s3:2.19.13")
+    implementation(platform("org.dizitart:nitrite-bom:4.0.0-SNAPSHOT"))
+//    implementation ("org.dizitart:potassium-nitrite")
+    implementation ("org.dizitart:nitrite")
+    implementation ("org.dizitart:nitrite-mvstore-adapter")
+
     testImplementation ("com.google.firebase:firebase-admin:9.1.1")
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)

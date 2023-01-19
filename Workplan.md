@@ -20,11 +20,11 @@
     - In `compat/`, set `betaBuild` to `false`
     - Change the name of `uploadCrashNew` to `uploadCrash`
     - Upload: `firebase deploy --only functions`
-  - [ ] Download all existing crashlogs and upload them to the new server. 
-    - [ ] Old logs send directly to S3
-    - [ ] New logs send to SSD
-  - [ ] Update NEC to support crashy.net
+  - [ ] Download all existing crashlogs and upload them to the new server.
+    - [ ] Run FirebaseMigration to migrate any remaining crash logs
+  - [ ] Update NEC to support new crashy.net
     - [ ] Upload branch newCrashy
+  - [ ] Make post about some logs being potentially lost and reporting this
   - [ ] Once everything works - shut down old site and functions
 
 - 

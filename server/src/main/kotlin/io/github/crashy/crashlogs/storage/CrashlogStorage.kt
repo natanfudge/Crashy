@@ -2,20 +2,17 @@ package io.github.crashy.crashlogs.storage
 
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
+import io.github.crashy.utils.*
 import io.github.crashy.utils.log.LogContext
-import io.github.crashy.utils.suspend
-import io.github.crashy.utils.suspendResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import software.amazon.awssdk.core.ResponseBytes
-import software.amazon.awssdk.core.async.AsyncRequestBody
-import software.amazon.awssdk.core.async.AsyncResponseTransformer
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3AsyncClient
-import software.amazon.awssdk.services.s3.model.*
+import software.amazon.awssdk.services.s3.model.S3Exception
+import software.amazon.awssdk.services.s3.model.Tier
 import java.nio.file.Path
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.io.path.createDirectories
@@ -86,7 +83,7 @@ class CrashlogStorage(
 
     private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult = mutex.withLock {
         val s3Key = id.s3Key()
-        when (val s3Result = s3.getObject {
+        when (val s3Result = s3.getObjectSuspend {
             bucket(bucketName)
             key(s3Key)
         }) {
@@ -128,10 +125,14 @@ class CrashlogStorage(
 
         val crashlog = Crashy.json.decodeFromString(CrashlogEntry.serializer(), body.decodeToString())
         cache.store(id, crashlog)
-        s3.deleteObjectSuspend {
-            bucket(bucketName)
-            key(s3Key)
+        if (!Crashy.isLocal()) {
+            // Don't want to delete real logs when testing locally
+            s3.deleteObjectSuspend {
+                bucket(bucketName)
+                key(s3Key)
+            }
         }
+
 
         return GetCrashlogResult.Success(crashlog)
     }
@@ -182,43 +183,7 @@ sealed interface PeekCrashlogResult {
 }
 
 
-//private fun CompressedCrashlog.toByteStream() = ByteStream.fromBytes(bytes)
 
-// Fix up the weird s3 kotlin api
-private suspend fun S3AsyncClient.getObject(requestBuilder: GetObjectRequest.Builder.() -> Unit): AnyGetObjectResponse {
-    val request = GetObjectRequest.builder().apply(requestBuilder).build()
-    val res = getObject(request, AsyncResponseTransformer.toBytes()).suspendResult()
-    return when (val exception = res.exceptionOrNull()) {
-        null -> AnyGetObjectResponse.Success(res.getOrThrow())
-        is NoSuchKeyException -> AnyGetObjectResponse.NoSuchKey
-        is InvalidObjectStateException -> AnyGetObjectResponse.InvalidObjectState
-        else -> AnyGetObjectResponse.UnexpectedError(exception)
-    }
 
-}
 
-private sealed interface AnyGetObjectResponse {
-    class Success(val bytes: ResponseBytes<GetObjectResponse>) : AnyGetObjectResponse
-    object NoSuchKey : AnyGetObjectResponse
-    object InvalidObjectState : AnyGetObjectResponse
-    class UnexpectedError(val e: Throwable) : AnyGetObjectResponse
-}
-
-private suspend fun S3AsyncClient.deleteObjectSuspend(requestBuilder: DeleteObjectRequest.Builder.() -> Unit): DeleteObjectResponse {
-    val request = DeleteObjectRequest.builder().apply(requestBuilder).build()
-    return deleteObject(request).suspend()
-}
-
-private suspend fun S3AsyncClient.restoreObjectSuspend(requestBuilder: RestoreObjectRequest.Builder.() -> Unit): RestoreObjectResponse {
-    val request = RestoreObjectRequest.builder().apply(requestBuilder).build()
-    return restoreObject(request).suspend()
-}
-
-suspend fun S3AsyncClient.putObjectSuspend(
-    body: String,
-    requestBuilder: PutObjectRequest.Builder.() -> Unit
-): PutObjectResponse {
-    val request = PutObjectRequest.builder().apply(requestBuilder).build()
-    return putObject(request, AsyncRequestBody.fromString(body)).suspend()
-}
 

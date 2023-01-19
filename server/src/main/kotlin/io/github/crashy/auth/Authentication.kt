@@ -13,7 +13,7 @@ import io.ktor.server.sessions.*
 import kotlinx.html.*
 
 private const val UserSessionName = "user_session"
-private const val AuthSessionName = "auth-session"
+const val AuthSessionName = "auth-session"
 private const val AuthFormName = "auth-form"
 private const val AuthUsernameField = "username"
 private const val AuthPasswordField = "password"

@@ -10,8 +10,8 @@ import io.github.crashy.Crashy
 import io.github.crashy.api.utils.savedInt
 import io.github.crashy.compat.firestoreIdToUUID
 import io.github.crashy.crashlogs.*
-import io.github.crashy.crashlogs.storage.putObjectSuspend
 import io.github.crashy.utils.decompressGzip
+import io.github.crashy.utils.putObjectsSuspend
 import io.ktor.util.date.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -25,8 +25,6 @@ import kotlin.test.Test
 
 
 class FirebaseMigration {
-    //TODO: myxeNwqvlfrE7SQ9biWx is not parsing
-    //TODO: parsing errors should be more clear to the user
 
     class FirebaseMigrator {
         private var currentCrashIndex by savedInt(0, "Test_FireBaseMigrator_currentCrashIndex2")
@@ -44,7 +42,7 @@ class FirebaseMigration {
             val db = FirestoreClient.getFirestore()
 
             while (true) {
-                val future = db.collection("crashes").orderBy("uploadDate").offset(currentCrashIndex).limit(10).get()
+                val future = db.collection("crashes").orderBy("uploadDate").offset(currentCrashIndex).limit(30).get()
                 val crashes = withContext(Dispatchers.IO) {
                     future.get()
                 }.documents
@@ -53,7 +51,8 @@ class FirebaseMigration {
 
                 val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
 
-                for (crash in crashes) {
+
+                val objectKeys = crashes.associate { crash ->
                     val gzipCompressed = crash.data["log"] as Blob
                     val deletionKey = crash.data["key"] as String
                     val uploadDate = crash.data["uploadDate"] as Timestamp
@@ -72,29 +71,29 @@ class FirebaseMigration {
 
                     val entry = CrashlogEntry(brotliCompressed, metadata)
                     val crashlogId = CrashlogId.parse(crash.id).getOrThrow()
-
                     println("Migrating crash log from $uploadDate [${crash.id} -> $crashlogId]")
-                    s3Client.putObjectSuspend(Crashy.json.encodeToString(CrashlogEntry.serializer(), entry)) {
-                        bucket("crashy-crashlogs")
-                        key(crashlogId.s3Key())
-                    }
-                    println("Migration complete")
+                    crashlogId.s3Key() to Crashy.json.encodeToString(CrashlogEntry.serializer(), entry)
                 }
+
+
+                s3Client.putObjectsSuspend(objectKeys, "crashy-crashlogs")
+
                 currentCrashIndex += crashes.size
-                val firstCrashTime = GMTDate(0,0,0,2,Month.OCTOBER,2021).toJvmDate()
+                val firstCrashTime = GMTDate(0, 0, 0, 2, Month.OCTOBER, 2021).toJvmDate()
                     .toInstant().toEpochMilli()
                 val oldestCrashTimestampOfBatch = crashes.last().data["uploadDate"] as Timestamp
                 val batchTime = oldestCrashTimestampOfBatch.toDate().toInstant().toEpochMilli()
                 val millisPassedSinceFirstCrash = Instant.now().toEpochMilli() - firstCrashTime
                 val millisPassedSinceFirstCrashToBatch = batchTime - firstCrashTime
                 val percentDone = millisPassedSinceFirstCrashToBatch.toDouble() / millisPassedSinceFirstCrash
-                println("Total migrated: $currentCrashIndex (about ${percentDone * 100}% done)" )
+                println("Total migrated: $currentCrashIndex (about ${percentDone * 100}% done)")
             }
 
 
         }
     }
-//myxeNwqvlfrE7SQ9biWx
+
+    //myxeNwqvlfrE7SQ9biWx
     @Test
     fun migrateFirebase() = runBlocking {
         FirebaseMigrator().migrate()
