@@ -1,5 +1,6 @@
 package io.github.crashy.routing
 
+import io.github.crashy.Crashy
 import io.github.crashy.auth.AuthSessionName
 import io.github.crashy.auth.routeAuthentication
 import io.github.crashy.crashlogs.api.CrashlogApi
@@ -31,9 +32,10 @@ fun Application.configureRouting() {
     val crashyDir = Paths.get(System.getProperty("user.home"), ".crashy")
     val logStorage = runBlocking {
         CrashlogStorage(
-            bucketName = "crashy-crashlogs",
+            bucketName = Crashy.S3CrashlogBucket,
             appDataDir = crashyDir,
-            clock = RealClock
+            clock = RealClock,
+            deleteFromS3OnFetch = !Crashy.isLocal()
         )
     }
     val mappingsProvider = MappingsProvider(crashyDir.resolve("mappings"))
@@ -55,6 +57,9 @@ fun Application.configureRouting() {
             }
         }
 
+        get("Halo"){
+            call.respondText("General XD")
+        }
 
 
     }
@@ -77,6 +82,11 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
         GlobalScope.launch(Dispatchers.IO) {
             CrashyLogger.startCall("scheduleTasks") {
                 logData("Schedule Time") { Instant.now() }
+//                logData("Foo") {"Bar"}
+//                logInfo{"Halo Info"}
+//                logWarn{"Halo Warn"}
+//                logError(NullPointerException()){"Halo Error"}
+//                throw IllegalArgumentException("Fuck jhew")
                 CrashyLogger.deleteOldLogs()
                 crashlogStorage.evictOld()
             }

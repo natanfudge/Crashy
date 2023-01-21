@@ -3,6 +3,12 @@
     <option name="MAIN_CLASS_NAME" value="io.github.crashy.AppKt" />
     <module name="Crashy.main" />
     <shortenClasspath name="NONE" />
+    <option name="VM_PARAMETERS" value="-Dio.ktor.development=true" />
+    <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+      <option name="credential" />
+      <option name="region" />
+      <option name="useCurrentConnection" value="false" />
+    </extension>
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

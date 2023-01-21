@@ -2,6 +2,7 @@ package io.github.crashy
 
 import io.github.crashy.Crashy.Build.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.protobuf.ProtoBuf
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
@@ -10,6 +11,7 @@ import kotlin.io.path.toPath
 
 object Crashy {
     val json = Json
+    val protobuf = ProtoBuf {  }
     val logger: Logger = LoggerFactory.getLogger(App::class.java)
 
     val ServerStartTime = Instant.now()
@@ -43,4 +45,6 @@ object Crashy {
     val HomeDir = Paths.get(System.getProperty("user.home"), ".crashy")
     val StaticPath = "static"
     val StaticDir = RunDir.resolve(StaticPath)
+
+    const val S3CrashlogBucket = "crashy-crashlogs"
 }

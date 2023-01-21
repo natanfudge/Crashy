@@ -28,6 +28,7 @@ data class UserSession(val name: String, val count: Int) : Principal
 
 
 private fun createAppEnvironment() = applicationEngineEnvironment {
+    watchPaths = listOf("classes")
     connector {
         port = 80
         host = "0.0.0.0"

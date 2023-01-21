@@ -3,6 +3,7 @@ package io.github.crashy.utils
 import io.github.crashy.Crashy
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
@@ -34,15 +35,25 @@ object InstantSerializer : KSerializer<Instant> {
     override fun serialize(encoder: Encoder, value: Instant) = encoder.encodeLong(value.toEpochMilli())
 }
 
-object OneWayThrowableSerializer: KSerializer<Throwable>{
-    override val descriptor: SerialDescriptor = String.serializer().descriptor
+
+//open class SerializableConverter<T> : PropertyConverter<T,Map<Str>>
+
+@Serializable
+class ThrowableJsonRepresentation(val className: String, val message: String, val stacktrace: String)
+
+object OneWayThrowableSerializer : KSerializer<Throwable> {
+    private val serializer = ThrowableJsonRepresentation.serializer()
+    override val descriptor: SerialDescriptor = serializer.descriptor
 
     override fun deserialize(decoder: Decoder): Throwable {
         throw UnsupportedOperationException("OneWayThrowableSerializer only serializes")
     }
 
     override fun serialize(encoder: Encoder, value: Throwable) {
-       encoder.encodeString(value.stackTraceToString())
+        serializer.serialize(
+            encoder,
+            ThrowableJsonRepresentation(value::class.qualifiedName!!, value.message ?: "", value.stackTraceToString())
+        )
     }
 
 }

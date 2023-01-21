@@ -5,25 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/ui/dev/ServerLogs.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/S3Utils.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogEvent.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogRenderer.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/S3Export/ids/ids.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Bson.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Run_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Run_Server.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/invalid/NoSuchCrashScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/invalid/NoSuchCrashScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/Preferences.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/Preferences.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compat/functions/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/auth/Authentication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/auth/Authentication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/319e4661cdd81b2cc166a405506cbf58.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/319e4661cdd81b2cc166a405506cbf58.0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/42b9a9afc7aa3985ef62bcfdb93ac37e.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/42b9a9afc7aa3985ef62bcfdb93ac37e.0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/b1d11915ff98b13d847dfd36408b2c44.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/b1d11915ff98b13d847dfd36408b2c44.0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/b50594b5367af52aff84fbcc953c8507.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/b50594b5367af52aff84fbcc953c8507.0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/d635493bd28433f66cef5f046a1ddf45.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/d635493bd28433f66cef5f046a1ddf45.0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/facb8fd84f0116678822176ce8e9bf5b.0" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/facb8fd84f0116678822176ce8e9bf5b.0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/http_cache/journal" beforeDir="false" afterPath="$PROJECT_DIR$/server/http_cache/journal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/forge/McpMappingsProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/forge/McpMappingsProvider.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/forge/TsrgMappingsProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/forge/TsrgMappingsProvider.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/S3Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/S3Utils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogEvent.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogRenderer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogRenderer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -130,8 +137,8 @@
     &quot;TODO_SCOPE&quot;: &quot;Crashy&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1674132185836&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/server/src/test/resources/secrets&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1674227619798&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/LogViewer&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -141,7 +148,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.Console Colors&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -168,7 +175,53 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.FirebaseMigration.migrateFirebase">
+  <component name="RunManager" selected="Kotlin.FirebaseMigrationKt">
+    <configuration name="CrashlogStorageTest.testStorage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.CrashlogStorageTest.testStorage&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="FirebaseMigration.importS3" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.scripts.FirebaseMigration.importS3&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="FirebaseMigration.migrateFirebase" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -192,6 +245,29 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="FirebaseMigration.test" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.scripts.FirebaseMigration.test&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <shortenClasspath name="ARGS_FILE" />
       <option name="TEST_OBJECT" value="class" />
@@ -199,59 +275,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Fabric crash report is enriched properly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" />
-      <test-names>
-        <test-name value="Fabric crash report is enriched properly" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="First migrated crash can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
-      <test-names>
-        <test-name value="First migrated crash can be parsed" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Seemingly innocent crash log can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
-      <test-names>
-        <test-name value="Seemingly innocent crash log can be parsed" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Windows newlines can be handled" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
-      <test-names>
-        <test-name value="Windows newlines can be handled" />
-      </test-names>
-      <method v="2" />
-    </configuration>
     <configuration name="Debug Client" type="JavascriptDebugType" uri="http://localhost:3000/">
+      <method v="2" />
+    </configuration>
+    <configuration name="FirebaseMigrationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.crashy.scripts.FirebaseMigrationKt" />
+      <module name="Crashy.test" />
+      <shortenClasspath name="ARGS_FILE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="client" />
+      <shortenClasspath name="ARGS_FILE" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <option name="AUTO_RESTART" value="false" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="SwaggerCodegen">
@@ -274,15 +322,15 @@
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
+      <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
+      <item itemvalue="Gradle.FirebaseMigration.importS3" />
+      <item itemvalue="Gradle.FirebaseMigration.test" />
       <item itemvalue="Gradle.FirebaseMigration.migrateFirebase" />
       <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
-      <item itemvalue="Jest.Fabric crash report is enriched properly" />
-      <item itemvalue="Jest.First migrated crash can be parsed" />
-      <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
-      <item itemvalue="Jest.Windows newlines can be handled" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
+      <item itemvalue="Kotlin.FirebaseMigrationKt" />
       <item itemvalue="npm.Analyze Client Bundle" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="npm.Client Production" />
@@ -290,11 +338,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.FirebaseMigrationKt" />
+        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
+        <item itemvalue="Gradle.FirebaseMigration.importS3" />
         <item itemvalue="Gradle.FirebaseMigration.migrateFirebase" />
-        <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
-        <item itemvalue="Jest.Windows newlines can be handled" />
-        <item itemvalue="Jest.Fabric crash report is enriched properly" />
-        <item itemvalue="Jest.First migrated crash can be parsed" />
+        <item itemvalue="Gradle.FirebaseMigration.test" />
       </list>
     </recent_temporary>
   </component>
@@ -377,7 +425,12 @@
       <workItem from="1674150563103" duration="425000" />
       <workItem from="1674153629234" duration="443000" />
       <workItem from="1674156756325" duration="2297000" />
-      <workItem from="1674163100646" duration="3938000" />
+      <workItem from="1674163100646" duration="4575000" />
+      <workItem from="1674202337617" duration="631000" />
+      <workItem from="1674203063912" duration="7057000" />
+      <workItem from="1674225565137" duration="6507000" />
+      <workItem from="1674248502747" duration="2188000" />
+      <workItem from="1674254251863" duration="7545000" />
     </task>
     <servers />
   </component>
@@ -465,14 +518,19 @@
           <option name="timeStamp" value="67" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt</url>
-          <line>79</line>
-          <option name="timeStamp" value="104" />
+          <url>file://$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt</url>
+          <line>101</line>
+          <option name="timeStamp" value="148" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt</url>
-          <line>83</line>
-          <option name="timeStamp" value="106" />
+          <url>file://$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt</url>
+          <line>98</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt</url>
+          <line>94</line>
+          <option name="timeStamp" value="159" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/model/Mappable.ts</url>
@@ -499,14 +557,6 @@
           <line>70</line>
           <option name="timeStamp" value="138" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-field">
-          <url>file://$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt</url>
-          <line>21</line>
-          <properties myFieldName="s3" myClassName="io.github.crashy.crashlogs.storage.CrashlogStorage">
-            <option name="watchAccess" value="true" />
-          </properties>
-          <option name="timeStamp" value="111" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -517,6 +567,7 @@
       </configuration>
       <configuration name="GradleRunConfiguration">
         <watch expression="file.exists()" />
+        <watch expression="cache.get(id)" />
       </configuration>
       <configuration name="JavascriptDebugType">
         <watch expression="document.documentURI" language="TypeScript" />

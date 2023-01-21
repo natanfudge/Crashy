@@ -2,14 +2,11 @@ http://localhost/getMcp/1.14.4/58.csv
 GET
 0
 HTTP/1.1 200 OK
-10
+7
 Cache-Control: public, max-age=604800, immutable
 Access-Control-Allow-Origin: *
-X-Engine: Ktor
-Date: Fri, 13 Jan 2023 13:17:06 GMT
-Server: Ktor/2.2.1
 Content-Length: 362105
 Content-Type: text/plain
 Connection: keep-alive
-OkHttp-Sent-Millis: 1673615824843
-OkHttp-Received-Millis: 1673615826858
+OkHttp-Sent-Millis: 1674256692524
+OkHttp-Received-Millis: 1674256694334

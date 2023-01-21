@@ -8,13 +8,10 @@ import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
 import kotlin.io.path.*
 
-//TODO: investigate whether it's possible to include external files in html file, and have those files be indexed by search engines
-// https://moz.com/beginners-guide-to-seo/how-search-engines-operate
-// then, supposing it works, template the crash with the metadata and attach the crash with the <link> or something.
-// See https://stackoverflow.com/questions/74322790/expose-external-resource-to-search-engines
 
 
 class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
+
     init {
         require(parentDir.exists())
     }
@@ -46,6 +43,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         updateLastAccessDay(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.peek(id)
     }
+
 
     /**
      * Returns true if something was deleted

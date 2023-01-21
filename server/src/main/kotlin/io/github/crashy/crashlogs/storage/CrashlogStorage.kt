@@ -9,6 +9,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.ExperimentalSerializationApi
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.S3Exception
@@ -19,23 +20,12 @@ import kotlin.io.path.createDirectories
 
 
 class CrashlogStorage(
-//    private val s3: S3Client,
     appDataDir: Path,
     private val bucketName: String,
-    clock: NowDefinition
+    clock: NowDefinition,
+    private val deleteFromS3OnFetch: Boolean
 ) : AutoCloseable {
     private val s3 = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
-//    companion object {
-//        suspend fun create(bucket: String, clock: NowDefinition, appDataDir: Path): CrashlogStorage {
-//
-//
-//            val client = S3Client.fromEnvironment {
-//                region = "eu-central-1"
-//            }
-//            return CrashlogStorage(client, appDataDir, bucket, clock)
-//        }
-//    }
-
     private val cache = CrashlogCache(parentDir = appDataDir.resolve("cache").createDirectories(), clock)
 
     fun store(id: CrashlogId, log: CrashlogEntry) {
@@ -62,31 +52,9 @@ class CrashlogStorage(
         return getFromS3(id)
     }
 
-    private val activeS3LogRequests = ConcurrentHashMap<CrashlogId, Deferred<GetCrashlogResult>>()
-
-    val scope = CoroutineScope(Dispatchers.IO)
-
-//    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult {
-//        // In case multiple people request the same ID from S3, only call the S3 API once and sync between the requests.
-//        val deferred = activeS3LogRequests.computeIfAbsent(id) {
-//            scope.async {
-//                val value = getFromS3Impl(id)
-//                // We are done with this request, remove it
-//                activeS3LogRequests.remove(id)
-//                value
-//            }
-//        }
-//        return deferred.await()
-//    }
-
-    val mutex = Mutex()
-
-    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult = mutex.withLock {
+    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult  {
         val s3Key = id.s3Key()
-        when (val s3Result = s3.getObjectSuspend {
-            bucket(bucketName)
-            key(s3Key)
-        }) {
+        when (val s3Result = s3.getObjectSuspend(bucket = bucketName, key = s3Key)) {
             is AnyGetObjectResponse.Success -> return pullLogFromS3(s3Result, id, s3Key)
             AnyGetObjectResponse.NoSuchKey -> return GetCrashlogResult.DoesNotExist
             AnyGetObjectResponse.InvalidObjectState -> return restoreCrashlog(s3Key)
@@ -115,6 +83,7 @@ class CrashlogStorage(
         return GetCrashlogResult.Archived
     }
 
+    @OptIn(ExperimentalSerializationApi::class)
     private suspend fun pullLogFromS3(
         s3Result: AnyGetObjectResponse.Success,
         id: CrashlogId,
@@ -123,9 +92,9 @@ class CrashlogStorage(
         // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
         val body = s3Result.bytes.asByteArray() ?: error("Could not get crashlog body")
 
-        val crashlog = Crashy.json.decodeFromString(CrashlogEntry.serializer(), body.decodeToString())
+        val crashlog = Crashy.protobuf.decodeFromByteArray(CrashlogEntry.serializer(), body)
         cache.store(id, crashlog)
-        if (!Crashy.isLocal()) {
+        if (deleteFromS3OnFetch) {
             // Don't want to delete real logs when testing locally
             s3.deleteObjectSuspend {
                 bucket(bucketName)
@@ -144,10 +113,11 @@ class CrashlogStorage(
     }
 
     context(LogContext)
+    @OptIn(ExperimentalSerializationApi::class)
     suspend fun evictOld() {
         cache.evictOld { id, log ->
             // Once objects are evicted from the cache, we store them on the S3.
-            s3.putObjectSuspend(Crashy.json.encodeToString(CrashlogEntry.serializer(), log)) {
+            s3.putObjectSuspend(Crashy.protobuf.encodeToByteArray(CrashlogEntry.serializer(), log)) {
                 bucket(bucketName)
                 key(id.s3Key())
             }

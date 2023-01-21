@@ -2,15 +2,12 @@ package io.github.crashy.crashlogs
 
 import com.aayushatharva.brotli4j.decoder.Decoder
 import com.aayushatharva.brotli4j.decoder.DecoderJNI.Status.DONE
-import com.aayushatharva.brotli4j.encoder.Encoder
 import io.github.crashy.compat.firestoreIdToUUID
 import io.github.crashy.crashlogs.api.StringResponse
-import io.github.crashy.utils.InstantSerializer
-import io.github.crashy.utils.UUIDSerializer
-import io.github.crashy.utils.compressBrotli
-import io.github.crashy.utils.randomString
+import io.github.crashy.utils.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
+import org.bson.BsonBinary
 import java.nio.file.Path
 import java.time.Instant
 import java.util.*
@@ -51,12 +48,13 @@ value class CrashlogId private constructor(@Serializable(with = UUIDSerializer::
     }
 }
 
- fun CrashlogId.s3Key() = value.toString()
+fun CrashlogId.s3Key() = value.toString()
 
 
 @Serializable
 data class CrashlogMetadata(
     val deletionKey: DeletionKey,
+
     @Serializable(with = InstantSerializer::class) val uploadDate: Instant,
     val header: CrashlogHeader
 )
@@ -88,6 +86,8 @@ value class CompressedLog private constructor(val bytes: ByteArray) {
         fun readFromFile(file: Path) = CompressedLog(file.readBytes())
 
         fun compress(bytes: ByteArray) = CompressedLog(bytes.compressBrotli())
+
+        fun fromBson(bsonBinary: BsonBinary) = CompressedLog(bsonBinary.data)
     }
 
     fun writeToFile(file: Path) {
@@ -127,3 +127,4 @@ enum class DeleteCrashResult(override val statusCode: HttpStatusCode) : StringRe
     override val string: String = name
     override val contentType: ContentType = ContentType.Text.Plain
 }
+

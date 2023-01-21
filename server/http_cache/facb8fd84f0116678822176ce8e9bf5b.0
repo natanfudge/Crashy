@@ -2,14 +2,11 @@ http://localhost/getTsrg/1.12.2.tsrg
 GET
 0
 HTTP/1.1 200 OK
-10
+7
 Cache-Control: public, max-age=604800, immutable
 Access-Control-Allow-Origin: *
-X-Engine: Ktor
-Date: Fri, 13 Jan 2023 13:17:08 GMT
-Server: Ktor/2.2.1
 Content-Length: 1073337
 Content-Type: text/plain
 Connection: keep-alive
-OkHttp-Sent-Millis: 1673615828270
-OkHttp-Received-Millis: 1673615829183
+OkHttp-Sent-Millis: 1674256695743
+OkHttp-Received-Millis: 1674256696436

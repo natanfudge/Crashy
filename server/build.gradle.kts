@@ -10,14 +10,20 @@ import kotlin.math.absoluteValue
 import kotlin.random.Random
 
 buildscript {
+//    extra.apply {
+//        set("objectBoxVersion", "3.5.0")
+//    }
+//    val objectboxVersion by ext("3.5.0")
+
     repositories {
+//        mavenCentral()
         maven(
             url = ("https://oss.sonatype.org/content/repositories/snapshots")
         )
     }
-
     dependencies {
         classpath("com.sshtools:maverick-synergy-client:3.0.9")
+//        classpath("io.objectbox:objectbox-gradle-plugin:3.5.0")
     }
 }
 plugins {
@@ -29,7 +35,7 @@ plugins {
     alias(libs.plugins.gradle.node)
 
 }
-
+//apply(plugin = "io.objectbox") // Apply last.
 val mainClassName = "io.github.crashy.AppKt"
 
 application {
@@ -72,12 +78,18 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder:${libs.versions.ktor.get()}")
     implementation("software.amazon.awssdk:bom:2.19.17")
     implementation("software.amazon.awssdk:s3:2.19.13")
-    implementation(platform("org.dizitart:nitrite-bom:4.0.0-SNAPSHOT"))
-//    implementation ("org.dizitart:potassium-nitrite")
-    implementation ("org.dizitart:nitrite")
-    implementation ("org.dizitart:nitrite-mvstore-adapter")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-cbor:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.4.1")
+    implementation("com.github.jershell:kbson:0.5.0")
+    implementation("org.mongodb:bson:4.8.2")
 
-    testImplementation ("com.google.firebase:firebase-admin:9.1.1")
+//    implementation(platform("org.dizitart:nitrite-bom:4.0.0-SNAPSHOT"))
+//    implementation ("org.dizitart:potassium-nitrite")
+//    implementation ("org.dizitart:nitrite")
+//    implementation ("org.dizitart:nitrite-mvstore-adapter")
+
+    testImplementation("com.google.firebase:firebase-admin:9.1.1")
+    implementation("io.kweb:kweb-core:1.3.5")
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)
 //    implementation("net.fabricmc:mapping-io:0.3.0")

@@ -1,8 +1,6 @@
 package io.github.crashy.utils.log
 
-import io.github.crashy.Crashy
-import org.dizitart.no2.Nitrite
-import org.dizitart.no2.mvstore.MVStoreModule
+import kotlinx.serialization.json.Json
 import org.fusesource.jansi.Ansi
 import java.time.Instant
 import java.time.ZoneId
@@ -25,26 +23,12 @@ object ConsoleLogRenderer : LogRenderer {
 
 object FileLogRenderer : LogRenderer {
     override fun render(log: LogEvent) {
+//        println(Json { prettyPrint = true }.encodeToString(LogEvent.serializer(), log))
         val rendered = log.renderToString(colored = false)
         if (rendered == "") return
         val logFile = CrashyLogger.logsOfEndpoint(log.name)
         if (!logFile.exists()) logFile.createFile()
         logFile.appendText(rendered + "\n")
-    }
-}
-
-object NitriteLogRenderer : LogRenderer {
-    private val logsFile = Crashy.HomeDir.resolve("logs/log.db")
-    private val storeModule = MVStoreModule.withConfig()
-        .filePath(logsFile.toFile())
-        .compress(true)
-        .build()
-    private val db = Nitrite.builder()
-        .loadModule(storeModule)
-        .openOrCreate()
-
-    override fun render(log: LogEvent) {
-       db.getRepository(LogEvent::class.java)
     }
 }
 

@@ -118,7 +118,7 @@ class CrashlogStorageTest {
             val dir = withContext(Dispatchers.IO) {
                 Files.createTempDirectory("test")
             }
-            val cache = CrashlogStorage(dir, bucketName = "crashy-test-crashlogs", clock)
+            val cache = CrashlogStorage(dir, bucketName = "crashy-test-crashlogs", clock, deleteFromS3OnFetch = true)
             CrashyLogger.startCallWithContextAsParam("test_crashlog_storage") {
                 test(cache, clock, dir.resolve("cache"), it)
             }
@@ -152,21 +152,6 @@ class CrashlogStorageTest {
             }
     }
 
-//    context (CrashlogCache, TestClock, Path)   fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
-//        expectThat(getForTest(id)).isNotNull().and {
-//            get(CrashlogEntry::copyLog).isEqualTo(log.copyLog())
-//            get(CrashlogEntry::deletionKey).isEqualTo(log.deletionKey)
-//        }
-//    }
-
-//    context (CrashlogStorage, TestClock, Path)
-//            private suspend fun getForTest(id: CrashlogId): CrashlogEntry? {
-//        val bytes = get(id)
-//        if (bytes != null) {
-//            alignFileWithTestTime(id)
-//        }
-//        return bytes
-//    }
 
     context (CrashlogStorage, TestClock, Path)
     private fun testStore(id: CrashlogId, log: CrashlogEntry) {
