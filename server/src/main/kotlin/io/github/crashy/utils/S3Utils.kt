@@ -13,6 +13,7 @@ import software.amazon.awssdk.core.async.AsyncResponseTransformer
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.*
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.coroutines.CoroutineContext
 
 
 suspend fun S3AsyncClient.deleteObjectSuspend(requestBuilder: DeleteObjectRequest.Builder.() -> Unit): DeleteObjectResponse {
@@ -66,6 +67,7 @@ suspend fun S3AsyncClient.putObjectsFlow(
 suspend fun <T, R> processInParallel(
     items: List<T>,
     parallelCount: Int,
+    dispatchers: CoroutineContext = Dispatchers.IO,
     process: suspend (T) -> R
 ): Flow<R> = channelFlow {
     val availableWorkers = Semaphore(permits = parallelCount)
@@ -74,7 +76,7 @@ suspend fun <T, R> processInParallel(
     while (nextIndex.get() < items.size) {
         availableWorkers.acquire()
         val toProcess = nextIndex.getAndIncrement()
-        launch(Dispatchers.IO) {
+        launch(dispatchers) {
             send(process(items[toProcess]))
             availableWorkers.release()
         }

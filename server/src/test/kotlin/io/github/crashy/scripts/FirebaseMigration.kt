@@ -1,5 +1,6 @@
 package io.github.crashy.scripts
 
+import com.aayushatharva.brotli4j.Brotli4jLoader
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.Timestamp
 import com.google.cloud.firestore.Blob
@@ -14,8 +15,10 @@ import io.github.crashy.crashlogs.*
 import io.github.crashy.utils.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.newFixedThreadPoolContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -67,65 +70,73 @@ class FirebaseMigration {
             FirebaseApp.initializeApp(options)
 
             val db = FirestoreClient.getFirestore()
+            val destinationDir = firestoreExportDir
+//                .resolve(currentBatchIndex.toString())
+                .createDirectories()
 
-//            while (true) {
-            val future = db.collection("crashes").orderBy("uploadDate").startAfter(lastExportedDate).limit(100).get()
-            val crashes = withContext(Dispatchers.IO) {
-                future.get()
-            }.documents
+            Brotli4jLoader.ensureAvailability()
+            newFixedThreadPoolContext(8,"exportPool").use { dispatcher ->
+                while (true) {
+                    val future =
+                        db.collection("crashes").orderBy("uploadDate").startAfter(lastExportedDate).limit(200).get()
+                    val crashes = withContext(Dispatchers.IO) {
+                        future.get()
+                    }.documents
 
 
-//                if (crashes.isEmpty()) break
+                    if (crashes.isEmpty()) break
 
 //                val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
 
 
-            val objectKeys = crashes.associate { crash ->
-                val gzipCompressed = crash.data["log"] as Blob
-                val deletionKey = crash.data["key"] as String
-                val uploadDate = crash.data["uploadDate"] as Timestamp
-                val decompressed = gzipCompressed.toBytes().decompressGzip()
-                val decompressedLog = UncompressedLog(decompressed)
-                val brotliCompressed = CompressedLog.compress(decompressed)
-                val header = CrashlogHeader.readFromLog(decompressedLog) ?: kotlin.run {
-                    println("Failed to run header of crash log with ID ${crash.id}, it will be given a stub header")
-                    CrashlogHeader(title = "Some Crash", exceptionDescription = "Something wrong happened")
-                }
-                val metadata = CrashlogMetadata(
-                    DeletionKey.fromExisting(deletionKey),
-                    uploadDate = uploadDate.toDate().toInstant(),
-                    header
-                )
+                    processInParallel(crashes, parallelCount = 8, dispatchers = dispatcher) { crash ->
+                        val gzipCompressed = crash.data["log"] as Blob
+                        val deletionKey = crash.data["key"] as String
+                        val uploadDate = crash.data["uploadDate"] as Timestamp
+                        val decompressed = gzipCompressed.toBytes().decompressGzip()
+                        val decompressedLog = UncompressedLog(decompressed)
+                        val brotliCompressed = CompressedLog.compress(decompressed)
+                        val header = CrashlogHeader.readFromLog(decompressedLog) ?: kotlin.run {
+                            println("Failed to read header of crash log with ID ${crash.id}, it will be given a stub header")
+                            CrashlogHeader(title = "Some Crash", exceptionDescription = "Something wrong happened")
+                        }
+                        val metadata = CrashlogMetadata(
+                            DeletionKey.fromExisting(deletionKey),
+                            uploadDate = uploadDate.toDate().toInstant(),
+                            header
+                        )
 
-                val entry = CrashlogEntry(brotliCompressed, metadata)
-                val crashlogId = CrashlogId.parse(crash.id).getOrThrow()
-
-
-                println("Exporting crash log from $uploadDate [${crash.id} -> $crashlogId]")
-                crashlogId.s3Key() to Crashy.protobuf.encodeToByteArray(CrashlogEntry.serializer(), entry)
-            }
+                        val entry = CrashlogEntry(brotliCompressed, metadata)
+                        val crashlogId = CrashlogId.parse(crash.id).getOrThrow()
 
 
-            val destinationDir = firestoreExportDir
-//                .resolve(currentBatchIndex.toString())
-                .createDirectories()
-            for ((key, body) in objectKeys) {
-                destinationDir.resolve("$key.proto").writeBytes(body)
-            }
+                        println("Exporting crash log from $uploadDate [${crash.id} -> $crashlogId]")
+//                    crashlogId.s3Key() to
+                        val key = crashlogId.s3Key()
+                        val body = Crashy.protobuf.encodeToByteArray(CrashlogEntry.serializer(), entry)
+
+//                    for ((key, body) in objectKeys) {
+                        destinationDir.resolve("$key.proto").writeBytes(body)
+
+                        println("Exported")
+//                    }
+                    }.collect()
 
 
 //                s3Client.putObjectsSuspend(objectKeys, "crashy-crashlogs")
-            val oldestCrashTimestampOfBatch = crashes.last().data["uploadDate"] as Timestamp
+                    val oldestCrashTimestampOfBatch = crashes.last().data["uploadDate"] as Timestamp
 
-            lastExportedDate = oldestCrashTimestampOfBatch
-            val firstCrashTime = GMTDate(0, 0, 0, 2, Month.OCTOBER, 2021).toJvmDate()
-                .toInstant().toEpochMilli()
-            val batchTime = oldestCrashTimestampOfBatch.toDate().toInstant().toEpochMilli()
-            val millisPassedSinceFirstCrash = Instant.now().toEpochMilli() - firstCrashTime
-            val millisPassedSinceFirstCrashToBatch = batchTime - firstCrashTime
-            val percentDone = millisPassedSinceFirstCrashToBatch.toDouble() / millisPassedSinceFirstCrash
-            println("About ${percentDone * 100}% done")
-//            }
+                    lastExportedDate = oldestCrashTimestampOfBatch
+                    val firstCrashTime = GMTDate(0, 0, 0, 2, Month.OCTOBER, 2021).toJvmDate()
+                        .toInstant().toEpochMilli()
+                    val batchTime = oldestCrashTimestampOfBatch.toDate().toInstant().toEpochMilli()
+                    val millisPassedSinceFirstCrash = Instant.now().toEpochMilli() - firstCrashTime
+                    val millisPassedSinceFirstCrashToBatch = batchTime - firstCrashTime
+                    val percentDone = millisPassedSinceFirstCrashToBatch.toDouble() / millisPassedSinceFirstCrash
+                    println("About ${percentDone * 100}% done")
+                }
+            }
+
 
 
         }
