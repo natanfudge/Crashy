@@ -37,12 +37,15 @@ private val s3ExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/S3Expo
 private val s3KeysFile = s3ExportDir.resolve("ids").apply { createDirectories() }.resolve("ids.txt")
 private val s3UnconvertedFilesDir = s3ExportDir.resolve("crashes").createDirectories()
 private val s3ConvertedFilesDir = s3ExportDir.resolve("converted").createDirectories()
+
+private const val CrashlogCount = 170_000
 fun main() = runBlocking {
-    FirebaseMigration.FirebaseExporter().export()
+//    FirebaseMigration.FirebaseExporter().export()
 //    FirebaseMigration.S3Importer().import()
 //    FirebaseMigration.S3Exporter().getIdList()
 //    FirebaseMigration.S3Exporter().export()
 //        FirebaseMigration().convertCrashlogs()
+    FirebaseMigration.S3Importer().importFromFirestore()
 }
 
 class FirebaseMigration {
@@ -147,20 +150,21 @@ class FirebaseMigration {
 
         fun importFromFirestore() = runBlocking {
             val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
+            val files = firestoreExportDir.listDirectoryEntries()
+
             while (true) {
-                val dir = firestoreExportDir.resolve(fromFirestoreProgressIndex.toString())
-                if (!dir.exists()) {
+                val toProcess = files.drop(fromFirestoreProgressIndex).take(200)
+                if (toProcess.isEmpty()) {
                     println("Firestore import complete")
                     break
                 }
-                val files = dir.listDirectoryEntries()
-                val objects = files.associate { it.toFile().nameWithoutExtension to it.readBytes() }
+                val objects = toProcess.associate { it.toFile().nameWithoutExtension to it.readBytes() }
                 println("Putting ${objects.size} objects...")
                 s3Client.putObjectsFlow(objects, Crashy.S3CrashlogBucket).collect { (_, key, body) ->
                     println("Imported log with id $key of ${body.size} bytes compressed.")
                 }
-                println("Put complete")
-                fromFirestoreProgressIndex++
+                fromFirestoreProgressIndex += objects.size
+                println("Put complete, total ${fromFirestoreProgressIndex.toFloat() / CrashlogCount * 100}%")
             }
 
         }

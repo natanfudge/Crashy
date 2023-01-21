@@ -33,7 +33,7 @@ sealed interface LogLine {
         @SerialName("ErrorLog")
         data class Error(override val message: String, override val time: Instant, val exception: Throwable) :
             Message {
-            override val severity: Severity get() = Severity.Error
+            override val severity: Severity = Severity.Error
         }
     }
 
