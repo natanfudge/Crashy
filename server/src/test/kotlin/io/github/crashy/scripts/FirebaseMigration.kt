@@ -32,25 +32,26 @@ import java.time.Instant
 import kotlin.io.path.*
 import kotlin.test.Test
 
-private val firestoreExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/FirestoreMigration")
+private val firestoreExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/FirestoreMigrationRelease")
 private val s3ExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/S3Export")
 private val s3KeysFile = s3ExportDir.resolve("ids").apply { createDirectories() }.resolve("ids.txt")
 private val s3UnconvertedFilesDir = s3ExportDir.resolve("crashes").createDirectories()
 private val s3ConvertedFilesDir = s3ExportDir.resolve("converted").createDirectories()
 
 private const val CrashlogCount = 170_000
+
+//TODO: Run this after the new  site is released to migrate any final crashlogs
 fun main() = runBlocking {
-//    FirebaseMigration.FirebaseExporter().export()
 //    FirebaseMigration.S3Importer().import()
 //    FirebaseMigration.S3Exporter().getIdList()
 //    FirebaseMigration.S3Exporter().export()
 //        FirebaseMigration().convertCrashlogs()
+
+    FirebaseMigration.FirebaseExporter().export()
     FirebaseMigration.S3Importer().importFromFirestore()
 }
 
 class FirebaseMigration {
-
-    private val indexBackedUp = 72780
 
 
     class FirebaseExporter {
@@ -87,7 +88,10 @@ class FirebaseMigration {
                     }.documents
 
 
-                    if (crashes.isEmpty()) break
+                    if (crashes.isEmpty()){
+                        println("Firestore export complete!")
+                        break
+                    }
 
 //                val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
 
@@ -146,7 +150,7 @@ class FirebaseMigration {
     }
 
     class S3Importer {
-        private var fromFirestoreProgressIndex by savedInt(0, "FirebaseMigration_S3Importer_fromFirestoreProgressIndex")
+        private var fromFirestoreProgressIndex by savedInt(0, "FirebaseMigration_S3Importer_fromFirestoreProgressIndexRelease")
 
         fun importFromFirestore() = runBlocking {
             val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()

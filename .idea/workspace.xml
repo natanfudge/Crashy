@@ -5,8 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogEvent.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -402,7 +400,7 @@
       <workItem from="1674298319984" duration="517000" />
       <workItem from="1674302032753" duration="3316000" />
       <workItem from="1674308048460" duration="1363000" />
-      <workItem from="1674314869030" duration="3021000" />
+      <workItem from="1674314869030" duration="3413000" />
     </task>
     <servers />
   </component>
