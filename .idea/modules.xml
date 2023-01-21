@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Crashy.iml" filepath="$PROJECT_DIR$/.idea/modules/Crashy.iml" />
       <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
       <module fileurl="file://$PROJECT_DIR$/compat/compat.iml" filepath="$PROJECT_DIR$/compat/compat.iml" />
     </modules>

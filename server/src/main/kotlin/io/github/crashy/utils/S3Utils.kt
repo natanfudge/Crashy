@@ -98,9 +98,9 @@ suspend fun S3AsyncClient.listAllObjectsFlow(bucket: String): Flow<List<S3Object
     }
 }
 
-suspend fun S3AsyncClient.getObjectsFlow(keys: List<String>, bucket: String): Flow<AnyGetObjectResponse> {
-    return processInParallel(keys, 10) {
-        getObjectSuspend(key = it, bucket = bucket)
+suspend fun S3AsyncClient.getObjectsFlow(keys: List<String>, bucket: String, concurrency: Int = 10): Flow<Pair<String,AnyGetObjectResponse>> {
+    return processInParallel(keys, concurrency) {
+        it to getObjectSuspend(key = it, bucket = bucket)
     }
 }
 

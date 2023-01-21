@@ -1,5 +1,6 @@
 package io.github.crashy.api.utils
 
+import com.google.cloud.Timestamp
 import io.github.crashy.Crashy
 import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
@@ -8,7 +9,12 @@ import kotlin.io.path.writeText
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-class SavedValue<T>(initialValue: () -> T, uniqueName: String, constructor: (String) -> T) :
+class SavedValue<T>(
+    initialValue: () -> T,
+    uniqueName: String,
+    constructor: (String) -> T,
+    private val destructor: (T) -> String
+) :
     ReadWriteProperty<Any?, T> {
     private val file = Crashy.HomeDir.resolve("savedValues").resolve("$uniqueName.txt")
         .also { it.parent.createDirectories() }
@@ -19,11 +25,13 @@ class SavedValue<T>(initialValue: () -> T, uniqueName: String, constructor: (Str
 
     override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
         this.value = value
-        file.writeText(value.toString())
+        file.writeText(destructor(value))
     }
 }
 
 /**
  * Writes the value to disk whenever it is changed
  */
-fun savedInt(initial: Int, uniqueName: String) = SavedValue({ initial }, uniqueName) { it.toInt() }
+fun savedInt(initial: Int, uniqueName: String) = SavedValue({ initial }, uniqueName, { it.toInt() }, { it.toString() })
+fun savedTimestamp(initial: Timestamp, uniqueName: String) =
+    SavedValue<Timestamp>({ initial }, uniqueName, { Timestamp.parseTimestamp(it) }, { it.toString() })

@@ -90,7 +90,7 @@ class CrashlogStorage(
         s3Key: String
     ): GetCrashlogResult.Success {
         // We found the crashlog in the S3. Now we store it in the cache and delete it from the S3 to save on storage costs.
-        val body = s3Result.bytes.asByteArray() ?: error("Could not get crashlog body")
+        val body = s3Result.bytes.asByteArrayUnsafe() ?: error("Could not get crashlog body")
 
         val crashlog = Crashy.protobuf.decodeFromByteArray(CrashlogEntry.serializer(), body)
         cache.store(id, crashlog)

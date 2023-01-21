@@ -8,19 +8,18 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
 import io.github.crashy.Crashy
 import io.github.crashy.api.utils.savedInt
+import io.github.crashy.api.utils.savedTimestamp
 import io.github.crashy.compat.firestoreIdToUUID
 import io.github.crashy.crashlogs.*
-import io.github.crashy.utils.decompressGzip
-import io.github.crashy.utils.listAllObjectsFlow
-import io.github.crashy.utils.putObjectsFlow
+import io.github.crashy.utils.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.SerializationException
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import strikt.api.expectThat
@@ -30,26 +29,31 @@ import java.time.Instant
 import kotlin.io.path.*
 import kotlin.test.Test
 
-val firestoreExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/FirestoreMigration")
-val s3ExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/S3Export")
-
-fun main() = runBlocking{
-//    FirebaseMigration.FirebaseExporter().export()
+private val firestoreExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/FirestoreMigration")
+private val s3ExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/S3Export")
+private val s3KeysFile = s3ExportDir.resolve("ids").apply { createDirectories() }.resolve("ids.txt")
+private val s3UnconvertedFilesDir = s3ExportDir.resolve("crashes").createDirectories()
+private val s3ConvertedFilesDir = s3ExportDir.resolve("converted").createDirectories()
+fun main() = runBlocking {
+    FirebaseMigration.FirebaseExporter().export()
 //    FirebaseMigration.S3Importer().import()
-    FirebaseMigration.S3Exporter().getIdList()
-
+//    FirebaseMigration.S3Exporter().getIdList()
+//    FirebaseMigration.S3Exporter().export()
+//        FirebaseMigration().convertCrashlogs()
 }
 
 class FirebaseMigration {
 
     private val indexBackedUp = 72780
 
-    //TODO: I think I'm being very inefficient by using json...
-
 
     class FirebaseExporter {
-        private var currentCrashIndex by savedInt(72780, "Test_FireBaseMigrator_currentCrashIndex3")
-        private var currentBatchIndex by savedInt(0, "Test_FireBaseMigrator_currentBatchIndex")
+        //        private var currentCrashIndex by savedInt(72780, "Test_FireBaseMigrator_currentCrashIndex4")
+        private var lastExportedDate by savedTimestamp(
+            Timestamp.parseTimestamp("2021-10-02T10:53:32.044000000Z"),
+            "FuckYouFirebase123"
+        )
+//        private var currentBatchIndex by savedInt(0, "Test_FireBaseMigrator_currentBatchIndex")
 
         @OptIn(ExperimentalSerializationApi::class)
         suspend fun export() {
@@ -65,10 +69,11 @@ class FirebaseMigration {
             val db = FirestoreClient.getFirestore()
 
 //            while (true) {
-            val future = db.collection("crashes").orderBy("uploadDate").offset(currentCrashIndex).limit(1000).get()
+            val future = db.collection("crashes").orderBy("uploadDate").startAfter(lastExportedDate).limit(100).get()
             val crashes = withContext(Dispatchers.IO) {
                 future.get()
             }.documents
+
 
 //                if (crashes.isEmpty()) break
 
@@ -102,25 +107,24 @@ class FirebaseMigration {
 
 
             val destinationDir = firestoreExportDir
-                .resolve(currentBatchIndex.toString())
+//                .resolve(currentBatchIndex.toString())
                 .createDirectories()
             for ((key, body) in objectKeys) {
                 destinationDir.resolve("$key.proto").writeBytes(body)
             }
-            currentBatchIndex++
 
 
 //                s3Client.putObjectsSuspend(objectKeys, "crashy-crashlogs")
+            val oldestCrashTimestampOfBatch = crashes.last().data["uploadDate"] as Timestamp
 
-            currentCrashIndex += crashes.size
+            lastExportedDate = oldestCrashTimestampOfBatch
             val firstCrashTime = GMTDate(0, 0, 0, 2, Month.OCTOBER, 2021).toJvmDate()
                 .toInstant().toEpochMilli()
-            val oldestCrashTimestampOfBatch = crashes.last().data["uploadDate"] as Timestamp
             val batchTime = oldestCrashTimestampOfBatch.toDate().toInstant().toEpochMilli()
             val millisPassedSinceFirstCrash = Instant.now().toEpochMilli() - firstCrashTime
             val millisPassedSinceFirstCrashToBatch = batchTime - firstCrashTime
             val percentDone = millisPassedSinceFirstCrashToBatch.toDouble() / millisPassedSinceFirstCrash
-            println("Total exported: $currentCrashIndex (about ${percentDone * 100}% done)")
+            println("About ${percentDone * 100}% done")
 //            }
 
 
@@ -128,36 +132,95 @@ class FirebaseMigration {
     }
 
     class S3Importer {
-        fun import() = runBlocking {
+        private var fromFirestoreProgressIndex by savedInt(0, "FirebaseMigration_S3Importer_fromFirestoreProgressIndex")
+
+        fun importFromFirestore() = runBlocking {
             val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
-            val files = firestoreExportDir.resolve("0").listDirectoryEntries()
-            val objects = files.associate { it.toFile().nameWithoutExtension to it.readBytes() }
-            println("Putting ${objects.size} objects...")
-            s3Client.putObjectsFlow(objects, Crashy.S3CrashlogBucket).collect { (_, key, body) ->
-                println("Imported log with id $key of ${body.size} bytes compressed." )
-            }
-            println("Put complete")
-        }
-    }
-    class S3Exporter {
-        var progressIndex by savedInt(0, "FirebaseMigration_S3Exporter_progressIndex")
-        fun import() = runBlocking {
-            val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
-            val objects = s3Client.listObjectsV2Paginator {
-                it.bucket(Crashy.S3CrashlogBucket)
+            while (true) {
+                val dir = firestoreExportDir.resolve(fromFirestoreProgressIndex.toString())
+                if (!dir.exists()) {
+                    println("Firestore import complete")
+                    break
+                }
+                val files = dir.listDirectoryEntries()
+                val objects = files.associate { it.toFile().nameWithoutExtension to it.readBytes() }
+                println("Putting ${objects.size} objects...")
+                s3Client.putObjectsFlow(objects, Crashy.S3CrashlogBucket).collect { (_, key, body) ->
+                    println("Imported log with id $key of ${body.size} bytes compressed.")
+                }
+                println("Put complete")
+                fromFirestoreProgressIndex++
             }
 
-//            val files = s3ExportDir.resolve(progressIndex.toString()).listDirectoryEntries()
-//            val objects = files.associate { it.toFile().nameWithoutExtension to it.readBytes() }
-//            println("Putting ${objects.size} objects...")
-//            s3Client.putObjectsSuspend(objects, "crashy-crashlogs").collect { (_, key, body) ->
-//                println("Imported log with id $key of ${body.size} bytes compressed." )
-//            }
-//            println("Put complete")
+        }
+
+        private var fromS3ProgressIndex by savedInt(0, "FirebaseMigration_S3Importer_fromS3ProgressIndex")
+
+        fun importFromS3() = runBlocking {
+            val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
+            val files = s3ConvertedFilesDir.listDirectoryEntries()
+            while (true) {
+                val batch = files.drop(fromS3ProgressIndex).take(100)
+                if (batch.isEmpty()) {
+                    println("S3 import complete")
+                    break
+                }
+                val objects = files.associate { it.toFile().nameWithoutExtension to it.readBytes() }
+                println("Putting ${objects.size} objects...")
+                s3Client.putObjectsFlow(objects, Crashy.S3CrashlogBucket).collect { (_, key, body) ->
+                    println("Imported log with id $key of ${body.size} bytes compressed.")
+                }
+                println("Put complete")
+                fromS3ProgressIndex++
+            }
+
+        }
+    }
+
+
+    class S3Exporter {
+        private var progressIndex by savedInt(0, "FirebaseMigration_S3Exporter_progressIndex")
+
+        //        private var batchIndex by savedInt()
+
+
+        fun export() = runBlocking {
+            val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
+            val keys = s3KeysFile.readText().split("\n")
+
+            while (true) {
+                val handled = keys.drop(progressIndex).take(100)
+
+                if (handled.isEmpty()) {
+                    println("Importing complete")
+                    break
+                }
+
+                println("Importing ${handled.size} objects...")
+
+                val objects = s3Client.getObjectsFlow(handled, bucket = Crashy.S3CrashlogBucket, concurrency = 50)
+                    .onEach { (key, body) ->
+                        require(body is AnyGetObjectResponse.Success)
+                        println("Got object with id $key of ${body.bytes.asByteArrayUnsafe().size} bytes")
+                    }
+                    .toList()
+
+                println("Got objects, writing to file...")
+
+
+                for (obj in objects) {
+                    s3UnconvertedFilesDir.resolve("${obj.first}.proto")
+                        .writeBytes((obj.second as AnyGetObjectResponse.Success).bytes.asByteArrayUnsafe())
+                }
+
+                println("Wrote objects")
+
+                progressIndex += objects.size
+
+            }
         }
 
         fun getIdList() = runBlocking {
-            val file = s3ExportDir.resolve("ids").apply { createDirectories() }.resolve("ids.txt")
             val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
             val ids = s3Client.listAllObjectsFlow(Crashy.S3CrashlogBucket)
                 .onEach {
@@ -166,7 +229,29 @@ class FirebaseMigration {
                 .toList()
                 .flatten()
                 .map { it.key() }
-            file.writeText(ids.joinToString("\n"))
+            s3KeysFile.writeText(ids.joinToString("\n"))
+
+        }
+    }
+
+    fun convertCrashlogs() {
+        val files = s3UnconvertedFilesDir.listDirectoryEntries()
+        println("Converting logs...")
+        for (file in files) {
+            val bytes = file.readBytes()
+            try {
+                val asProto = Crashy.protobuf.decodeFromByteArray(CrashlogEntry.serializer(), bytes)
+                println("Copying ${file.fileName} as-is as it is already proto")
+                // Got here: already proto
+                s3ConvertedFilesDir.resolve(file.fileName).writeBytes(bytes)
+            } catch (e: SerializationException) {
+                println("${file.fileName} is json, converting...")
+                // Got here: not proto but json
+                val asJson = Crashy.json.decodeFromString(CrashlogEntry.serializer(), bytes.decodeToString())
+                val toProto = Crashy.protobuf.encodeToByteArray(CrashlogEntry.serializer(), asJson)
+                s3ConvertedFilesDir.resolve(file.fileName).writeBytes(toProto)
+                println("Converted")
+            }
 
         }
     }

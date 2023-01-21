@@ -12,3 +12,6 @@ aws/generated
 build/
 server/src/main/resources/secrets/*
 server/src/test/resources/secrets/*
+server/FirestoreMigration/*
+server/S3Export/*
+server/http_cache/*
