@@ -123,7 +123,7 @@ async function mappingViaProviderChain(
     // - abb#d becomes net.minecraft.class_523#method_1434
     // - aqx becomes net.minecraft.class_11123#method_14434
     // And filter to only use relevant mappables MAPPED TO NAMESPACE OF STEP (in this case mapped to intermediary)
-    let relevantMappablesOfNamespaceOfStep = relevantMappables
+    let relevantMappablesOfNamespaceOfStep: HashSet<AnyMappable> = relevantMappables
 
     const steps = await providerChain.mapSync(async (provider, i) => {
         const last = i === providerChain.length - 1
@@ -132,10 +132,7 @@ async function mappingViaProviderChain(
         // Map the relevant mappables to be relevant for the next step
         if (!last) {
             relevantMappablesOfNamespaceOfStep = relevantMappablesOfNamespaceOfStep.map(mappable => {
-                const mapped = currentStrategy<JavaClass | DescriptoredMethod>(mappable);
-                // Technically we could only keep mappings that apply to the EXACT methods that we use (by descriptor)
-                // but that complicates things a little, so we keep all methods that have the same name (and class) as the ones we use.
-                return mapped instanceof JavaClass ? mapped : mapped.method;
+                return currentStrategy<JavaClass | DescriptoredMethod>(mappable);
             })
         }
         return currentStrategy;
@@ -177,7 +174,6 @@ async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvi
     }
     return (await getBuildsCached(provider, version.minecraftVersion)).firstOr(() => "no-build")
 }
-
 
 
 function keepOnMappin<Out extends AnyMappable>(target: Mappable<Out>, calls: ((value: Mappable<Out>) => Out)[]): Out {

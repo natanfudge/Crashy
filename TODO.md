@@ -1,3 +1,7 @@
 - Improve log viewer - it might not work very well with a lot of requests in a day. 
 - Consider backing up logs to s3 as soon as they are uploaded - right now termination of the EC2 means all of the recent logs get lost. 
 - CrashReportSection#additionalInfo displaying
+- There seems to be a lot of inefficiencies.
+  - Elements being rendered multiple times
+  - mappings being requested too many times
+  - Mapping happening too many times: mappingViaProviderChain is calling stuff multiple times for the same mappable

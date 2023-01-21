@@ -60,7 +60,7 @@ export class MappingsBuilder {
             // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
             // based off of the class mappings
             const mapped = classEntry.mappedClassName.withDescMethod(mappedName, this.remapDescriptor(unmapped.descriptor));
-            if (this.filter.needMethod(this.filter.usingReverse ? mapped.method : unmapped.method)) {
+            if (this.filter.needMethod(this.filter.usingReverse ? mapped : unmapped)) {
                 classEntry.methods.put(unmapped, mapped)
             }
 

@@ -5,13 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Changelog.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/int.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/srg.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/yarn.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/LazyColumn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/components/LazyColumn.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Changelog.md" beforeDir="false" afterPath="$PROJECT_DIR$/Changelog.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +159,7 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.All Server Tests">
+  <component name="RunManager" selected="JavaScript Debug.Debug Client">
     <configuration name="CrashlogStorageTest.testStorage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -408,7 +412,8 @@
       <workItem from="1674308048460" duration="1363000" />
       <workItem from="1674314869030" duration="3565000" />
       <workItem from="1674326237607" duration="431000" />
-      <workItem from="1674331110259" duration="3761000" />
+      <workItem from="1674331110259" duration="4671000" />
+      <workItem from="1674339566379" duration="3190000" />
     </task>
     <servers />
   </component>
@@ -511,11 +516,6 @@
           <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
-          <line>108</line>
-          <option name="timeStamp" value="73" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
           <line>369</line>
           <option name="timeStamp" value="130" />
@@ -524,11 +524,6 @@
           <url>file://$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts</url>
           <line>245</line>
           <option name="timeStamp" value="137" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx</url>
-          <line>70</line>
-          <option name="timeStamp" value="138" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -541,9 +536,6 @@
       <configuration name="GradleRunConfiguration">
         <watch expression="file.exists()" />
         <watch expression="cache.get(id)" />
-      </configuration>
-      <configuration name="JavascriptDebugType">
-        <watch expression="document.documentURI" language="TypeScript" />
       </configuration>
     </watches-manager>
   </component>
