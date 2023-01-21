@@ -11,7 +11,7 @@ export interface Cookie {
 }
 
 export function setCookie(cookie: Cookie) {
-    console.log("Setting cookie with pathname " + window.location.pathname, cookie)
+    // console.log("Setting cookie with pathname " + window.location.pathname, cookie)
     document.cookie = `${cookie.name}=${encodeURIComponent(cookie.value)};expires=${cookie.expires.toUTCString()};path=${cookie.path ?? window.location.pathname}`
 }
 

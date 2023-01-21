@@ -8,6 +8,7 @@ import {LazyColumn} from "../../../fudge-commons/components/LazyColumn";
 import {useState} from "react";
 import {useScreenSize} from "../../../fudge-commons/methods/Gui";
 import {getUserPreferences, setUserPreferences} from "../../../utils/Preferences";
+import styled from "@emotion/styled";
 
 
 export function ModListUi({mods}: { mods: Mod[] }) {
@@ -76,27 +77,28 @@ export function ModListUi({mods}: { mods: Mod[] }) {
     </Column>
 }
 
-//         <LazyColumn data={partitionedMods}
-//                     childProvider={
-//                         mods => <Row>
-//                             {mods.map(mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}
-//                                                     showVersions={versionsEnabled}/>)}
-//                         </Row>
-//                     }/>
+const ModText = styled.h6`
+  margin: 0;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  letter-spacing: 0.0075em;
+  padding-left: 10px;
+  padding-right: 10px;
+  word-break: break-all;
+  align-self: start;
+`
 
+const ModIdText = styled.span`
+  font-size: 14px;
+  white-space: pre;
+  word-break: break-all;
+`
 
 function ModUi({mod, showIds, showVersions}: { mod: Mod, showIds: boolean, showVersions: boolean }) {
-    return <TextTheme padding={{horizontal: 10}} wordBreak={"break-all"} variant={"h6"} alignSelf={"start"}
-                      color={mod.isSuspected ? "red" : undefined}>
+    return <ModText style = {{color: mod.isSuspected ? "red" : undefined}}>
         <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
-        {showIds && <span style={{fontSize: 14, whiteSpace: "pre", wordBreak: "break-all"}}> ({mod.id})</span>}
-
-    </TextTheme>
-
-}
-
-function modStringLength(mod: Mod, showVersions: boolean, showIds: boolean): number {
-    const string = mod.name + (showVersions ? (" " + mod.version) : "")
-        + (mod.isSuspected ? " - may have caused crash" : "") + (showIds ? mod.id : "")
-    return string.length
+        {showIds && <ModIdText> ({mod.id})</ModIdText>}
+    </ModText>
 }

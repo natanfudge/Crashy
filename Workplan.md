@@ -1,8 +1,6 @@
 
 # Workplan:
 - [ ] Monetization?
-- [ ] Implement and test method of transfering crashlogs from firebase to EC2/S3
-  - Write in the 'parallel uploading' section how we will actually do it
 - [ ] Do some sufficient testing on real server
 - [ ] Parallel uploading of everything:
   - [ ] Research how to change crashy.net to point to the ec2 IP in namecheap
