@@ -32,7 +32,7 @@ import java.time.Instant
 import kotlin.io.path.*
 import kotlin.test.Test
 
-private val firestoreExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/FirestoreMigrationRelease")
+private val firestoreExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/FirestoreMigrationReleaseFinal")
 private val s3ExportDir = Paths.get("C:/users/natan/desktop/Crashy/server/S3Export")
 private val s3KeysFile = s3ExportDir.resolve("ids").apply { createDirectories() }.resolve("ids.txt")
 private val s3UnconvertedFilesDir = s3ExportDir.resolve("crashes").createDirectories()
@@ -47,7 +47,9 @@ fun main() = runBlocking {
 //    FirebaseMigration.S3Exporter().export()
 //        FirebaseMigration().convertCrashlogs()
 
-    FirebaseMigration.FirebaseExporter().export()
+    //TODO: IMPORTANT NOTE: FirebaseExporter exports sorted by date, S3Importer imports sorted by ID.
+    // This means we should create a new folder every time we do export -> import (Next folder is already ready)
+//    FirebaseMigration.FirebaseExporter().export()
     FirebaseMigration.S3Importer().importFromFirestore()
 }
 
@@ -150,7 +152,7 @@ class FirebaseMigration {
     }
 
     class S3Importer {
-        private var fromFirestoreProgressIndex by savedInt(0, "FirebaseMigration_S3Importer_fromFirestoreProgressIndexRelease")
+        private var fromFirestoreProgressIndex by savedInt(0, "FirebaseMigration_S3Importer_fromFirestoreProgressIndexReleaseFinal")
 
         fun importFromFirestore() = runBlocking {
             val s3Client = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
@@ -168,7 +170,7 @@ class FirebaseMigration {
                     println("Imported log with id $key of ${body.size} bytes compressed.")
                 }
                 fromFirestoreProgressIndex += objects.size
-                println("Put complete, total ${fromFirestoreProgressIndex.toFloat() / CrashlogCount * 100}%")
+                println("Put complete, total ${fromFirestoreProgressIndex.toFloat() / files.size * 100}%")
             }
 
         }

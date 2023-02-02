@@ -5,53 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/mappings/providers/ForgeRuntimeMappingsProvider.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/BadMappingsCrash.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/LastMinuteFailingLog.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TODO.md" beforeDir="false" afterPath="$PROJECT_DIR$/TODO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/int.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/model/MappingStrategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/MappingStrategy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashSet.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashSet.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/Mappings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/Mappings.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsNamespace.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsNamespace.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/TinyMappings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/TinyMappings.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingDetector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingDetector.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/testdata.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/testdata.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/Preferences.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/Preferences.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/srg.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/yarn.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +150,7 @@
       <recent name="io.github.crashy" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.All Server Tests">
+  <component name="RunManager" selected="Kotlin.FirebaseMigrationKt">
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <shortenClasspath name="ARGS_FILE" />
       <option name="TEST_OBJECT" value="class" />
@@ -309,11 +264,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.FirebaseMigrationKt" />
         <item itemvalue="Jest.Last minute failing log can be parsed" />
         <item itemvalue="Jest.RenderingOverlayProblematicCrash can be parsed" />
         <item itemvalue="Jest.Remapped from ForgeRuntime to yarn works correctly" />
         <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
-        <item itemvalue="Kotlin.FirebaseMigrationKt" />
       </list>
     </recent_temporary>
   </component>
@@ -414,7 +369,8 @@
       <workItem from="1675338015203" duration="3158000" />
       <workItem from="1675345063595" duration="4713000" />
       <workItem from="1675352197934" duration="7842000" />
-      <workItem from="1675363972805" duration="4425000" />
+      <workItem from="1675363972805" duration="6333000" />
+      <workItem from="1675377325800" duration="294000" />
     </task>
     <servers />
   </component>
