@@ -13,5 +13,7 @@ build/
 server/src/main/resources/secrets/*
 server/src/test/resources/secrets/*
 server/FirestoreMigration/*
+server/FirestoreMigrationRelease/*
+server/FirestoreMigrationReleaseFinal/*
 server/S3Export/*
 server/http_cache/*
