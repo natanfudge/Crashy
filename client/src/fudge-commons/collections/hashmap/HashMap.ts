@@ -1,9 +1,6 @@
-
 import {equalsOfAnything} from "./EqualsImplementation";
 import {LinkedList} from "../LinkedList";
 import {hashCodeOfAnything} from "./Hashing";
-import {toRecord} from "../../methods/Javascript";
-import {HashSet} from "./HashSet";
 
 const InitialCapacityPadding = 1.35;
 const DefaultCapacity = 16;
@@ -93,11 +90,11 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         return newMap;
     }
 
-    filter(filterer: (key: K, value: V) => boolean) : HashMap<K, V>{
-        const newMap = new HashMap<K,V>(this.capacity);
-        this.forEach((key, value) =>{
-            if(filterer(key,value)){
-                newMap.put(key,value)
+    filter(filterer: (key: K, value: V) => boolean): HashMap<K, V> {
+        const newMap = new HashMap<K, V>(this.capacity);
+        this.forEach((key, value) => {
+            if (filterer(key, value)) {
+                newMap.put(key, value)
             }
         })
         return newMap;
@@ -122,25 +119,16 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         }
         return newMap;
     }
+
     toArray<T>(map: (key: K, value: V) => T): T[] {
         const arr = new Array<T>()
         let i = 0;
         this.forEach((k, v) => {
-            arr[i] = map(k,v)
+            arr[i] = map(k, v)
             i++;
         })
         return arr;
     }
-
-    // toArray(): [K, V][] {
-    //     const arr = new Array<[K, V]>()
-    //     let i = 0;
-    //     this.forEach((k, v) => {
-    //         arr[i] = [k, v]
-    //         i++;
-    //     })
-    //     return arr;
-    // }
 
     /**
      * If contains `key`, returns its value and does not mutate the map
@@ -154,6 +142,13 @@ export class HashMap<K, V> implements MutableDict<K, V> {
             this.put(key, value)
             return undefined;
         }
+    }
+
+    plus(other: HashMap<K, V>): HashMap<K, V> {
+        const resultMap: HashMap<K, V> = new HashMap(this.capacity + other.capacity);
+        this.forEachImpl(this.buckets, entry => resultMap.putEntry(entry))
+        this.forEachImpl(other.buckets, entry => resultMap.putEntry(entry))
+        return resultMap;
     }
 
 
@@ -215,8 +210,12 @@ export class HashMap<K, V> implements MutableDict<K, V> {
         return record;
     }
 
+    toSameRecord(): Record<string, V> {
+        return this.toRecord(k => String(k), (k, v) => v)
+    }
+
     toString(): string {
-        return JSON.stringify(this.toRecord(k => String(k), (k,v) => v))
+        return JSON.stringify(this.toRecord(k => String(k), (k, v) => v))
     }
 
     // delete(key: K) {

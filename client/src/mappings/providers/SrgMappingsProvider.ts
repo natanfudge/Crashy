@@ -40,7 +40,7 @@ const srg1Path = "joined.srg"
 
 // Example: https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/1.7.10/mcp-1.7.10-srg.zip
 function loadSRG1Mappings(rawMappings: string, filter: MappingsFilter): Mappings {
-    const builder = new MappingsBuilder(filter)
+    const builder = new MappingsBuilder(filter, "SRG1")
     const lines = rawMappings.split("\n");
     for (const line of lines) {
         const lineArray = line.split(/\s+/);
@@ -74,7 +74,7 @@ function parseTsrg(mappings: string, filter: MappingsFilter) {
     if (tsrg2) {
         lines.shift()
     }
-    const builder = new MappingsBuilder(filter);
+    const builder = new MappingsBuilder(filter, "Tsrg");
     let currentClass: JavaClass | undefined = undefined;
     for (const line of lines) {
         if (line === "") continue

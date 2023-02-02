@@ -67,4 +67,8 @@ export class HashSet<T> {
         })
         return arr;
     }
+
+    plus(other: HashSet<T>): HashSet<T> {
+        return new HashSet<T>(this._map.plus(other._map))
+    }
 }

@@ -28,7 +28,7 @@ import {
 } from "../model/RichCrashReport";
 import {parseCrashReport} from "./CrashReportParser";
 import "../../fudge-commons/extensions/Extensions"
-import {JavaClass, JavaMethod} from "../model/Mappable";
+import {JavaClass, SimpleMethod} from "../model/Mappable";
 import {typedKeys} from "../../fudge-commons/methods/Typescript";
 
 export function parseCrashReportRich(rawReport: string): RichCrashReport {
@@ -50,6 +50,7 @@ export function enrichCrashReport(report: CrashReport): RichCrashReport {
 }
 
 function isNecDeobfuscated(report: CrashReport): boolean {
+    if (report.stacktrace.trace.isEmpty()) return false;
     return report.stacktrace.trace[0].startsWith("Not Enough Crashes deobfuscated stack trace.(")
 }
 
@@ -397,7 +398,7 @@ function parseForgeTraceMetadata(metadata: string): ForgeTraceMetadata {
     };
 }
 
-function parseTraceCall(call: string): { line: TraceLine, method: JavaMethod } {
+function parseTraceCall(call: string): { line: TraceLine, method: SimpleMethod } {
 //    net.minecraft.client.renderer.GameRenderer.func_78473_a(GameRenderer.java:344)
     const [method, line] = call.split("(");
     return {
@@ -427,11 +428,11 @@ function removeSuffix(str: string, suffix: string): string {
     return str.endsWith(suffix) ? str.substring(0, str.length - suffix.length) : str;
 }
 
-function parseJavaMethod(methodString: string): JavaMethod {
+function parseJavaMethod(methodString: string): SimpleMethod {
     const parts = methodString.split(".");
     const javaClass = withoutLast(parts).join(".");
     const methodName = last(parts);
-    return new JavaMethod(parseJavaClass(javaClass), methodName)
+    return new SimpleMethod(parseJavaClass(javaClass), methodName)
 }
 
 function parseJavaClass(classString: string): JavaClass {
@@ -458,7 +459,9 @@ function getMods(report: CrashReport): Mod[] | undefined {
     if (!isFabric && !isForge) return undefined;
 
     // Forge and fabric use a different format for the mod list.
-    return isFabric ? parseFabricMods(details) : parseForgeMods(details);
+    const mods = isFabric ? parseFabricMods(details) : parseForgeMods(details);
+    // Trim whitespace
+    return mods?.map(mod => ({...mod, id: mod.id.trim()}))
 }
 
 function getSuspectedModIds(systemDetails: StringMap): string[] {

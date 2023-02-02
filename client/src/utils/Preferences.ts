@@ -27,7 +27,7 @@ const LIFETIME_DAYS = 100;
 export function setUserPreferences(preferences: Partial<UserPreferences>) {
     const expiration = new Date();
     expiration.setTime(expiration.getTime() + LIFETIME_DAYS * MILLISECONDS_IN_DAY);
-    const newPrefs = {...userPreferences, ...preferences}
+    const newPrefs: UserPreferences = {...userPreferences, ...preferences}
     setComplexCookie(PREFERENCES_COOKIE, newPrefs, expiration)
     userPreferences = newPrefs
 }

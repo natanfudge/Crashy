@@ -53,7 +53,7 @@ fun Application.configureRouting() {
 
         authenticate(AuthSessionName) {
             get(Routes.Logs) {
-                respond(crashlogs.getLandingPage())
+                call.respondText(getLogs(call))
             }
         }
 

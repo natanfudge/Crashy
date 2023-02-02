@@ -56,6 +56,7 @@ inline fun <reified T : Any> Routing.json(
                     handler(log, this@post, decoded)
                 } catch (e: IllegalArgumentException) {
                     call.respondText("Error deserializing body", status = HttpStatusCode.UnsupportedMediaType)
+                    log.logError(e) { "Error deserialization body" }
                 }
             }
         }

@@ -3,7 +3,7 @@ import {useMappingsState} from "./MappingsUi";
 import {MappingContext} from "../../../../mappings/resolve/MappingStrategy";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "../../../../crash/model/RichCrashReport";
 import {useMemo} from "react";
-import {BasicMappable} from "../../../../crash/model/Mappable";
+import {SimpleMappable} from "../../../../crash/model/Mappable";
 import {HashSet} from "../../../../fudge-commons/collections/hashmap/HashSet";
 
 export class MappingsController {
@@ -33,8 +33,8 @@ export class MappingsController {
     }
 }
 
-function findAllMappablesInReport(report: RichCrashReport): HashSet<BasicMappable> {
-    const all = HashSet.ofCapacity<BasicMappable>(50)
+function findAllMappablesInReport(report: RichCrashReport): HashSet<SimpleMappable> {
+    const all = HashSet.ofCapacity<SimpleMappable>(50)
     visitStackTrace(all, report.stackTrace)
     report.sections.forEach(section => {
         if (section.stackTrace !== undefined) visitElements(all, section.stackTrace)
@@ -42,7 +42,7 @@ function findAllMappablesInReport(report: RichCrashReport): HashSet<BasicMappabl
     return all
 }
 
-function visitStackTrace(all: HashSet<BasicMappable>, stackTrace: RichStackTrace) {
+function visitStackTrace(all: HashSet<SimpleMappable>, stackTrace: RichStackTrace) {
     visitElements(all, stackTrace.elements)
     all.put(stackTrace.title.class)
     if (stackTrace.causedBy !== undefined) {
@@ -50,7 +50,7 @@ function visitStackTrace(all: HashSet<BasicMappable>, stackTrace: RichStackTrace
     }
 }
 
-function visitElements(all: HashSet<BasicMappable>, elements: RichStackTraceElement[]) {
+function visitElements(all: HashSet<SimpleMappable>, elements: RichStackTraceElement[]) {
     elements.forEach(element => {
         if (typeof element !== "number") {
             all.put(element.method)

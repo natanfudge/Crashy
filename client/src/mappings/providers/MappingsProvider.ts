@@ -7,6 +7,12 @@ import {PromiseMemoryCache} from "../../fudge-commons/collections/PromiseMemoryC
 import {getSrgMappings} from "./SrgMappingsProvider";
 import {getMcpBuilds, getMcpMappings, mcpSupportsMcVersion} from "./McpMappingsProvider";
 import {getMojangMappings, mojmapSupportedMinecraftVersion} from "./MojangMappingsProvider";
+import {
+    ForgeRuntimeToOfficialSrgMappings,
+    forgeUsesPureSrgForMinecraftVersion,
+    OfficialSrgToSrgMappings
+} from "./ForgeRuntimeMappingsProvider";
+import {getMappingsCached} from "../MappingsApi";
 
 
 export type MappingsBuilds = string[];
@@ -32,6 +38,13 @@ export interface MappingsProvider {
      * @deprecated use getMappingsCached (overriding is ok)
      */
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings>
+
+    /**
+     * If false and supportsMinecraftVersion is true, it will be used as a step for other mappings, but
+     * the user won't be able to select it as a final mapping
+     */
+
+    isVisible(): boolean
 }
 
 
@@ -47,6 +60,9 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
     },
     supportsMinecraftVersion(version: string): boolean {
         return yarnSupportsMcVersion(version);
+    },
+    isVisible(): boolean {
+        return true
     }
 }
 
@@ -78,6 +94,9 @@ export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     supportsMinecraftVersion(version: string): boolean {
         // Intermediary came around the same time that yarn did
         return yarnSupportsMcVersion(version);
+    },
+    isVisible(): boolean {
+        return true
     }
 }
 
@@ -95,6 +114,9 @@ export const OfficialToSrgMappingsProvider: MappingsProvider = {
 
         // Avoid snapshots
         return !snapshotRegex.test(version);
+    },
+    isVisible(): boolean {
+        return true
     }
 }
 
@@ -111,6 +133,48 @@ export const SrgToMcpMappingsProvider: MappingsProvider = {
     },
     supportsMinecraftVersion(version: string): boolean {
         return mcpSupportsMcVersion(version)
+    },
+    isVisible(): boolean {
+        return true
+    }
+}
+//
+export const ForgeRuntimeToOfficialSrgMappingsProvider: MappingsProvider = {
+    fromNamespace: "ForgeRuntime",
+    toNamespace: "OfficialSrg",
+    supportsMinecraftVersion(version: string): boolean {
+        return !forgeUsesPureSrgForMinecraftVersion(version);
+    },
+    async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
+        // Important note: we don't cache the value because if another provider will want the mappings it will have a different filter
+        const mojmap = await OfficialToMojmapMappingsProvider.getMappings(version, filter)
+        return new ForgeRuntimeToOfficialSrgMappings(mojmap, true, "ForgeRuntime -> OfficialSrg");
+    },
+    async getBuilds(minecraftVersion: string): Promise<MappingsBuilds> {
+        return []
+    },
+    isVisible(): boolean {
+        return false
+    }
+}
+
+export const OfficialSrgToSrgMappingsProvider: MappingsProvider = {
+    fromNamespace: "OfficialSrg",
+    toNamespace: "Srg",
+    supportsMinecraftVersion(version: string): boolean {
+        return !forgeUsesPureSrgForMinecraftVersion(version);
+    },
+    async getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
+        // Important note: we don't cache the value because if another provider will want the mappings it will have a different filter
+        // Possible optimization: somehow reuse the Official -> Srg when going from ForgeRuntime to other things (we use it twice)
+        const srgMappings = await OfficialToSrgMappingsProvider.getMappings(version,filter)
+        return new OfficialSrgToSrgMappings(srgMappings);
+    },
+    async getBuilds(minecraftVersion: string): Promise<MappingsBuilds> {
+        return []
+    },
+    isVisible(): boolean {
+        return false
     }
 }
 
@@ -121,21 +185,26 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
         return [];
     },
     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-        return getMojangMappings(version.minecraftVersion,filter)
+        return getMojangMappings(version.minecraftVersion, filter)
     },
     supportsMinecraftVersion(version: string): boolean {
         return mojmapSupportedMinecraftVersion(version);
+    },
+    isVisible(): boolean {
+        return true
     }
 }
 
 // This is the order it will show up in the UI
- const allMappingsProviders: MappingsProvider[] = [
+const allMappingsProviders: MappingsProvider[] = [
     IntermediaryToYarnMappingsProvider,
     // IntermediaryToQuiltMappingsProvider,
-     SrgToMcpMappingsProvider,
-     OfficialToMojmapMappingsProvider,
-     OfficialToIntermediaryMappingsProvider,
+    SrgToMcpMappingsProvider,
+    OfficialToMojmapMappingsProvider,
+    OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
+    OfficialSrgToSrgMappingsProvider,
+    ForgeRuntimeToOfficialSrgMappingsProvider
 ]
 
 export function getMappingProviders(mcVersion: string): MappingsProvider[] {

@@ -6,7 +6,7 @@ import {buildsOf} from "../../../../mappings/MappingsApi";
 import {DropdownSelection} from "../../../../fudge-commons/components/DropdownSelection";
 import {useScreenSize} from "../../../../fudge-commons/methods/Gui";
 import {CircularProgress} from "@mui/material";
-import {getMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
+import {getVisibleMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
 import {Column, Row} from "../../../../fudge-commons/simple/Flex";
 import {ItemSelection, SelectionType} from "../../../../fudge-commons/components/Selection";
 import {indexOfOrThrow} from "../../../../fudge-commons/methods/Javascript";
@@ -46,7 +46,7 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
     const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
-    const mappingNamespaces = getMappingNamespaces(minecraftVersion)
+    const mappingNamespaces = getVisibleMappingNamespaces(minecraftVersion)
 
     function Builds() {
         return builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>

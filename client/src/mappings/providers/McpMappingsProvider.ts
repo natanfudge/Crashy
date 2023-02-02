@@ -6,7 +6,7 @@ import {strFromU8} from "fflate";
 import {CrashyServer, HttpStatusCode} from "../../server/CrashyServer";
 import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
 import {MappingsBuilder} from "../MappingsBuilder";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {DescriptoredMethod, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {StringMap} from "../../crash/model/CrashReport";
 
 
@@ -42,12 +42,12 @@ class McpMappings implements Mappings {
         return descriptoredMethod.withMethodName(this.map(descriptoredMethod.method))
     }
 
-    mapSimpleMethod(method: JavaMethod, reverse: boolean): DescriptoredMethod {
+    mapSimpleMethod(method: SimpleMethod, reverse: boolean): DescriptoredMethod {
         return method.withUnmappedName(this.map(method))
             .withDescriptor("()V") // MCP doesn't support descriptors so we make up some BS descriptor
     }
 
-    private map(method: JavaMethod): string {
+    private map(method: SimpleMethod): string {
         return this.methodsMappings[method.getUnmappedMethodName()] ?? method.getUnmappedFullName()
     }
 }

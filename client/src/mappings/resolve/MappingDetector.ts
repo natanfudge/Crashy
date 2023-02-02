@@ -1,9 +1,11 @@
 import {MappingContext} from "./MappingStrategy";
 import {MappingsNamespace} from "../MappingsNamespace";
-import {BasicMappable, JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {SimpleMappable, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {LoaderType} from "../../crash/model/RichCrashReport";
+import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {forgeUsesPureSrgForMinecraftVersion} from "../providers/ForgeRuntimeMappingsProvider";
 
-export function detectMappingNamespace(name: BasicMappable, context: MappingContext): MappingsNamespace {
+export function detectMappingNamespace(name: SimpleMappable, context: MappingContext): MappingsNamespace {
     if (isIntermediaryName(name)) {
         return "Intermediary";
     } else if (context.isDeobfuscated) {
@@ -13,7 +15,11 @@ export function detectMappingNamespace(name: BasicMappable, context: MappingCont
             case LoaderType.Fabric:
                 return "Intermediary"
             case LoaderType.Forge:
-                return "Srg"
+                if (forgeUsesPureSrgForMinecraftVersion(context.minecraftVersion)) {
+                    return "Srg"
+                } else {
+                    return "ForgeRuntime"
+                }
             case LoaderType.Vanilla:
                 return "Official"
             default:
@@ -22,8 +28,8 @@ export function detectMappingNamespace(name: BasicMappable, context: MappingCont
     }
 }
 
-function isIntermediaryName(mappable: BasicMappable): boolean {
-    if (mappable instanceof JavaMethod) {
+function isIntermediaryName(mappable: SimpleMappable): boolean {
+    if (mappable instanceof SimpleMethod) {
         return isIntermediaryMethodName(mappable)
     } else {
         return isIntermediaryClassName(mappable)
@@ -35,7 +41,8 @@ function isIntermediaryClassName(javaClass: JavaClass): boolean {
         && javaClass.getUnmappedPackageName() === "net.minecraft"
 }
 
-function isIntermediaryMethodName(javaMethod: JavaMethod): boolean {
+function isIntermediaryMethodName(javaMethod: SimpleMethod): boolean {
     return isIntermediaryClassName(javaMethod.classIn)
         || javaMethod.getUnmappedMethodName().startsWith("method_")
 }
+

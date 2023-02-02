@@ -1,6 +1,6 @@
-import {JavaClass, JavaMethod} from "./Mappable";
+import {JavaClass, SimpleMethod} from "./Mappable";
 
 export interface MappingStrategy {
-    mapMethod: (unmapped: JavaMethod) => JavaMethod
+    mapMethod: (unmapped: SimpleMethod) => SimpleMethod
     mapClass: (unmapped: JavaClass) => JavaClass
 }

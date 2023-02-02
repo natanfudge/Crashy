@@ -40,13 +40,14 @@ value class CrashlogId private constructor(@Serializable(with = UUIDSerializer::
         fun generate() = CrashlogId(UUID.randomUUID())
 
         fun parse(string: String): Result<CrashlogId> = try {
-            val id = if (string.length == 20) firestoreIdToUUID(string) else UUID.fromString(string)
-            Result.success(CrashlogId(id))
+            Result.success(CrashlogId(uUIDFromIdString(string)))
         } catch (e: IllegalArgumentException) {
             Result.failure(e)
         }
     }
 }
+
+fun uUIDFromIdString(id: String): UUID =  if (id.length == 20) firestoreIdToUUID(id) else UUID.fromString(id)
 
 fun CrashlogId.s3Key() = value.toString()
 

@@ -1,10 +1,10 @@
 import {
     AnyMappable,
-    BasicMappable,
+    SimpleMappable,
     DescriptoredMethod,
-    isJavaMethod,
+    isSimpleMethod,
     JavaClass,
-    JavaMethod
+    SimpleMethod
 } from "../crash/model/Mappable";
 import {HashSet} from "../fudge-commons/collections/hashmap/HashSet";
 import {Lazy} from "../fudge-commons/collections/HelperClasses";
@@ -20,7 +20,7 @@ export interface MappingsFilter {
      */
     needMethodByName(methodName: string): boolean
 
-    usingReverse: boolean
+    // usingReverse: boolean
 }
 
 export const AllowAllMappings: MappingsFilter = {
@@ -33,13 +33,13 @@ export const AllowAllMappings: MappingsFilter = {
     needMethodByName(methodName: string): boolean {
         return true
     },
-    usingReverse: false
+    // usingReverse: false
 }
 
 export function mappingFilterForMappables(mappables: HashSet<AnyMappable>, reverse: boolean): MappingsFilter {
     // Calculate method names so we can check if we need individual method names
     const mappableMethodNames = new Lazy(
-        () => mappables.filter(m => isJavaMethod(m)).map(m => (m as JavaMethod).getUnmappedMethodName())
+        () => mappables.filter(m => isSimpleMethod(m)).map(m => (m as SimpleMethod).getUnmappedMethodName())
     )
     return {
         needClass(javaClass: JavaClass): boolean {
@@ -54,6 +54,6 @@ export function mappingFilterForMappables(mappables: HashSet<AnyMappable>, rever
         needMethodByName(methodName: string): boolean {
             return mappableMethodNames.get().contains(methodName)
         },
-        usingReverse: reverse
+        // usingReverse: reverse
     }
 }

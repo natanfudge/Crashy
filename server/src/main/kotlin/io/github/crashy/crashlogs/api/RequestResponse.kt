@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
 typealias UploadCrashlogRequest = UncompressedLog
 typealias GetCrashRequest = CrashlogId
 
+
 @Serializable
 data class DeleteCrashlogRequest(val id: CrashlogId, val key: DeletionKey)
 

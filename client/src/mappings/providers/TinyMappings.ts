@@ -12,7 +12,7 @@ export  function parseTinyFile(contents: string, filter: MappingsFilter): Mappin
         throw new Error("ERROR PARSING YARN MAPPINGS FILE!");
     }
 
-    const mappings = new MappingsBuilder(filter)
+    const mappings = new MappingsBuilder(filter, "Tiny")
 
     for (const clazz of classMappings) {
         const [, fromClass, toClass] = clazz[0];

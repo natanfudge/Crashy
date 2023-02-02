@@ -8,6 +8,7 @@ import {TestBadDate} from "../testlogs/TestBadDate";
 import {RenderingOverlayProblematicCrash} from "../testlogs/RenderingOverlayProblematicCrash";
 import {SeeminglyInnocentCrashTest} from "../testlogs/SeeminglyInnocentCrashTest";
 import {firstMigratedLog} from "../testlogs/FirstMigratedLog";
+import {LastMinuteFailingLog} from "../testlogs/LastMinuteFailingLog";
 
 test("Windows newlines can be handled", () => {
     const parsed = parseCrashReport(testFabricCrashReportUsingWindowsLines)
@@ -28,6 +29,7 @@ test("Date is parsed correctly in 2021-12-24 format", () => {
 test("RenderingOverlayProblematicCrash can be parsed", () => {
     const enriched = parseCrashReportRich(RenderingOverlayProblematicCrash)
     expect(enriched.sections[2].details!["Recovery"]).toEqual("Yes")
+    expect(enriched.mods !== undefined).toBeTruthy()
 })
 
 test("Seemingly innocent crash log can be parsed", () => {
@@ -38,4 +40,9 @@ test("Seemingly innocent crash log can be parsed", () => {
 test("First migrated crash can be parsed", () => {
     const enriched = parseCrashReportRich(firstMigratedLog)
     expect(enriched.sections)
+})
+
+test("Last minute failing log can be parsed", () => {
+    const enriched = parseCrashReportRich(LastMinuteFailingLog)
+    // expect(enriched.sections)
 })

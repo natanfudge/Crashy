@@ -1,5 +1,5 @@
 import {StringMap} from "./CrashReport";
-import {JavaClass, JavaMethod} from "./Mappable";
+import {JavaClass, SimpleMethod} from "./Mappable";
 
 export interface RichCrashReport {
     rawText: string
@@ -101,7 +101,7 @@ export interface StackTraceMessage {
 export type RichStackTraceElement = number | FullRichStackTraceElement
 
 export type FullRichStackTraceElement = {
-    method: JavaMethod
+    method: SimpleMethod
     line: TraceLine
     forgeMetadata?: ForgeTraceMetadata
 }

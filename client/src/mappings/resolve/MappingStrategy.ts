@@ -6,18 +6,20 @@ import {resolveMappingsChain} from "./MappingsResolver";
 import {mappingFilterForMappables, MappingsFilter} from "../MappingsFilter";
 import {
     AnyMappable,
-    BasicMappable,
     DescriptoredMethod,
+    isSimpleMethod,
     JavaClass,
     JavaMethod,
-    Mappable
+    Mappable,
+    SimpleMappable,
+    SimpleMethod
 } from "../../crash/model/Mappable";
 import {detectMappingNamespace} from "./MappingDetector";
 import {LoaderType, RichStackTraceElement} from "../../crash/model/RichCrashReport";
 import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
 
 export interface MappingStrategy {
-    mapMethod: (unmapped: JavaMethod) => JavaMethod
+    mapMethod: (unmapped: SimpleMethod) => SimpleMethod
     mapClass: (unmapped: JavaClass) => JavaClass
 }
 
@@ -44,7 +46,7 @@ export interface MappingContext {
     minecraftVersion: string
     isDeobfuscated: boolean;
     loader: LoaderType;
-    relevantMappables: HashSet<BasicMappable>
+    relevantMappables: HashSet<SimpleMappable>
 }
 
 export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingStrategy {
@@ -53,7 +55,7 @@ export function useMappingFor(element: RichStackTraceElement, context: MappingCo
     ) ?? IdentityMapping
 }
 
-export function useMappingForName(name: BasicMappable, context: MappingContext): MappingStrategy {
+export function useMappingForName(name: SimpleMappable, context: MappingContext): MappingStrategy {
     return usePromise(
         getMappingForName(name, context), [context.desiredBuild, context.desiredNamespace]
     ) ?? IdentityMapping; // When mappings have not loaded yet keep name as-is
@@ -68,8 +70,9 @@ async function getMappingFor(element: RichStackTraceElement, context: MappingCon
 }
 
 // export for testing
-export async function getMappingForName(name: BasicMappable, context: MappingContext): Promise<MappingStrategy> {
+export async function getMappingForName(name: SimpleMappable, context: MappingContext): Promise<MappingStrategy> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
+    //TODO: I don't like how everything is resolved every time
     const originalNamespace = detectMappingNamespace(name, context);
     const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace, context.minecraftVersion);
     if (mappingChain === undefined) {
@@ -106,7 +109,7 @@ interface DesiredVersion {
 
 async function mappingViaProviderChain(
     providerChain: DirectionedProvider[],
-    relevantMappables: HashSet<BasicMappable>,
+    relevantMappables: HashSet<SimpleMappable>,
     version: DesiredVersion,
 ): Promise<MappingStrategy> {
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
@@ -130,6 +133,7 @@ async function mappingViaProviderChain(
         const filter = mappingFilterForMappables(relevantMappablesOfNamespaceOfStep, provider.reverse)
         const currentStrategy = await mappingViaProviderStep(providerChain[i], version, filter, last)
         // Map the relevant mappables to be relevant for the next step
+
         if (!last) {
             relevantMappablesOfNamespaceOfStep = relevantMappablesOfNamespaceOfStep.map(mappable => {
                 return currentStrategy<JavaClass | DescriptoredMethod>(mappable);
@@ -143,9 +147,13 @@ async function mappingViaProviderChain(
         mapClass: unmapped => keepOnMappin<JavaClass>(unmapped, steps),
         mapMethod: unmapped => {
             if (providerChain.length === 0) return unmapped;
-            const completelyMapped = keepOnMappin<DescriptoredMethod>(unmapped, steps);
-            // Final step: remove descriptor (since originally the unmapped has no descriptor)
-            return completelyMapped.method;
+            const completelyMapped = keepOnMappin<JavaMethod>(unmapped, steps);
+            if (isSimpleMethod(completelyMapped)) {
+                return completelyMapped
+            } else {
+                // Final step: remove descriptor (since originally the unmapped has no descriptor)
+                return completelyMapped.method;
+            }
         }
     };
 }

@@ -5,3 +5,5 @@
   - Elements being rendered multiple times
   - mappings being requested too many times
   - Mapping happening too many times: mappingViaProviderChain is calling stuff multiple times for the same mappable
+- Provide a way to reset rate limiting on a specific IP gated behind auth
+- Try to migrate to vite again

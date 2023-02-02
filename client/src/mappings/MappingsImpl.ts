@@ -1,18 +1,21 @@
 import {ClassMappings, Mappings, SerializedMappings} from "./Mappings";
 import {Lazy} from "../fudge-commons/collections/HelperClasses";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {DescriptoredMethod, JavaClass, SimpleMethod} from "../crash/model/Mappable";
 import {Dict} from "../fudge-commons/collections/hashmap/HashMap";
 
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
 
 export class MappingsImpl implements Mappings {
+    // For debugging
+    private readonly id: string;
     private readonly mappings: SingleDirectionMappingData
 
     // eslint-disable-next-line no-invalid-this
     private readonly mappingsReversed = new Lazy(() => reverseMappingData(this.mappings));
 
-    constructor(mappings: SingleDirectionMappingData) {
+    constructor(mappings: SingleDirectionMappingData, id: string) {
         this.mappings = mappings;
+        this.id = id;
     }
 
     serialize(): SerializedMappings {
@@ -41,7 +44,7 @@ export class MappingsImpl implements Mappings {
     // reverse: srg class + srg descriptor -> obf class + obf descriptor
     // Not reverse: obf class + obf descriptor -> srg class + srg descriptor
 
-    mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethod {
+    mapSimpleMethod(methodName: SimpleMethod, reverse: boolean): DescriptoredMethod {
         const classMappings = this.getMappings(reverse).get(methodName.classIn);
         if (classMappings !== undefined) {
             // Linear search is fine because we filter down only to the methods we use

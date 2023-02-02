@@ -5,7 +5,7 @@ import {
     IntermediaryToYarnMappingsProvider, OfficialToIntermediaryMappingsProvider, OfficialToMojmapMappingsProvider,
     OfficialToSrgMappingsProvider
 } from "../../mappings/providers/MappingsProvider";
-import {JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {DescriptoredMethod, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {MappingAssertions, testMappingsProvider} from "./MappingsProviderTester";
 import "../../fudge-commons/extensions/ExtensionsImpl"
 import {getMcpBuilds} from "../../mappings/providers/McpMappingsProvider";
@@ -15,27 +15,27 @@ test("Yarn mappings can be retrieved via new method", async () => {
     const mappings = await getYarnMappings(versions[0].version, AllowAllMappings)
     expect(mappings.mapClass(JavaClass.dotSeperated("net.minecraft.class_5973"), false))
         .toEqual(JavaClass.dotSeperated("net.minecraft.util.math.MathConstants"))
-    expect(mappings.mapSimpleMethod(JavaMethod.dotSeperated("net.minecraft.class_3060", "method_13365"), false))
+    expect(mappings.mapSimpleMethod(SimpleMethod.dotSeperated("net.minecraft.class_3060", "method_13365"), false))
         .toEqual(
-            JavaMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register").withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V")
+            SimpleMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register").withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V")
         )
     expect(mappings.mapDescriptoredMethod(
-        JavaMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
+        SimpleMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
             .withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V"), false))
         .toEqual(
-            JavaMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register").withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V")
+            SimpleMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register").withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V")
         )
 
     expect(mappings.mapClass(JavaClass.dotSeperated("net.minecraft.util.math.MathConstants"), true))
         .toEqual(JavaClass.dotSeperated("net.minecraft.class_5973"))
-    expect(mappings.mapSimpleMethod(JavaMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register"), true))
-        .toEqual(JavaMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
+    expect(mappings.mapSimpleMethod(SimpleMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register"), true))
+        .toEqual(SimpleMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
             .withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V"))
     expect(mappings.mapDescriptoredMethod(
-        JavaMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register")
+        SimpleMethod.dotSeperated("net.minecraft.server.command.ForceLoadCommand", "register")
             .withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V"), true)
     )
-        .toEqual(JavaMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
+        .toEqual(SimpleMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
             .withDescriptor("(Lcom/mojang/brigadier/CommandDispatcher;)V")
         )
 }, 40000)
@@ -56,7 +56,8 @@ test("New test - Yarn mappings can be retrieved via new method", async () => {
 test("Intermediary mappings can be retrieved", async () => {
     const mappings = await getIntermediaryMappings("1.18.1", AllowAllMappings)
     expect(mappings.mapClass(JavaClass.dotSeperated("aqb"), false)).toEqual(JavaClass.dotSeperated("net.minecraft.class_1234"))
-    const result = mappings.mapSimpleMethod(JavaMethod.dotSeperated("dqx", "a"), false)
+    const result = mappings.mapSimpleMethod(SimpleMethod.dotSeperated("dqx", "a"), false) as DescriptoredMethod;
+
     expect(
         result.method.classIn.getUnmappedFullClassName() === "net.minecraft.class_276" &&
         ((result.method.getUnmappedMethodName() === "method_1232" && result.descriptor === "(I)V") ||
@@ -65,18 +66,18 @@ test("Intermediary mappings can be retrieved", async () => {
     ).toBeTruthy()
 
     expect(mappings.mapDescriptoredMethod(
-        JavaMethod.dotSeperated("dqx", "a").withDescriptor("(IIZ)V"), false))
+        SimpleMethod.dotSeperated("dqx", "a").withDescriptor("(IIZ)V"), false))
         .toEqual(
-            JavaMethod.dotSeperated("net.minecraft.class_276", "method_1234").withDescriptor("(IIZ)V"))
+            SimpleMethod.dotSeperated("net.minecraft.class_276", "method_1234").withDescriptor("(IIZ)V"))
 
     expect(mappings.mapClass(JavaClass.dotSeperated("net.minecraft.class_1234"), true))
         .toEqual(JavaClass.dotSeperated("aqb"))
-    expect(mappings.mapSimpleMethod(JavaMethod.dotSeperated("net.minecraft.class_276", "method_1234"), true))
-        .toEqual(JavaMethod.dotSeperated("dqx", "a").withDescriptor("(IIZ)V"))
+    expect(mappings.mapSimpleMethod(SimpleMethod.dotSeperated("net.minecraft.class_276", "method_1234"), true))
+        .toEqual(SimpleMethod.dotSeperated("dqx", "a").withDescriptor("(IIZ)V"))
 
     expect(mappings.mapDescriptoredMethod(
-        JavaMethod.dotSeperated("net.minecraft.class_276", "method_1234").withDescriptor("(IIZ)V"), true)
-    ).toEqual(JavaMethod.dotSeperated("dqx", "a").withDescriptor("(IIZ)V"))
+        SimpleMethod.dotSeperated("net.minecraft.class_276", "method_1234").withDescriptor("(IIZ)V"), true)
+    ).toEqual(SimpleMethod.dotSeperated("dqx", "a").withDescriptor("(IIZ)V"))
 }, 30000)
 
 //	m	(II)V	a	method_1237
@@ -228,3 +229,4 @@ test("Mojang mappings work", async () => {
     }
     await testMappingsProvider(OfficialToMojmapMappingsProvider,"1.19.3",assertions);
 })
+

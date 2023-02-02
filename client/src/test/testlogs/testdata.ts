@@ -1,4 +1,4 @@
-import {JavaClass, JavaMethod} from "../../crash/model/Mappable";
+import {JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {CrashReport, StackTrace, StackTraceElement} from "../../crash/model/CrashReport";
 import {LoaderType, OperatingSystemType, RichCrashReport} from "../../crash/model/RichCrashReport";
 
@@ -95,7 +95,7 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: JavaMethod.dotSeperatedObject({
+                method: SimpleMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.streamffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
@@ -114,7 +114,7 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 69420
                 },
-                method: JavaMethod.dotSeperatedObject({
+                method: SimpleMethod.dotSeperatedObject({
                     name: "doStuff",
                     classIn: {
                         packageName: "io.natanfudge.github.greatshit",
@@ -141,7 +141,7 @@ const testRichStackTrace: RichCrashReport = {
                         file: "CrashFile.java",
                         number: 34422222222
                     },
-                    method: JavaMethod.dotSeperatedObject({
+                    method: SimpleMethod.dotSeperatedObject({
                         name: "kill",
                         classIn: {
                             packageName: "java.util.stream",
@@ -168,7 +168,7 @@ const testRichStackTrace: RichCrashReport = {
                             file: "CrashFile.java",
                             number: 34422222222
                         },
-                        method: JavaMethod.dotSeperatedObject({
+                        method: SimpleMethod.dotSeperatedObject({
                             name: "kill",
                             classIn: {
                                 packageName: "java.util.stream",
@@ -233,7 +233,7 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: JavaMethod.dotSeperatedObject({
+                method: SimpleMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.stream",
@@ -261,7 +261,7 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: JavaMethod.dotSeperatedObject({
+                method: SimpleMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.stream",
@@ -289,7 +289,7 @@ const testRichStackTrace: RichCrashReport = {
                     file: "GameRenderer.java",
                     number: 344
                 },
-                method: JavaMethod.dotSeperatedObject({
+                method: SimpleMethod.dotSeperatedObject({
                     name: "wrapSink",
                     classIn: {
                         packageName: "java.util.stream",

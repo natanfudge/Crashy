@@ -7,12 +7,15 @@ import {DescriptoredMethod, JavaClass} from "../crash/model/Mappable";
 export class MappingsBuilder {
     private readonly classMappings: MutableDict<JavaClass, JavaClass>
     private readonly filter: MappingsFilter
+    // For debugging
+    private readonly id: string;
 
     private readonly methodsToAdd: { unmapped: DescriptoredMethod, mappedName: string }[] = [];
 
-    constructor(filter: MappingsFilter) {
+    constructor(filter: MappingsFilter, id: string) {
         this.classMappings = new HashMap(undefined)
         this.filter = filter;
+        this.id = id;
     }
 
     // Returns undefined if this class's  methods are not needed (it's still put in the Dict for remapping)
@@ -23,7 +26,7 @@ export class MappingsBuilder {
         const mappedClass = new JavaClass(mapped, true);
         this.classMappings.put(unmappedClass, mappedClass)
 
-        return this.filter.needClass(this.filter.usingReverse ? mappedClass : unmappedClass) ? unmappedClass : undefined;
+        return this.filter.needClass( mappedClass) || this.filter.needClass(unmappedClass) ? unmappedClass : undefined;
     }
 
     addMethod(unmappedClassName: JavaClass, unmappedMethodName: string, unmappedDescriptor: string, mappedMethodName: string) {
@@ -43,7 +46,7 @@ export class MappingsBuilder {
     build(): Mappings {
         const finalMappings = new HashMap<JavaClass, ClassMappings>(undefined)
         this.classMappings.forEach((unmapped, mapped) => {
-            if (this.filter.needClass(this.filter.usingReverse ? mapped : unmapped)) {
+            if (this.filter.needClass(mapped) || this.filter.needClass(unmapped)) {
                 finalMappings.put(unmapped, {
                     mappedClassName: mapped,
                     methods: new HashMap(undefined)
@@ -60,11 +63,11 @@ export class MappingsBuilder {
             // Possible optimization: we don't need to store this remapped descriptor, we can only calculate it when we actually need it
             // based off of the class mappings
             const mapped = classEntry.mappedClassName.withDescMethod(mappedName, this.remapDescriptor(unmapped.descriptor));
-            if (this.filter.needMethod(this.filter.usingReverse ? mapped : unmapped)) {
+            if (this.filter.needMethod(mapped) || this.filter.needMethod(unmapped)) {
                 classEntry.methods.put(unmapped, mapped)
             }
 
         }
-        return new MappingsImpl(finalMappings);
+        return new MappingsImpl(finalMappings, this.id);
     }
 }

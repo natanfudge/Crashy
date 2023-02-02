@@ -1,6 +1,7 @@
 package io.github.crashy.utils
 
 import io.github.crashy.Crashy
+import io.github.crashy.crashlogs.uUIDFromIdString
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -22,7 +23,7 @@ import kotlin.io.path.readAttributes
 object UUIDSerializer : KSerializer<UUID> {
     override val descriptor: SerialDescriptor = String.serializer().descriptor
 
-    override fun deserialize(decoder: Decoder): UUID = UUID.fromString(decoder.decodeString())
+    override fun deserialize(decoder: Decoder): UUID = uUIDFromIdString(decoder.decodeString())
 
     override fun serialize(encoder: Encoder, value: UUID) = encoder.encodeString(value.toString())
 }
@@ -36,8 +37,8 @@ object InstantSerializer : KSerializer<Instant> {
 }
 
 
-//open class SerializableConverter<T> : PropertyConverter<T,Map<Str>>
 
+@Suppress("unused")
 @Serializable
 class ThrowableJsonRepresentation(val className: String, val message: String, val stacktrace: String)
 

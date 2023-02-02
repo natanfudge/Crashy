@@ -1,10 +1,11 @@
 // export enum MappingsNamespace {
 //     Yarn, Official, MojMap, Intermediary, Srg, Mcp, Quilt
 // }
-import {Mappings} from "./Mappings";
 import { getMappingProviders} from "./providers/MappingsProvider";
 
-export type MappingsNamespace = "Yarn" | "Official" | "MojMap" | "Intermediary" | "Srg" | "Mcp" | "Quilt";
+// "ForgeRuntime": The way forge maps Minecraft in prod. It uses SRG names for methods and MCP names for classes.
+// "OfficialSrg": Official classes with Srg methods. Useful as an intermediary format for converting from ForgeRuntime to something useful.
+export type MappingsNamespace = "Yarn" | "Official" | "MojMap" | "Intermediary" | "Srg" | "Mcp" | "Quilt" | "ForgeRuntime" | "OfficialSrg";
 
 export function mappingsName(type: MappingsNamespace): string {
     switch (type) {
@@ -22,23 +23,18 @@ export function mappingsName(type: MappingsNamespace): string {
             return "MCP"
         case "Quilt":
             return "Quilt"
+        case "ForgeRuntime":
+            return "MCP.SRG"
+        case "OfficialSrg":
+            return "Official.SRG"
     }
 }
 
-export function getMappingNamespaces(mcVersion: string): MappingsNamespace[] {
-    const namespaces =  getMappingProviders(mcVersion).map(provider => provider.toNamespace);
-    // Official should always be available
+export function getVisibleMappingNamespaces(mcVersion: string): MappingsNamespace[] {
+    const namespaces =  getMappingProviders(mcVersion)
+        .filter(provider => provider.isVisible())
+        .map(provider => provider.toNamespace);
+    // Official should always be available (namespaces may not contain it in case no providers are available)
     namespaces.push("Official")
     return namespaces
 }
-
-// export const allMappingNamespaces: MappingsNamespace[] = [
-//     "Yarn",
-//     "MojMap",
-//     "Mcp",
-//     "Quilt",
-//     "Intermediary",
-//     "Srg",
-//     "Official"
-// ];
-

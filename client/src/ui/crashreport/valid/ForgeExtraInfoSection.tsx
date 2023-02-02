@@ -50,13 +50,14 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
 
 function TraceFeiUi(props: {report: RichCrashReport, fei: TraceFei}) {
     const mappingsController = new MappingsController(props.report);
+    const context = mappingsController.getContext();
     return <WithMappings controller={mappingsController}>
         <Column>
             <Spacer height={5}/>
             <SimpleDivider height={1}/>
             <Spacer height={5}/>
             {props.fei.metadata.map((element, i) =>
-                <TraceFeiElement key={i} element={element} mappings={mappingsController.getContext()}/>)}
+                <TraceFeiElement key={i} element={element} mappings={context}/>)}
         </Column>
     </WithMappings>
 }
@@ -95,6 +96,7 @@ function ListTraceFei({name, value}: { name: string, value: string[] }) {
         </Column>}
     </Fragment>
 }
+
 
 function ModsFei({report}: { report: RichCrashReport }) {
     return <LazyColumn data={report.mods!}

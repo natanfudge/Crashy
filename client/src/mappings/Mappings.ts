@@ -1,13 +1,13 @@
 import {MappingsImpl} from "./MappingsImpl";
 import {MappingsBuilder} from "./MappingsBuilder";
 import {AllowAllMappings} from "./MappingsFilter";
-import {DescriptoredMethod, JavaClass, JavaMethod} from "../crash/model/Mappable";
+import {DescriptoredMethod, JavaClass, JavaMethod, SimpleMethod} from "../crash/model/Mappable";
 import {HashMap} from "../fudge-commons/collections/hashmap/HashMap";
 
 export interface Mappings {
     mapClass(className: JavaClass, reverse: boolean): JavaClass
 
-    mapSimpleMethod(methodName: JavaMethod, reverse: boolean): DescriptoredMethod
+    mapSimpleMethod(methodName: SimpleMethod, reverse: boolean): JavaMethod
 
     mapDescriptoredMethod(methodName: DescriptoredMethod, reverse: boolean): DescriptoredMethod
     //
@@ -26,21 +26,21 @@ export interface ClassMappingsEntry {
 // Unmapped, mapped, unmapped descriptor
 export type MethodEntry = [string, string, string]
 
-function deserializeMappings(serialized: SerializedMappings): Mappings {
-    const builder = new MappingsBuilder(AllowAllMappings);
-    for (const unmappedClass in serialized) {
-        const {c, m} = serialized[unmappedClass];
-        const javaClass = builder.addClass(unmappedClass, c);
-        if (javaClass !== undefined) {
-            for (const [unmappedMethod, mappedMethod, unmappedDescriptor] of m) {
-                builder.addMethod(javaClass, unmappedMethod, unmappedDescriptor, mappedMethod);
-            }
-        }
-    }
-    return builder.build();
-}
+// function deserializeMappings(serialized: SerializedMappings): Mappings {
+//     const builder = new MappingsBuilder(AllowAllMappings);
+//     for (const unmappedClass in serialized) {
+//         const {c, m} = serialized[unmappedClass];
+//         const javaClass = builder.addClass(unmappedClass, c);
+//         if (javaClass !== undefined) {
+//             for (const [unmappedMethod, mappedMethod, unmappedDescriptor] of m) {
+//                 builder.addMethod(javaClass, unmappedMethod, unmappedDescriptor, mappedMethod);
+//             }
+//         }
+//     }
+//     return builder.build();
+// }
 
-export const EmptyMappings = new MappingsImpl(HashMap.empty());
+export const EmptyMappings = new MappingsImpl(HashMap.empty(), "Empty");
 
 export interface ClassMappings {
     mappedClassName: JavaClass

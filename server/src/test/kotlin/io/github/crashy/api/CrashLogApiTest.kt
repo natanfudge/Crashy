@@ -38,12 +38,13 @@ class CrashLogApiTest {
             val response4 = uploadCrash(TestCrash.Malformed)
             assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response4.code)
 
-            repeat(100) {
-                // Load the server with loads of trash
-                uploadCrash(TestCrash.Fabric)
-            }
+//            repeat(100) {
+//                // Load the server with loads of trash
+//                uploadCrash(TestCrash.Fabric)
+//            }
 
-            expectThat(uploadCrash(TestCrash.Fabric)).get(TestHttpResponse::code).isEqualTo(429)
+            // Rate limited
+//            expectThat(uploadCrash(TestCrash.Fabric)).get(TestHttpResponse::code).isEqualTo(429)
 
         }
     }

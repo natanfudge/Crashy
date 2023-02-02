@@ -1,0 +1,294 @@
+---- Minecraft Crash Report ----
+// Who set us up the TNT?
+
+Time: 13.11.2022, 14:40
+Description: Rendering overlay
+
+net.minecraftforge.fml.config.ConfigFileTypeHandler$ConfigLoadingException: Failed loading config file preciseblockplacing-client.toml of type CLIENT for modid preciseblockplacing
+	at net.minecraftforge.fml.config.ConfigFileTypeHandler.lambda$reader$1(ConfigFileTypeHandler.java:47) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.config.ConfigTracker.openConfig(ConfigTracker.java:60) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.config.ConfigTracker.lambda$loadConfigs$1(ConfigTracker.java:50) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at java.lang.Iterable.forEach(Iterable.java:75) ~[?:?] {re:mixin}
+	at java.util.Collections$SynchronizedCollection.forEach(Collections.java:2131) ~[?:?] {}
+	at net.minecraftforge.fml.config.ConfigTracker.loadConfigs(ConfigTracker.java:50) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.core.ModStateProvider.lambda$new$1(ModStateProvider.java:33) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading}
+	at net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(DistExecutor.java:111) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.core.ModStateProvider.lambda$new$3(ModStateProvider.java:33) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading}
+	at net.minecraftforge.fml.ModLoader.lambda$dispatchAndHandleError$20(ModLoader.java:186) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at java.util.Optional.ifPresent(Optional.java:178) ~[?:?] {re:mixin}
+	at net.minecraftforge.fml.ModLoader.dispatchAndHandleError(ModLoader.java:186) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.ModLoader.lambda$loadMods$14(ModLoader.java:170) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at java.lang.Iterable.forEach(Iterable.java:75) ~[?:?] {re:mixin}
+	at net.minecraftforge.fml.ModLoader.loadMods(ModLoader.java:170) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.client.loading.ClientModLoader.lambda$startModLoading$5(ClientModLoader.java:121) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraftforge.client.loading.ClientModLoader.lambda$createRunnableWithCatch$4(ClientModLoader.java:112) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraftforge.client.loading.ClientModLoader.startModLoading(ClientModLoader.java:121) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraftforge.client.loading.ClientModLoader.lambda$onResourceReload$2(ClientModLoader.java:103) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at net.minecraftforge.client.loading.ClientModLoader.lambda$createRunnableWithCatch$4(ClientModLoader.java:112) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading,pl:runtimedistcleaner:A}
+	at java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804) ~[?:?] {}
+	at java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796) ~[?:?] {}
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373) ~[?:?] {}
+	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182) ~[?:?] {}
+	at java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655) ~[?:?] {re:computing_frames}
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622) ~[?:?] {re:computing_frames}
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165) ~[?:?] {}
+Caused by: com.electronwill.nightconfig.core.io.ParsingException: Not enough data available
+	at com.electronwill.nightconfig.core.io.ParsingException.notEnoughData(ParsingException.java:22) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.core.io.ReaderInput.directReadChar(ReaderInput.java:36) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.core.io.AbstractInput.readChar(AbstractInput.java:49) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.core.io.AbstractInput.readCharsUntil(AbstractInput.java:123) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.toml.TableParser.parseKey(TableParser.java:166) ~[toml-3.6.4.jar%238!/:?] {}
+	at com.electronwill.nightconfig.toml.TableParser.parseDottedKey(TableParser.java:145) ~[toml-3.6.4.jar%238!/:?] {}
+	at com.electronwill.nightconfig.toml.TableParser.parseNormal(TableParser.java:55) ~[toml-3.6.4.jar%238!/:?] {}
+	at com.electronwill.nightconfig.toml.TomlParser.parse(TomlParser.java:44) ~[toml-3.6.4.jar%238!/:?] {}
+	at com.electronwill.nightconfig.toml.TomlParser.parse(TomlParser.java:37) ~[toml-3.6.4.jar%238!/:?] {}
+	at com.electronwill.nightconfig.core.io.ConfigParser.parse(ConfigParser.java:113) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.core.io.ConfigParser.parse(ConfigParser.java:219) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.core.io.ConfigParser.parse(ConfigParser.java:202) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.core.file.WriteSyncFileConfig.load(WriteSyncFileConfig.java:73) ~[core-3.6.4.jar%237!/:?] {}
+	at com.electronwill.nightconfig.core.file.AutosaveCommentedFileConfig.load(AutosaveCommentedFileConfig.java:85) ~[core-3.6.4.jar%237!/:?] {}
+	at net.minecraftforge.fml.config.ConfigFileTypeHandler.lambda$reader$1(ConfigFileTypeHandler.java:43) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	... 26 more
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Stacktrace:
+	at net.minecraftforge.fml.config.ConfigFileTypeHandler.lambda$reader$1(ConfigFileTypeHandler.java:47) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.config.ConfigTracker.openConfig(ConfigTracker.java:60) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.config.ConfigTracker.lambda$loadConfigs$1(ConfigTracker.java:50) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at java.lang.Iterable.forEach(Iterable.java:75) ~[?:?] {re:mixin}
+	at java.util.Collections$SynchronizedCollection.forEach(Collections.java:2131) ~[?:?] {}
+	at net.minecraftforge.fml.config.ConfigTracker.loadConfigs(ConfigTracker.java:50) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.core.ModStateProvider.lambda$new$1(ModStateProvider.java:33) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading}
+	at net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(DistExecutor.java:111) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+	at net.minecraftforge.fml.core.ModStateProvider.lambda$new$3(ModStateProvider.java:33) ~[forge-1.18.2-40.1.76-universal.jar%23118!/:?] {re:classloading}
+	at net.minecraftforge.fml.ModLoader.lambda$dispatchAndHandleError$20(ModLoader.java:186) ~[fmlcore-1.18.2-40.1.76.jar%23114!/:?] {}
+-- Overlay render details --
+Details:
+	Overlay name: net.minecraft.client.gui.screens.LoadingOverlay
+Stacktrace:
+	at net.minecraft.client.renderer.GameRenderer.m_109093_(GameRenderer.java:1288) ~[client-1.18.2-20220404.173914-srg.jar%23113!/:?] {re:mixin,pl:accesstransformer:B,xf:OptiFine:default,re:classloading,pl:accesstransformer:B,xf:OptiFine:default}
+	at net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1046) ~[client-1.18.2-20220404.173914-srg.jar%23113!/:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:APP:fallingleaves.mixins.json:MinecraftClientMixin,pl:mixin:APP:enhancedvisuals.mixins.json:MinecraftMixin,pl:mixin:APP:bookshelf.mixins.json:client.AccessorMinecraft,pl:mixin:APP:inventorio.mixins.json:client.accessor.MinecraftClientAccessor,pl:mixin:APP:architectury.mixins.json:MixinMinecraft,pl:mixin:APP:inventorio.mixins.json:client.MinecraftClientMixin,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.Minecraft.m_91374_(Minecraft.java:665) ~[client-1.18.2-20220404.173914-srg.jar%23113!/:?] {re:mixin,pl:accesstransformer:B,pl:runtimedistcleaner:A,re:classloading,pl:accesstransformer:B,pl:mixin:APP:notenoughcrashes.mixins.json:client.MixinMinecraftClient,pl:mixin:APP:fallingleaves.mixins.json:MinecraftClientMixin,pl:mixin:APP:enhancedvisuals.mixins.json:MinecraftMixin,pl:mixin:APP:bookshelf.mixins.json:client.AccessorMinecraft,pl:mixin:APP:inventorio.mixins.json:client.accessor.MinecraftClientAccessor,pl:mixin:APP:architectury.mixins.json:MixinMinecraft,pl:mixin:APP:inventorio.mixins.json:client.MinecraftClientMixin,pl:mixin:A,pl:runtimedistcleaner:A}
+	at net.minecraft.client.main.Main.main(Main.java:205) ~[client-1.18.2-20220404.173914-srg.jar%23113!/:?] {re:classloading,re:mixin,pl:runtimedistcleaner:A,pl:mixin:A,pl:runtimedistcleaner:A}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?] {}
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?] {}
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?] {}
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?] {}
+	at net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$launchService$0(CommonClientLaunchHandler.java:31) ~[fmlloader-1.18.2-40.1.76.jar%2317!/:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:37) [modlauncher-9.1.3.jar%235!/:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-9.1.3.jar%235!/:?] {}
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-9.1.3.jar%235!/:?] {}
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:106) [modlauncher-9.1.3.jar%235!/:?] {}
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:77) [modlauncher-9.1.3.jar%235!/:?] {}
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-9.1.3.jar%235!/:?] {}
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-9.1.3.jar%235!/:?] {}
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:149) [bootstraplauncher-1.0.0.jar:?] {}
+
+
+-- Last reload --
+Details:
+	Reload number: 1
+	Reload reason: initial
+	Finished: No
+	Packs: Default, Mod Resources, Enhanced+Audio+r3.zip
+	Recovery: Yes
+	Recovery reason: java.util.concurrent.CompletionException: net.minecraftforge.fml.config.ConfigFileTypeHandler$ConfigLoadingException: Failed loading config file preciseblockplacing-client.toml of type CLIENT for modid preciseblockplacing
+	at java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:315)
+	at java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:320)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1807)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796)
+	at java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:373)
+	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1182)
+	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
+	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
+	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+Caused by: net.minecraftforge.fml.config.ConfigFileTypeHandler$ConfigLoadingException: Failed loading config file preciseblockplacing-client.toml of type CLIENT for modid preciseblockplacing
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.config.ConfigFileTypeHandler.lambda$reader$1(ConfigFileTypeHandler.java:47)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.config.ConfigTracker.openConfig(ConfigTracker.java:60)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.config.ConfigTracker.lambda$loadConfigs$1(ConfigTracker.java:50)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at java.base/java.util.Collections$SynchronizedCollection.forEach(Collections.java:2131)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.config.ConfigTracker.loadConfigs(ConfigTracker.java:50)
+	at TRANSFORMER/forge@40.1.76/net.minecraftforge.fml.core.ModStateProvider.lambda$new$1(ModStateProvider.java:33)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(DistExecutor.java:111)
+	at TRANSFORMER/forge@40.1.76/net.minecraftforge.fml.core.ModStateProvider.lambda$new$3(ModStateProvider.java:33)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.ModLoader.lambda$dispatchAndHandleError$20(ModLoader.java:186)
+	at java.base/java.util.Optional.ifPresent(Optional.java:178)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.ModLoader.dispatchAndHandleError(ModLoader.java:186)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.ModLoader.lambda$loadMods$14(ModLoader.java:170)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.ModLoader.loadMods(ModLoader.java:170)
+	at TRANSFORMER/forge@40.1.76/net.minecraftforge.client.loading.ClientModLoader.lambda$startModLoading$5(ClientModLoader.java:121)
+	at TRANSFORMER/forge@40.1.76/net.minecraftforge.client.loading.ClientModLoader.lambda$createRunnableWithCatch$4(ClientModLoader.java:112)
+	at TRANSFORMER/forge@40.1.76/net.minecraftforge.client.loading.ClientModLoader.startModLoading(ClientModLoader.java:121)
+	at TRANSFORMER/forge@40.1.76/net.minecraftforge.client.loading.ClientModLoader.lambda$onResourceReload$2(ClientModLoader.java:103)
+	at TRANSFORMER/forge@40.1.76/net.minecraftforge.client.loading.ClientModLoader.lambda$createRunnableWithCatch$4(ClientModLoader.java:112)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804)
+	... 6 more
+Caused by: com.electronwill.nightconfig.core.io.ParsingException: Not enough data available
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.io.ParsingException.notEnoughData(ParsingException.java:22)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.io.ReaderInput.directReadChar(ReaderInput.java:36)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.io.AbstractInput.readChar(AbstractInput.java:49)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.io.AbstractInput.readCharsUntil(AbstractInput.java:123)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.toml@3.6.4/com.electronwill.nightconfig.toml.TableParser.parseKey(TableParser.java:166)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.toml@3.6.4/com.electronwill.nightconfig.toml.TableParser.parseDottedKey(TableParser.java:145)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.toml@3.6.4/com.electronwill.nightconfig.toml.TableParser.parseNormal(TableParser.java:55)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.toml@3.6.4/com.electronwill.nightconfig.toml.TomlParser.parse(TomlParser.java:44)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.toml@3.6.4/com.electronwill.nightconfig.toml.TomlParser.parse(TomlParser.java:37)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.io.ConfigParser.parse(ConfigParser.java:113)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.io.ConfigParser.parse(ConfigParser.java:219)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.io.ConfigParser.parse(ConfigParser.java:202)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.file.WriteSyncFileConfig.load(WriteSyncFileConfig.java:73)
+	at MC-BOOTSTRAP/com.electronwill.nightconfig.core@3.6.4/com.electronwill.nightconfig.core.file.AutosaveCommentedFileConfig.load(AutosaveCommentedFileConfig.java:85)
+	at LAYER PLUGIN/fmlcore@1.18.2-40.1.76/net.minecraftforge.fml.config.ConfigFileTypeHandler.lambda$reader$1(ConfigFileTypeHandler.java:43)
+	... 26 more
+
+
+-- System Details --
+Details:
+	Minecraft Version: 1.18.2
+	Minecraft Version ID: 1.18.2
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 17.0.1, Microsoft
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), Microsoft
+	Memory: 5211173376 bytes (4969 MiB) / 6677331968 bytes (6368 MiB) up to 17112760320 bytes (16320 MiB)
+	CPUs: 12
+	Processor Vendor: GenuineIntel
+	Processor Name: Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz
+	Identifier: Intel64 Family 6 Model 165 Stepping 3
+	Microarchitecture: unknown
+	Frequency (GHz): 2,90
+	Number of physical packages: 1
+	Number of physical CPUs: 6
+	Number of logical CPUs: 12
+	Graphics card #0 name: AMD Radeon RX 5600 XT
+	Graphics card #0 vendor: Advanced Micro Devices, Inc. (0x1002)
+	Graphics card #0 VRAM (MB): 4095,00
+	Graphics card #0 deviceId: 0x731f
+	Graphics card #0 versionInfo: DriverVersion=30.0.21020.2
+	Memory slot #0 capacity (MB): 8192,00
+	Memory slot #0 clockSpeed (GHz): 2,40
+	Memory slot #0 type: DDR4
+	Memory slot #1 capacity (MB): 8192,00
+	Memory slot #1 clockSpeed (GHz): 2,40
+	Memory slot #1 type: DDR4
+	Virtual memory max (MB): 28584,80
+	Virtual memory used (MB): 17249,26
+	Swap memory total (MB): 12288,00
+	Swap memory used (MB): 50,32
+	JVM Flags: 9 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xss1M -Xmx16292M -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M
+	Launched Version: ForgeOptiFine 1.18.2
+	Backend library: LWJGL version 3.2.2 SNAPSHOT
+	Backend API: AMD Radeon RX 5600 XT GL version 3.2.14800 Core Profile Forward-Compatible Context 22.Q2 30.0.21020.2, ATI Technologies Inc.
+	Window size: 1920x1080
+	GL Caps: Using framebuffer using OpenGL 3.2
+	GL debug messages:
+	Using VBOs: Yes
+	Is Modded: Definitely; Client brand changed to 'forge'
+	Type: Client (map_client.txt)
+	Graphics mode: fancy
+	Resource Packs:
+	Current Language: English (US)
+	CPU: 12x Intel(R) Core(TM) i5-10400F CPU @ 2.90GHz
+	Client Crashes Since Restart: 1
+	Integrated Server Crashes Since Restart: 0
+	OptiFine Version: OptiFine_1.18.2_HD_U_H9_pre1
+	OptiFine Build: 20220823-161442
+	Render Distance Chunks: 6
+	Mipmaps: 4
+	Anisotropic Filtering: 1
+	Antialiasing: 0
+	Multitexture: false
+	Shaders: ComplementaryShaders_v4.5.zip
+	OpenGlVersion: 3.2.14800 Core Profile Forward-Compatible Context 22.Q2 30.0.21020.2
+	OpenGlRenderer: AMD Radeon RX 5600 XT
+	OpenGlVendor: ATI Technologies Inc.
+	CpuCount: 12
+	ModLauncher: 9.1.3+9.1.3+main.9b69c82a
+	ModLauncher launch target: forgeclient
+	ModLauncher naming: srg
+	ModLauncher services:
+		 mixin PLUGINSERVICE
+		 eventbus PLUGINSERVICE
+		 slf4jfixer PLUGINSERVICE
+		 object_holder_definalize PLUGINSERVICE
+		 runtime_enum_extender PLUGINSERVICE
+		 capability_token_subclass PLUGINSERVICE
+		 accesstransformer PLUGINSERVICE
+		 runtimedistcleaner PLUGINSERVICE
+		 mixin TRANSFORMATIONSERVICE
+		 OptiFine TRANSFORMATIONSERVICE
+		 fml TRANSFORMATIONSERVICE
+	FML Language Providers:
+		minecraft@1.0
+		lowcodefml@null
+		javafml@null
+		kotlinforforge@3.3.2
+	Mod List:
+		TreeChop-1.18.2-forge-0.16.3.jar                  |HT's TreeChop                 |treechop                      |0.16.3              |COMMON_SET|Manifest: NOSIGNATURE
+		inventorysorter-1.18.2-19.0.4.jar                 |Simple Inventory Sorter       |inventorysorter               |19.0.4              |COMMON_SET|Manifest: NOSIGNATURE
+		notenoughcrashes-4.1.4+1.18.2-forge.jar           |Not Enough Crashes            |notenoughcrashes              |4.1.4+1.18.2        |COMMON_SET|Manifest: NOSIGNATURE
+		preciseblockplacing-1.1.0+1.18.2-forge.jar        |PreciseBlockPlacing           |preciseblockplacing           |1.1.0               |COMMON_SET|Manifest: NOSIGNATURE
+		jei-1.18.2-forge-10.2.1.283.jar                   |Just Enough Items             |jei                           |10.2.1.283          |COMMON_SET|Manifest: NOSIGNATURE
+		VisualWorkbench-v3.3.0-1.18.2-Forge.jar           |Visual Workbench              |visualworkbench               |3.3.0               |COMMON_SET|Manifest: 9a:09:85:98:65:c4:8c:11:c5:49:f6:d6:33:23:39:df:8d:b4:ff:92:84:b8:bd:a5:83:9f:ac:7f:2a:d1:4b:6a
+		libraryferret-forge-1.18.2-3.0.0.jar              |Library ferret                |libraryferret                 |3.0.0               |COMMON_SET|Manifest: NOSIGNATURE
+		Incendium_v5.0.4.jar                              |Incendium                     |incendium                     |0.0NONE             |COMMON_SET|Manifest: NOSIGNATURE
+		sophisticatedcore-1.18.2-0.5.15.141.jar           |Sophisticated Core            |sophisticatedcore             |1.18.2-0.5.15.141   |COMMON_SET|Manifest: NOSIGNATURE
+		InvMove-1.18-0.8.1-Forge.jar                      |InvMove                       |invmove                       |0.8.1               |COMMON_SET|Manifest: NOSIGNATURE
+		Fallingleaves-1.18.2-1.3.2.jar                    |Falling Leaves                |fallingleaves                 |1.3.2               |COMMON_SET|Manifest: NOSIGNATURE
+		EpicFight-18.3.7.jar                              |Epic Fight                    |epicfight                     |18.3.7              |COMMON_SET|Manifest: NOSIGNATURE
+		EnhancedVisuals_FORGE_v1.5.5_mc1.18.2.jar         |EnhancedVisuals               |enhancedvisuals               |1.5.5               |COMMON_SET|Manifest: NOSIGNATURE
+		citadel-1.11.1-1.18.2.jar                         |Citadel                       |citadel                       |1.11.1              |COMMON_SET|Manifest: NOSIGNATURE
+		alexsmobs-1.18.6.jar                              |Alex's Mobs                   |alexsmobs                     |1.18.6              |COMMON_SET|Manifest: NOSIGNATURE
+		SereneSeasons-1.18.2-7.0.0.15.jar                 |Serene Seasons                |sereneseasons                 |0.0NONE             |COMMON_SET|Manifest: NOSIGNATURE
+		YungsApi-1.18.2-Forge-2.0.7.jar                   |YUNG's API                    |yungsapi                      |1.18.2-Forge-2.0.7  |COMMON_SET|Manifest: NOSIGNATURE
+		Bookshelf-Forge-1.18.2-13.0.6.jar                 |Bookshelf                     |bookshelf                     |13.0.6              |COMMON_SET|Manifest: eb:c4:b1:67:8b:f9:0c:db:dc:4f:01:b1:8e:61:64:39:4c:10:85:0b:a6:c4:c7:48:f0:fa:95:f2:cb:08:3a:e5
+		sophisticatedbackpacks-1.18.2-3.18.29.718.jar     |Sophisticated Backpacks       |sophisticatedbackpacks        |1.18.2-3.18.29.718  |COMMON_SET|Manifest: NOSIGNATURE
+		starlight-1.0.2+forge.546ae87.jar                 |Starlight                     |starlight                     |1.0.2+forge.83663de |COMMON_SET|Manifest: NOSIGNATURE
+		netherdepthsupgrade-1.2.1-1.18.2.jar              |Nether Depths Upgrade         |netherdepthsupgrade           |1.2.1-1.18.2        |COMMON_SET|Manifest: NOSIGNATURE
+		Terralith_v2.2.1a.jar                             |Terralith                     |terralith                     |0.0NONE             |COMMON_SET|Manifest: NOSIGNATURE
+		cloth-config-6.4.90-forge.jar                     |Cloth Config v4 API           |cloth_config                  |6.4.90              |COMMON_SET|Manifest: NOSIGNATURE
+		soundphysics-forge-1.18.2-1.0.6.jar               |Sound Physics Remastered      |sound_physics_remastered      |1.18.2-1.0.6        |COMMON_SET|Manifest: NOSIGNATURE
+		forge-1.18.2-40.1.76-universal.jar                |Forge                         |forge                         |40.1.76             |COMMON_SET|Manifest: 84:ce:76:e8:45:35:e4:0e:63:86:df:47:59:80:0f:67:6c:c1:5f:6e:5f:4d:b3:54:47:1a:9f:7f:ed:5e:f2:90
+		tl_skin_cape_forge_1.18_1.18.2-1.25.jar           |TLSkinCape                    |tlskincape                    |1.25                |COMMON_SET|Manifest: 19:f5:ce:44:81:0c:e4:22:05:5e:73:c5:a8:cd:de:f3:c8:cf:a9:b3:01:70:40:a0:ee:2d:50:7a:1c:3d:1c:8a
+		client-1.18.2-20220404.173914-srg.jar             |Minecraft                     |minecraft                     |1.18.2              |COMMON_SET|Manifest: a1:d4:5e:04:4f:d3:d6:e0:7b:37:97:cf:77:b0:de:ad:4a:47:ce:8c:96:49:5f:0a:cf:8c:ae:b2:6d:4b:8a:3f
+		mcw-bridges-2.0.5-mc1.18.2forge.jar               |Macaw's Bridges               |mcwbridges                    |2.0.5               |COMMON_SET|Manifest: NOSIGNATURE
+		FarmersDelight-1.18.2-1.1.2.jar                   |Farmer's Delight              |farmersdelight                |1.18.2-1.1.2        |COMMON_SET|Manifest: NOSIGNATURE
+		EnchantmentDescriptions-Forge-1.18.2-10.0.9.jar   |EnchantmentDescriptions       |enchdesc                      |10.0.9              |COMMON_SET|Manifest: eb:c4:b1:67:8b:f9:0c:db:dc:4f:01:b1:8e:61:64:39:4c:10:85:0b:a6:c4:c7:48:f0:fa:95:f2:cb:08:3a:e5
+		AmbientSounds_FORGE_v5.0.16_mc1.18.2.jar          |Ambient Sounds                |ambientsounds                 |5.0.16              |COMMON_SET|Manifest: NOSIGNATURE
+		firstperson-forge-2.1.2-mc1.18.2.jar              |FirstPersonModel Mod          |firstpersonmod                |2.1.2-mc1.18.2      |COMMON_SET|Manifest: NOSIGNATURE
+		another_furniture-forge-1.2.2-1.18.2.jar          |Another Furniture             |another_furniture             |1.2.2-1.18.2        |COMMON_SET|Manifest: NOSIGNATURE
+		CreativeCore_FORGE_v2.6.15_mc1.18.2.jar           |CreativeCore                  |creativecore                  |0.0NONE             |COMMON_SET|Manifest: NOSIGNATURE
+		inventorio-1.18-forge-1.7.4.jar                   |Inventorio                    |inventorio                    |1.7.4               |COMMON_SET|Manifest: NOSIGNATURE
+		weaponmaster-clientonly-forge-1.18.1-3.0.3.jar    |YDM's Weapon Master           |weaponmaster                  |3.0.3               |COMMON_SET|Manifest: NOSIGNATURE
+		domum_ornamentum-1.18.2-1.0.50-ALPHA-universal.jar|Domum Ornamentum              |domum_ornamentum              |1.18.2-1.0.50-ALPHA |COMMON_SET|Manifest: NOSIGNATURE
+		Natural+Decoration+v.1.0.9.jar                    |Natural Decoration            |natural_decoration            |1.0.0               |COMMON_SET|Manifest: NOSIGNATURE
+		betterfpsdist-1.18.2-1.5.jar                      |betterfpsdist mod             |betterfpsdist                 |1.18.2-1.5          |COMMON_SET|Manifest: NOSIGNATURE
+		gravestone-1.18.2-1.0.2.jar                       |Gravestone Mod                |gravestone                    |1.18.2-1.0.2        |COMMON_SET|Manifest: NOSIGNATURE
+		DiagonalFences-v3.1.0-1.18.2.jar                  |Diagonal Fences               |diagonalfences                |3.1.0               |COMMON_SET|Manifest: 9a:09:85:98:65:c4:8c:11:c5:49:f6:d6:33:23:39:df:8d:b4:ff:92:84:b8:bd:a5:83:9f:ac:7f:2a:d1:4b:6a
+		ToughAsNails-1.18.2-7.0.0.73.jar                  |Tough As Nails                |toughasnails                  |0.0NONE             |COMMON_SET|Manifest: NOSIGNATURE
+		entityculling-forge-mc1.18-1.5.1.jar              |EntityCulling                 |entityculling                 |1.5.1               |COMMON_SET|Manifest: NOSIGNATURE
+		DoubleSlabs-1.18-5.0.0.jar                        |Double Slabs                  |doubleslabs                   |5.0.0               |COMMON_SET|Manifest: NOSIGNATURE
+		bettervillage-forge-1.18.2-2.0.0.jar              |Better village                |bettervillage                 |2.0.0               |COMMON_SET|Manifest: NOSIGNATURE
+		spells_and_shields-1.18.2-1.9.jar                 |Spells & Shields              |spells_and_shields            |1.18.2-1.9          |COMMON_SET|Manifest: NOSIGNATURE
+		architectury-4.10.86-forge.jar                    |Architectury                  |architectury                  |4.10.86             |COMMON_SET|Manifest: NOSIGNATURE
+		simplyswords-1.30-1.18.2.jar                      |Simply Swords                 |simplyswords                  |1.30-1.18.2         |COMMON_SET|Manifest: NOSIGNATURE
+		appleskin-forge-mc1.18.2-2.4.1.jar                |AppleSkin                     |appleskin                     |2.4.1+mc1.18.2      |COMMON_SET|Manifest: NOSIGNATURE
+		ferritecore-4.2.1-forge.jar                       |Ferrite Core                  |ferritecore                   |0.0NONE             |COMMON_SET|Manifest: 41:ce:50:66:d1:a0:05:ce:a1:0e:02:85:9b:46:64:e0:bf:2e:cf:60:30:9a:fe:0c:27:e0:63:66:9a:84:ce:8a
+		AI-Improvements-1.18.2-0.5.2.jar                  |AI-Improvements               |aiimprovements                |0.5.2               |COMMON_SET|Manifest: NOSIGNATURE
+		ItemPhysic_v1.4.23_mc1.18.2.jar                   |ItemPhysic                    |itemphysic                    |1.6.0               |COMMON_SET|Manifest: NOSIGNATURE
+		PuzzlesLib-v3.3.2-1.18.2-Forge.jar                |Puzzles Lib                   |puzzleslib                    |3.3.2               |COMMON_SET|Manifest: 9a:09:85:98:65:c4:8c:11:c5:49:f6:d6:33:23:39:df:8d:b4:ff:92:84:b8:bd:a5:83:9f:ac:7f:2a:d1:4b:6a
+		BetterPvP_22.16.0_Forge_1.18.2.jar                |Better PVP Mod                |xaerobetterpvp                |22.16.0             |COMMON_SET|Manifest: NOSIGNATURE
+		YungsBetterMineshafts-1.18.2-Forge-2.2.jar        |YUNG's Better Mineshafts      |bettermineshafts              |1.18.2-Forge-2.2    |COMMON_SET|Manifest: NOSIGNATURE
+		geckolib-forge-1.18-3.0.49.jar                    |GeckoLib                      |geckolib3                     |3.0.49              |COMMON_SET|Manifest: NOSIGNATURE
+		naturalist-forge-1.1.1-1.18.2.jar                 |Naturalist                    |naturalist                    |1.1.1               |COMMON_SET|Manifest: NOSIGNATURE
+		better_respawn-1.18.2-1.0.0.jar                   |Better Respawn                |better_respawn                |1.18.2-1.0.0        |COMMON_SET|Manifest: NOSIGNATURE
+	Crash Report UUID: a8e077e7-678a-4404-bdb6-56e4c5d2b5d6
+	FML: 40.1
+	Forge: net.minecraftforge:40.1.76
+	Suspected Mods: None

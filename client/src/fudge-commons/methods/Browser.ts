@@ -1,6 +1,5 @@
 import {Rect} from "../types/Gui";
 import {recordForEach} from "./Javascript";
-import {StringMap} from "../../crash/model/CrashReport";
 
 export interface Cookie {
     name: string
@@ -36,20 +35,25 @@ export function getComplexCookie<T extends object>(name: string): T | undefined 
         const withoutPrefix = cookiePart.removePrefix(complexPrefix)
         const [key, value] = withoutPrefix.split("=")
         // @ts-ignore
-        obj[key] = value
+        obj[key] = value === UndefinedMarker ? undefined : value
     }
 
     return obj;
 }
 
-export function setComplexCookie<T extends Record<string,unknown>>(name: string, value: T, expires: Date) {
+export function setComplexCookie<T extends object>(name: string, value: T, expires: Date) {
     const complexPrefix = name + complexCookiePrefix
     recordForEach(value, (k, v) => {
-        if(typeof v !== "string") throw new Error("Complex cookie keys should only be strings")
-        setCookie({name: complexPrefix + k, value: v, expires: expires, path: "/"})
+        const value = v === undefined  ? UndefinedMarker : v;
+        // noinspection SuspiciousTypeOfGuard
+        if(typeof value !== "string"){
+            throw new Error(`Complex cookie keys should only be strings (instead got: ${value} of type ${typeof value})`)
+        }
+        setCookie({name: complexPrefix + k, value: value, expires: expires, path: "/"})
     })
 }
 
+const UndefinedMarker = "$$$UNDEFINED$$$"
 
 export function getDocumentRelativeRect(element?: Element | null): Rect { // crossbrowser version
     if (element === undefined || element === null) return {left: 0, top: 0, width: 0, height: 0}

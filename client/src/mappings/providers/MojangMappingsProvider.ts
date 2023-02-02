@@ -27,7 +27,7 @@ export async function getMojangMappings(mcVersion: string, filter: MappingsFilte
 // Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/sections/Projects/MinecraftMappingViewer/App/worker.ts
 
 function parseMojangMappings(mappings: string, filter: MappingsFilter): Mappings {
-    const builder = new MappingsBuilder(filter)
+    const builder = new MappingsBuilder(filter, "Mojmap")
 
     const lines = mappings.split("\n")
     // Ignore license header

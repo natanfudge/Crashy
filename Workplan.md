@@ -1,6 +1,4 @@
-
 # Workplan:
-- [ ] Fix 6edbd31a-683c-4a10-8529-253bc50a0817 not properly remapping to yarn
 - [ ] Monetization?
 - [ ] Do some sufficient testing on real server
 - [ ] Parallel uploading of everything:

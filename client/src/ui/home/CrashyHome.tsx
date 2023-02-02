@@ -39,6 +39,7 @@ export default function CrashyHome() {
                        parseCrashReportRich(log)
                     } catch (e) {
                         setUploadState("Invalid Crash")
+                        console.log(e)
                         setDialogOpen(true)
                         return
                     }

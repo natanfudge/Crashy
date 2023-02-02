@@ -258,7 +258,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
                 break;
             } else if (
                 // Start of new element
-                (nextLine[0] === "\t" && isUpperCase(nextLine[1]) && nextLine.includes(": ")) ||
+                (nextLine[0] === "\t" && isUpperCase(nextLine[1]) && (nextLine.includes(": ") || nextLine.endsWith(":"))) ||
                 // Start of Stack Trace
                 nextLine === "Stacktrace:" ||
                 // Start of new section

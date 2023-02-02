@@ -7,9 +7,11 @@ import "../../fudge-commons/extensions/Extensions"
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyMappable = Mappable<any>
 // These are the mappables that appear in a crash report
-export type BasicMappable = JavaClass | JavaMethod
+export type SimpleMappable = JavaClass | SimpleMethod
 
-export function isJavaMethod(mappable: AnyMappable): mappable is JavaMethod {
+export type JavaMethod = SimpleMethod | DescriptoredMethod
+
+export function isSimpleMethod(mappable: AnyMappable): mappable is SimpleMethod {
     return "classIn" in mappable ;
 }
 
@@ -82,12 +84,12 @@ export class JavaClass implements Mappable<JavaClass> {
         return mappings.mapClass(this).getUnmappedSimpleName();
     }
 
-    withMethod(methodName: string): JavaMethod {
-        return new JavaMethod(this, methodName)
+    withMethod(methodName: string): SimpleMethod {
+        return new SimpleMethod(this, methodName)
     }
 
     withDescMethod(methodName: string, descriptor: string): DescriptoredMethod {
-        return new JavaMethod(this, methodName).withDescriptor(descriptor)
+        return new SimpleMethod(this, methodName).withDescriptor(descriptor)
     }
 
     private populatePackageSplit() {
@@ -124,7 +126,7 @@ export class JavaClass implements Mappable<JavaClass> {
  * Simple Name: class#method
  * Method Name: method
  */
-export class JavaMethod implements Mappable<DescriptoredMethod> {
+export class SimpleMethod implements Mappable<JavaMethod> {
     readonly classIn: JavaClass
     private readonly _name: string
 
@@ -134,14 +136,14 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
     }
 
     static dotSeperated(classIn: string, name: string) {
-        return new JavaMethod(JavaClass.dotSeperated(classIn), name)
+        return new SimpleMethod(JavaClass.dotSeperated(classIn), name)
     }
 
     static dotSeperatedObject(obj: { name: string, classIn: JavaClassJsObject }) {
-        return new JavaMethod(JavaClass.dotSeperatedObject(obj.classIn), obj.name)
+        return new SimpleMethod(JavaClass.dotSeperatedObject(obj.classIn), obj.name)
     }
 
-    static parse(methodDotSeperated: string): JavaMethod {
+    static parse(methodDotSeperated: string): SimpleMethod {
         const [classIn, name] = methodDotSeperated.splitToTwo(ClassMethodSeparator);
         return this.dotSeperated(classIn, name);
     }
@@ -171,20 +173,20 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
         return new DescriptoredMethod(this, desc)
     }
 
-    withClass(classIn: JavaClass): JavaMethod {
-        return new JavaMethod(classIn, this.getUnmappedMethodName())
+    withClass(classIn: JavaClass): SimpleMethod {
+        return new SimpleMethod(classIn, this.getUnmappedMethodName())
     }
 
-    withUnmappedName(name: string): JavaMethod {
-        return new JavaMethod(this.classIn, name);
+    withUnmappedName(name: string): SimpleMethod {
+        return new SimpleMethod(this.classIn, name);
     }
 
 
-    remap(mappings: Mappings, reverse: boolean): DescriptoredMethod {
+    remap(mappings: Mappings, reverse: boolean): JavaMethod {
         return mappings.mapSimpleMethod(this, reverse);
     }
 
-    equals(other: JavaMethod): boolean {
+    equals(other: SimpleMethod): boolean {
         return other.getUnmappedMethodName() === this.getUnmappedMethodName() && other.classIn.equals(this.classIn);
     }
 
@@ -194,11 +196,11 @@ export class JavaMethod implements Mappable<DescriptoredMethod> {
 }
 
 export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
-    method: JavaMethod;
+    method: SimpleMethod;
     // Descriptors use slash/based/qualification for class names
     descriptor: string;
 
-    constructor(method: JavaMethod, descriptor: string) {
+    constructor(method: SimpleMethod, descriptor: string) {
         if(EnableAssertions && descriptor.includes(".")) {
             throw new Error("Descriptor is supposed to use slash/based/qualification")
         }
@@ -211,7 +213,7 @@ export class DescriptoredMethod implements Mappable<DescriptoredMethod> {
 
     static parse(dotQualifiedMethod: string): DescriptoredMethod {
         const [method, descWithoutParen] = dotQualifiedMethod.splitToTwo("(");
-        return JavaMethod.parse(method).withDescriptor("(" + descWithoutParen);
+        return SimpleMethod.parse(method).withDescriptor("(" + descWithoutParen);
     }
 
     getUnmappedFullName() {
