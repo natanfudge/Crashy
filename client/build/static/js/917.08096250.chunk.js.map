@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/917.08096250.chunk.js","mappings":"yKAEe,SAASA,IACpB,OAAO,SAAC,EAAAC,SAAD,8BAGV,C","sources":["ui/dev/ServerLogs.tsx"],"sourcesContent":["import {Fragment} from \"react\";\r\n\r\nexport default function ServerLogs() {\r\n    return <Fragment>\r\n        Halo server logs\r\n    </Fragment>\r\n}"],"names":["ServerLogs","Fragment"],"sourceRoot":""}

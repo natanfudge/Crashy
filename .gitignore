@@ -26,3 +26,4 @@ package-lock.json
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+server/*
