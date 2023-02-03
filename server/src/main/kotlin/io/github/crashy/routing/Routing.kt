@@ -35,6 +35,7 @@ fun Application.configureRouting() {
             bucketName = Crashy.S3CrashlogBucket,
             appDataDir = crashyDir,
             clock = RealClock,
+            //TODO: If we have a separate machine for beta, it should be !Crashy.isRelease()
             deleteFromS3OnFetch = !Crashy.isLocal()
         )
     }

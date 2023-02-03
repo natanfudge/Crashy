@@ -14,9 +14,6 @@ object Crashy {
     val protobuf = ProtoBuf {  }
     val logger: Logger = LoggerFactory.getLogger(App::class.java)
 
-    val ServerStartTime = Instant.now()
-
-    //TODO: update build.txt to release
     val build = readBuild()
 
     fun isLocal() = build == Local

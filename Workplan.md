@@ -7,6 +7,7 @@
     - [ ] Set `build.txt` to `release`
     - [ ] Run `Upload Server`
     - [ ] Update namecheap record 
+      - [ ] 
     - [ ] Run tests on release server
   - [ ] Update server to have SSL matching crashy.net and set build.txt to release
     - [ ] Use certbot to generate PEM certificate https://certbot.eff.org/instructions?ws=other&os=ubuntufocal

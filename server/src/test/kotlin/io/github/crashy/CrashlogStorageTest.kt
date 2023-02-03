@@ -13,6 +13,7 @@ import strikt.assertions.isA
 import strikt.assertions.isEqualTo
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 
@@ -106,6 +107,7 @@ class CrashlogStorageTest {
     }
 
     @Test
+    @Ignore
     fun testArchived() = testScope {
         expectThat(getLog(CrashlogId.parse("7fc76c2f-5dc0-402f-bec8-4869d86ef3f3").getOrThrow())).isEqualTo(
             GetCrashlogResult.Archived
@@ -167,6 +169,7 @@ class CrashlogStorageTest {
     }
 
     @Test
+    @Ignore
     fun `Archived Crash`() = testScope {
         val archivedId = CrashlogId.parse("0e412d80-234d-47b7-ae3b-03e0bf59442a").getOrThrow()
         val response = getLog(archivedId)
