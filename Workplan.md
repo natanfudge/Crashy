@@ -1,30 +1,32 @@
 # Workplan:
 - [ ] Monetization?
-- [ ] Do some sufficient testing on real server
+- [x] Do some sufficient testing on real server
 - [ ] Parallel uploading of everything:
-  - [ ] Research how to change crashy.net to point to the ec2 IP in namecheap
-  - [ ] Update crashy.net to new server
-    - [ ] Set `build.txt` to `release`
-    - [ ] Run `Upload Server`
-    - [ ] Update namecheap record 
-      - [ ] 
-    - [ ] Run tests on release server
-  - [ ] Update server to have SSL matching crashy.net and set build.txt to release
-    - [ ] Use certbot to generate PEM certificate https://certbot.eff.org/instructions?ws=other&os=ubuntufocal
-    - [ ] Convert PEM to PKCS12 using openssl `pkcs12 -export -in cert.pem -inkey key.pem -out keystore_release.p12 -name "CrashyCertificate"`
-    - [ ] Convert PKCS12 to JKS using keytool `keytool -importkeystore -srckeystore keystore_release.p12 -srcstoretype pkcs12 -destkeystore /etc/cert/crashy_release_keystore.jks"`
-    - [ ] Test https
-  - [ ] Update firebase upload function to redirect to new server
+  - [x] Research how to change crashy.net to point to the ec2 IP in namecheap
+  - [x] Update crashy.net to new server
+    - [x] Set `build.txt` to `release`
+    - [x] Run `Upload Server`
+    - [x] Update namecheap record 
+      - [x] @ -> 3.68.47.185
+      - [x] www -> ec2-3-68-47-185.eu-central-1.compute.amazonaws.com, Type = CNAME Record
+    - [x] Run tests on release server
+  - [x] Update server to have SSL matching crashy.net and set build.txt to release
+    - [x] Use certbot to generate PEM certificate https://certbot.eff.org/instructions?ws=other&os=ubuntufocal
+    - [x] Convert PEM to PKCS12 using openssl `openssl pkcs12 -export -in cert.pem -inkey key.pem -out keystore_release.p12 -name "CrashyCertificate"`
+    - [x] Convert PKCS12 to JKS using keytool `keytool -importkeystore -srckeystore keystore_release.p12 -srcstoretype pkcs12 -destkeystore "/etc/cert/crashy_release_keystore.jks"`
+    - [x] Test https
+  - [x] Update firebase upload function to redirect to new server
     - In `compat/`, set `betaBuild` to `false`
     - Change the name of `uploadCrashNew` to `uploadCrash`
     - Upload: `firebase deploy --only functions`
-  - [ ] Download all existing crashlogs and upload them to the new server.
-    - [ ] Run FirebaseMigration to migrate any remaining crash logs
-  - [ ] Update NEC to support new crashy.net
-    - [ ] Upload branch newCrashy
-  - [ ] Make post about some logs being potentially lost and reporting this
+  - [x] Download all existing crashlogs and upload them to the new server.
+    - [x] Run FirebaseMigration to migrate any remaining crash logs
+  - [x] Update NEC to support new crashy.net
+    - [x] Upload branch newCrashy
+  - [x] Make post about some logs being potentially lost and reporting this
   - [ ] Once everything works - shut down old site and functions
-
+    - [ ] Remove Namecheap TXT Record
+    - [ ] Remove old functions
 - 
 
 # Final goals:
