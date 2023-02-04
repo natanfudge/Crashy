@@ -1,5 +1,4 @@
-- Mappings selection
-  - Remove deobfuscation from NEC
+
 - Crashalytics?
 - 'Copy Link' button
   - Link expiry date

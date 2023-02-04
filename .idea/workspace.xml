@@ -4,8 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="">
+    <list default="true" id="82c19fcc-b20d-4c6b-802c-c25f788e47f4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/compression/CompressTask.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/Crashy.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features.md" beforeDir="false" afterPath="$PROJECT_DIR$/features.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,35 +40,6 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="crashy" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="other" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="shadow" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="verification" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
                 <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
@@ -74,11 +52,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Object" />
-        <option value="Kotlin Interface" />
-        <option value="Kotlin Class" />
         <option value="Kotlin File" />
-        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -93,7 +67,7 @@
       <scope name="Crashy" />
     </order>
   </component>
-  <component name="ProjectId" id="2H8sz0xCkELEd4V9nv5D52wsd6X" />
+  <component name="ProjectId" id="2LEibQ4AcCq6hUHHkUqkVuil5Py" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -103,403 +77,71 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "TODO_SCOPE": "Crashy",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "17",
-    "ktor.last.update.timestamp": "1675433637803",
-    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/server/src/main/resources/secrets",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/react-scripts",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1675458413721&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/LogViewer&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\natan\Desktop\Crashy\server\src\main\resources\secrets" />
-      <recent name="C:\Users\natan\Desktop\Crashy\server\src\test\resources\secrets" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\test" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\mappings\providers" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\natan\Desktop\Crashy\server\src\main\resources\secrets" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\mappings" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\crashlog" />
-    </key>
-    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
-      <recent name="io.github.crashy" />
-      <recent name="io.github.crashy.api" />
-    </key>
-    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
-      <recent name="io.github.crashy.api" />
-      <recent name="io.github.crashy" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Kotlin.FirebaseMigrationKt">
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <shortenClasspath name="ARGS_FILE" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Last minute failing log can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
-      <test-names>
-        <test-name value="Last minute failing log can be parsed" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Remapped from ForgeRuntime to yarn works correctly" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
-      <test-names>
-        <test-name value="Remapped from ForgeRuntime to yarn works correctly" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="RenderingOverlayProblematicCrash can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
-      <test-names>
-        <test-name value="RenderingOverlayProblematicCrash can be parsed" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Seemingly innocent crash log can be parsed" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" />
-      <test-names>
-        <test-name value="Seemingly innocent crash log can be parsed" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Debug Client" type="JavascriptDebugType" uri="http://localhost:3000/">
-      <method v="2" />
-    </configuration>
-    <configuration name="FirebaseMigrationKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.crashy.scripts.FirebaseMigrationKt" />
-      <module name="Crashy.test" />
-      <shortenClasspath name="ARGS_FILE" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+}</component>
+  <component name="RunManager" selected="Attach to Node.js/Chrome.Attach To Server">
     <configuration default="true" type="JetRunConfigurationType">
-      <module name="client" />
-      <shortenClasspath name="ARGS_FILE" />
+      <module name="Crashy.test" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="SwaggerCodegen">
-      <option name="activeConfigurationType" value="FILE" />
-      <option name="configurationPath" value="" />
-      <option name="customJreEnabled" value="false" />
-      <option name="customTemplatesPath" value="" />
-      <option name="enableDebugLogging" value="false" />
-      <option name="generateToPath" value="C:\Users\natan\Desktop\Crashy\gen" />
-      <option name="generationParameters">
-        <list />
-      </option>
-      <option name="generatorPath" value="https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.0.0/openapi-generator-cli-5.0.0.jar" />
-      <option name="jdkPath" value="" />
-      <option name="language" value="java" />
-      <option name="specificationPath" value="C:\Users\natan\Desktop\Crashy\server\src\main\resources\openapi\documentation.json" />
-      <method v="2" />
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Crashy.test" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
-      <item itemvalue="JavaScript Debug.Debug Client" />
       <item itemvalue="Jest.All JS Tests" />
-      <item itemvalue="Jest.Last minute failing log can be parsed" />
-      <item itemvalue="Jest.Remapped from ForgeRuntime to yarn works correctly" />
-      <item itemvalue="Jest.RenderingOverlayProblematicCrash can be parsed" />
-      <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
-      <item itemvalue="Kotlin.FirebaseMigrationKt" />
       <item itemvalue="npm.Analyze Client Bundle" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="npm.Client Production" />
       <item itemvalue="npm.Client Profiling" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Kotlin.FirebaseMigrationKt" />
-        <item itemvalue="Jest.Last minute failing log can be parsed" />
-        <item itemvalue="Jest.RenderingOverlayProblematicCrash can be parsed" />
-        <item itemvalue="Jest.Remapped from ForgeRuntime to yarn works correctly" />
-        <item itemvalue="Jest.Seemingly innocent crash log can be parsed" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7f0e9e5e-b87d-4ba0-b08b-1e5bd2701b0c" name="Changes" comment="" />
-      <created>1667678303931</created>
+      <changelist id="82c19fcc-b20d-4c6b-802c-c25f788e47f4" name="Changes" comment="" />
+      <created>1675442714032</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1667678303931</updated>
-      <workItem from="1667678305046" duration="85000" />
-      <workItem from="1667678420613" duration="2000" />
-      <workItem from="1667678462109" duration="5573000" />
-      <workItem from="1668893904197" duration="3315000" />
-      <workItem from="1668918624566" duration="322000" />
-      <workItem from="1668919051714" duration="3249000" />
-      <workItem from="1669400948351" duration="194000" />
-      <workItem from="1669401188014" duration="2257000" />
-      <workItem from="1669406915443" duration="6122000" />
-      <workItem from="1669452478137" duration="3659000" />
-      <workItem from="1669495026660" duration="6493000" />
-      <workItem from="1669900661793" duration="74000" />
-      <workItem from="1671198992104" duration="19000" />
-      <workItem from="1671513838630" duration="1350000" />
-      <workItem from="1672340305661" duration="1000" />
-      <workItem from="1672410583343" duration="2470000" />
-      <workItem from="1672420648633" duration="105000" />
-      <workItem from="1672433821104" duration="1179000" />
-      <workItem from="1672478379437" duration="1967000" />
-      <workItem from="1672488937948" duration="260000" />
-      <workItem from="1672492674573" duration="7851000" />
-      <workItem from="1672504572118" duration="1533000" />
-      <workItem from="1672516436857" duration="5274000" />
-      <workItem from="1672557803417" duration="1279000" />
-      <workItem from="1672562406172" duration="602000" />
-      <workItem from="1672565868641" duration="1278000" />
-      <workItem from="1672573504441" duration="3707000" />
-      <workItem from="1672581171598" duration="2374000" />
-      <workItem from="1672583633627" duration="14309000" />
-      <workItem from="1672634181703" duration="915000" />
-      <workItem from="1672934504681" duration="7135000" />
-      <workItem from="1672945008724" duration="958000" />
-      <workItem from="1672953697559" duration="3675000" />
-      <workItem from="1672993570004" duration="1271000" />
-      <workItem from="1673003396818" duration="472000" />
-      <workItem from="1673006229257" duration="541000" />
-      <workItem from="1673012293226" duration="451000" />
-      <workItem from="1673012777003" duration="4796000" />
-      <workItem from="1673022440093" duration="5492000" />
-      <workItem from="1673030403982" duration="2827000" />
-      <workItem from="1673038776571" duration="5031000" />
-      <workItem from="1673081837457" duration="5237000" />
-      <workItem from="1673091589134" duration="4238000" />
-      <workItem from="1673099273202" duration="342000" />
-      <workItem from="1673099733149" duration="172000" />
-      <workItem from="1673103086352" duration="2849000" />
-      <workItem from="1673112694475" duration="319000" />
-      <workItem from="1673115379413" duration="796000" />
-      <workItem from="1673122422173" duration="597000" />
-      <workItem from="1673127026043" duration="10000" />
-      <workItem from="1673151944992" duration="2300000" />
-      <workItem from="1673539672855" duration="826000" />
-      <workItem from="1673546499843" duration="480000" />
-      <workItem from="1673595363365" duration="1000" />
-      <workItem from="1673604004059" duration="874000" />
-      <workItem from="1673607161376" duration="832000" />
-      <workItem from="1673611170891" duration="17276000" />
-      <workItem from="1673652815915" duration="5528000" />
-      <workItem from="1673687682359" duration="2757000" />
-      <workItem from="1673694524602" duration="2638000" />
-      <workItem from="1673700066510" duration="2000000" />
-      <workItem from="1673708168931" duration="3323000" />
-      <workItem from="1673714604704" duration="303000" />
-      <workItem from="1673718345543" duration="11623000" />
-      <workItem from="1673756577473" duration="3011000" />
-      <workItem from="1674131380616" duration="7454000" />
-      <workItem from="1674140508776" duration="542000" />
-      <workItem from="1674146365129" duration="1678000" />
-      <workItem from="1674150563103" duration="425000" />
-      <workItem from="1674153629234" duration="443000" />
-      <workItem from="1674156756325" duration="2297000" />
-      <workItem from="1674163100646" duration="4575000" />
-      <workItem from="1674202337617" duration="631000" />
-      <workItem from="1674203063912" duration="7057000" />
-      <workItem from="1674225565137" duration="6507000" />
-      <workItem from="1674248502747" duration="2188000" />
-      <workItem from="1674254251863" duration="7934000" />
-      <workItem from="1674292384998" duration="2393000" />
-      <workItem from="1674298319984" duration="517000" />
-      <workItem from="1674302032753" duration="3316000" />
-      <workItem from="1674308048460" duration="1363000" />
-      <workItem from="1674314869030" duration="3565000" />
-      <workItem from="1674326237607" duration="431000" />
-      <workItem from="1674331110259" duration="4671000" />
-      <workItem from="1674339566379" duration="3427000" />
-      <workItem from="1675337305292" duration="651000" />
-      <workItem from="1675338015203" duration="3158000" />
-      <workItem from="1675345063595" duration="4713000" />
-      <workItem from="1675352197934" duration="7842000" />
-      <workItem from="1675363972805" duration="6333000" />
-      <workItem from="1675377325800" duration="1268000" />
-      <workItem from="1675423983515" duration="196000" />
-      <workItem from="1675426184965" duration="650000" />
-      <workItem from="1675433352700" duration="2865000" />
+      <updated>1675442714032</updated>
+      <workItem from="1675442715346" duration="414000" />
+      <workItem from="1675455373693" duration="1272000" />
+      <workItem from="1675458280096" duration="1179000" />
+      <workItem from="1675462433295" duration="321000" />
+      <workItem from="1675466657291" duration="4302000" />
+      <workItem from="1675473067704" duration="405000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="UnknownFeatures">
-    <option featureType="dependencySupport" implementationName="java:com.google.protobuf:protobuf-java" />
-    <option featureType="dependencySupport" implementationName="java:com.google.cloud:google-cloud-storage" />
-    <option featureType="dependencySupport" implementationName="java:io.grpc:grpc-api" />
-    <option featureType="dependencySupport" implementationName="java:software.amazon.awssdk:sdk-core" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-jvm/5.0.0-alpha.10/977c9669c89dfc58db842014411d82609f0db05d/okhttp-jvm-5.0.0-alpha.10-sources.jar!/jvmMain/okhttp3/internal/cache/DiskLruCache.kt</url>
-          <line>698</line>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-jvm/5.0.0-alpha.10/977c9669c89dfc58db842014411d82609f0db05d/okhttp-jvm-5.0.0-alpha.10-sources.jar!/jvmMain/okhttp3/internal/cache/DiskLruCache.kt</url>
-          <line>582</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/2d2338937cea04ac5321bc89f1ffdc93345df448/okhttp-4.9.3-sources.jar!/okhttp3/internal/cache/DiskLruCache.kt</url>
-          <line>568</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/2d2338937cea04ac5321bc89f1ffdc93345df448/okhttp-4.9.3-sources.jar!/okhttp3/internal/cache/DiskLruCache.kt</url>
-          <line>569</line>
-          <option name="timeStamp" value="22" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/4.9.3/2d2338937cea04ac5321bc89f1ffdc93345df448/okhttp-4.9.3-sources.jar!/okhttp3/internal/cache/DiskLruCache.kt</url>
-          <line>535</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/utils/HttpTest.kt</url>
-          <line>104</line>
-          <option name="timeStamp" value="52" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
-          <line>27</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/AuthenticationContext.kt</url>
-          <line>104</line>
-          <option name="timeStamp" value="61" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
-          <line>46</line>
-          <option name="timeStamp" value="62" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
-          <line>48</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
-          <line>47</line>
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-auth-jvm/2.2.1/bf8cb91334ecc0f82a39db56b270b80914201b0c/ktor-server-auth-jvm-2.2.1-sources.jar!/jvmAndNixMain/io/ktor/server/auth/FormAuth.kt</url>
-          <line>60</line>
-          <option name="timeStamp" value="67" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt</url>
-          <line>102</line>
-          <option name="timeStamp" value="148" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt</url>
-          <line>99</line>
-          <option name="timeStamp" value="149" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/model/Mappable.ts</url>
-          <line>204</line>
-          <option name="timeStamp" value="49" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts</url>
-          <line>245</line>
-          <option name="timeStamp" value="137" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-    <watches-manager>
-      <configuration name="JavaScriptTestRunnerJest">
-        <watch expression="current()" />
-        <watch expression="rawReport.substring(cursor - 15, cursor + 150)" language="TypeScript" />
-        <watch expression="rawReport.substring(cursor, cursor + 100)" language="TypeScript" />
-        <watch expression="mappables.toArray()" language="TypeScript" />
-      </configuration>
-      <configuration name="GradleRunConfiguration">
-        <watch expression="file.exists()" />
-        <watch expression="cache.get(id)" />
-      </configuration>
-      <configuration name="JavascriptDebugType">
-        <watch expression="rawReport.substring(cursor, cursor + 100)" language="TypeScript" />
-      </configuration>
-    </watches-manager>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>

@@ -63,6 +63,9 @@ repositories {
     }
 
 }
+//TODO: convert to vite (see how I do it with LogViewer)
+//TODO: use complete reloading like I do with logviewer
+//TODO: update stuff to use version catalogs
 
 val linuxOnly = configurations.create("linux")
 val windowsOnly = configurations.create("windows")
@@ -133,6 +136,8 @@ tasks {
 //        workingDir("../client")
 //        commandLine("npm", "run", "build")
     }
+
+
 
     val resourcesDir = sourceSets.main.get().output.resourcesDir!!
 
