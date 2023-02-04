@@ -17,3 +17,4 @@ server/FirestoreMigrationRelease/*
 server/FirestoreMigrationReleaseFinal/*
 server/S3Export/*
 server/http_cache/*
+dist/
