@@ -14,14 +14,17 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.cachingheaders.*
 import io.ktor.server.plugins.httpsredirect.*
 
-object App
-
-
-fun main() {
-    Brotli4jLoader.ensureAvailability()
-    copyStaticResourcesForServing()
-    embeddedServer(Netty, environment = createAppEnvironment()).start(wait = true)
+object AppKt {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        Brotli4jLoader.ensureAvailability()
+        copyStaticResourcesForServing()
+        embeddedServer(Netty, environment = createAppEnvironment()).start(wait = true)
+    }
 }
+
+
+
 
 
 data class UserSession(val name: String, val count: Int) : Principal

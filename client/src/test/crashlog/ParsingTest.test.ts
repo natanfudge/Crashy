@@ -10,6 +10,7 @@ import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
 import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../../crash/model/RichCrashReport";
 import {parseCrashReport, parseCrashReportImpl} from "../../crash/parser/CrashReportParser";
 import {NecFabricCrash} from "../testlogs/NecFabricCrash";
+import {expect, test} from 'vitest'
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -248,7 +249,7 @@ test("VerifyError crash is parsed correctly", () => {
     const report = parseCrashReport(TestVerifyErrorCrash);
     expect(report.sections.length).toEqual(4)
     expect(report.stacktrace.trace.length).toEqual(11)
-    expect(Object.values(report.stacktrace.details?.details!).length).toEqual(5)
+    expect(Object.values(report.stacktrace.details!.details).length).toEqual(5)
     expect(report.stacktrace.details?.details!["Current Frame"].length).toEqual(4)
     expect(report.stacktrace.details?.details!["Location"]).toEqual(["net/minecraft/class_5944.<init>(Lnet/minecraft/class_5912;Ljava/lang/String;Lnet/minecraft/class_293;)V @7: invokespecial"])
 

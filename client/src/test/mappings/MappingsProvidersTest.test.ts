@@ -9,6 +9,8 @@ import {DescriptoredMethod, JavaClass, SimpleMethod} from "../../crash/model/Map
 import {MappingAssertions, testMappingsProvider} from "./MappingsProviderTester";
 import "../../fudge-commons/extensions/ExtensionsImpl"
 import {getMcpBuilds} from "../../mappings/providers/McpMappingsProvider";
+import {expect, test} from 'vitest'
+
 //remove this if it ever breaks (superseded by new tests)
 test("Yarn mappings can be retrieved via new method", async () => {
     const versions = await getYarnBuilds("1.18.1");

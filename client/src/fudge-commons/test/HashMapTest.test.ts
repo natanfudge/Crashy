@@ -1,4 +1,5 @@
 import {HashMap} from "../collections/hashmap/HashMap";
+import {expect, test} from 'vitest'
 
 test("HashMap works with strings", () => {
     const stringMap = new HashMap<string, string>(100);

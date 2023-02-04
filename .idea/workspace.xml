@@ -5,14 +5,187 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82c19fcc-b20d-4c6b-802c-c25f788e47f4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/compression/CompressTask.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/Crashy.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Analyze_Client_Bundle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Client_Build_Production.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Client_Development.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Client_Development.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Client_Production.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Client_Profiling.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Workplan.md" beforeDir="false" afterPath="$PROJECT_DIR$/Workplan.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features.md" beforeDir="false" afterPath="$PROJECT_DIR$/features.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Constants.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Crashy.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/CrashReport.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/MappingStrategy.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/BiMap.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/DayDate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/HelperClasses.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/LinkedList.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/PromiseMemoryCache.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/Queue.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/EqualsImplementation.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashSet.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/Hashing.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/DropdownSelection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/ErrorBoundary.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/InputUtils.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/LazyColumn.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/PromiseBuilder.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/Selection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/VisibleSelection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/extensions/Extensions.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/extensions/ExtensionsImpl.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Browser.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Gui.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Http.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Javascript.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Typescript.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/Zip.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/Color.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/Flex.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/GuiTypes.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/LinkContent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleAppBar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleDiv.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleDivider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleElementProps.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleIconButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleImage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleTextField.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/Surface.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/Text.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/expansion/Api.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/expansion/Impl.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/expansion/Util.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/impl/FlexImpl.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/impl/SimpleImpl.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/MutableRecordTableData.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/ServerSyncedTable.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/TableData.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/editable/CRUD.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/editable/EditableTable.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/editable/EditableTableImpl.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/editable/StyledComponents.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/editable/Utility.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/table/editable/Validation.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/test/HashMapTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/test/UtilsTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/types/Basic.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/types/Gui.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/types/React.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/Mappings.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsImpl.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsNamespace.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/ForgeRuntimeMappingsProvider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/IntermediaryMappingsProvider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/McVersionNormalizer.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/ProviderUtils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SemanticVersionImpl.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/TinyMappings.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/YarnMappingsProvider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingDetector.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/clock_white.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/fabric_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/forge_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/java-icon.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/linux_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/macos_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/minecraft_cube.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/questionmark_icon_white.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/media/windows_logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/react-app-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/reportWebVitals.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/setupTests.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProviderTester.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/1.10.2Crash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/1.12.2Crash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/BadMappingsCrash.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/BarebonesFabricCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/BrokenSectionCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/BrokenTimeCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/FirstMigratedLog.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/LastMinuteFailingLog.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/NecFabricCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/RenderingOverlayProblematicCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/SeeminglyInnocentCrashTest.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/TestBadDate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/TestBuggyParseCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/TestCrashReel.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/TestCrashes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/TestEmptySectionCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/TestNullCausedByMessageCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/TestVerifyErrorCrash.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/testdata.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/Colors.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/DeleteCrash.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/NavigationDrawer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/invalid/CrashErroredScreen.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/invalid/NoSuchCrashScreen.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashReportSectionUi.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/JvmDetailsSection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/SectionNavigation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ValidCrashReportUi.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelection.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsState.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/dev/ServerLogs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/utils/Crashy.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Cookies.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrlImpl.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Preferences.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Section.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/tsconfig.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/libs.versions.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradlew" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/App.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/versions.properties" beforeDir="false" afterPath="$PROJECT_DIR$/server/versions.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +209,23 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Crashy" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Crashy" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Crashy" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="crashy" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Crashy" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="crashy setup" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -77,27 +267,111 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1675458413721&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/LogViewer&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "17",
+    "ktor.last.update.timestamp": "1675548055507",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Attach to Node.js/Chrome.Attach To Server">
+}]]></component>
+  <component name="RunManager" selected="Gradle.server [runWindowsServerJar]">
+    <configuration name="server [compressClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="compressClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="server [runWindowsServerJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runWindowsServerJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="server [syncClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="syncClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="server [windowsServerJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="windowsServerJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="Crashy.test" />
       <method v="2">
@@ -111,18 +385,40 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
+      <item itemvalue="Gradle.server [compressClient]" />
+      <item itemvalue="Gradle.server [runWindowsServerJar]" />
+      <item itemvalue="Gradle.server [syncClient]" />
+      <item itemvalue="Gradle.server [windowsServerJar]" />
       <item itemvalue="Jest.All JS Tests" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
-      <item itemvalue="npm.Analyze Client Bundle" />
       <item itemvalue="npm.Client Development" />
-      <item itemvalue="npm.Client Production" />
-      <item itemvalue="npm.Client Profiling" />
+      <item itemvalue="npm.Client Build Production" />
+      <item itemvalue="npm.build" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.server [runWindowsServerJar]" />
+        <item itemvalue="Gradle.server [windowsServerJar]" />
+        <item itemvalue="Gradle.server [syncClient]" />
+        <item itemvalue="Gradle.server [compressClient]" />
+        <item itemvalue="npm.build" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -137,7 +433,11 @@
       <workItem from="1675458280096" duration="1179000" />
       <workItem from="1675462433295" duration="321000" />
       <workItem from="1675466657291" duration="4302000" />
-      <workItem from="1675473067704" duration="405000" />
+      <workItem from="1675473067704" duration="523000" />
+      <workItem from="1675506164272" duration="281000" />
+      <workItem from="1675509826621" duration="5365000" />
+      <workItem from="1675530831560" duration="2467000" />
+      <workItem from="1675541885226" duration="3410000" />
     </task>
     <servers />
   </component>

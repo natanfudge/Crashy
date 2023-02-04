@@ -7,7 +7,6 @@ import io.github.crashy.crashlogs.api.StringResponse
 import io.github.crashy.utils.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
-import org.bson.BsonBinary
 import java.nio.file.Path
 import java.time.Instant
 import java.util.*
@@ -88,7 +87,6 @@ value class CompressedLog private constructor(val bytes: ByteArray) {
 
         fun compress(bytes: ByteArray) = CompressedLog(bytes.compressBrotli())
 
-        fun fromBson(bsonBinary: BsonBinary) = CompressedLog(bsonBinary.data)
     }
 
     fun writeToFile(file: Path) {

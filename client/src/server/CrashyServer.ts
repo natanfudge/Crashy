@@ -2,6 +2,7 @@
 
 
 import {httpGet, httpPost} from "../fudge-commons/methods/Http";
+import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
 
 export namespace HttpStatusCode {
     export const OK = 200;

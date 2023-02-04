@@ -9,6 +9,7 @@ import {RenderingOverlayProblematicCrash} from "../testlogs/RenderingOverlayProb
 import {SeeminglyInnocentCrashTest} from "../testlogs/SeeminglyInnocentCrashTest";
 import {firstMigratedLog} from "../testlogs/FirstMigratedLog";
 import {LastMinuteFailingLog} from "../testlogs/LastMinuteFailingLog";
+import {expect, test} from 'vitest'
 
 test("Windows newlines can be handled", () => {
     const parsed = parseCrashReport(testFabricCrashReportUsingWindowsLines)

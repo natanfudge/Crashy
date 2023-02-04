@@ -1,3 +1,5 @@
+import com.aayushatharva.brotli4j.Brotli4jLoader
+import com.aayushatharva.brotli4j.encoder.Encoder
 import com.github.gradle.node.npm.task.NpmTask
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.sshtools.client.SessionChannelNG
@@ -6,24 +8,20 @@ import com.sshtools.client.scp.ScpClient
 import com.sshtools.client.tasks.AbstractCommandTask
 import com.sshtools.client.tasks.FileTransferProgress
 import java.nio.charset.Charset
+import java.nio.file.Files
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
 buildscript {
-//    extra.apply {
-//        set("objectBoxVersion", "3.5.0")
-//    }
-//    val objectboxVersion by ext("3.5.0")
-
     repositories {
-//        mavenCentral()
         maven(
             url = ("https://oss.sonatype.org/content/repositories/snapshots")
         )
     }
     dependencies {
-        classpath("com.sshtools:maverick-synergy-client:3.0.9")
-//        classpath("io.objectbox:objectbox-gradle-plugin:3.5.0")
+        classpath(libs.ssh)
+        classpath(libs.brotli)
+        classpath("com.aayushatharva.brotli4j:native-windows-x86_64:${libs.versions.brotli.get()}")
     }
 }
 plugins {
@@ -35,18 +33,15 @@ plugins {
     alias(libs.plugins.gradle.node)
 
 }
-//apply(plugin = "io.objectbox") // Apply last.
 val mainClassName = "io.github.crashy.AppKt"
 
 application {
     mainClass.set(mainClassName)
 }
 group = "io.github.crashy"
-version = "0.0.2"
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
+version = "1.0.0"
+kotlin {
+    jvmToolchain(17)
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
@@ -63,10 +58,12 @@ repositories {
     }
 
 }
-//TODO: convert to vite (see how I do it with LogViewer)
+//TODO:  Could not find or load main class io.github.crashy.AppKt... Make a new app and migrate things until we find the cause... This is stupid...
+
+
 //TODO: use complete reloading like I do with logviewer
 //TODO: update stuff to use version catalogs
-
+//TODO: see if we need @mui/lab
 val linuxOnly = configurations.create("linux")
 val windowsOnly = configurations.create("windows")
 val brotliVersion = libs.versions.brotli.get()
@@ -75,27 +72,8 @@ val brotliWindowsNatives = "com.aayushatharva.brotli4j:native-windows-x86_64:$br
 dependencies {
     implementation(libs.bundles.main)
     implementation(libs.bundles.test)
-    implementation("io.ktor:ktor-server-http-redirect:${libs.versions.ktor.get()}")
-    implementation("org.fusesource.jansi:jansi:2.4.0")
-    implementation("io.ktor:ktor-server-auth:${libs.versions.ktor.get()}")
-    implementation("io.ktor:ktor-server-html-builder:${libs.versions.ktor.get()}")
-    implementation("software.amazon.awssdk:bom:2.19.17")
-    implementation("software.amazon.awssdk:s3:2.19.13")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-cbor:1.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.4.1")
-    implementation("com.github.jershell:kbson:0.5.0")
-    implementation("org.mongodb:bson:4.8.2")
-
-//    implementation(platform("org.dizitart:nitrite-bom:4.0.0-SNAPSHOT"))
-//    implementation ("org.dizitart:potassium-nitrite")
-//    implementation ("org.dizitart:nitrite")
-//    implementation ("org.dizitart:nitrite-mvstore-adapter")
-
-    testImplementation("com.google.firebase:firebase-admin:9.1.1")
-    implementation("io.kweb:kweb-core:1.3.5")
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)
-//    implementation("net.fabricmc:mapping-io:0.3.0")
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
 }
@@ -108,6 +86,8 @@ node {
 
 
 tasks {
+    val clientBuildDir = clientDir.resolve("dist")
+    val clientCompressedDir = Files.createDirectories(clientBuildDir.resolve("compressed").toPath())
 
     withType<Test> {
         useJUnit()
@@ -120,36 +100,62 @@ tasks {
      *
      * Requirement: NPM client project present in ../client
      */
-    val buildClient by register<NpmTask>("buildClient") {
+    val buildClient by registering(NpmTask::class) {
         group = "crashy setup"
-
-//        dependsOn(npmInstall)
 
         inputs.dir("../client/src")
         inputs.dir("../client/public")
-        inputs.file("../client/package.json")
-        inputs.file("../client/tsconfig.json")
+        inputs.files(
+            "../client/package.json", "../client/tsconfig.json",
+            "../client/vite.config.ts", "../client/tsconfig.node.json"
+        )
 
-        outputs.dir("../client/build")
+        outputs.dir(clientBuildDir)
 
         args.set(listOf("run", "build"))
-//        workingDir("../client")
-//        commandLine("npm", "run", "build")
     }
 
 
-
-    val resourcesDir = sourceSets.main.get().output.resourcesDir!!
-
-
-    val syncClient = register<Sync>("syncClientResources") {
-        group = "crashy setup"
+    val compressClient by registering {
         dependsOn(buildClient)
-        from("../client/build")
+        group = "crashy setup"
+        inputs.dir(clientBuildDir)
+        outputs.dir(clientCompressedDir)
+
+        doFirst {
+            val source = clientBuildDir.toPath()
+
+            // Delete everything so we won't have old files
+            clientCompressedDir.toFile().deleteRecursively()
+
+            Files.walk(source).forEach { path ->
+                val fileName = path.fileName.toString()
+
+                if (!Files.isDirectory(path) && !path.startsWith(clientCompressedDir) && !fileName.endsWith(".map")) {
+                    val relativePath = source.relativize(path)
+                    val compress = fileName.endsWith(".css") || fileName.endsWith(".js")
+                    val destPath = clientCompressedDir.resolve("$relativePath${if (compress) ".br" else ""}")
+                    val bytes = Files.readAllBytes(path)
+                    val compressed = if (compress) Utils.compressFile(bytes) else bytes
+
+                    Files.createDirectories(destPath.parent)
+                    Files.write(destPath, compressed)
+                }
+            }
+        }
+    }
+
+    val syncClient by registering(Sync::class) {
+        group = "crashy setup"
+        dependsOn(compressClient)
+        from(clientCompressedDir)
         into(sourceSets.main.get().output.resourcesDir!!.resolve("static"))
     }
 
-    processResources.get().dependsOn(syncClient)
+    withType<Jar> {
+        dependsOn(syncClient)
+    }
+
 
     withType<ShadowJar> {
         inputs.property("main", mainClassName)
@@ -208,7 +214,7 @@ tasks {
          * - Environment variable **EC2_KEYPAIR** set to the fully qualified path to a keypair file that can access the EC2.
          * - Using Shadow.
          */
-        val uploadToEc2 = register("uploadToEc2") {
+        register("uploadToEc2") {
             val shadowJarFiles = shadowJar.get().outputs.files
             val shadowJarFile = shadowJarFiles.singleFile
 
@@ -278,6 +284,13 @@ object Utils {
             SSHSession(it).apply(session)
         }
     }
+
+    fun compressFile(content: ByteArray): ByteArray {
+        if (!Brotli4jLoader.isAvailable()) {
+            Brotli4jLoader.ensureAvailability()
+        }
+        return Encoder.compress(content)
+    }
 }
 
 fun String.trimNewlines() = replace("\n", "").replace("\r", "")
@@ -296,12 +309,10 @@ fun runCommand(command: String): String {
 class SSHSession(private val ssh: SshClient) {
     fun scp(from: java.nio.file.Path, to: String) {
         println("Uploading ${from.toAbsolutePath()} to $to")
-//        ProgressBarBuilder().setTaskName("Upload").setUpdateIntervalMillis(200).build().use { progressBar ->
         ScpClient(ssh).put(from.toAbsolutePath().toString(), to, true, object : FileTransferProgress {
             var bytesTotal = 0L
             override fun started(bytesTotal: Long, remoteFile: String?) {
                 this.bytesTotal = bytesTotal
-//                    progressBar.maxHint(bytesTotal)
             }
 
             override fun isCancelled(): Boolean {
@@ -313,13 +324,11 @@ class SSHSession(private val ssh: SshClient) {
                     "Uploaded $bytesSoFar/$bytesTotal bytes " +
                             if (bytesTotal == 0L) "" else "(${bytesSoFar.toDouble() / bytesTotal * 100}%)"
                 )
-//                    progressBar.stepTo(bytesSoFar)
             }
 
             override fun completed() {
             }
         })
-//        }
         println("Upload successful")
     }
 

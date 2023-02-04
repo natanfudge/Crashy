@@ -4,6 +4,7 @@ import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
 import {LoaderType, OperatingSystemType, RichCrashReport} from "../../crash/model/RichCrashReport";
 import {parseCrashReport} from "../../crash/parser/CrashReportParser";
 import "../../fudge-commons/extensions/ExtensionsImpl"
+import {expect, test} from 'vitest'
 
 export function testFabricCrashReportEnrich(enriched: RichCrashReport) {
     if (enriched.mods === undefined) throw new Error("Unexpected");

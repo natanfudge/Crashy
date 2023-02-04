@@ -42,7 +42,7 @@ private fun getKeystore(password: CharArray): KeyStore? {
     if (realServerKeystoreFile.exists()) {
         return KeyStore.getInstance(realServerKeystoreFile.toFile(), password)
     } else {
-        val keystoreFile = App::class.java.getResourceAsStream("/secrets/keystore.jks") ?: return null
+        val keystoreFile = AppKt::class.java.getResourceAsStream("/secrets/keystore.jks") ?: return null
         val keystore = KeyStore.getInstance(KeyStore.getDefaultType())
         keystore.load(keystoreFile, password)
         return keystore

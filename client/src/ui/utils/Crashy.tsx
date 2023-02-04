@@ -9,7 +9,7 @@ import {SimpleIconButton} from "../../fudge-commons/simple/SimpleIconButton";
 import {Surface} from "../../fudge-commons/simple/Surface";
 
 export function CrashyLogo({size, margin}: { size: number, margin?: Margin }) {
-    return <SimpleImage alt={"Logo"} src={process.env.PUBLIC_URL + '/favicon.svg'} width={size} height={size}
+    return <SimpleImage alt={"Logo"} src={'/favicon.svg'} width={size} height={size}
                         margin={margin}/>
 }
 

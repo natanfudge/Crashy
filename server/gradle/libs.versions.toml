@@ -5,12 +5,13 @@
 main = [
     "ktor-core", "ktor-caching-headers", "ktor-compression", "ktor-default-headers", "ktor-call-logging",
     "ktor-server-serialization", "kotlinx-serialization-json", "ktor-server-content-negotiation",
-    "ktor-netty", "logback", "reflections",
-#    "s3",
+    "ktor-netty", "logback", "reflections", "ktor-http-redirect","jansi","ktor-auth","awssdk-s3","kotlinx-serialization-protobuf",
     "ktor-server-resources", "dropwizard-jmx", "ktor-server-metrics",
-    "caffeine", "brotli"
+    "caffeine", "brotli",
+#    TODO: remove when we use LogViewer
+    "ktor-html"
 ]
-test = ["ktor-tests", "kotlin-test-junit", "strikt", "okhttp"]
+test = ["ktor-tests", "kotlin-test-junit", "strikt", "okhttp", "firebase-admin"]
 
 [plugins]
 
@@ -22,8 +23,8 @@ gradle-node = {id = "com.github.node-gradle.node", version.ref = "gradle-node"}
 
 [versions]
 
-ktor = "2.2.2"
-kotlin = "1.8.0"
+ktor = "2.2.3"
+kotlin = "1.8.10"
 logback = "1.4.5"
 reflections = "0.10.2"
 shadow = "7.1.2"
@@ -31,14 +32,25 @@ test-logger = "3.2.0"
 gradle-node = "3.5.1"
 aws = "0.19.4-beta"
 strikt = "0.34.1"
-kotlin-serialization = "1.4.1"
+kotlin-serialization = "1.5.0-RC"
 okhttp = "5.0.0-alpha.11"
 dropwizard = "4.2.15"
 caffeine = "3.1.2"
 brotli = "1.9.0"
+jansi = "2.4.0"
+s3 = "2.19.31"
+firebase-admin = "9.1.1"
+ssh = "3.0.10"
 
 [libraries]
 
+ktor-http-redirect = {group = "io.ktor", name = "ktor-server-http-redirect", version.ref = "ktor"}
+#TODO: remove when we use LogViewer
+ktor-html  = {group = "io.ktor", name = "ktor-server-html-builder", version.ref = "ktor"}
+jansi = {group = "org.fusesource.jansi", name = "jansi", version.ref = "jansi"}
+ktor-auth = {group = "io.ktor", name = "ktor-server-auth", version.ref = "ktor"}
+awssdk-s3 = {group = "software.amazon.awssdk", name = "s3", version.ref = "s3"}
+firebase-admin = {group = "com.google.firebase", name = "firebase-admin",version.ref = "firebase-admin"}
 ktor-core = { group = "io.ktor", name = "ktor-server-core-jvm", version.ref = "ktor" }
 ktor-caching-headers = { group = "io.ktor", name = "ktor-server-caching-headers-jvm", version.ref = "ktor" }
 ktor-compression = { group = "io.ktor", name = "ktor-server-compression-jvm", version.ref = "ktor" }
@@ -57,6 +69,8 @@ ktor-server-content-negotiation = {group = "io.ktor", name = "ktor-server-conten
 ktor-server-metrics = {group = "io.ktor", name = "ktor-server-metrics", version.ref = "ktor"}
 dropwizard-jmx = {group = "io.dropwizard.metrics", name = "metrics-jmx", version.ref = "dropwizard"}
 kotlinx-serialization-json = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref= "kotlin-serialization"}
+kotlinx-serialization-protobuf = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-protobuf", version.ref = "kotlin-serialization"}
 okhttp = {group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp"}
 caffeine = {group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeine"}
 brotli = {group = "com.aayushatharva.brotli4j", name = "brotli4j", version.ref = "brotli"}
+ssh = {group = "com.sshtools",name = "maverick-synergy-client", version.ref = "ssh"}

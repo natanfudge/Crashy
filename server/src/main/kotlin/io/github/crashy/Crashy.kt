@@ -6,13 +6,12 @@ import kotlinx.serialization.protobuf.ProtoBuf
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.file.Paths
-import java.time.Instant
 import kotlin.io.path.toPath
 
 object Crashy {
     val json = Json
     val protobuf = ProtoBuf {  }
-    val logger: Logger = LoggerFactory.getLogger(App::class.java)
+    val logger: Logger = LoggerFactory.getLogger(AppKt::class.java)
 
     val build = readBuild()
 

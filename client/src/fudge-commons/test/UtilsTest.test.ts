@@ -1,4 +1,5 @@
 import {flipRecord} from "../methods/Javascript";
+import {expect, test} from 'vitest'
 
 test("Flip record works correctly", () => {
     const oldRecord = {
