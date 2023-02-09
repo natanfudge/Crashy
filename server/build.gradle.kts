@@ -71,7 +71,7 @@ val brotliVersion = libs.versions.brotli.get()
 val brotliWindowsNatives = "com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion"
 dependencies {
     implementation(libs.bundles.main)
-    implementation(libs.bundles.test)
+    testImplementation(libs.bundles.test)
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)
     // Use the linux natives when packaging because we run the server on a linux EC2 instance

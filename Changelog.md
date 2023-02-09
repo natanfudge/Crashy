@@ -1,6 +1,6 @@
-# Crashy 2.0
+# Crashy 1.0
 
-Crashy 2.0 is a complete rewrite of the server side of Crashy. Here are the changes.
+Crashy 1.0 is a complete rewrite of the server side of Crashy. Here are the changes.
 
 ### Added
 

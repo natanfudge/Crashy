@@ -7,11 +7,11 @@ main = [
     "ktor-server-serialization", "kotlinx-serialization-json", "ktor-server-content-negotiation",
     "ktor-netty", "logback", "reflections", "ktor-http-redirect","jansi","ktor-auth","awssdk-s3","kotlinx-serialization-protobuf",
     "ktor-server-resources", "dropwizard-jmx", "ktor-server-metrics",
-    "caffeine", "brotli",
+    "caffeine", "brotli","okhttp",
 #    TODO: remove when we use LogViewer
     "ktor-html"
 ]
-test = ["ktor-tests", "kotlin-test-junit", "strikt", "okhttp", "firebase-admin"]
+test = ["ktor-tests", "kotlin-test-junit", "strikt",  "firebase-admin"]
 
 [plugins]
 
