@@ -97,7 +97,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         return htmlResponse(
             htmlTemplate.replaceSequentially(
                 listOf(
-                    "{prefetch}" to if (code == HttpStatusCode.OK) "rel=\"prefetch\" href=\"$id/raw.txt\"" else "",
+                    "{PREFETCH}" to if (code == HttpStatusCode.OK) "rel=\"prefetch\" href=\"$id/raw.txt\"" else "",
                     "{DESCRIPTION}" to description,
                     "{TITLE}" to title
                 )
@@ -107,7 +107,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     }
 
     private val landingPage = htmlTemplate.replaceSequentially(
-        listOf("{prefetch}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
+        listOf("{PREFETCH}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
     )
 
     fun getLandingPage(): Response {
