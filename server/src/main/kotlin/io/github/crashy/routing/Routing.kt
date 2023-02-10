@@ -36,7 +36,7 @@ fun Application.configureRouting() {
             appDataDir = crashyDir,
             clock = RealClock,
             //TODO: If we have a separate machine for beta, it should be !Crashy.isRelease()
-            deleteFromS3OnFetch = !Crashy.isLocal()
+            deleteFromS3OnFetch = !Crashy.isBeta()
         )
     }
     val mappingsProvider = MappingsProvider(crashyDir.resolve("mappings"))

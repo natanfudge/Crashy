@@ -156,13 +156,15 @@ tasks {
         dependsOn(syncClient)
     }
 
+    named("compileTestKotlin") {
+        mustRunAfter(syncClient)
+    }
+
 
     withType<ShadowJar> {
         inputs.property("main", mainClassName)
         manifest.attributes(mapOf("Main-Class" to mainClassName))
     }
-
-    //TODO: update app to work with new beta/release
 
     fun ShadowJar.configureLinuxJarTask() {
         from(sourceSets.main.get().output)
@@ -246,9 +248,10 @@ tasks {
         }
 
         register("stopBetaProcess") {
+            group = "crashy"
             val domain = project.property("ec2_domain")
             doFirst {
-                sshToCrashyEc2(domain) {
+                Utils.sshToCrashyEc2(domain) {
                     execute("sudo ./crashy_utils/scripts/kill_java.sh beta")
                 }
             }
@@ -307,7 +310,7 @@ fun Task.configureEc2Upload(crashyJarTask: Task, release: Boolean) {
         // delete everything
         // scp new file
         // start process
-        sshToCrashyEc2(domain) {
+        Utils.sshToCrashyEc2(domain) {
             scp(from = serverDir, to = fullJarsDir)
             execute(remoteCleanupCommand)
             execute(javaCommand)
@@ -318,14 +321,14 @@ fun Task.configureEc2Upload(crashyJarTask: Task, release: Boolean) {
 }
 
 
-fun sshToCrashyEc2(domain: Any?, session: SSHSession.() -> Unit) {
-    val keyPair = System.getenv("EC2_KEYPAIR") ?: error("Environment variable EC2_KEYPAIR is not set!")
-    if (domain == null) error("Project variable ec2_domain is not set!")
-    Utils.ssh(host = domain.toString(), username = "ec2-user", keyPair = File(keyPair), session)
-}
+
 
 object Utils {
-
+    fun sshToCrashyEc2(domain: Any?, session: SSHSession.() -> Unit) {
+        val keyPair = System.getenv("EC2_KEYPAIR") ?: error("Environment variable EC2_KEYPAIR is not set!")
+        if (domain == null) error("Project variable ec2_domain is not set!")
+        Utils.ssh(host = domain.toString(), username = "ec2-user", keyPair = File(keyPair), session)
+    }
 
     fun ssh(host: String, username: String, keyPair: File, session: SSHSession.() -> Unit) {
         println("SSHing to $host...")

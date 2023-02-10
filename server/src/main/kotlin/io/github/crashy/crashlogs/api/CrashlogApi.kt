@@ -107,7 +107,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
     }
 
     private val landingPage = htmlTemplate.replaceSequentially(
-        listOf("{PREFETCH}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to "Crashy")
+        listOf("{PREFETCH}" to "", "{DESCRIPTION}" to "Formatted Minecraft crash reports", "{TITLE}" to if(Crashy.isRelease()) "Crashy" else "Crashy Beta")
     )
 
     fun getLandingPage(): Response {

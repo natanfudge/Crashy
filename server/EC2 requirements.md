@@ -1,6 +1,7 @@
 - Java 17 installed
 - Directory ~/jars/beta
 - Directory ~/jars/release
+- SSL keychain at /etc/cert/crashy_release_keystore.jks with password matching resources/secrets/letsencrypt_keystore_password_release.txt)
 - Script ~/crashy_utils/scripts with the following content:
 ```shell
 #!/bin/bash

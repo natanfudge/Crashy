@@ -20,13 +20,13 @@ object Crashy {
 
     fun isBeta() = build == Beta
 
-    val SSLPort = if(isBeta()) 4433 else 443
+    val SSLPort = if (isBeta()) 4433 else 443
 
     fun isRelease() = build == Release
 
     val domain = when (build) {
         Local -> "localhost:80"
-        Beta -> "crashy.net"
+        Beta -> "crashy.net:4433"
         Release -> "crashy.net"
     }
 
@@ -46,7 +46,7 @@ object Crashy {
     }
 
     val RunDir: Path = AC::class.java.protectionDomain.codeSource.location.toURI().toPath().parent.resolve("serverRun")
-    val HomeDir: Path = Paths.get(System.getProperty("user.home"), ".crashy")
+    val HomeDir: Path = Paths.get(System.getProperty("user.home"), if (Crashy.isBeta()) ".crashy_beta" else ".crashy")
     const val StaticPath = "static"
     val StaticDir: Path = RunDir.resolve(StaticPath)
 

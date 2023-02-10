@@ -5,15 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82c19fcc-b20d-4c6b-802c-c25f788e47f4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server/EC2 requirements.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/beta.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/release.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/EC2 requirements.md" beforeDir="false" afterPath="$PROJECT_DIR$/server/EC2 requirements.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +106,7 @@
     "WebServerToolWindowFactoryState": "false",
     "ignore.virus.scanning.warn.message": "true",
     "jdk.selected.JAVA_MODULE": "17",
-    "ktor.last.update.timestamp": "1675984513634",
+    "ktor.last.update.timestamp": "1676071603477",
     "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/server",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -121,7 +124,7 @@
       <recent name="C:\Users\natan\Desktop\Crashy\server" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.server [uploadToEc2Beta]">
+  <component name="RunManager" selected="Kotlin.Run Server">
     <configuration name="server [runWindowsServerJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -144,7 +147,7 @@
       <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
-    <configuration name="server [syncClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="server [stopBetaProcess]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
@@ -155,7 +158,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="syncClient" />
+            <option value="stopBetaProcess" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -249,10 +252,10 @@
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Gradle.Server Jar" />
       <item itemvalue="Gradle.Upload Server" />
+      <item itemvalue="Gradle.server [stopBetaProcess]" />
       <item itemvalue="Gradle.server [uploadToEc2Beta]" />
       <item itemvalue="Gradle.server [uploadToEc2Release]" />
       <item itemvalue="Gradle.server [runWindowsServerJar]" />
-      <item itemvalue="Gradle.server [syncClient]" />
       <item itemvalue="Gradle.server [windowsServerJar]" />
       <item itemvalue="Jest.All JS Tests" />
       <item itemvalue="JUnit.All Server Tests" />
@@ -262,11 +265,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.server [stopBetaProcess]" />
         <item itemvalue="Gradle.server [uploadToEc2Beta]" />
         <item itemvalue="Gradle.server [uploadToEc2Release]" />
         <item itemvalue="Gradle.server [runWindowsServerJar]" />
         <item itemvalue="Gradle.server [windowsServerJar]" />
-        <item itemvalue="Gradle.server [syncClient]" />
       </list>
     </recent_temporary>
   </component>
@@ -297,7 +300,8 @@
       <workItem from="1676029575034" duration="3188000" />
       <workItem from="1676059525665" duration="340000" />
       <workItem from="1676062411833" duration="3756000" />
-      <workItem from="1676066374048" duration="356000" />
+      <workItem from="1676066374048" duration="366000" />
+      <workItem from="1676070783499" duration="2206000" />
     </task>
     <servers />
   </component>

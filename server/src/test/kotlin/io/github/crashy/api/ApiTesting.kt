@@ -6,7 +6,7 @@ object ApiTesting {
     val TestingBuild = Crashy.Build.Release
     fun domain() = when(TestingBuild){
         Crashy.Build.Local -> "localhost:80"
-        Crashy.Build.Beta -> "beta.crashy.net"
+        Crashy.Build.Beta -> "crashy.net:4433"
         Crashy.Build.Release -> "crashy.net"
     }
 

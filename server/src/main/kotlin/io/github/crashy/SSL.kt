@@ -29,15 +29,15 @@ import kotlin.io.path.exists
 }
 
 private fun getKeystorePassword(): CharArray? {
-    val password = when(Crashy.build){
-        Local -> "/secrets/fake_keystore_password.txt"
-        Beta ->  "/secrets/letsencrypt_keystore_password_beta.txt"
-        Release ->  "/secrets/letsencrypt_keystore_password_release.txt"
-    }
+    val password = if(Crashy.isLocal())"/secrets/fake_keystore_password.txt" else "/secrets/letsencrypt_keystore_password_release.txt"
+//        Local ->
+//        Beta ->  "/secrets/letsencrypt_keystore_password_beta.txt"
+//        Release ->
+//    }
     return getResource(password)?.toCharArray()
 }
 
-private val keyStoreName = if (Crashy.isRelease()) "crashy_release_keystore" else "crashy_keystore"
+private val keyStoreName = /*if (Crashy.isRelease()) "crashy_release_keystore" else "crashy_keystore"*/ "crashy_release_keystore"
 private val realServerKeystoreFile = Paths.get("/etc/cert/$keyStoreName.jks")
 private fun getKeystore(password: CharArray): KeyStore? {
     if (realServerKeystoreFile.exists()) {
