@@ -1,6 +1,7 @@
 package io.github.crashy
 
 import io.github.crashy.Crashy.Build.*
+import io.github.crashy.Crashy.SSLPort
 import io.github.crashy.utils.getResource
 import io.ktor.server.engine.*
 import java.nio.file.Paths
@@ -18,7 +19,7 @@ import kotlin.io.path.exists
                 keyStorePassword = { keystorePassword },
                 privateKeyPassword = { keystorePassword }
             ) {
-                port = 443
+                port = SSLPort
                 host = "0.0.0.0"
             }
         }
@@ -36,7 +37,7 @@ private fun getKeystorePassword(): CharArray? {
     return getResource(password)?.toCharArray()
 }
 
-private val keyStoreName = if (Crashy.build == Release) "crashy_release_keystore" else "crashy_keystore"
+private val keyStoreName = if (Crashy.isRelease()) "crashy_release_keystore" else "crashy_keystore"
 private val realServerKeystoreFile = Paths.get("/etc/cert/$keyStoreName.jks")
 private fun getKeystore(password: CharArray): KeyStore? {
     if (realServerKeystoreFile.exists()) {

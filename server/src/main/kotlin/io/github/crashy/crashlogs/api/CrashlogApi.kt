@@ -48,7 +48,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
 
     }
 
-    private val httpPrefix = if (Crashy.build == Local) "http" else "https"
+    private val httpPrefix = if (Crashy.isLocal()) "http" else "https"
 
     context(LogContext)
     suspend fun getCrash(id: String): Response {

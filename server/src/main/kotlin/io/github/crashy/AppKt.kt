@@ -33,7 +33,7 @@ data class UserSession(val name: String, val count: Int) : Principal
 private fun createAppEnvironment() = applicationEngineEnvironment {
     watchPaths = listOf("classes")
     connector {
-        port = 80
+        port = if(Crashy.isBeta()) 8080 else 80
         host = "0.0.0.0"
     }
     configureSSL()
@@ -41,9 +41,9 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
     module {
         installAuthentication()
 
-        if (Crashy.build != Local) {
+        if (!Crashy.isLocal()) {
             install(HttpsRedirect) {
-                sslPort = 443
+                sslPort = Crashy.SSLPort
                 permanentRedirect = true
             }
         }

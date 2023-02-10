@@ -162,19 +162,37 @@ tasks {
         manifest.attributes(mapOf("Main-Class" to mainClassName))
     }
 
-    // Linux jar for EC2
-    named<ShadowJar>("shadowJar") {
+    //TODO: update app to work with new beta/release
+
+    fun ShadowJar.configureLinuxJarTask() {
+        from(sourceSets.main.get().output)
+        // Exclude linux deps
+        configurations = shadowJar.get().configurations
         configurations += linuxOnly
+
         dependencies {
             // Don't include windows natives because we run on linux
             exclude(dependency(brotliWindowsNatives))
         }
 
-        from("build.txt")
+        group = "crashy setup"
     }
 
+    val releaseJar by registering(ShadowJar::class) {
+        configureLinuxJarTask()
+        archiveClassifier.set("release")
+        from("release.txt")
+    }
+
+    val betaJar by registering(ShadowJar::class) {
+        configureLinuxJarTask()
+        archiveClassifier.set("beta")
+        from("beta.txt")
+    }
+
+
     // Windows jar for testing
-    val windowsServerJar by registering(ShadowJar::class) {
+    val windowsLocalJar by registering(ShadowJar::class) {
         archiveClassifier.set("windows")
         from(sourceSets.main.get().output)
         // Exclude linux deps
@@ -186,15 +204,20 @@ tasks {
 
     afterEvaluate {
 
-        val windowsShadowJarFiles = windowsServerJar.get().outputs.files
+        val windowsShadowJarFiles = windowsLocalJar.get().outputs.files
         val windowsShadowJarFile = windowsShadowJarFiles.singleFile
 
-        register<Exec>("runWindowsServerJar") {
+        register<Exec>("runJarWindows") {
             group = "crashy"
-            dependsOn(windowsServerJar)
+            dependsOn(windowsLocalJar)
 
             workingDir(windowsShadowJarFile.parent)
             commandLine("java", "-jar", windowsShadowJarFile.name)
+        }
+
+
+        fun Task.configureEc2Upload(release: Boolean) {
+            configureEc2Upload(crashyJarTask = if (release) releaseJar.get() else betaJar.get(), release)
         }
 
 
@@ -214,69 +237,96 @@ tasks {
          * - Environment variable **EC2_KEYPAIR** set to the fully qualified path to a keypair file that can access the EC2.
          * - Using Shadow.
          */
-        register("uploadToEc2") {
-            val shadowJarFiles = shadowJar.get().outputs.files
-            val shadowJarFile = shadowJarFiles.singleFile
+        register("uploadToEc2Release") {
+            configureEc2Upload(release = true)
+        }
 
-            group = "crashy"
-            dependsOn(shadowJar)
+        register("uploadToEc2Beta") {
+            configureEc2Upload(release = false)
+        }
 
-            // We put it in a directory with a random id, so it won't clash with the previous one.
-            val randomId = Random.nextLong().absoluteValue.toString()
-            // SCP doesn't support creating parent directories as needed, so we create the desired directory structure in this computer and copy
-            // it wholesale to the ec2 instance.
-            val serverDir = shadowJarFile.toPath().parent.resolve(randomId)
-
-            inputs.files(shadowJarFiles)
-            outputs.dir(serverDir)
-
-            val keyPair = System.getenv("EC2_KEYPAIR")
-            val domain = project.property("ec2_domain")?.toString()
-            val jarName = shadowJarFile.name
-
-
-            val killCommand = "sudo killall java"
-
-            val allJarsDir = "jars"
-            val fullJarsDir = "~/$allJarsDir"
-
-            val relativeJarsDir = "./$allJarsDir"
-            val removeCommand = "sudo find $relativeJarsDir -type f -not -path \"$relativeJarsDir/$randomId/*\" -delete"
-            val cleanDirsCommand = "sudo find $fullJarsDir -empty -type d -delete"
-            val jarDir = "$fullJarsDir/$randomId"
-            val logFile = "$jarDir/output.txt"
-            val javaCommand = "nohup sudo java -jar $jarDir/$jarName >$logFile 2>$logFile <$logFile &"
-
-            // Kill old java process, remove all old files, delete empty directories
-            val remoteCleanupCommand = "$killCommand ; $removeCommand && $cleanDirsCommand"
-
-
+        register("stopBetaProcess") {
+            val domain = project.property("ec2_domain")
             doFirst {
-                if (keyPair == null) error("Environment variable EC2_KEYPAIR is not set!")
-                if (domain == null) error("Project variable ec2_domain is not set!")
-
-                // Create the server jar directory that will be transferred to the server
-                serverDir.toFile().mkdirs()
-                shadowJarFile.copyTo(serverDir.resolve(shadowJarFile.name).toFile(), overwrite = true)
-
-                // SSH into ec2
-                // stop process
-                // delete everything
-                // scp new file
-                // start process
-                Utils.ssh(host = domain, username = "ec2-user", keyPair = File(keyPair)) {
-                    scp(from = serverDir, to = fullJarsDir)
-                    execute(remoteCleanupCommand)
-                    execute(javaCommand)
+                sshToCrashyEc2(domain) {
+                    execute("sudo ./crashy_utils/scripts/kill_java.sh beta")
                 }
             }
-
         }
+
     }
 
 }
 
+
+
+fun Task.configureEc2Upload(crashyJarTask: Task, release: Boolean) {
+    val shadowJarFiles = crashyJarTask.outputs.files
+    val shadowJarFile = shadowJarFiles.singleFile
+
+    group = "crashy"
+    dependsOn(crashyJarTask)
+
+    // We put it in a directory with a random id, so it won't clash with the previous one.
+    val randomId = Random.nextLong().absoluteValue.toString()
+    // SCP doesn't support creating parent directories as needed, so we create the desired directory structure in this computer and copy
+    // it wholesale to the ec2 instance.
+    val serverDir = shadowJarFile.toPath().parent.resolve(randomId)
+
+    inputs.files(shadowJarFiles)
+    outputs.dir(serverDir)
+
+    val domain = project.property("ec2_domain")
+
+    doFirst {
+        val jarName = shadowJarFile.name
+
+
+        val killCommand = "sudo ./crashy_utils/scripts/kill_java.sh $jarName"
+
+        val allJarsDir = "jars/${if (release) "release" else "beta"}"
+        val fullJarsDir = "~/$allJarsDir"
+
+        val relativeJarsDir = "./$allJarsDir"
+        val removeCommand = "sudo find $relativeJarsDir -type f -not -path \"$relativeJarsDir/$randomId/*\" -delete"
+        val cleanDirsCommand = "sudo find $fullJarsDir -empty -type d -delete"
+        val jarDir = "$fullJarsDir/$randomId"
+        val logFile = "$jarDir/output.txt"
+        val javaCommand = "nohup sudo java -jar $jarDir/$jarName >$logFile 2>$logFile <$logFile &"
+
+        // Kill old java process, remove all old files, delete empty directories
+        val remoteCleanupCommand = "$killCommand ; $removeCommand && $cleanDirsCommand"
+
+
+        // Create the server jar directory that will be transferred to the server
+        serverDir.toFile().mkdirs()
+        shadowJarFile.copyTo(serverDir.resolve(shadowJarFile.name).toFile(), overwrite = true)
+
+        // SSH into ec2
+        // stop process
+        // delete everything
+        // scp new file
+        // start process
+        sshToCrashyEc2(domain) {
+            scp(from = serverDir, to = fullJarsDir)
+            execute(remoteCleanupCommand)
+            execute(javaCommand)
+        }
+    }
+
+
+}
+
+
+fun sshToCrashyEc2(domain: Any?, session: SSHSession.() -> Unit) {
+    val keyPair = System.getenv("EC2_KEYPAIR") ?: error("Environment variable EC2_KEYPAIR is not set!")
+    if (domain == null) error("Project variable ec2_domain is not set!")
+    Utils.ssh(host = domain.toString(), username = "ec2-user", keyPair = File(keyPair), session)
+}
+
 object Utils {
+
+
     fun ssh(host: String, username: String, keyPair: File, session: SSHSession.() -> Unit) {
         println("SSHing to $host...")
         SshClient(host, 22, username, keyPair).use {
@@ -291,18 +341,6 @@ object Utils {
         }
         return Encoder.compress(content)
     }
-}
-
-fun String.trimNewlines() = replace("\n", "").replace("\r", "")
-
-fun runCommand(command: String): String {
-    val parts = command.split("\\s".toRegex())
-    val proc = ProcessBuilder(*parts.toTypedArray())
-        .redirectOutput(ProcessBuilder.Redirect.PIPE)
-        .redirectError(ProcessBuilder.Redirect.PIPE)
-        .start()
-    proc.waitFor(60, TimeUnit.MINUTES)
-    return proc.inputStream.bufferedReader().readText()
 }
 
 
