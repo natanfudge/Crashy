@@ -70,7 +70,9 @@
         "@typescript-eslint/strict-boolean-expressions": "error",
         "no-constant-condition": "warn",
         "@typescript-eslint/no-inferrable-types": "warn",
-        "no-empty": "warn"
+        "no-empty": "warn",
+        "no-inner-declarations": "off",
+        "prefer-const": "warn"
       }
     }
   ]

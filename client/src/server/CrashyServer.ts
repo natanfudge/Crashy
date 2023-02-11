@@ -42,7 +42,7 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 
 export namespace CrashyServer {
-    const origin = window.location.origin;
+    const origin = typeof window !== "undefined"? window.location.origin: "http://localhost:80";
     const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
@@ -54,10 +54,11 @@ export namespace CrashyServer {
         if (document.title === "Archived Crash") return GetCrashError.Archived
         const response = await httpGet({url: `${crashyOrigin}/${id}/raw.txt`});
         switch (response.status) {
-            case HttpStatusCode.OK:
+            case HttpStatusCode.OK: {
                 const text = await response.text()
                 if (text === "Archived") return GetCrashError.Archived
                 return text;
+            }
             case HttpStatusCode.NotFound:
                 return GetCrashError.NoSuchCrashId
             default:

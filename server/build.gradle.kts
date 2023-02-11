@@ -31,7 +31,7 @@ plugins {
     alias(libs.plugins.test.logger)
     alias(libs.plugins.shadow)
     alias(libs.plugins.gradle.node)
-
+    id ("com.dorongold.task-tree") version "2.1.1"
 }
 val mainClassName = "io.github.crashy.AppKt"
 
@@ -152,11 +152,11 @@ tasks {
         into(sourceSets.main.get().output.resourcesDir!!.resolve("static"))
     }
 
-    withType<Jar> {
+    withType<ShadowJar> {
         dependsOn(syncClient)
     }
 
-    named("compileTestKotlin") {
+    withType<ProcessResources> {
         mustRunAfter(syncClient)
     }
 

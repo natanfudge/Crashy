@@ -90,7 +90,7 @@ function causationButtonPrefix(index: number, totalAmount: number): string {
             return "Third Exception"
         default:
             // 4th, 5th, etc
-            return `${index}th Exception`
+            return `${index + 1}th Exception`
     }
 }
 

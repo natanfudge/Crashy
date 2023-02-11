@@ -65,7 +65,7 @@ function CrashContextElement(props: { image: string, text: string, color: string
 
 function formatTime(time: Date) {
     const hour = time.getHours();
-    const minutes = time.getMinutes() > 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
+    const minutes = time.getMinutes() >= 10 ? time.getMinutes().toString() : `0${time.getMinutes()}`
     // Javascript Date month is 0-indexed
     return `${twoCharacters(time.getDate())}/${twoCharacters(time.getMonth() + 1)}/${time.getFullYear() - 2000} ${twoCharacters(hour)}:${twoCharactersStr(minutes)}`;
 }

@@ -10,7 +10,7 @@ import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
 export async function getYarnMappings(build: string, filter: MappingsFilter): Promise<Mappings> {
     profiler("Downloading Yarn Mappings");
     const domain = "https://maven.fabricmc.net"
-    const res = await fetch(`${domain}/net/fabricmc/yarn/${build}/yarn-${build}-v2.jar`);
+    const res = await httpGet({url: `${domain}/net/fabricmc/yarn/${build}/yarn-${build}-v2.jar`});
 
     profilerDel("Downloading Yarn Mappings");
 

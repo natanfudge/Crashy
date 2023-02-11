@@ -1,8 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All JS Tests" type="JavaScriptTestRunnerJest">
+  <configuration default="false" name="All JS Tests" type="JavaScriptTestRunnerVitest">
     <node-interpreter value="project" />
-    <node-options value="" />
-    <jest-package value="$PROJECT_DIR$/client/node_modules/react-scripts" />
+    <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
     <working-dir value="$PROJECT_DIR$/client" />
     <envs />
     <scope-kind value="ALL" />

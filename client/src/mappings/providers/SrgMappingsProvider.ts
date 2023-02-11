@@ -6,6 +6,7 @@ import {JavaClass} from "../../crash/model/Mappable";
 import {extractFromZip} from "../../fudge-commons/methods/Zip";
 import {strFromU8} from "fflate";
 import {CrashyServer, HttpStatusCode} from "../../server/CrashyServer";
+import {httpGet} from "../../fudge-commons/methods/Http";
 
 export {}
 
@@ -18,7 +19,7 @@ enum SRGVersion {
 export async function getSrgMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings | undefined> {
     if (isOlderThan1_12_2(mcVersion)) {
         const url = `https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`
-        const res = await fetch(url);
+        const res = await httpGet({url});
         if (res.status == HttpStatusCode.NotFound) {
             // Srg doesn't support snapshots I think
             return undefined

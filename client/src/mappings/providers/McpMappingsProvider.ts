@@ -8,6 +8,7 @@ import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
 import {MappingsBuilder} from "../MappingsBuilder";
 import {DescriptoredMethod, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {StringMap} from "../../crash/model/CrashReport";
+import {httpGet} from "../../fudge-commons/methods/Http";
 
 
 const mcpSupportedMcVersions = HashSet.of(
@@ -78,7 +79,7 @@ export async function getMcpBuilds(mcVersion: string): Promise<number[] | undefi
     }
 
     const url = "https://maven.minecraftforge.net/de/oceanlabs/mcp/versions.json"
-    const res = await fetch(url);
+    const res = await httpGet({url});
     const parsed = JSON.parse(await res.text());
 
     const values = parsed[mcVersion]!

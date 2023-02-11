@@ -6,8 +6,9 @@ Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/secti
 // type MCVersionSlug =  ReleaseVersion | Snapshot;
 
 
-import {extractFromZip, extractFromZipAtPath} from "../../fudge-commons/methods/Zip";
+import {extractFromZipAtPath} from "../../fudge-commons/methods/Zip";
 import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {HttpResponse} from "../../fudge-commons/methods/Http";
 
 export type MCVersionSlug = string;
 
@@ -45,7 +46,7 @@ export function profilerDel(thing: string) {
 }
 
 
-export async function extractTinyMappings(response: Response): Promise<string> {
+export async function extractTinyMappings(response: HttpResponse): Promise<string> {
     return (await extractFromZipAtPath(await response.arrayBuffer(), "mappings/mappings.tiny"))!
 }
 

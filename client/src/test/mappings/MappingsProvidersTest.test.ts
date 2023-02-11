@@ -10,6 +10,11 @@ import {MappingAssertions, testMappingsProvider} from "./MappingsProviderTester"
 import "../../fudge-commons/extensions/ExtensionsImpl"
 import {getMcpBuilds} from "../../mappings/providers/McpMappingsProvider";
 import {expect, test} from 'vitest'
+import fetch from "node-fetch"
+import {fetcher} from "../../fudge-commons/methods/Http";
+
+// @ts-ignore
+fetcher.fetch = fetch
 
 //remove this if it ever breaks (superseded by new tests)
 test("Yarn mappings can be retrieved via new method", async () => {
@@ -100,7 +105,7 @@ test("New Tests - Intermediary mappings work", async () => {
         }
     }
     await testMappingsProvider(OfficialToIntermediaryMappingsProvider,"1.18.1",assertions);
-})
+}, 30_000)
 
 
 //MD: zs/b ()V net/minecraft/inventory/Container/func_75142_b ()V
