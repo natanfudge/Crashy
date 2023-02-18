@@ -81,7 +81,7 @@ class LogContext(private val name: String, private val startTime: Instant) {
         ___logDetails.add(LogLine.Message.Error(message(), Instant.now(), exception))
     }
 
-    inline fun logData(key: String, value: () -> Any) {
+    inline fun logData(key: String, value: () -> Any?) {
         ___logDetails.add(LogLine.Detail(key, value().toString()))
     }
 

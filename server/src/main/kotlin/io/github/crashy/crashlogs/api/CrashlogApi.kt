@@ -63,8 +63,14 @@ class CrashlogApi(private val logs: CrashlogStorage) {
             is GetCrashlogResult.Success -> GetCrashResponse.Success(result.log)
         }
 
-        logData("Response") { response::class.toString() }
+        logData("Response") { response.describe() }
         return response
+    }
+
+    private fun GetCrashResponse.describe() = when(this){
+        GetCrashResponse.Archived -> "Archived"
+        GetCrashResponse.DoesNotExist -> "Does not exist"
+        is GetCrashResponse.Success ->  "Success"
     }
 
     private val htmlTemplate = StaticDir.resolve("index.html").readText()

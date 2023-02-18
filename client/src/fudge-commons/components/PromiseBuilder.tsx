@@ -7,7 +7,6 @@ export function usePromise<T>(promise: Promise<NonNullable<T>> | T, deps: unknow
     useEffect(() => {
         setResult(undefined);
         void Promise.resolve(promise).then(setResult)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps)
     return result
 }

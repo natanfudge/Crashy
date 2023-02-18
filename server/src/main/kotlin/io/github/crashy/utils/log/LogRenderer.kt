@@ -1,5 +1,7 @@
 package io.github.crashy.utils.log
 
+import io.github.crashy.Crashy
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.fusesource.jansi.Ansi
 import java.time.Instant
@@ -16,7 +18,8 @@ interface LogRenderer {
 
 object ConsoleLogRenderer : LogRenderer {
     override fun render(log: LogEvent) {
-        val rendered = log.renderToString(colored = true)
+//        val rendered = log.renderToString(colored = true)
+        val rendered = Crashy.json.encodeToString(log)
         if (rendered != "") println(rendered)
     }
 }
