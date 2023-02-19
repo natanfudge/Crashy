@@ -6,7 +6,6 @@ import io.github.crashy.crashlogs.api.CrashlogApi
 import io.github.crashy.crashlogs.api.DeleteCrashlogRequest
 import io.github.crashy.crashlogs.api.GetCrashRequest
 import io.github.crashy.utils.decompressGzip
-import io.github.crashy.utils.log.CrashyLogger
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*

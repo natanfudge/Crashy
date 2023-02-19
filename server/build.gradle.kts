@@ -49,6 +49,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 repositories {
+    mavenLocal()
     mavenCentral()
     maven(
         url = ("https://oss.sonatype.org/content/repositories/snapshots")
@@ -58,24 +59,27 @@ repositories {
     }
 
 }
-//TODO:  Could not find or load main class io.github.crashy.AppKt... Make a new app and migrate things until we find the cause... This is stupid...
+//TODO: wrong natives in linux...
 
-
-//TODO: use complete reloading like I do with logviewer
-//TODO: update stuff to use version catalogs
 //TODO: see if we need @mui/lab
 val linuxOnly = configurations.create("linux")
 val windowsOnly = configurations.create("windows")
 val brotliVersion = libs.versions.brotli.get()
 
 val brotliWindowsNatives = "com.aayushatharva.brotli4j:native-windows-x86_64:$brotliVersion"
+val objectBoxVersion = "3.5.1"
+val objectboxWindowsNatives = "io.objectbox:objectbox-windows:$objectBoxVersion"
+val objectboxLinuxNatives = "io.objectbox:objectbox-linux:$objectBoxVersion"
 dependencies {
     implementation(libs.bundles.main)
     testImplementation(libs.bundles.test)
     runtimeOnly(brotliWindowsNatives)
     windowsOnly(brotliWindowsNatives)
+    windowsOnly(objectboxWindowsNatives)
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
+    linuxOnly(objectboxLinuxNatives)
+    implementation("io.github.natanfudge:log-viewer:0.1.0")
 }
 
 
@@ -175,6 +179,7 @@ tasks {
         dependencies {
             // Don't include windows natives because we run on linux
             exclude(dependency(brotliWindowsNatives))
+            exclude(dependency(objectboxWindowsNatives))
         }
 
         group = "crashy setup"

@@ -7,9 +7,7 @@ main = [
     "ktor-server-serialization", "kotlinx-serialization-json", "ktor-server-content-negotiation",
     "ktor-netty", "logback", "reflections", "ktor-http-redirect","jansi","ktor-auth","awssdk-s3","kotlinx-serialization-protobuf",
     "ktor-server-resources", "dropwizard-jmx", "ktor-server-metrics",
-    "caffeine", "brotli","okhttp",
-#    TODO: remove when we use LogViewer
-    "ktor-html"
+    "caffeine", "brotli","okhttp"
 ]
 test = ["ktor-tests", "kotlin-test-junit", "strikt",  "firebase-admin"]
 
@@ -45,8 +43,7 @@ ssh = "3.0.10"
 [libraries]
 
 ktor-http-redirect = {group = "io.ktor", name = "ktor-server-http-redirect", version.ref = "ktor"}
-#TODO: remove when we use LogViewer
-ktor-html  = {group = "io.ktor", name = "ktor-server-html-builder", version.ref = "ktor"}
+#ktor-html  = {group = "io.ktor", name = "ktor-server-html-builder", version.ref = "ktor"}
 jansi = {group = "org.fusesource.jansi", name = "jansi", version.ref = "jansi"}
 ktor-auth = {group = "io.ktor", name = "ktor-server-auth", version.ref = "ktor"}
 awssdk-s3 = {group = "software.amazon.awssdk", name = "s3", version.ref = "s3"}

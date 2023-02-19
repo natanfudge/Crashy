@@ -1,8 +1,6 @@
 package io.github.crashy
 
 import com.aayushatharva.brotli4j.Brotli4jLoader
-import io.github.crashy.Crashy.Build.Local
-import io.github.crashy.auth.installAuthentication
 import io.github.crashy.plugins.configureLogging
 import io.github.crashy.routing.configureRouting
 import io.ktor.http.*
@@ -26,21 +24,17 @@ object AppKt {
 
 
 
-
-data class UserSession(val name: String, val count: Int) : Principal
-
-
 private fun createAppEnvironment() = applicationEngineEnvironment {
     watchPaths = listOf("classes")
     connector {
-        port = if(Crashy.isBeta()) 8080 else 80
+        port = if (Crashy.isBeta()) 8080 else 80
         host = "0.0.0.0"
     }
     configureSSL()
 
-    module {
-        installAuthentication()
 
+    module {
+        Crashy.logger.install()
         if (!Crashy.isLocal()) {
             install(HttpsRedirect) {
                 sslPort = Crashy.SSLPort

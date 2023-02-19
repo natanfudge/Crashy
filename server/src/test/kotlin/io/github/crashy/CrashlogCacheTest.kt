@@ -6,8 +6,7 @@ import io.github.crashy.crashlogs.CrashlogId
 import io.github.crashy.crashlogs.storage.CrashlogCache
 import io.github.crashy.crashlogs.storage.NowDefinition
 import io.github.crashy.crashlogs.storage.RealClock
-import io.github.crashy.utils.log.CrashyLogger
-import io.github.crashy.utils.log.LogContext
+import io.github.natanfudge.logs.LogContext
 import kotlinx.coroutines.runBlocking
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -102,7 +101,7 @@ class CrashlogCacheTest {
         expectThat(getForTest(id3)).isEqualTo(null)
     }
 
-    context (CrashlogCache, TestClock, Path)   fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
+    context (CrashlogCache, TestClock, Path, LogContext)   fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
         expectThat(getForTest(id)).isNotNull().and {
             get(CrashlogEntry::compressedLog).get(CompressedLog::bytes).isEqualTo(log.compressedLog.bytes)
             get(CrashlogEntry::metadata).isEqualTo(log.metadata)
@@ -115,14 +114,14 @@ class CrashlogCacheTest {
         val dir = Files.createTempDirectory("test")
         val cache = CrashlogCache(dir, clock)
         runBlocking {
-            CrashyLogger.startCallWithContextAsParam("test_crashlog_cache"){
+            Crashy.logger.startCallWithContextAsParam("test_crashlog_cache"){
                 test(cache, clock, dir, it)
             }
         }
     }
 
 
-    context (CrashlogCache, TestClock, Path)
+    context (CrashlogCache, TestClock, Path, LogContext)
     private fun getForTest(id: CrashlogId): CrashlogEntry? {
         val bytes = get(id)
         if (bytes != null) {

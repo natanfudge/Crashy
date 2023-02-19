@@ -1,6 +1,9 @@
 package io.github.crashy
 
 import io.github.crashy.Crashy.Build.*
+import io.github.crashy.utils.getResource
+import io.github.natanfudge.logs.FancyLogger
+import io.github.natanfudge.logs.LoggingCredentials
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.protobuf.ProtoBuf
 import org.slf4j.Logger
@@ -12,7 +15,6 @@ import kotlin.io.path.toPath
 object Crashy {
     val json = Json
     val protobuf = ProtoBuf { }
-    val logger: Logger = LoggerFactory.getLogger(AppKt::class.java)
 
     val build = readBuild()
 
@@ -51,4 +53,17 @@ object Crashy {
     val StaticDir: Path = RunDir.resolve(StaticPath)
 
     const val S3CrashlogBucket = "crashy-crashlogs"
+
+
+    // For some reason it calls the constructor twice if i init it inside the object so we init it outside
+    val logger get() = loggerInit
 }
+
+private val loggerInit = FancyLogger(
+    logToConsole = true,
+    logsDir = Crashy.HomeDir.resolve("logs"),
+    credentials = LoggingCredentials(
+        username = getResource("/secrets/admin_user.txt")!!.toCharArray(),
+        password = getResource("/secrets/admin_pass.txt")!!.toCharArray()
+    )
+)

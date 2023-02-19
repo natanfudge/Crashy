@@ -3,11 +3,10 @@ package io.github.crashy.crashlogs.storage
 
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
-import io.github.crashy.utils.log.LogContext
+import io.github.natanfudge.logs.LogContext
 import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
 import kotlin.io.path.*
-
 
 
 class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
@@ -29,7 +28,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         storeLastAccessDay(id, clock.today())
     }
 
-
+    context (LogContext)
     fun get(id: CrashlogId): CrashlogEntry? {
         val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
 
@@ -37,6 +36,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         return CrashlogEntry.fromCrashesDir(id)
     }
 
+    context(LogContext)
     fun peek(id: CrashlogId): CrashlogMetadata? {
         val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
 
@@ -48,6 +48,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     /**
      * Returns true if something was deleted
      */
+    context(LogContext)
     fun delete(id: CrashlogId, key: DeletionKey): DeleteCrashResult {
         val oldLastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return DeleteCrashResult.NoSuchId
 
@@ -92,6 +93,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         }
     }
 
+    context (LogContext)
     private fun updateLastAccessDay(id: CrashlogId, oldLastAccessDay: LastAccessDay) {
         val today = clock.today()
         // Only update last access day if the new day (today) is actually different from the old last access time
@@ -100,7 +102,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
             val deleted = locationOfLastAccessDay(id, oldLastAccessDay).deleteIfExists()
             if (!deleted) {
                 locationOfLastAccessDay(id, today).deleteIfExists()
-                Crashy.logger.warn("Could not find lastAccessDay of $id to delete.")
+                logWarn { "Could not find lastAccessDay of $id to delete." }
             }
             storeLastAccessDay(id, today)
         }

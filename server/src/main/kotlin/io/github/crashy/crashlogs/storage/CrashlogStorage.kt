@@ -3,7 +3,7 @@ package io.github.crashy.crashlogs.storage
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.utils.*
-import io.github.crashy.utils.log.LogContext
+import io.github.natanfudge.logs.LogContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
@@ -32,6 +32,7 @@ class CrashlogStorage(
         cache.store(id, log)
     }
 
+    context(LogContext)
     suspend fun peek(id: CrashlogId): PeekCrashlogResult {
         // First try to get it from the locally stored logs
         val cachedResult = cache.peek(id)
@@ -44,6 +45,7 @@ class CrashlogStorage(
         }
     }
 
+    context (LogContext)
     suspend fun getLog(id: CrashlogId): GetCrashlogResult {
         // First try to get it from the locally stored logs
         val cachedResult = cache.get(id)
@@ -106,6 +108,7 @@ class CrashlogStorage(
         return GetCrashlogResult.Success(crashlog)
     }
 
+    context(LogContext)
     fun delete(id: CrashlogId, key: DeletionKey): DeleteCrashResult {
         // Technically the entry could only exist on the S3, but if the user requested to delete the crash he had
         // to have viewed it just now, which means he pulled it out of the S3 into the cache.

@@ -7,8 +7,8 @@ import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
 import io.github.crashy.crashlogs.storage.PeekCrashlogResult
-import io.github.crashy.utils.log.LogContext
 import io.github.crashy.utils.replaceSequentially
+import io.github.natanfudge.logs.LogContext
 import io.ktor.http.*
 import java.time.Instant
 import kotlin.io.path.readText

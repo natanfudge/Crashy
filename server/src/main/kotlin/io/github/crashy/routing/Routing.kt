@@ -1,28 +1,18 @@
 package io.github.crashy.routing
 
 import io.github.crashy.Crashy
-import io.github.crashy.auth.AuthSessionName
-import io.github.crashy.auth.routeAuthentication
 import io.github.crashy.crashlogs.api.CrashlogApi
 import io.github.crashy.crashlogs.api.MappingsApi
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.RealClock
 import io.github.crashy.mappings.MappingsProvider
-import io.github.crashy.utils.log.CrashyLogger
-import io.ktor.http.*
-import io.ktor.http.content.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.plugins.cachingheaders.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.*
 import java.nio.file.Paths
 import java.time.Instant
 import java.util.*
 import kotlin.concurrent.schedule
-import kotlin.io.path.exists
-import kotlin.io.path.readText
 
 object Routes {
     const val Logs = "/logs"
@@ -35,7 +25,7 @@ fun Application.configureRouting() {
             bucketName = Crashy.S3CrashlogBucket,
             appDataDir = crashyDir,
             clock = RealClock,
-            deleteFromS3OnFetch = !Crashy.isRelease()
+            deleteFromS3OnFetch = Crashy.isRelease()
         )
     }
     val mappingsProvider = MappingsProvider(crashyDir.resolve("mappings"))
@@ -45,26 +35,11 @@ fun Application.configureRouting() {
     val mappings = MappingsApi(mappingsProvider)
 
     routing {
+        Crashy.logger.route()
         // We have an options response for /uploadCrash so the browser will calm down.
         crashlogEndpoints(crashlogs)
         mappingEndpoints(mappings)
-
-        routeAuthentication()
-
-        authenticate(AuthSessionName) {
-            get(Routes.Logs) {
-                call.respondText(getLogs(call))
-            }
-        }
     }
-}
-
-private fun getLogs(call: ApplicationCall): String {
-    val endpoint = call.parameters["e"] ?: return "Missing endpoint parameter"
-    val logs = CrashyLogger.logsOfEndpoint(endpoint)
-    if (!logs.exists()) return "No such endpoint '$endpoint'"
-    if (logs.parent != CrashyLogger.todayLogDir) return "Woah there son"
-    return logs.readText()
 }
 
 
@@ -74,15 +49,9 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
     // Runs once every day
     timer.schedule(Day) {
         GlobalScope.launch(Dispatchers.IO) {
-            CrashyLogger.startCall("scheduleTasks") {
-                logData("Crashy Home Dir"){Crashy.HomeDir}
+            Crashy.logger.startCall("scheduleTasks") {
+                logData("Crashy Home Dir") { Crashy.HomeDir }
                 logData("Schedule Time") { Instant.now() }
-//                logData("Foo") {"Bar"}
-//                logInfo{"Halo Info"}
-//                logWarn{"Halo Warn"}
-//                logError(NullPointerException()){"Halo Error"}
-//                throw IllegalArgumentException("Fuck jhew")
-                CrashyLogger.deleteOldLogs()
                 crashlogStorage.evictOld()
             }
         }

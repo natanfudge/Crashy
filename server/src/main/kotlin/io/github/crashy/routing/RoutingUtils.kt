@@ -1,9 +1,9 @@
 package io.github.crashy.routing
 
+import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.api.Encoding
 import io.github.crashy.crashlogs.api.Response
-import io.github.crashy.utils.log.CrashyLogger
-import io.github.crashy.utils.log.LogContext
+import io.github.natanfudge.logs.LogContext
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -22,7 +22,7 @@ inline fun <reified R : Any> Routing.crashyPost(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>) (R) -> Unit
 ) {
     post<R>(path) { body ->
-        CrashyLogger.startCallWithContextAsParam(path) { logContext ->
+        Crashy.logger.startCallWithContextAsParam(path) { logContext ->
             handler(logContext, this@post, body)
         }
     }
@@ -34,7 +34,7 @@ inline fun Routing.crashyRoute(
 ) {
     for (route in routes) {
         get(route) {
-            CrashyLogger.startCallWithContextAsParam(route) {
+            Crashy.logger.startCallWithContextAsParam(route) {
                 body(it, this@get)
             }
         }
@@ -47,7 +47,7 @@ inline fun <reified T : Any> Routing.json(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>)(T) -> Unit
 ) {
     post(path) {
-        CrashyLogger.startCallWithContextAsParam(path) { log ->
+        Crashy.logger.startCallWithContextAsParam(path) { log ->
             call.receiveStream().use { body ->
                 try {
                     val decoded = withContext<T>(Dispatchers.IO) {
@@ -56,7 +56,7 @@ inline fun <reified T : Any> Routing.json(
                     handler(log, this@post, decoded)
                 } catch (e: IllegalArgumentException) {
                     call.respondText("Error deserializing body", status = HttpStatusCode.UnsupportedMediaType)
-                    log.logError(e) { "Error deserialization body" }
+                    log.logWarn  { "Error deserializing body $e" }
                 }
             }
         }

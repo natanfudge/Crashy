@@ -3,8 +3,7 @@ package io.github.crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
-import io.github.crashy.utils.log.CrashyLogger
-import io.github.crashy.utils.log.LogContext
+import io.github.natanfudge.logs.LogContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -121,7 +120,7 @@ class CrashlogStorageTest {
                 Files.createTempDirectory("test")
             }
             val cache = CrashlogStorage(dir, bucketName = "crashy-test-crashlogs", clock, deleteFromS3OnFetch = true)
-            CrashyLogger.startCallWithContextAsParam("test_crashlog_storage") {
+            Crashy.logger.startCallWithContextAsParam("test_crashlog_storage") {
                 test(cache, clock, dir.resolve("cache"), it)
             }
         }
@@ -139,7 +138,7 @@ class CrashlogStorageTest {
 //            .get(GetCrashlogResponse.Success::log)
 //            .get(CrashlogEntry::copyLog)
 //    }
-    context (CrashlogStorage, TestClock, Path)
+    context (CrashlogStorage, TestClock, Path, LogContext)
     private suspend fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
         val result = getLog(id)
         if (result is GetCrashlogResult.Success) {
@@ -161,7 +160,7 @@ class CrashlogStorageTest {
         alignFileWithTestTime(id)
     }
 
-    context (CrashlogStorage, TestClock, Path)
+    context (CrashlogStorage, TestClock, Path, LogContext)
     private fun testDelete(id: CrashlogId, deletionKey: DeletionKey): DeleteCrashResult {
         val res = delete(id, deletionKey)
         alignFileWithTestTime(id)
