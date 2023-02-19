@@ -14,7 +14,7 @@ import java.time.Instant
 import kotlin.io.path.readText
 
 
-private const val MaxCrashSize = 100_000
+private const val MaxCrashSize = 200_000
 
 
 class CrashlogApi(private val logs: CrashlogStorage) {
