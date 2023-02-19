@@ -295,7 +295,8 @@ fun Task.configureEc2Upload(crashyJarTask: Task, release: Boolean) {
         val cleanDirsCommand = "sudo find $fullJarsDir -empty -type d -delete"
         val jarDir = "$fullJarsDir/$randomId"
         val logFile = "$jarDir/output.txt"
-        val javaCommand = "nohup sudo java -jar $jarDir/$jarName >$logFile 2>$logFile <$logFile &"
+//        val javaCommand = "nohup sudo java -jar $jarDir/$jarName >$logFile 2>$logFile <$logFile &"
+        val javaCommand = "nohup sudo java -jar $jarDir/$jarName &"
 
         // Kill old java process, remove all old files, delete empty directories
         val remoteCleanupCommand = "$killCommand ; $removeCommand && $cleanDirsCommand"

@@ -75,6 +75,7 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
     timer.schedule(Day) {
         GlobalScope.launch(Dispatchers.IO) {
             CrashyLogger.startCall("scheduleTasks") {
+                logData("Crashy Home Dir"){Crashy.HomeDir}
                 logData("Schedule Time") { Instant.now() }
 //                logData("Foo") {"Bar"}
 //                logInfo{"Halo Info"}
