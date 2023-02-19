@@ -35,8 +35,7 @@ fun Application.configureRouting() {
             bucketName = Crashy.S3CrashlogBucket,
             appDataDir = crashyDir,
             clock = RealClock,
-            //TODO: If we have a separate machine for beta, it should be !Crashy.isRelease()
-            deleteFromS3OnFetch = !Crashy.isBeta()
+            deleteFromS3OnFetch = !Crashy.isRelease()
         )
     }
     val mappingsProvider = MappingsProvider(crashyDir.resolve("mappings"))
@@ -57,12 +56,6 @@ fun Application.configureRouting() {
                 call.respondText(getLogs(call))
             }
         }
-
-        get("Halo"){
-            call.respondText("General XD")
-        }
-
-
     }
 }
 
