@@ -1,6 +1,5 @@
 package io.github.crashy
 
-import io.github.crashy.Crashy.Build.*
 import io.github.crashy.Crashy.SSLPort
 import io.github.crashy.utils.getResource
 import io.ktor.server.engine.*
@@ -8,7 +7,7 @@ import java.nio.file.Paths
 import java.security.KeyStore
 import kotlin.io.path.exists
 
- fun ApplicationEngineEnvironmentBuilder.configureSSL() {
+fun ApplicationEngineEnvironmentBuilder.configureSSL() {
     val keystorePassword = getKeystorePassword()
     if (keystorePassword != null) {
         val keyStore = getKeystore(keystorePassword)
@@ -30,7 +29,8 @@ import kotlin.io.path.exists
 }
 
 private fun getKeystorePassword(): CharArray? {
-    val password = if(Crashy.isLocal())"/secrets/fake_keystore_password.txt" else "/secrets/letsencrypt_keystore_password_release.txt"
+    val password = if (Crashy.isLocal()) "/secrets/fake_keystore_password.txt"
+    else "/secrets/letsencrypt_keystore_password_release.txt"
 //        Local ->
 //        Beta ->  "/secrets/letsencrypt_keystore_password_beta.txt"
 //        Release ->
@@ -38,7 +38,8 @@ private fun getKeystorePassword(): CharArray? {
     return getResource(password)?.toCharArray()
 }
 
-private val keyStoreName = /*if (Crashy.isRelease()) "crashy_release_keystore" else "crashy_keystore"*/ "crashy_release_keystore"
+private val keyStoreName = /*if (Crashy.isRelease()) "crashy_release_keystore" else "crashy_keystore"*/
+    "crashy_release_keystore"
 private val realServerKeystoreFile = Paths.get("/etc/cert/$keyStoreName.jks")
 private fun getKeystore(password: CharArray): KeyStore? {
     if (realServerKeystoreFile.exists()) {

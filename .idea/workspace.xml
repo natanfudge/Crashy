@@ -5,28 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/SSL.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/auth/Authentication.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/CrashyLogger.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogEvent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogEvent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogRenderer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/log/LogRenderer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,19 +36,7 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="crashy" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="crashy setup" type="c8890929:TasksNode$1" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
             <select />
@@ -93,29 +63,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1676799446904&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/.m2/repository/io/github/natanfudge/log-viewer/0.1.0/log-viewer-0.1.0-sources.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "ktor.last.update.timestamp": "1681990573640",
+    "last_opened_file_path": "C:/Users/natan/Downloads/zhei5w",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "Errors",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy" />
@@ -255,8 +226,6 @@
         <item itemvalue="Gradle.server [stopBetaProcess]" />
         <item itemvalue="Gradle.server [betaJar]" />
         <item itemvalue="Gradle.server [runJarWindows]" />
-        <item itemvalue="Vitest.Remapping from yarn to mojmap works correctly" />
-        <item itemvalue="Vitest.Remapping works correctly" />
       </list>
     </recent_temporary>
   </component>
@@ -294,6 +263,19 @@
       <workItem from="1676819339127" duration="705000" />
       <workItem from="1676823657185" duration="3184000" />
       <workItem from="1676831504188" duration="743000" />
+      <workItem from="1676834819144" duration="713000" />
+      <workItem from="1676841399245" duration="793000" />
+      <workItem from="1676845684505" duration="129000" />
+      <workItem from="1676846587210" duration="23000" />
+      <workItem from="1676926671099" duration="847000" />
+      <workItem from="1679486461465" duration="122000" />
+      <workItem from="1679486774984" duration="1237000" />
+      <workItem from="1679497714206" duration="9000" />
+      <workItem from="1679504730076" duration="359000" />
+      <workItem from="1679523421651" duration="334000" />
+      <workItem from="1679576216405" duration="15000" />
+      <workItem from="1679758273892" duration="676000" />
+      <workItem from="1681990518791" duration="1494000" />
     </task>
     <servers />
   </component>
@@ -307,21 +289,23 @@
     <option featureType="dependencySupport" implementationName="javascript:npm:vite" />
     <option featureType="dependencySupport" implementationName="java:software.amazon.awssdk:sdk-core" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/mappings/providers/IntermediaryMappingsProvider.ts</url>
-          <line>12</line>
-          <option name="timeStamp" value="31" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="JavaScriptTestRunnerVitest">
-        <watch expression="mappables.toArray()" language="TypeScript" />
-        <watch expression="finalMappings.toSameRecord()" language="TypeScript" />
-        <watch expression="unmapped.method.getUnmappedMethodName()" language="TypeScript" />
+        <watch expression="mappables.toArray()" />
+        <watch expression="finalMappings.toSameRecord()" />
+        <watch expression="unmapped.method.getUnmappedMethodName()" />
       </configuration>
     </watches-manager>
   </component>
