@@ -5,16 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="121bf2a8-b6e8-41f4-a34c-b6e15c659204" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/methods/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrlImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/DeleteCrash.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/DeleteCrash.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/EndpointTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/EndpointTesting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrlImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrlImpl.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -273,7 +270,7 @@
       <workItem from="1667678305046" duration="85000" />
       <workItem from="1667678420613" duration="2000" />
       <workItem from="1667678462109" duration="5573000" />
-      <workItem from="1668367228335" duration="5455000" />
+      <workItem from="1668367228335" duration="6217000" />
     </task>
     <servers />
   </component>
