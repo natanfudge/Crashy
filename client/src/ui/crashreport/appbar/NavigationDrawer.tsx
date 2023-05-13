@@ -10,42 +10,48 @@ import {ArrowDropDown, ArrowDropUp, Menu} from "@mui/icons-material";
 import {SimpleButton} from "../../../fudge-commons/simple/SimpleButton";
 
 export const HeaderHeight = 65
+
 export function NavigationDrawer(props: ValidCrashProps) {
     const [open, setOpen] = useState(false);
-    return <Fragment>
-        <Wrap
-            style={{
-                zIndex: 3000,
-                borderRadius: 30, borderStyle: "solid", borderWidth: 1, borderColor: "rgb(51 50 50)",
-                margin: 3
-            }}
-            position="fixed" backgroundColor={AppbarColor}
-              onClick={() => setOpen(oldOpen => !oldOpen)} padding={{left: 7, top: 7, right: 7, bottom: 0}}>
-            <Menu style={{width: 40, height: 40}}/>
-        </Wrap>
-        <SwipeableDrawer
-            variant="temporary"
-            anchor="left"
-            onOpen={() => setOpen(true)} onClose={() => setOpen(false)}
-            open={open}
-            SlideProps={{style: {marginTop: HeaderHeight, backgroundColor: "transparent", backgroundImage: "unset"/*, backgroundColor: "transparent"*/}}}
-        >
-            <ClickAwayListener onClickAway={() => setOpen(false)}>
-                <div>
-                    <ButtonGroup style = {{backgroundColor: NavigationDrawerColor}} orientation={"vertical"} variant={"contained"}>
-                        <NavigationDrawerContent sectionState={props.sectionState} report={props.report}/>
-                    </ButtonGroup>
-                    {/*Since the drawer is margined by HeaderHeight pixels, the bottom HeaderHeight pixels of the drawer
+    return <ClickAwayListener onClickAway={() => setOpen(false)}>
+        <div>
+            <Wrap
+                style={{
+                    zIndex: 3000,
+                    borderRadius: 30, borderStyle: "solid", borderWidth: 1, borderColor: "rgb(51 50 50)",
+                    margin: 3
+                }}
+                position="fixed" backgroundColor={AppbarColor}
+                onClick={() => setOpen(oldOpen => !oldOpen)} padding={{left: 7, top: 7, right: 7, bottom: 0}}>
+                <Menu style={{width: 40, height: 40}}/>
+            </Wrap>
+            <SwipeableDrawer
+                variant="temporary"
+                anchor="left"
+                onOpen={() => setOpen(true)} onClose={() => setOpen(false)}
+                open={open}
+                SlideProps={{
+                    style: {
+                        marginTop: HeaderHeight,
+                        backgroundColor: "transparent",
+                        backgroundImage: "unset"/*, backgroundColor: "transparent"*/
+                    }
+                }}
+            >
+                <ButtonGroup style={{backgroundColor: NavigationDrawerColor}} orientation={"vertical"}
+                             variant={"contained"}>
+                    <NavigationDrawerContent sectionState={props.sectionState} report={props.report}/>
+                </ButtonGroup>
+                {/*Since the drawer is margined by HeaderHeight pixels, the bottom HeaderHeight pixels of the drawer
                     will get clipped if there is no space.
                     For some reason, css won't recognize that it will need to scroll for the bottom HeaderHeight pixels.
                     So to give it a reason to scroll HeaderHeight more pixels, we put an empty space. This way it will scroll to
                     cover the missed bottom pixels.
                     */}
-                    <Spacer height = {HeaderHeight}/>
-                </div>
-            </ClickAwayListener>
-        </SwipeableDrawer>
-    </Fragment>
+                <Spacer height={HeaderHeight}/>
+            </SwipeableDrawer>
+        </div>
+    </ClickAwayListener>
 
 }
 
@@ -59,7 +65,7 @@ function NavigationDrawerContent({report, sectionState}: ValidCrashProps) {
                     {sectionNavigationOf(report).map(section =>
                         <NavigationButton key={nameOfSection(section)}
                                           text={nameOfSection(section)}
-                                          active={!sectionsEqual(section,sectionState.activeSection)}
+                                          active={!sectionsEqual(section, sectionState.activeSection)}
                                           onClick={() => sectionState.onActiveSectionChanged(section)}/>
                     )}
                 </Fragment>

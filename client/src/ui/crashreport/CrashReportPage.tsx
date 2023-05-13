@@ -45,7 +45,7 @@ export function useCrash(): GetCrashAttempt {
 }
 
 async function getCrash(setCrash: (attempt: GetCrashAttempt) => void) {
-    let response = await CrashyServer.getCrash(getUrlCrashId()!)
+    const response = await CrashyServer.getCrash(getUrlCrashId()!)
     try {
         setCrash(isSuccessfulGetCrashResponse(response) ? parseCrashReportRich(response) : response)
     } catch (e) {

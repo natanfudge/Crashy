@@ -42,11 +42,11 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 
 export namespace CrashyServer {
-    const origin = typeof window !== "undefined"? window.location.origin: "http://localhost:80";
+    const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost:80";
     const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        // return TestVerifyErrorCrash;
+        if (id === "debug") return TestVerifyErrorCrash;
         // return testFabricCrashReport;
         // return SeeminglyInnocentCrashTest.replaceAll("    ", "\t")
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already

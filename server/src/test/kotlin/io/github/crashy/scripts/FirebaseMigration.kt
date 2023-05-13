@@ -279,7 +279,7 @@ class FirebaseMigration {
 
     @Test
     fun testIdConversion() {
-        val id1 = "001hsUWaLr9dk3tPzKCt"
+        val id1 = "001hsUWaLr9dktPz-KCt"
         val id2 = "12BNXMNpcG9PS8R78EQZ"
         val converted1 = firestoreIdToUUID(id1)
         val converted2 = firestoreIdToUUID(id2)

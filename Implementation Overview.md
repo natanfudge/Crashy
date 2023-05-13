@@ -1,16 +1,3 @@
-# Workplan:
-- [ ] Monetization?
-  - [ ] Once everything works - shut down old site and functions
-    - [ ] Remove Namecheap TXT Record
-    - [ ] Remove old functions
-- 
-
-# Final goals:
-- Crashy pages served directly from the server, including the crash data itself with it, making response times very fast, and allowing previews of crashes in links
-- Integrate the mappings feature completely
-- Introduce monetization to at least cover for server costs
-- Fix a few critical opened Crashy issues (including improve logging)
-
 # Services:
 
 - One EC2 server (Start with the free one and see how it goes) serving pages and some mappings. 

@@ -37,5 +37,5 @@ private val charMap = mapOf(
     't' to 29, 'u' to 30, 'v' to 31, 'w' to 32, 'x' to 33, 'y' to 34, 'z' to 35, 'A' to 36, 'B' to 37, 'C' to 38,
     'D' to 39, 'E' to 40, 'F' to 41, 'G' to 42, 'H' to 43, 'I' to 44, 'J' to 45, 'K' to 46, 'L' to 47, 'M' to 48,
     'N' to 49, 'O' to 50, 'P' to 51, 'Q' to 52, 'R' to 53, 'S' to 54, 'T' to 55, 'U' to 56, 'V' to 57, 'W' to 58,
-    'X' to 59, 'Y' to 60, 'Z' to 61
+    'X' to 59, 'Y' to 60, 'Z' to 61, '-' to 62
 )
