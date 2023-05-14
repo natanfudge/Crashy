@@ -27,7 +27,6 @@ export interface MutableDict<K, V> extends Dict<K, V> {
     put(key: K, value: V): void
 }
 
-// type B
 /**
  * All objects are treated as values (as the key), so don't make the key too complex (e.g. a record with 10,000 entries)
  * Treating objects as references is perhaps possible but not implemented
@@ -217,15 +216,6 @@ export class HashMap<K, V> implements MutableDict<K, V> {
     toString(): string {
         return JSON.stringify(this.toRecord(k => String(k), (k, v) => v))
     }
-
-    // delete(key: K) {
-    //     const entry = this.getEntry(key)
-    //     if (entry !== undefined) {
-    //         const hash = this.getHash(key);
-    //         this.buckets[hash].remove(entry)
-    //         this._size--;
-    //     }
-    // }
 
 }
 

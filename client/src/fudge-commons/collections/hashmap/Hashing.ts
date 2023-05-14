@@ -41,18 +41,6 @@ function hashObject(obj: TsObject | null): number {
     }
 }
 
-//function hashObjectByValue(obj: object | null): number {
-//     if (obj === null) return 0;
-//     return hashArray(Object.values(obj));
-// }
-// function hashObject(obj: object | null): number {
-//     if(objectIsValueObject(obj)) return hashObjectByValue(obj)
-//     else
-//     if (obj === null) return 0;
-//     return hashArray(Object.values(obj));
-// }
-
-
 export function hashString(str: string): number {
     return cyrb53(str);
 }
