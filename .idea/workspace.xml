@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/standards-style/.eslintrc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards-style/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards-style/tsconfig.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/HashMap.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/Hashing.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/collections/hashmap/Hashing.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/standards-style/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/standards-style/.eslintrc.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -310,6 +303,7 @@
       <workItem from="1684012582309" duration="569000" />
       <workItem from="1684073734709" duration="305000" />
       <workItem from="1684074365055" duration="1619000" />
+      <workItem from="1684076043493" duration="921000" />
     </task>
     <servers />
   </component>

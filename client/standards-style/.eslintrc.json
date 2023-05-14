@@ -44,7 +44,14 @@
     "no-throw-literal": "error",
     "no-useless-call": "warn",
     "no-useless-concat": "warn",
-    "@typescript-eslint/strict-boolean-expressions": "error"
+    "@typescript-eslint/strict-boolean-expressions": [
+      "error", {
+        "allowString": false,
+        "allowNumber" : false,
+        "allowNullableObject": false,
+        "allowNullableEnum" : false
+      }
+    ]
   },
   "overrides": [
     {
