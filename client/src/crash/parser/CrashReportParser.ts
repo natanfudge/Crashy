@@ -7,7 +7,7 @@ import {
     StringMap
 } from "../model/CrashReport";
 import "../../fudge-commons/extensions/ExtensionsImpl"
-import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
 
 class StringBuilder {
     str: string

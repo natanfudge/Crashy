@@ -1,4 +1,4 @@
-import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
 import {Mappings} from "../Mappings";
 import {MappingsBuilder} from "../MappingsBuilder";
 import {MappingsFilter} from "../MappingsFilter";

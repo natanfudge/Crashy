@@ -7,7 +7,7 @@ Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/secti
 
 
 import {extractFromZipAtPath} from "../../fudge-commons/methods/Zip";
-import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
 import {HttpResponse} from "../../fudge-commons/methods/Http";
 
 export type MCVersionSlug = string;

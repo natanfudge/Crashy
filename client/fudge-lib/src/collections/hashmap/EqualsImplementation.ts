@@ -1,4 +1,4 @@
-import {TsObject} from "../../types/Basic";
+import {TsObject} from "../../types/basics";
 
 
 export function equalsOfAnything(thingA: unknown, thingB: unknown): boolean {

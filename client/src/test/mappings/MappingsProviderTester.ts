@@ -2,7 +2,7 @@
 import { AllowAllMappings } from "../../mappings/MappingsFilter";
 import {MappingsProvider} from "../../mappings/providers/MappingsProvider";
 import {DescriptoredMethod, JavaClass} from "../../crash/model/Mappable";
-import {equalsOfAnything} from "../../fudge-commons/collections/hashmap/EqualsImplementation";
+import {equalsOfAnything} from "fudge-lib/src/collections/hashmap/EqualsImplementation";
 import {typedKeys} from "../../fudge-commons/methods/Typescript";
 import {expect} from 'vitest'
 

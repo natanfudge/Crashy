@@ -12,7 +12,7 @@ import {
 
 import "../../fudge-commons/extensions/ExtensionsImpl"
 import {JavaClass, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
-import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
 import {LoaderType} from "../../crash/model/RichCrashReport";
 import {expect, test} from 'vitest'
 import {fetcher} from "../../fudge-commons/methods/Http";

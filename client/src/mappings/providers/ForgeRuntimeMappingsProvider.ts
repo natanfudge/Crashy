@@ -1,6 +1,6 @@
 // In these versions, Forge uses pure SRG for the names in the Minecraft runtime.
 // In later versions, Forge uses a combination of SRG and Mojmap. This method is called 'ForgeRuntime' namespace.
-import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
 import {Mappings} from "../Mappings";
 import {DescriptoredMethod, JavaClass, JavaMethod, SimpleMethod} from "../../crash/model/Mappable";
 

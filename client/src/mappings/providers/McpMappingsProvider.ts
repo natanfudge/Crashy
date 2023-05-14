@@ -4,7 +4,7 @@ import {isOlderThan1_12_2} from "./ProviderUtils";
 import {extractFromZip} from "../../fudge-commons/methods/Zip";
 import {strFromU8} from "fflate";
 import {CrashyServer, HttpStatusCode} from "../../server/CrashyServer";
-import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
+import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
 import {MappingsBuilder} from "../MappingsBuilder";
 import {DescriptoredMethod, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {StringMap} from "../../crash/model/CrashReport";

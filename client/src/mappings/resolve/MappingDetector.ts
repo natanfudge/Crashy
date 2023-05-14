@@ -2,7 +2,6 @@ import {MappingContext} from "./MappingStrategy";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {SimpleMappable, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {LoaderType} from "../../crash/model/RichCrashReport";
-import {HashSet} from "../../fudge-commons/collections/hashmap/HashSet";
 import {forgeUsesPureSrgForMinecraftVersion} from "../providers/ForgeRuntimeMappingsProvider";
 
 export function detectMappingNamespace(name: SimpleMappable, context: MappingContext): MappingsNamespace {
