@@ -1,5 +1,5 @@
-import {HashMap} from "../collections/hashmap/HashMap";
 import {expect, test} from 'vitest'
+import {HashMap} from "../src/collections/hashmap/HashMap";
 
 test("HashMap works with strings", () => {
     const stringMap = new HashMap<string, string>(100);
@@ -35,7 +35,10 @@ test("HashMap works with numbers", () => {
     numberMap.put(1, "Bar")
     numberMap.put(-70, "Baz")
     numberMap.put(12312414, "Booz")
-
+    // ,
+    //   "overrides": [
+    //     "restrict-plus-operands"
+    //   ]
 
     expect(numberMap.get(1)).toEqual("Bar")
     expect(numberMap.get(-70)).toEqual("Baz")

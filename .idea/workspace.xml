@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/standards/.eslintrc.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/BiMap.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/DayDate.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/HelperClasses.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/LinkedList.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/PromiseMemoryCache.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/Queue.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/hashmap/EqualsImplementation.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/hashmap/HashMap.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/hashmap/HashSet.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/src/collections/hashmap/Hashing.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/tsconfig.node.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/standards/vite.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/.eslintrc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/test/HashMapTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/test/HashMapTest.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +73,7 @@
     "ignore.virus.scanning.warn.message": "true",
     "js.linters.configure.manually.selectedeslint": "true",
     "ktor.last.update.timestamp": "1684073737033",
-    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client/standards/src",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Loggy",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -104,18 +92,18 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
+      <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\collections" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style" />
-      <recent name="C:\Users\natan\Desktop\Crashy" />
-      <recent name="C:\Users\natan\Desktop\Crashy\.idea" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\server\src\main\resources\secrets" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.FirebaseMigration.testIdConversion">
+  <component name="RunManager" selected="Vitest.HashMap works with simple objects">
     <configuration name="FirebaseMigration.testIdConversion" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -162,81 +150,51 @@
       <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
-    <configuration name="server [betaJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="betaJar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
-      <method v="2" />
-    </configuration>
-    <configuration name="server [runJarWindows]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="runJarWindows" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
-      <method v="2" />
-    </configuration>
-    <configuration name="server [stopBetaProcess]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="stopBetaProcess" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
-      <method v="2" />
-    </configuration>
-    <configuration name="Remapping works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="HashMap works with complex objects" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
+      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/HashMapTest.test.ts" />
       <test-names>
-        <test-name value="Remapping works correctly" />
+        <test-name value="HashMap works with complex objects" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="HashMap works with numbers" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/HashMapTest.test.ts" />
+      <test-names>
+        <test-name value="HashMap works with numbers" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="HashMap works with simple objects" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/HashMapTest.test.ts" />
+      <test-names>
+        <test-name value="HashMap works with simple objects" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="HashMap works with strings" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/HashMapTest.test.ts" />
+      <test-names>
+        <test-name value="HashMap works with strings" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -245,22 +203,23 @@
       <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="Gradle.Upload Beta Server" />
       <item itemvalue="Gradle.FirebaseMigration.testIdConversion" />
-      <item itemvalue="Gradle.server [stopBetaProcess]" />
-      <item itemvalue="Gradle.server [betaJar]" />
-      <item itemvalue="Gradle.server [runJarWindows]" />
       <item itemvalue="JUnit.All Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="Vitest.All JS Tests" />
-      <item itemvalue="Vitest.Remapping works correctly" />
+      <item itemvalue="Vitest.HashMap works with complex objects" />
+      <item itemvalue="Vitest.HashMap works with numbers" />
+      <item itemvalue="Vitest.HashMap works with simple objects" />
+      <item itemvalue="Vitest.HashMap works with strings" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Vitest.HashMap works with simple objects" />
+        <item itemvalue="Vitest.HashMap works with complex objects" />
+        <item itemvalue="Vitest.HashMap works with numbers" />
+        <item itemvalue="Vitest.HashMap works with strings" />
         <item itemvalue="Gradle.FirebaseMigration.testIdConversion" />
-        <item itemvalue="Gradle.server [stopBetaProcess]" />
-        <item itemvalue="Gradle.server [betaJar]" />
-        <item itemvalue="Gradle.server [runJarWindows]" />
       </list>
     </recent_temporary>
   </component>
@@ -321,6 +280,9 @@
       <workItem from="1684074365055" duration="1619000" />
       <workItem from="1684076043493" duration="1698000" />
       <workItem from="1684078220516" duration="980000" />
+      <workItem from="1684079217516" duration="1056000" />
+      <workItem from="1684085142003" duration="29000" />
+      <workItem from="1684085450671" duration="616000" />
     </task>
     <servers />
   </component>
