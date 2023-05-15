@@ -1,7 +1,7 @@
 import {ClassMappings, Mappings} from "./Mappings";
 import {MappingsImpl} from "./MappingsImpl";
 import {MappingsFilter} from "./MappingsFilter";
-import {HashMap, MutableDict} from "fudge-lib/src/collections/hashmap/HashMap";
+import {HashMap, MutableDict} from "fudge-lib/dist/collections/hashmap/HashMap";
 import {DescriptoredMethod, JavaClass} from "../crash/model/Mappable";
 
 export class MappingsBuilder {

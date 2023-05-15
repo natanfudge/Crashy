@@ -1,4 +1,4 @@
-import {getCookieValue, setCookie} from "../fudge-commons/methods/Browser";
+import {getCookieValue, setCookie} from "fudge-lib/dist/methods/Browser";
 
 const CODE_COOKIE = "code";
 const MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;

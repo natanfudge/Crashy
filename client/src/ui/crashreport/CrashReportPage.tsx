@@ -8,7 +8,7 @@ import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
 import {getCookieDeleted} from "../../utils/Cookies";
 import {getUrlCrashId} from "../../utils/PageUrl";
 import {RichCrashReport} from "../../crash/model/RichCrashReport";
-import {useScreenSize} from "../../fudge-commons/methods/Gui";
+import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
 import {ValidCrashReportUi} from "./valid/ValidCrashReportUi";

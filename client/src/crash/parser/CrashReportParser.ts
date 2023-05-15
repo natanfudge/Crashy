@@ -6,8 +6,8 @@ import {
     StackTraceElement,
     StringMap
 } from "../model/CrashReport";
-import "../../fudge-commons/extensions/ExtensionsImpl"
-import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
+import "fudge-lib/dist/extensions/ExtensionsImpl"
+import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 
 class StringBuilder {
     str: string

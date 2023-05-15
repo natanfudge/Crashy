@@ -6,7 +6,7 @@ import {Text, TextTheme} from "../../../fudge-commons/simple/Text";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {LazyColumn} from "../../../fudge-commons/components/LazyColumn";
 import {useState} from "react";
-import {useScreenSize} from "../../../fudge-commons/methods/Gui";
+import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {getUserPreferences, setUserPreferences} from "../../../utils/Preferences";
 import styled from "@emotion/styled";
 

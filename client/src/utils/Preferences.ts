@@ -1,5 +1,5 @@
 import {MappingsNamespace} from "../mappings/MappingsNamespace";
-import {getComplexCookie, setComplexCookie} from "../fudge-commons/methods/Browser";
+import {getComplexCookie, setComplexCookie} from "fudge-lib/dist/methods/Browser";
 
 export interface UserPreferences {
     defaultMappingNamespace: string

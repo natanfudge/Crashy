@@ -4,11 +4,11 @@ import ReactDOM from "react-dom";
 import {ClickAwayListener} from "@mui/material";
 import {Wrap} from "../SimpleDiv";
 import {SingleChildParentProps} from "../SimpleElementProps";
-import {Require} from "../../types/Basic";
-import {NumericAlignment, Rect} from "../../types/Gui";
-import {getDocumentRelativeRect} from "../../methods/Browser";
-import {toNumericAlignment} from "../../methods/Gui";
-import {coercePreferMin} from "../../methods/Javascript";
+import {Require} from "fudge-lib/dist/types/Basic";
+import {NumericAlignment, Rect} from "fudge-lib/dist/types/Gui";
+import {getDocumentRelativeRect} from "fudge-lib/dist/methods/Browser";
+import {toNumericAlignment} from "fudge-lib/dist/methods/Gui";
+import {coercePreferMin} from "fudge-lib/dist/methods/Javascript";
 
 export function _implExpansion(props: ExpansionPropsApi) {
     const manualProps: ManualExpansionProps = isManualApi(props) ? props : toManual(props)

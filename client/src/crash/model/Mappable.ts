@@ -1,8 +1,8 @@
 import {ClassMethodSeparator, EnableAssertions} from "../../Constants";
 import {MappingStrategy} from "./MappingStrategy";
 import {Mappings} from "../../mappings/Mappings";
-import {hashString} from "fudge-lib/src/collections/hashmap/Hashing";
-import "../../fudge-commons/extensions/Extensions"
+import {hashString} from "fudge-lib/dist/collections/hashmap/Hashing";
+import "fudge-lib/dist/extensions/Extensions"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyMappable = Mappable<any>

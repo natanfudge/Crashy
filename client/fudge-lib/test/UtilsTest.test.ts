@@ -1,4 +1,4 @@
-import {flipRecord} from "../methods/Javascript";
+import {flipRecord} from "fudge-lib/dist/methods/Javascript";
 import {expect, test} from 'vitest'
 
 test("Flip record works correctly", () => {

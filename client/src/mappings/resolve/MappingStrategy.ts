@@ -16,7 +16,7 @@ import {
 } from "../../crash/model/Mappable";
 import {detectMappingNamespace} from "./MappingDetector";
 import {LoaderType, RichStackTraceElement} from "../../crash/model/RichCrashReport";
-import {HashSet} from "fudge-lib/src/collections/hashmap/HashSet";
+import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 
 export interface MappingStrategy {
     mapMethod: (unmapped: SimpleMethod) => SimpleMethod

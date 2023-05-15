@@ -3,7 +3,7 @@ import {getYarnBuilds, getYarnMappings, yarnSupportsMcVersion} from "./YarnMappi
 import {getIntermediaryMappings} from "./IntermediaryMappingsProvider";
 import {MappingsFilter} from "../MappingsFilter";
 import {EmptyMappings, Mappings} from "../Mappings";
-import {PromiseMemoryCache} from "../../fudge-commons/collections/PromiseMemoryCache";
+import {PromiseMemoryCache} from "fudge-lib/dist/collections/PromiseMemoryCache";
 import {getSrgMappings} from "./SrgMappingsProvider";
 import {getMcpBuilds, getMcpMappings, mcpSupportsMcVersion} from "./McpMappingsProvider";
 import {getMojangMappings, mojmapSupportedMinecraftVersion} from "./MojangMappingsProvider";

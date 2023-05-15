@@ -1,7 +1,7 @@
 // import {deflate, inflate} from "zlib";
 
 
-import {httpGet, httpPost} from "../fudge-commons/methods/Http";
+import {httpGet, httpPost} from "fudge-lib/dist/methods/Http";
 import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
 
 export namespace HttpStatusCode {

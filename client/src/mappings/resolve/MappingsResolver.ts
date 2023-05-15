@@ -1,6 +1,6 @@
 import {MappingsNamespace} from "../MappingsNamespace";
 import {getMappingProviders, MappingsProvider} from "../providers/MappingsProvider";
-import {Queue} from "../../fudge-commons/collections/Queue";
+import {Queue} from "fudge-lib/dist/collections/Queue";
 
 /**
  * Problem: Given only a limited set of mappings from namespaces to other namespaces, find a way to map from any namespace to any other namespace.

@@ -59,7 +59,6 @@ repositories {
     }
 
 }
-//TODO: wrong natives in linux...
 
 //TODO: see if we need @mui/lab
 val linuxOnly = configurations.create("linux")
@@ -79,7 +78,7 @@ dependencies {
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
     linuxOnly(objectboxLinuxNatives)
-    implementation("io.github.natanfudge:log-viewer:0.1.0")
+    implementation("io.github.natanfudge:loggy:0.2.2")
 }
 
 

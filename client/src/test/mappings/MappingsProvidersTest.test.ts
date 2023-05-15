@@ -7,11 +7,11 @@ import {
 } from "../../mappings/providers/MappingsProvider";
 import {DescriptoredMethod, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {MappingAssertions, testMappingsProvider} from "./MappingsProviderTester";
-import "../../fudge-commons/extensions/ExtensionsImpl"
+import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {getMcpBuilds} from "../../mappings/providers/McpMappingsProvider";
 import {expect, test} from 'vitest'
 import fetch from "node-fetch"
-import {fetcher} from "../../fudge-commons/methods/Http";
+import {fetcher} from "fudge-lib/dist/methods/Http";
 
 // @ts-ignore
 fetcher.fetch = fetch

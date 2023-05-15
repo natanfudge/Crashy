@@ -2,8 +2,8 @@ package io.github.crashy
 
 import io.github.crashy.Crashy.Build.*
 import io.github.crashy.utils.getResource
-import io.github.natanfudge.logs.FancyLogger
-import io.github.natanfudge.logs.LoggingCredentials
+import io.github.natanfudge.logs.Loggy
+import io.github.natanfudge.logs.impl.LoggingCredentials
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.protobuf.ProtoBuf
 import org.slf4j.Logger
@@ -59,7 +59,7 @@ object Crashy {
     val logger get() = loggerInit
 }
 
-private val loggerInit = FancyLogger(
+private val loggerInit = Loggy.create(
     logToConsole = true,
     logsDir = Crashy.HomeDir.resolve("logs"),
     credentials = LoggingCredentials(

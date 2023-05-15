@@ -8,7 +8,7 @@ import {MappingsSelection} from "./MappingsSelection";
 import {Column} from "../../../../fudge-commons/simple/Flex";
 import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
 import {useState} from "react";
-import {useScreenSize} from "../../../../fudge-commons/methods/Gui";
+import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {getVisibleMappingNamespaces} from "../../../../mappings/MappingsNamespace";
 import {getUserPreferences, setUserPreferences} from "../../../../utils/Preferences";
 

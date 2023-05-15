@@ -3,7 +3,7 @@ import {testFabricCrashReportParse} from "./ParsingTest.test";
 import {testFabricCrashReportUsingWindowsLines} from "../testlogs/TestCrashes";
 import {enrichCrashReport, parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
 import {parseCrashReport} from "../../crash/parser/CrashReportParser";
-import "../../fudge-commons/extensions/ExtensionsImpl"
+import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {TestBadDate} from "../testlogs/TestBadDate";
 import {RenderingOverlayProblematicCrash} from "../testlogs/RenderingOverlayProblematicCrash";
 import {SeeminglyInnocentCrashTest} from "../testlogs/SeeminglyInnocentCrashTest";

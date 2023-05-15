@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Fullstack" type="CompoundRunConfigurationType">
+    <toRun name="Run Server" type="JetRunConfigurationType" />
+    <toRun name="Client Development" type="js.build_tools.npm" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -22,7 +22,7 @@ inline fun <reified R : Any> Routing.crashyPost(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>) (R) -> Unit
 ) {
     post<R>(path) { body ->
-        Crashy.logger.startCallWithContextAsParam(path) { logContext ->
+        Crashy.logger.startSuspendWithContextAsParam(path) { logContext ->
             handler(logContext, this@post, body)
         }
     }
@@ -34,7 +34,7 @@ inline fun Routing.crashyRoute(
 ) {
     for (route in routes) {
         get(route) {
-            Crashy.logger.startCallWithContextAsParam(route) {
+            Crashy.logger.startSuspendWithContextAsParam(route) {
                 body(it, this@get)
             }
         }
@@ -47,7 +47,7 @@ inline fun <reified T : Any> Routing.json(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>)(T) -> Unit
 ) {
     post(path) {
-        Crashy.logger.startCallWithContextAsParam(path) { log ->
+        Crashy.logger.startSuspendWithContextAsParam(path) { log ->
             call.receiveStream().use { body ->
                 try {
                     val decoded = withContext<T>(Dispatchers.IO) {

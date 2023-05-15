@@ -49,7 +49,7 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
     // Runs once every day
     timer.schedule(Day) {
         GlobalScope.launch(Dispatchers.IO) {
-            Crashy.logger.startCall("scheduleTasks") {
+            Crashy.logger.startSuspend("scheduleTasks") {
                 logData("Crashy Home Dir") { Crashy.HomeDir }
                 logData("Schedule Time") { Instant.now() }
                 crashlogStorage.evictOld()

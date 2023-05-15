@@ -45,6 +45,11 @@ export class PromiseMemoryCache<T> {
         return value;
     }
 
+    dumpAll() {
+        this.ongoingPromises = {}
+        this.cache = {}
+    }
+
     anyPromisesUnfulfilled(): boolean {
         return !recordIsEmpty(this.ongoingPromises);
     }

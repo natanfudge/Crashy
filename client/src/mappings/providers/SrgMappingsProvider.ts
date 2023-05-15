@@ -3,10 +3,10 @@ import {MappingsFilter} from "../MappingsFilter";
 import {isOlderThan1_12_2} from "./ProviderUtils";
 import {MappingsBuilder} from "../MappingsBuilder";
 import {JavaClass} from "../../crash/model/Mappable";
-import {extractFromZip} from "../../fudge-commons/methods/Zip";
+import {extractFromZip} from "fudge-lib/dist/methods/Zip";
 import {strFromU8} from "fflate";
 import {CrashyServer, HttpStatusCode} from "../../server/CrashyServer";
-import {httpGet} from "../../fudge-commons/methods/Http";
+import {httpGet} from "fudge-lib/dist/methods/Http";
 
 export {}
 

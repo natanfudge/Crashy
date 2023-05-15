@@ -1,4 +1,4 @@
-import {recordFilter, recordToArray} from "../fudge-commons/methods/Javascript";
+import {recordFilter, recordToArray} from "fudge-lib/dist/methods/Javascript";
 
 export function serializePageArgs(args: Record<string, unknown>): string {
     const asRecord = args as unknown as Record<string, unknown>;
