@@ -13,6 +13,7 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import java.io.File
 
 fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
     options("/uploadCrash") {
@@ -36,11 +37,10 @@ fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
     json<GetCrashRequest>("/getCrash") {
         respond(crashlogs.getCrash(it.value.toString()))
     }
-    preCompressed {
-        singlePageApplication {
-            useResources = false
-            filesPath = Crashy.StaticDir.toString()
-        }
+
+    // Serve static files
+    staticFiles(remotePath = "/", dir = Crashy.StaticDir.toFile()) {
+        preCompressed(CompressedFileType.BROTLI)
     }
 
     // Manually respond these files so the /{id} wildcard doesn't take over these endpoints

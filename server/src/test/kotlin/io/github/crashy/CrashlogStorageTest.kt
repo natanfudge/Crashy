@@ -120,7 +120,7 @@ class CrashlogStorageTest {
                 Files.createTempDirectory("test")
             }
             val cache = CrashlogStorage(dir, bucketName = "crashy-test-crashlogs", clock, deleteFromS3OnFetch = true)
-            Crashy.logger.startCallWithContextAsParam("test_crashlog_storage") {
+            Crashy.logger.startSuspendWithContextAsParam("test_crashlog_storage") {
                 test(cache, clock, dir.resolve("cache"), it)
             }
         }

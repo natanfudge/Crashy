@@ -114,7 +114,7 @@ class CrashlogCacheTest {
         val dir = Files.createTempDirectory("test")
         val cache = CrashlogCache(dir, clock)
         runBlocking {
-            Crashy.logger.startCallWithContextAsParam("test_crashlog_cache"){
+            Crashy.logger.startSuspendWithContextAsParam("test_crashlog_cache"){
                 test(cache, clock, dir, it)
             }
         }

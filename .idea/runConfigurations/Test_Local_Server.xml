@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Test Local Server" type="Multirun" separateTabs="false" reuseTabsWithFailures="false" startOneByOne="true" markFailedProcess="true" hideSuccessProcess="false" delayTime="5.0">
+    <runConfiguration name="Run Server" type="Kotlin" />
+    <runConfiguration name="All Local Server Tests" type="JUnit" />
+    <method v="2" />
+  </configuration>
+</component>
