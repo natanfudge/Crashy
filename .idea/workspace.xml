@@ -5,21 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Test_Local_Server.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/All_Server_Tests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/All_Local_Server_Tests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/old.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/WayTooManyModsCrash.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleIconButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleIconButton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/LazyColumn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/components/LazyColumn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +94,7 @@
     "ignore.virus.scanning.warn.message": "true",
     "js.linters.configure.manually.selectedeslint": "true",
     "ktor.last.update.timestamp": "1684179776507",
-    "last_opened_file_path": "C:/Users/natan/.m2/repository/io/github/natanfudge/loggy/0.2.0/loggy-0.2.0-sources.jar",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -120,11 +113,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\client" />
+      <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\collections" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\standards\src" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\standards" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
@@ -134,7 +127,7 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Upload Release Server">
+  <component name="RunManager" selected="npm.Client Development">
     <configuration name="Stop Beta Server" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -304,7 +297,8 @@
       <workItem from="1684182856595" duration="43000" />
       <workItem from="1684182935122" duration="647000" />
       <workItem from="1684233185937" duration="756000" />
-      <workItem from="1684241702843" duration="3675000" />
+      <workItem from="1684241702843" duration="7783000" />
+      <workItem from="1684262952874" duration="5238000" />
     </task>
     <servers />
   </component>

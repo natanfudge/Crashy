@@ -25,6 +25,10 @@ export default function App() {
 }
 
 function CrashyUi() {
+    // return <div style = {{maxWidth: "100%", overflow: "hidden"}}>
+    //     <span style = {{maxWidth: "100%", display: "inline-block", fontSize: 100, textOverflow: "ellipsis", whiteSpace: "nowrap"}}>Very long texttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt</span>
+    // </div>
+
     const location = useLocation()
     if (location === "/") {
         return <Suspense fallback={<LinearProgress/>}>

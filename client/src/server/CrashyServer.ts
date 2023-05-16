@@ -3,6 +3,7 @@
 
 import {httpGet, httpPost} from "fudge-lib/dist/methods/Http";
 import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
+import {WayTooManyModsCrash} from "../test/testlogs/WayTooManyModsCrash";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -47,6 +48,7 @@ export namespace CrashyServer {
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
         if (id === "debug") return TestVerifyErrorCrash;
+        if (id === "toomanymods") return WayTooManyModsCrash;
         // return testFabricCrashReport;
         // return SeeminglyInnocentCrashTest.replaceAll("    ", "\t")
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
@@ -111,7 +113,7 @@ export namespace CrashyServer {
         const response = await httpGet({
             url: `${crashyOrigin}/getTsrg/${mcVersion}.tsrg`
         })
-        if (response.status != HttpStatusCode.OK) {
+        if (response.status !== HttpStatusCode.OK) {
             throw await requestError(response)
         } else {
             return response.text()
@@ -122,7 +124,7 @@ export namespace CrashyServer {
         const response = await httpGet({
             url: `${crashyOrigin}/getMcp/${mcVersion}/${build}.csv`
         })
-        if (response.status != HttpStatusCode.OK) {
+        if (response.status !== HttpStatusCode.OK) {
             throw await requestError(response)
         } else {
             return response.text()

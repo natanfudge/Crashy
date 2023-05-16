@@ -5,7 +5,7 @@ import {Column, Row} from "../../../fudge-commons/simple/Flex";
 import {Text, TextTheme} from "../../../fudge-commons/simple/Text";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {LazyColumn} from "../../../fudge-commons/components/LazyColumn";
-import {useState} from "react";
+import {Fragment, useState} from "react";
 import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {getUserPreferences, setUserPreferences} from "../../../utils/Preferences";
 import styled from "@emotion/styled";
@@ -65,12 +65,23 @@ export function ModListUi({mods}: { mods: Mod[] }) {
             <SimpleDivider width={"max"}/>
         </Column>
         <Row>
-            <LazyColumn data={firstHalfOfMods}
-                        childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}
-                                                     showVersions={versionsEnabled}/>}/>
-            <LazyColumn data={secondHalfOfMods}
-                        childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}
-                                                     showVersions={versionsEnabled}/>}/>
+            {/*<Column>*/}
+                <ModText>
+                    {/*First Mod <br/>*/}
+                    {/*Second Mod*/}
+                    {firstHalfOfMods.map(mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled} showVersions={versionsEnabled}/>)}
+                </ModText>
+                <ModText>
+                    {secondHalfOfMods.map(mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled} showVersions={versionsEnabled}/>)}
+                </ModText>
+
+            {/*</Column>*/}
+            {/*<LazyColumn data={firstHalfOfMods}*/}
+            {/*            childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}*/}
+            {/*                                         showVersions={versionsEnabled}/>}/>*/}
+            {/*<LazyColumn data={secondHalfOfMods}*/}
+            {/*            childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}*/}
+            {/*                                         showVersions={versionsEnabled}/>}/>*/}
         </Row>
 
 
@@ -79,7 +90,7 @@ export function ModListUi({mods}: { mods: Mod[] }) {
 
 const ModText = styled.h6`
   margin: 0;
-  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 500;
   font-size: 1.25rem;
   line-height: 1.6;
@@ -88,6 +99,9 @@ const ModText = styled.h6`
   padding-right: 10px;
   word-break: break-all;
   align-self: start;
+  max-width: 100%;
+  //overflow: auto;
+  //white-space: nowrap;
 `
 
 const ModIdText = styled.span`
@@ -97,9 +111,27 @@ const ModIdText = styled.span`
 `
 
 function ModUi({mod, showIds, showVersions}: { mod: Mod, showIds: boolean, showVersions: boolean }) {
-    return <ModText style = {{color: mod.isSuspected ? "red" : undefined}}>
-        <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
-        {showIds && <ModIdText> ({mod.id})</ModIdText>}
-    </ModText>
+    if (mod.isSuspected) {
+        return <span style ={{color: "red"}}>
+            <ListedModContent mod={mod} showIds={showIds} showVersions={showVersions}/>
+        </span>
+    } else {
+        return <Fragment>
+            <ListedModContent mod={mod} showIds={showIds} showVersions={showVersions}/>
+        </Fragment>
+    }
+    // return <Fragment /*style = {{color: mod.isSuspected ? "red" : undefined}}*/>
+    //     <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
+    //     {showIds && <ModIdText> ({mod.id})</ModIdText>}
+    //     <br/>
+    // </Fragment>
 }
 
+
+function ListedModContent({mod, showIds, showVersions}: { mod: Mod, showIds: boolean, showVersions: boolean }) {
+    return <Fragment>
+        <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
+        {showIds && <ModIdText> ({mod.id})</ModIdText>}
+        <br/>
+    </Fragment>
+}
