@@ -23,6 +23,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     // This allows quickly figuring out which logs have not been accessed in a long time.
     // Days are in GMT.
     private val lastAccessDays = parentDir.resolve("last_access").createDirectories()
+    context(LogContext)
     fun store(id: CrashlogId, log: CrashlogEntry) {
         log.addToCrashesDir(id)
         storeLastAccessDay(id, clock.today())
@@ -125,11 +126,16 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         return crashesLastAccessedAtDay(lastAccessDay).resolve(id.value.toString())
     }
 
+    context (LogContext)
     private fun storeLastAccessDay(id: CrashlogId, lastAccessDay: LastAccessDay) {
         val path = lastAccessDayPath(id, lastAccessDay)
         val parent = path.parent
         if (!parent.exists()) path.parent.createDirectories()
-        path.createFile()
+        if (!path.exists()) {
+            path.createFile()
+        } else {
+            logWarn { "LastAccessDay at $path already exists. Maybe there were issues archiving this?" }
+        }
     }
 
     private fun crashesLastAccessedAtDay(lastAccessDay: LastAccessDay): Path {

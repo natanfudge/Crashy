@@ -2,7 +2,6 @@
 import {WithMappings} from "./mappings/MappingsUi";
 import {MappingContext} from "../../../mappings/resolve/MappingStrategy";
 import {MappingsController} from "./mappings/MappingsController";
-import {Require} from "../../../fudge-commons/types/Basic";
 import {
     FullRichStackTraceElement,
     Mod,
@@ -19,6 +18,7 @@ import {SimpleDivider} from "../../../fudge-commons/simple/SimpleDivider";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {Fragment, useState} from "react";
+import {Require} from "fudge-lib/dist/types/Basic";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
 

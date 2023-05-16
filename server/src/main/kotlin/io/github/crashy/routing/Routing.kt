@@ -50,7 +50,7 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
     timer.schedule(Day) {
         GlobalScope.launch(Dispatchers.IO) {
             Crashy.logger.startSuspend("scheduleTasks") {
-                logData("Crashy Home Dir") { Crashy.HomeDir }
+                logData("Crashy Home Dir") { Crashy.HomeDir.toAbsolutePath() }
                 logData("Schedule Time") { Instant.now() }
                 crashlogStorage.evictOld()
             }

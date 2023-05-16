@@ -28,6 +28,7 @@ class CrashlogStorage(
     private val s3 = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
     private val cache = CrashlogCache(parentDir = appDataDir.resolve("cache").createDirectories(), clock)
 
+    context(LogContext)
     fun store(id: CrashlogId, log: CrashlogEntry) {
         cache.store(id, log)
     }
@@ -54,12 +55,13 @@ class CrashlogStorage(
         return getFromS3(id)
     }
 
+    context(LogContext)
     private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult  {
         val s3Key = id.s3Key()
-        when (val s3Result = s3.getObjectSuspend(bucket = bucketName, key = s3Key)) {
-            is AnyGetObjectResponse.Success -> return pullLogFromS3(s3Result, id, s3Key)
-            AnyGetObjectResponse.NoSuchKey -> return GetCrashlogResult.DoesNotExist
-            AnyGetObjectResponse.InvalidObjectState -> return restoreCrashlog(s3Key)
+        return when (val s3Result = s3.getObjectSuspend(bucket = bucketName, key = s3Key)) {
+            is AnyGetObjectResponse.Success -> pullLogFromS3(s3Result, id, s3Key)
+            AnyGetObjectResponse.NoSuchKey -> GetCrashlogResult.DoesNotExist
+            AnyGetObjectResponse.InvalidObjectState -> restoreCrashlog(s3Key)
             is AnyGetObjectResponse.UnexpectedError -> throw s3Result.e
         }
 
@@ -77,14 +79,13 @@ class CrashlogStorage(
                         }
                 }
             }
-            val x = 2
         } catch (e: S3Exception) {
             if (e.awsErrorDetails().errorCode() != "RestoreAlreadyInProgress") throw e
-            val x = 2
         }
         return GetCrashlogResult.Archived
     }
 
+    context(LogContext)
     @OptIn(ExperimentalSerializationApi::class)
     private suspend fun pullLogFromS3(
         s3Result: AnyGetObjectResponse.Success,
