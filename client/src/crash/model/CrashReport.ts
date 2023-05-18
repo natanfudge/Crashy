@@ -1,9 +1,9 @@
 
 export interface CrashReport {
     rawText: string
-    description: string
-    wittyComment: string
-    time: string,
+    description: string | undefined
+    wittyComment: string | undefined
+    dateTime: string,
     sections: CrashReportSection[]
     stacktrace: StackTrace
 }

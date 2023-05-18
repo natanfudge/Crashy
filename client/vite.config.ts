@@ -6,6 +6,9 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   test: {
+    deps: {
+      inline: ["fudge-lib"]
+    },
     watch: false,
     threads: false
   }

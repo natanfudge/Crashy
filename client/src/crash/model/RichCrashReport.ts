@@ -3,8 +3,8 @@ import {JavaClass, SimpleMethod} from "./Mappable";
 
 export interface RichCrashReport {
     rawText: string
-    title: string
-    wittyComment: string
+    title?: string
+    wittyComment?: string
     context: CrashContext
     stackTrace: RichStackTrace
     deobfuscated: boolean

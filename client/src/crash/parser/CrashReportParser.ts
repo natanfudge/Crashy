@@ -8,28 +8,20 @@ import {
 } from "../model/CrashReport";
 import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
+import {SystemDetailsTitle} from "./CrashReportEnricher";
 
-class StringBuilder {
-    str: string
-
-    constructor(str: string) {
-        this.str = str;
-    }
-
-    append(str: string) {
-        this.str += str;
-    }
-}
 
 export function parseCrashReport(rawReport: string): CrashReport {
     return parseCrashReportImpl(rawReport, true);
 }
 
+
 export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     let cursor = 0;
 
-    // Skip '---- Minecraft Crash Report ----'
-    skipLine();
+    const firstLine = readLine()
+    const isQuilt = firstLine === "---- Crashed! ----"
+    if (isQuilt) return parseQuilt()
 
     const wittyComment = parseWittyComment();
 
@@ -59,11 +51,47 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     return {
         sections,
         description,
-        time,
+        dateTime: time,
         wittyComment,
         stacktrace,
         rawText: rawReport
     };
+
+    function parseQuilt(): CrashReport {
+        skipString("Date/Time: ")
+        const dateTime = readLine()
+        // Skip \n -- Crash -- \n
+        skipLine()
+        skipLine()
+        skipLine()
+        const stackTrace = parseStackTrace()
+        skipLine()
+        skipLine()
+        skipLine()
+        skipLine() // Skip \n\n -- Mods \n
+        skipLine() // Skip | Index | ...
+        skipLine() // Skip | ----: |
+
+        const mods = readBeforeString("|------:|")
+        skipLine() // Skip last line of table
+
+        return {
+            rawText: rawReport,
+            dateTime: dateTime,
+            sections: [
+                {
+                    title: SystemDetailsTitle,
+                    additionalInfo: {},
+                    stacktrace: undefined,
+                    details: {QuiltModsTitle: mods}
+                }
+            ],
+            stacktrace: stackTrace,
+            description: undefined,
+            wittyComment: undefined
+        }
+
+    }
 
     function parseWittyComment(): string {
         skipUntilAfterChar("/")
@@ -233,7 +261,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
     function isWhitespace(char: string): boolean {
-        switch (char){
+        switch (char) {
             case "\n":
             case "\r":
             case " ":
@@ -386,17 +414,11 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
     function readUntilNextChar(char: string): string {
-        return buildString((str) => {
-            while (next() !== char && !isEof()) {
-                str.append(readCurrent());
-            }
-        });
-    }
-
-    function buildString(builder: (str: StringBuilder) => void): string {
-        const str = new StringBuilder("");
-        builder(str);
-        return str.str;
+        const startIndex = cursor
+        while (!isEof() && readCurrent() !== char) {
+            // Read until reaching char
+        }
+        return rawReport.slice(startIndex, cursor - 2)
     }
 
     function next(): string {
@@ -441,43 +463,57 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
      * Does not include the char itself, but skips it
      */
     function readUntilChar(char: string): string {
-        const result = buildString((str) => {
-            while (current() !== char && !isEof()) {
-                str.append(readCurrent());
+        const startIndex = cursor
+        while (!isEof() && readCurrent() !== char) {
+            // Read until reaching char
+        }
+        return rawReport.slice(startIndex, cursor - 1)
+    }
+
+    /**
+     * Does not include the char itself, but skips it
+     */
+    function readBeforeString(string: string): string {
+        const startIndex = cursor
+        // const result = buildString((str) => {
+        let amountEqualToString = 0
+        while (!isEof()) {
+            const char = readCurrent()
+            if (string[amountEqualToString] === char) {
+                // We progressed being able to the string
+                if (amountEqualToString === string.length - 1) break
+                else amountEqualToString++
+            } else {
+                // Something's not equal, start again.
+                amountEqualToString = 0
             }
-        });
-        skip()
-        return result;
+            // cursor: 6180
+        }
+        // });
+        // skip()
+        // Get rid of the string that we are searching for in the result
+        return rawReport.slice(startIndex, cursor - string.length);
     }
 
     function readUntilEither(chars: string[]): string {
-        return buildString((str) => {
-            while (!(chars.includes(current())) && !isEof()) {
-                str.append(readCurrent());
-            }
-        });
+        const startIndex = cursor
+        while (!isEof() && !(chars.includes(readCurrent()))) {
+            // Read until reaching char
+        }
+        if (!isEof()) cursor--
+        return rawReport.slice(startIndex, cursor)
     }
 
     function peekUntilEither(chars: string[]): string {
         let distance = 0;
-        return buildString((str) => {
-            while (!(chars.includes(peek(distance))) && !isEofAtDistance(distance)) {
-                str.append(peek(distance));
-                distance++
-            }
-        });
+        while (!(chars.includes(peek(distance))) && !isEofAtDistance(distance)) {
+            distance++
+        }
+        return rawReport.slice(cursor, cursor + distance)
     }
 
     function peek(distance: number): string {
         return rawReport[cursor + distance]
-    }
-
-    function readToEnd(): string {
-        return buildString((str) => {
-            while (!isEof()) {
-                str.append(readCurrent());
-            }
-        });
     }
 }
 

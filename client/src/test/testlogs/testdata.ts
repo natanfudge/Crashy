@@ -42,7 +42,7 @@ const testElementStackTrace: StackTraceElement[] = [
 const testCrashReport: CrashReport = {
     rawText: "Test raw text",
     stacktrace: testStackTrace,
-    time: "7/19/21 8:03 PM",
+    dateTime: "7/19/21 8:03 PM",
     description: "charTyped event handler",
     wittyComment: "Why did you do that?",
     sections: [

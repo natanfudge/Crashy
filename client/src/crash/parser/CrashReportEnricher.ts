@@ -67,11 +67,12 @@ function getCrashContext(report: CrashReport, mods?: Mod[]): CrashContext {
     const systemDetails = getSystemDetails(report).details!;
     //16.0.2, Oracle Corporation
     // Brand ignored
+    //TODO: if null use mod with id 'java'
     const [javaVersion] = systemDetails[JavaVersionTitle].split(",");
 
 
     return {
-        time: parseCrashDate(report.time),
+        time: parseCrashDate(report.dateTime),
         javaVersion: javaVersion,
         minecraftVersion: systemDetails[MinecraftVersionTitle],
         loader: getLoader(report, systemDetails, mods),
@@ -439,9 +440,10 @@ function parseJavaClass(classString: string): JavaClass {
     return JavaClass.dotSeperated(classString);
 }
 
-const SystemDetailsTitle = "System Details";
+export const SystemDetailsTitle = "System Details";
 const FabricModsTitle = "Fabric Mods";
 const ForgeModsTitle = "Mod List";
+export const QuiltModsTitle = "Quilt Mods"
 const SuspectedModsTitle = "Suspected Mods";
 
 function getSystemDetails(report: CrashReport): CrashReportSection {

@@ -14,7 +14,7 @@ import {expect, test} from 'vitest'
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
-    expect(report.time).toEqual("15.08.21 17:36")
+    expect(report.dateTime).toEqual("15.08.21 17:36")
     expect(report.description).toEqual("Unexpected error")
     const stacktrace = report.stacktrace
     expect(stacktrace.message).toEqual("java.lang.NullPointerException: Unexpected error")
