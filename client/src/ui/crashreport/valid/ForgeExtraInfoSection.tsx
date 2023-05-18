@@ -52,12 +52,12 @@ function TraceFeiUi(props: {report: RichCrashReport, fei: TraceFei}) {
     const mappingsController = new MappingsController(props.report);
     const context = mappingsController.getContext();
     return <WithMappings controller={mappingsController}>
-        <Column>
+        <Column style = {{wordBreak: "break-all"}}>
             <Spacer height={5}/>
             <SimpleDivider height={1}/>
             <Spacer height={5}/>
-            {props.fei.metadata.map((element, i) =>
-                <TraceFeiElement key={i} element={element} mappings={context}/>)}
+            <LazyColumn data={props.fei.metadata} batchSize={10}
+                        childProvider={(element, i) => <TraceFeiElement key={i} element={element} mappings={context}/>}/>
         </Column>
     </WithMappings>
 }
@@ -80,24 +80,33 @@ function TraceFeiElement({element, mappings}: { element: ElementWithFei, mapping
 
 function KeyValueTraceFei({name, value}: { name: string, value: string | undefined }) {
     return <Fragment>
-        {value !== undefined && <TextTheme wordBreak={"break-word"}>
+        {value !== undefined && <Fragment>
             {name}: <b>{value}</b>
-        </TextTheme>}
+        </Fragment>}
     </Fragment>
 }
 
 function ListTraceFei({name, value}: { name: string, value: string[] }) {
     return <Fragment>
         {value.length > 0 && <Column>
-            <Text text={name + ":"}/>
-            {value.map((element, i) =>
-                <Text key = {i} wordBreak={"break-all"} margin={{left: 10}} text={"- " + element}
-                                        fontWeight="bold"/>)}
+            {name + ":"}
+            <span style={{marginLeft: 10, fontWeight: "bold"}}>
+                {value.map((element, i) => <Fragment>
+                    {"- " + element}
+                    <br/>
+                </Fragment> )}
+
+            </span>
+
         </Column>}
     </Fragment>
 }
-
-
+// {/*<Text key = {i} /*wordBreak={"break-all"}*/ margin={{left: 10}} text={"- " + element}*/}
+//     // fontWeight="bold"/>)}
+//     {/*<Text text={name + ":"}/>*/}
+//     {/*{value.map((element, i) =>*/}
+//     {/*    <Text key = {i} /*wordBreak={"break-all"}*/ margin={{left: 10}} text={"- " + element}*/}
+//         // fontWeight="bold"/>)}
 function ModsFei({report}: { report: RichCrashReport }) {
     return <LazyColumn data={report.mods!}
                        childProvider={(mod, i) => <ModFei key={i} mod={mod}/>}/>

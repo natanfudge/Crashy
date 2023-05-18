@@ -5,14 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/old.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/WayTooManyModsCrash.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/VeryLongTraceCrash.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/LazyColumn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/components/LazyColumn.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +94,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "js.linters.configure.manually.selectedeslint": "true",
-    "ktor.last.update.timestamp": "1684179776507",
+    "ktor.last.update.timestamp": "1684437551779",
     "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -298,7 +299,9 @@
       <workItem from="1684182935122" duration="647000" />
       <workItem from="1684233185937" duration="756000" />
       <workItem from="1684241702843" duration="7783000" />
-      <workItem from="1684262952874" duration="5238000" />
+      <workItem from="1684262952874" duration="5430000" />
+      <workItem from="1684411258812" duration="906000" />
+      <workItem from="1684437106010" duration="4052000" />
     </task>
     <servers />
   </component>

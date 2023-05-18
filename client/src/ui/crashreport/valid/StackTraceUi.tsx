@@ -20,6 +20,7 @@ import {ClickCallback} from "../../../fudge-commons/simple/GuiTypes";
 import {Button, Divider, Typography} from "@mui/material";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
 import {JavaClass} from "../../../crash/model/Mappable";
+import {LazyColumn} from "../../../fudge-commons/components/LazyColumn";
 
 export function StackTraceUi({report}: { report: RichCrashReport }) {
     const causerList = unfoldRichStackTrace(report.stackTrace);
@@ -49,12 +50,11 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
 
 
 export function StackTraceElementsUi(props: { elements: RichStackTraceElement[], mappings: MappingContext }) {
-    return <div>
-        {props.elements.map((traceElement, i) =>
-            <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}
-                                 key={i}
-                                 traceElement={traceElement}/>)}
-    </div>
+    return <LazyColumn data={props.elements} childProvider={(traceElement, i) =>   <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}
+                                                                                                        key={i}
+                                                                                                        traceElement={traceElement}/>}/>
+        {/*{props.elements.map((traceElement, i) =>*/}
+        {/*    <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}*/}
 }
 
 function CausationButtons(props: {

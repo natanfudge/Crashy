@@ -12,7 +12,6 @@
   },
   "eslintConfig": ".eslintrc.json",
   "dependencies": {
-    "fudge-lib" : "latest",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
@@ -23,17 +22,19 @@
     "@types/react-dom": "^18.0.10",
     "dayjs": "^1.11.7",
     "fflate": "^0.7.4",
+    "fudge-lib": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "web-vitals": "^3.1.1"
   },
   "devDependencies": {
-    "eslint-config-standards-style" : "latest",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
     "@vitejs/plugin-react-swc": "^3.1.0",
     "@vitest/ui": "^0.28.4",
+    "eslint-config-standards-style": "latest",
     "node-fetch": "^3.3.0",
     "rollup-plugin-ignore": "^1.0.10",
     "source-map-explorer": "^2.5.3",

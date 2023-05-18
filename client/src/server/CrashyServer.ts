@@ -2,8 +2,7 @@
 
 
 import {httpGet, httpPost} from "fudge-lib/dist/methods/Http";
-import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
-import {WayTooManyModsCrash} from "../test/testlogs/WayTooManyModsCrash";
+import {VeryLongTraceCrash} from "../test/testlogs/VeryLongTraceCrash";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -47,8 +46,9 @@ export namespace CrashyServer {
     const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        if (id === "debug") return TestVerifyErrorCrash;
-        if (id === "toomanymods") return WayTooManyModsCrash;
+        return VeryLongTraceCrash
+        // if (id === "debug") return TestVerifyErrorCrash;
+        // if (id === "toomanymods") return WayTooManyModsCrash;
         // return testFabricCrashReport;
         // return SeeminglyInnocentCrashTest.replaceAll("    ", "\t")
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
