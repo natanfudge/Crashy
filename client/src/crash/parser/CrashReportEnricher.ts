@@ -55,11 +55,13 @@ function isNecDeobfuscated(report: CrashReport): boolean {
 }
 
 const JavaVersionTitle = "Java Version";
+const JavaModId = "java"
 const MinecraftVersionTitle = "Minecraft Version";
 const ForgeLoaderTitle = "Forge";
 const FMLTitle = "FML";
 const ModLauncherTitle = "ModLauncher";
 const FabricLoaderId = "fabricloader";
+const QuiltLoaderId = "quilt_loader"
 const OperatingSystemTitle = "Operating System";
 const IsModdedTitle = "Is Modded"
 
@@ -67,20 +69,21 @@ function getCrashContext(report: CrashReport, mods?: Mod[]): CrashContext {
     const systemDetails = getSystemDetails(report).details!;
     //16.0.2, Oracle Corporation
     // Brand ignored
-    //TODO: if null use mod with id 'java'
-    const [javaVersion] = systemDetails[JavaVersionTitle].split(",");
-
+    const javaVersionString = systemDetails[JavaVersionTitle] ?? mods?.find(mod => mod.id === JavaModId)?.version
+    const [javaVersion] = javaVersionString.split(",");
+    const loader = getLoader(report, systemDetails, mods)
 
     return {
-        time: parseCrashDate(report.dateTime),
+        time: parseCrashDate(report.dateTime, loader.type === LoaderType.Quilt),
         javaVersion: javaVersion,
         minecraftVersion: systemDetails[MinecraftVersionTitle],
-        loader: getLoader(report, systemDetails, mods),
+        loader: loader,
         operatingSystem: parseOperatingSystem(systemDetails[OperatingSystemTitle])
     };
 }
 
-function parseOperatingSystem(osString: string): OperatingSystem {
+function parseOperatingSystem(osString: string | undefined): OperatingSystem | undefined {
+    if (osString === undefined) return undefined
     if (osString.startsWith("Windows ")) {
         //Windows 7 (x86) version 6.1
         const [majorVersion, architectureAndMinor] = osString.split("(");
@@ -136,12 +139,22 @@ function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]):
     }
 
     if (mods !== undefined) {
-        // If mods exists, and not forge, then it's definitely Fabric and we have the version available
-        const fabricLoaderMod = mods.find((mod) => mod.id === FabricLoaderId)!;
-        return {
-            type: LoaderType.Fabric,
-            version: fabricLoaderMod.version
-        };
+        const quiltLoaderMod = mods.find((mod) => mod.id === QuiltLoaderId)
+        // Quilt loader exists - it's quilt
+        if (quiltLoaderMod !== undefined) {
+            return {
+                type: LoaderType.Quilt,
+                version: quiltLoaderMod.version
+            }
+        } else {
+            // If mods exists, and not forge or quilt, then it's definitely Fabric and we have the version available
+            const fabricLoaderMod = mods.find((mod) => mod.id === FabricLoaderId)!;
+            return {
+                type: LoaderType.Fabric,
+                version: fabricLoaderMod.version
+            };
+        }
+
     } else {
         const isModded = systemDetails[IsModdedTitle];
         if (isModded.startsWith("Definitely")) {
@@ -163,7 +176,19 @@ function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]):
 
 }
 
-function parseCrashDate(dateStr: string): Date {
+function parseQuiltDate(dateStr: string): Date {
+    // Quilt format: 2023/05/14 08:25:36.8724
+    const [date, time] = dateStr.split(" ")
+    const [year, month, day] = date.split("/")
+    // A quiltSecond is 1/10_000th of a second. Fuck you quilt.
+    const [hourMinuteSecond, quiltSecond] = time.split(".")
+    const [hour, minute, second] = hourMinuteSecond.split(":")
+    return new Date( // Javascript Date month is 0-indexed
+        parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second), parseInt(quiltSecond) / 10
+    )
+}
+
+function parseFabricForgeDate(dateStr: string) {
     // Fabric format: 20/08/2021, 7:41 OR 20/08/2021, 7:41 PM
     // Forge format: 15.08.21 17:36
     const isFabricFormat = dateStr.includes(",");
@@ -184,6 +209,14 @@ function parseCrashDate(dateStr: string): Date {
         fullHour,
         parseInt(removeSuffix(minutesStr, " PM")) // minutes
     );
+}
+
+function parseCrashDate(dateStr: string, isQuilt: boolean): Date {
+    if (isQuilt) {
+        return parseQuiltDate(dateStr)
+    } else {
+        return parseFabricForgeDate(dateStr);
+    }
 }
 
 function parseDayMonthYear(rawDate: string): { day: string, month: string, year: string } {
@@ -452,16 +485,8 @@ function getSystemDetails(report: CrashReport): CrashReportSection {
 
 function getMods(report: CrashReport): Mod[] | undefined {
     const systemDetails = getSystemDetails(report);
-    const details = systemDetails.details!;
-    // Fabric uses "Fabric Mods" and Forge uses "Mod List"
-    const isFabric = FabricModsTitle in details;
-    const isForge = ForgeModsTitle in details;
-
-    // If no mods appear, it's either vanilla or Fabric with no mod that adds a mod list to the crash log.
-    if (!isFabric && !isForge) return undefined;
-
-    // Forge and fabric use a different format for the mod list.
-    const mods = isFabric ? parseFabricMods(details) : parseForgeMods(details);
+    // Forge, Fabric and Quilt use a different format for the mod list.
+    const mods = parseMods(systemDetails.details!)
     // Trim whitespace
     return mods?.map(mod => ({...mod, id: mod.id.trim()}))
 }
@@ -475,6 +500,19 @@ function getSuspectedModIds(systemDetails: StringMap): string[] {
     // mods.joinToString(", ") {mod -> "${mod.name} (${mod.id})"
     return suspectedMods.split(", ")
         .map((mod) => mod.substring(mod.indexOf("(") + 1, mod.length - 1));
+}
+
+function parseMods(systemDetails: StringMap): Mod[] | undefined {
+    // Fabric uses "Fabric Mods" and Forge uses "Mod List"
+    // Quilt mods is inserted by us in the parsing step.
+    if (FabricModsTitle in systemDetails) {
+        // Fabric
+        parseFabricMods(systemDetails)
+    } else if (ForgeModsTitle in systemDetails) {
+        parseForgeMods(systemDetails)
+    } else if (QuiltModsTitle in systemDetails) {
+        return parseQuiltMods(systemDetails)
+    }
 }
 
 function parseFabricMods(systemDetails: StringMap): Mod[] | undefined {
@@ -535,4 +573,18 @@ function parseForgeMods(systemDetails: StringMap): Mod[] {
                 forgeMetadata: {file, completeness, signature}
             };
         });
+}
+
+function parseQuiltMods(systemDetails: StringMap): Mod[] {
+    const raw = systemDetails[QuiltModsTitle]
+    return raw.split("\n")
+        .filter(line => line !== "")
+        .map(line => {
+            // |   143 | Advancement Plaques | advancementplaques  | 1.4.6  | Fabric  | 4af48cf2e71ea3f1ba7987b3bf39662ae3838714 | <mods>\[进度牌匾] AdvancementPlaques-1.19.2-fabric-1.4.6.jar |  |
+            const [_, index, name, id, version, type, hash, file, subFile] = line.split("|")
+                .map(part => part.trim())
+            return {
+                id, name, version, isSuspected: false
+            }
+        })
 }

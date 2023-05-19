@@ -48,7 +48,10 @@ export function sectionNavigationOf(report: RichCrashReport): Section[] {
     const sections: Section[] = [SpecialSection.StackTrace];
     if (report.mods !== undefined) sections.push(SpecialSection.Mods);
 
-    report.sections.forEach((section, i) => sections.push({name: section.name, index: i}));
+    if (report.context.loader.type !== LoaderType.Quilt) {
+        // Quilt doesn't have this info
+        report.sections.forEach((section, i) => sections.push({name: section.name, index: i}));
+    }
     if (report.context.loader.type === LoaderType.Forge) sections.push(SpecialSection.ForgeInfo);
     if (report.stackTrace.details !== undefined) sections.push(SpecialSection.JvmInfo);
     return sections;

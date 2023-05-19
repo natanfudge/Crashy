@@ -117,7 +117,10 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
                 logData("lastAccessDay today location") { lastAccessDayPath(id, today) }
                 logData("contents of oldLastAccessDay dir") {
                     val path = crashesLastAccessedAtDay(oldLastAccessDay)
-                    if (path.exists()) path.listDirectoryEntries() else "Dir Doesn't exist"
+                    if (path.exists()) {
+                        logInfo { "$path exists." }
+                        path.listDirectoryEntries()
+                    } else "Dir Doesn't exist"
                 }
             }
             storeLastAccessDay(id, today)

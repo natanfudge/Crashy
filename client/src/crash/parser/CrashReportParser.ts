@@ -8,7 +8,7 @@ import {
 } from "../model/CrashReport";
 import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
-import {SystemDetailsTitle} from "./CrashReportEnricher";
+import {QuiltModsTitle, SystemDetailsTitle} from "./CrashReportEnricher";
 
 
 export function parseCrashReport(rawReport: string): CrashReport {
@@ -83,7 +83,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
                     title: SystemDetailsTitle,
                     additionalInfo: {},
                     stacktrace: undefined,
-                    details: {QuiltModsTitle: mods}
+                    details: {[QuiltModsTitle]: mods}
                 }
             ],
             stacktrace: stackTrace,

@@ -3,6 +3,7 @@
 
 import {httpGet, httpPost} from "fudge-lib/dist/methods/Http";
 import {VeryLongTraceCrash} from "../test/testlogs/VeryLongTraceCrash";
+import {TestQuiltLog} from "../test/testlogs/Quilt";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -46,7 +47,8 @@ export namespace CrashyServer {
     const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        return VeryLongTraceCrash
+        return TestQuiltLog
+        // return VeryLongTraceCrash
         // if (id === "debug") return TestVerifyErrorCrash;
         // if (id === "toomanymods") return WayTooManyModsCrash;
         // return testFabricCrashReport;

@@ -44,8 +44,8 @@ export function CrashContextUi({context}: { context: CrashContext }) {
                                                                                 image={isForge ? ForgeLogo : FabricLogo}
                                                                                 text={loaderName + (context.loader.version !== undefined ? context.loader.version : "")}/>}
             <CrashContextElement color={"#ef8928"} image={JavaLogo} text={context.javaVersion}/>
-            <CrashContextElement color={lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
-                                 text={context.operatingSystem.name}/>
+            {context.operatingSystem !== undefined && <CrashContextElement color={lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
+                                  text={context.operatingSystem.name}/>}
             <CrashContextElement color={"#CC9966"} image={ClockIcon} text={displayedTime}/>
 
         </Column>

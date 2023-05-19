@@ -5,14 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/fudge-lib-proposals/extensions/Extensions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/fudge-lib-proposals/extensions/ExtensionsImpl.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/model/CrashReport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/CrashReport.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/testdata.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/testdata.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ValidCrashReportUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ValidCrashReportUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Section.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/Section.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,40 +90,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1684437551779&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/client&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "ktor.last.update.timestamp": "1684437551779",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client/src/fudge-lib-proposals",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\natan\Desktop\Crashy\client" />
+      <recent name="C:\Users\natan\Desktop\Crashy\client\src\fudge-lib-proposals" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
+      <recent name="C:\Users\natan\Desktop\Crashy\client" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\collections" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
@@ -127,8 +133,8 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Vitest.Quilt log can be parsed">
-    <configuration name="Broken section crash is parsed well enough" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="npm.Client Development">
+    <configuration name="Barebones Fabric crash is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
@@ -136,11 +142,11 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
       <test-names>
-        <test-name value="Broken section crash is parsed well enough" />
+        <test-name value="Barebones Fabric crash is parsed correctly" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Empty space crash is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="Crash with weird section formatting is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
@@ -148,11 +154,11 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
       <test-names>
-        <test-name value="Empty space crash is parsed correctly" />
+        <test-name value="Crash with weird section formatting is parsed correctly" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Nec Fabric crash log is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="Fabric crash report is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
@@ -160,7 +166,7 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
       <test-names>
-        <test-name value="Nec Fabric crash log is parsed correctly" />
+        <test-name value="Fabric crash report is parsed correctly" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -176,15 +182,15 @@
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Time is parsed correctly in edge case" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="Quilt log with a small amount of mods can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" />
       <test-names>
-        <test-name value="Time is parsed correctly in edge case" />
+        <test-name value="Quilt log with a small amount of mods can be parsed" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -200,19 +206,19 @@
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="Vitest.All JS Tests" />
-      <item itemvalue="Vitest.Broken section crash is parsed well enough" />
-      <item itemvalue="Vitest.Empty space crash is parsed correctly" />
-      <item itemvalue="Vitest.Nec Fabric crash log is parsed correctly" />
+      <item itemvalue="Vitest.Barebones Fabric crash is parsed correctly" />
+      <item itemvalue="Vitest.Crash with weird section formatting is parsed correctly" />
+      <item itemvalue="Vitest.Fabric crash report is parsed correctly" />
       <item itemvalue="Vitest.Quilt log can be parsed" />
-      <item itemvalue="Vitest.Time is parsed correctly in edge case" />
+      <item itemvalue="Vitest.Quilt log with a small amount of mods can be parsed" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Vitest.Quilt log can be parsed" />
-        <item itemvalue="Vitest.Nec Fabric crash log is parsed correctly" />
-        <item itemvalue="Vitest.Broken section crash is parsed well enough" />
-        <item itemvalue="Vitest.Empty space crash is parsed correctly" />
-        <item itemvalue="Vitest.Time is parsed correctly in edge case" />
+        <item itemvalue="Vitest.Quilt log with a small amount of mods can be parsed" />
+        <item itemvalue="Vitest.Fabric crash report is parsed correctly" />
+        <item itemvalue="Vitest.Crash with weird section formatting is parsed correctly" />
+        <item itemvalue="Vitest.Barebones Fabric crash is parsed correctly" />
       </list>
     </recent_temporary>
   </component>
@@ -287,7 +293,9 @@
       <workItem from="1684262952874" duration="5430000" />
       <workItem from="1684411258812" duration="906000" />
       <workItem from="1684437106010" duration="4284000" />
-      <workItem from="1684444164670" duration="4496000" />
+      <workItem from="1684444164670" duration="5263000" />
+      <workItem from="1684501612262" duration="2516000" />
+      <workItem from="1684509537447" duration="2403000" />
     </task>
     <servers />
   </component>
@@ -342,12 +350,6 @@
           <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.3.0/48bf39d9ee2b4a1a4812d012643ecb0ceb5a961e/ktor-server-core-jvm-2.3.0-sources.jar!/jvmMain/io/ktor/server/http/content/StaticContent.kt</url>
           <line>213</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
-          <line>69</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

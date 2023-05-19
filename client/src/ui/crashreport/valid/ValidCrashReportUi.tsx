@@ -44,13 +44,14 @@ function CenterView({
     return <Surface flexGrow={1} margin={{horizontal: 10}} padding={{bottom: 30, top: 5}} height={"fit-content"}>
         <Row>
             <Column alignItems={"center"} flexGrow={1} padding={{left: screen.isPortrait ? 5 : 50}} width={"max"}>
-                <Wrap padding={{horizontal: 5}} width={"max"}>
+                {report.title !== undefined && <Wrap padding={{horizontal: 5}} width={"max"}>
                     <DynamicallyUnderlinedText text={report.title} largerBy={150}>
                         <SimpleDivider backgroundColor={"#9c1a1a"}/>
                     </DynamicallyUnderlinedText>
-                </Wrap>
+                </Wrap>}
 
-                <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>
+                {report.wittyComment !== undefined &&
+                    <Text text={report.wittyComment} align={"center"} margin={{bottom: 10}}/>}
                 <ActiveSection report={report} section={sectionState.activeSection}/>
             </Column>
         </Row>

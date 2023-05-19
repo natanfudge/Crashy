@@ -7,7 +7,7 @@ import {CrashArchivedScreen, NoSuchCrashScreen} from "./invalid/NoSuchCrashScree
 import {CrashErroredScreen} from "./invalid/CrashErroredScreen";
 import {getCookieDeleted} from "../../utils/Cookies";
 import {getUrlCrashId} from "../../utils/PageUrl";
-import {RichCrashReport} from "../../crash/model/RichCrashReport";
+import {loaderName, RichCrashReport} from "../../crash/model/RichCrashReport";
 import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
 import {CrashyAppBar} from "./appbar/CrashyAppBar";
@@ -56,7 +56,7 @@ async function getCrash(setCrash: (attempt: GetCrashAttempt) => void) {
 
 function CrashReportPageContent({crash, sectionState}: CrashProps) {
     if (isCrashAttemptValid(crash)) {
-        document.title = crash.title
+        document.title = crash.title ?? loaderName(crash.context.loader.type) + " Crash"
         return <ValidCrashReportUi sectionState={sectionState} report={crash}/>
     } else {
         return <InvalidCrashAttempt attempt={crash}/>

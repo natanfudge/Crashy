@@ -126,7 +126,7 @@ export interface CrashContext {
     minecraftVersion: string
     loader: Loader
     time: Date
-    operatingSystem: OperatingSystem
+    operatingSystem: OperatingSystem | undefined
 }
 
 export enum OperatingSystemType {
@@ -142,10 +142,24 @@ export interface OperatingSystem {
 }
 
 export enum LoaderType {
-    Fabric, Forge, Vanilla
+    Fabric, Forge, Vanilla, Quilt
 }
 
 export interface Loader {
     type: LoaderType
     version?: string
+}
+
+export function loaderName(type: LoaderType): string {
+    switch (type){
+        case LoaderType.Fabric:
+            return "Fabric"
+        case LoaderType.Forge:
+            return "Forge"
+        case LoaderType.Vanilla:
+            return "Vanilla"
+        case LoaderType.Quilt:
+            return "Quilt"
+
+    }
 }

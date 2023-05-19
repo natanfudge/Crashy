@@ -4,7 +4,7 @@ import io.github.crashy.Crashy
 
 object ApiTesting {
     val TestingBuild = when(val value = System.getenv("testTarget")){
-        "local" -> Crashy.Build.Local
+        "local".trim() -> Crashy.Build.Local
         "beta" -> Crashy.Build.Beta
         "release" -> Crashy.Build.Release
         else -> error("test-target must be specified as local, beta, or release via -Dtest-target=XXX. Got: $value")
