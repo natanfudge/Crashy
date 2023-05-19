@@ -12,6 +12,7 @@ import {getMcpBuilds} from "../../mappings/providers/McpMappingsProvider";
 import {expect, test} from 'vitest'
 import fetch from "node-fetch"
 import {fetcher} from "fudge-lib/dist/methods/Http";
+import {getQuiltBuilds, getQuiltMappings} from "../../mappings/providers/QuiltMappingsProvider";
 
 // @ts-ignore
 fetcher.fetch = fetch
@@ -237,3 +238,7 @@ test("Mojang mappings work", async () => {
     await testMappingsProvider(OfficialToMojmapMappingsProvider,"1.19.3",assertions);
 })
 
+
+test("Quilt mappings work", async () => {
+    await getQuiltBuilds("1.19.2")
+})

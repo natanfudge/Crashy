@@ -13,7 +13,13 @@ import {fadedOutColor} from "../../Colors";
 import {Link} from "@mui/material";
 import {CrashyNewIssueUrl} from "../../utils/Crashy";
 import {Text, TextTheme} from "../../../fudge-commons/simple/Text";
-import {CrashContext, LoaderType, OperatingSystemType} from "../../../crash/model/RichCrashReport";
+import {
+    CrashContext,
+    getLoaderLogo,
+    getLoaderName,
+    LoaderType,
+    OperatingSystemType
+} from "../../../crash/model/RichCrashReport";
 import {SimpleDivider} from "../../../fudge-commons/simple/SimpleDivider";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
@@ -32,7 +38,7 @@ export function CrashLeftSide(props: { context: CrashContext }) {
 }
 
 export function CrashContextUi({context}: { context: CrashContext }) {
-    const loaderName = context.loader.type === LoaderType.Fabric ? "Fabric Loader " : "Forge ";
+    const loaderName = getLoaderName(context.loader.type)
     const displayedTime = formatTime(context.time);
     const isForge = context.loader.type === LoaderType.Forge
 
@@ -41,9 +47,9 @@ export function CrashContextUi({context}: { context: CrashContext }) {
             <CrashContextElement color={"#1cc11e"} image={MinecraftLogo} text={context.minecraftVersion}/>
             {context.loader.type !== LoaderType.Vanilla && <CrashContextElement color={"#ffe500"}
                                                                                 filter={isForge ? "invert(79%) sepia(6%) saturate(187%) hue-rotate(335deg) brightness(83%) contrast(93%)" : undefined}
-                                                                                image={isForge ? ForgeLogo : FabricLogo}
-                                                                                text={loaderName + (context.loader.version !== undefined ? context.loader.version : "")}/>}
-            <CrashContextElement color={"#ef8928"} image={JavaLogo} text={context.javaVersion}/>
+                                                                                image={getLoaderLogo(context.loader.type)}
+                                                                                text={loaderName + " " + (context.loader.version !== undefined ? context.loader.version : "")}/>}
+            <CrashContextElement color={"#ef8928"} image={JavaLogo} text={"Java " + context.javaVersion}/>
             {context.operatingSystem !== undefined && <CrashContextElement color={lightBlue[100]} image={getOperatingSystemIcon(context.operatingSystem.type)}
                                   text={context.operatingSystem.name}/>}
             <CrashContextElement color={"#CC9966"} image={ClockIcon} text={displayedTime}/>

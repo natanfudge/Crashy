@@ -12,7 +12,7 @@ import {
     ExceptionFrame,
     ExceptionLocation,
     ExceptionStackmapTable,
-    ForgeTraceMetadata,
+    ForgeTraceMetadata, getLoaderName,
     Loader,
     LoaderType,
     Mod,
@@ -37,13 +37,14 @@ export function parseCrashReportRich(rawReport: string): RichCrashReport {
 
 export function enrichCrashReport(report: CrashReport): RichCrashReport {
     const mods = getMods(report);
+    const context = getCrashContext(report, mods)
     return {
         wittyComment: report.wittyComment,
         title: report.description,
         mods,
         stackTrace: enrichStackTrace(report.stacktrace),
         sections: report.sections.map((section) => enrichCrashReportSection(section)),
-        context: getCrashContext(report, mods),
+        context,
         rawText: report.rawText,
         deobfuscated: isNecDeobfuscated(report)
     };
@@ -64,6 +65,7 @@ const FabricLoaderId = "fabricloader";
 const QuiltLoaderId = "quilt_loader"
 const OperatingSystemTitle = "Operating System";
 const IsModdedTitle = "Is Modded"
+const MinecraftModId = "minecraft"
 
 function getCrashContext(report: CrashReport, mods?: Mod[]): CrashContext {
     const systemDetails = getSystemDetails(report).details!;
@@ -76,7 +78,7 @@ function getCrashContext(report: CrashReport, mods?: Mod[]): CrashContext {
     return {
         time: parseCrashDate(report.dateTime, loader.type === LoaderType.Quilt),
         javaVersion: javaVersion,
-        minecraftVersion: systemDetails[MinecraftVersionTitle],
+        minecraftVersion: systemDetails[MinecraftVersionTitle] ?? mods?.find(mod => mod.id === MinecraftModId)?.version,
         loader: loader,
         operatingSystem: parseOperatingSystem(systemDetails[OperatingSystemTitle])
     };
@@ -130,7 +132,7 @@ function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]):
     }
 
     const fmlEntry = systemDetails[FMLTitle]
-    if (fmlEntry != undefined) {
+    if (fmlEntry !== undefined) {
         return {
             type: LoaderType.Forge,
             // Actually parsing the version is too much effort for such an old minecraft version
@@ -172,8 +174,6 @@ function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]):
             }
         }
     }
-
-
 }
 
 function parseQuiltDate(dateStr: string): Date {

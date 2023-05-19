@@ -5,20 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/fudge-lib-proposals/extensions/Extensions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/fudge-lib-proposals/extensions/ExtensionsImpl.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/quilt/QuiltMappingsProvider.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Quilt TODO" beforeDir="false" afterPath="$PROJECT_DIR$/Quilt TODO" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/assets/react.svg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/McVersionNormalizer.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SemanticVersionImpl.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ValidCrashReportUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ValidCrashReportUi.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/Section.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/Section.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +70,13 @@
         </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Object" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -133,19 +139,7 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Client Development">
-    <configuration name="Barebones Fabric crash is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
-      <test-names>
-        <test-name value="Barebones Fabric crash is parsed correctly" />
-      </test-names>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Vitest.Quilt mappings work">
     <configuration name="Crash with weird section formatting is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
@@ -194,6 +188,18 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="Quilt mappings work" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="Quilt mappings work" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Compound.Run Fullstack" />
@@ -206,7 +212,7 @@
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="Vitest.All JS Tests" />
-      <item itemvalue="Vitest.Barebones Fabric crash is parsed correctly" />
+      <item itemvalue="Vitest.Quilt mappings work" />
       <item itemvalue="Vitest.Crash with weird section formatting is parsed correctly" />
       <item itemvalue="Vitest.Fabric crash report is parsed correctly" />
       <item itemvalue="Vitest.Quilt log can be parsed" />
@@ -214,11 +220,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Vitest.Quilt mappings work" />
         <item itemvalue="Vitest.Quilt log can be parsed" />
         <item itemvalue="Vitest.Quilt log with a small amount of mods can be parsed" />
         <item itemvalue="Vitest.Fabric crash report is parsed correctly" />
         <item itemvalue="Vitest.Crash with weird section formatting is parsed correctly" />
-        <item itemvalue="Vitest.Barebones Fabric crash is parsed correctly" />
       </list>
     </recent_temporary>
   </component>
@@ -295,7 +301,7 @@
       <workItem from="1684437106010" duration="4284000" />
       <workItem from="1684444164670" duration="5263000" />
       <workItem from="1684501612262" duration="2516000" />
-      <workItem from="1684509537447" duration="2403000" />
+      <workItem from="1684509537447" duration="7582000" />
     </task>
     <servers />
   </component>
@@ -350,6 +356,12 @@
           <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.3.0/48bf39d9ee2b4a1a4812d012643ecb0ceb5a961e/ktor-server-core-jvm-2.3.0-sources.jar!/jvmMain/io/ktor/server/http/content/StaticContent.kt</url>
           <line>213</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts</url>
+          <line>10</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -13,6 +13,7 @@ import {
     OfficialSrgToSrgMappings
 } from "./ForgeRuntimeMappingsProvider";
 import {getMappingsCached} from "../MappingsApi";
+import {getQuiltBuilds, getQuiltMappings, quiltSupportsMcVersion} from "./QuiltMappingsProvider";
 
 
 export type MappingsBuilds = string[];
@@ -41,7 +42,8 @@ export interface MappingsProvider {
 
     /**
      * If false and supportsMinecraftVersion is true, it will be used as a step for other mappings, but
-     * the user won't be able to select it as a final mapping
+     * the user won't be able to select it as a final mapping.
+     * Obviously, it will only be visible if it supports the minecraft version in all cases.
      */
 
     isVisible(): boolean
@@ -67,20 +69,22 @@ export const IntermediaryToYarnMappingsProvider: MappingsProvider = {
 }
 
 
-// export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
-//     fromNamespace: "Intermediary",
-//     toNamespace: "Quilt",
-//     async getBuilds(minecraftVersion: string): Promise<string[]> {
-//         // const builds = await getYarnBuilds(minecraftVersion)
-//         // return builds.map(build => build.version)
-//     },
-//     getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-//         // return getYarnMappings(build)
-//     },
-//     supportsMinecraftVersion(version: string): boolean {
-//         return false;
-//     }
-// }
+export const IntermediaryToQuiltMappingsProvider: MappingsProvider = {
+    fromNamespace: "Intermediary",
+    toNamespace: "Quilt",
+    async getBuilds(minecraftVersion: string): Promise<string[]> {
+        return getQuiltBuilds(minecraftVersion)
+    },
+    getMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
+        return getQuiltMappings(version, filter)
+    },
+    supportsMinecraftVersion(version: string): boolean {
+        return quiltSupportsMcVersion(version);
+    },
+    isVisible(): boolean {
+        return true
+    }
+}
 
 export const OfficialToIntermediaryMappingsProvider: MappingsProvider = {
     fromNamespace: "Official",
@@ -204,7 +208,8 @@ const allMappingsProviders: MappingsProvider[] = [
     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
     OfficialSrgToSrgMappingsProvider,
-    ForgeRuntimeToOfficialSrgMappingsProvider
+    ForgeRuntimeToOfficialSrgMappingsProvider,
+    IntermediaryToQuiltMappingsProvider
 ]
 
 export function getMappingProviders(mcVersion: string): MappingsProvider[] {

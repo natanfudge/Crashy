@@ -1,5 +1,9 @@
 import {StringMap} from "./CrashReport";
 import {JavaClass, SimpleMethod} from "./Mappable";
+import FabricLogo from "../../media/fabric_logo.svg";
+import ForgeLogo from "../../media/forge_logo.svg";
+import MinecraftLogo from "../../media/minecraft_cube.svg";
+import QuiltLogo from "../../media/quilt_logo.svg";
 
 export interface RichCrashReport {
     rawText: string
@@ -150,7 +154,7 @@ export interface Loader {
     version?: string
 }
 
-export function loaderName(type: LoaderType): string {
+export function getLoaderName(type: LoaderType): string {
     switch (type){
         case LoaderType.Fabric:
             return "Fabric"
@@ -161,5 +165,18 @@ export function loaderName(type: LoaderType): string {
         case LoaderType.Quilt:
             return "Quilt"
 
+    }
+}
+
+export function getLoaderLogo(type: LoaderType): string {
+    switch (type) {
+        case LoaderType.Fabric:
+            return FabricLogo
+        case LoaderType.Forge:
+            return ForgeLogo;
+        case LoaderType.Vanilla:
+            return MinecraftLogo;
+        case LoaderType.Quilt:
+            return QuiltLogo
     }
 }
