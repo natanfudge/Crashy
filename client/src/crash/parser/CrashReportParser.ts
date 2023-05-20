@@ -20,8 +20,8 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     let cursor = 0;
 
     const firstLine = readLine()
-    const isQuilt = firstLine === "---- Crashed! ----"
-    if (isQuilt) return parseQuilt()
+    const isConcise = firstLine === "---- Crashed! ----"
+    if (isConcise) return parseConciseLog()
 
     const wittyComment = parseWittyComment();
 
@@ -57,7 +57,8 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         rawText: rawReport
     };
 
-    function parseQuilt(): CrashReport {
+    // Some unknown quilt mod is reducing crash logs to something very small
+    function parseConciseLog(): CrashReport {
         skipString("Date/Time: ")
         const dateTime = readLine()
         // Skip \n -- Crash -- \n
@@ -109,24 +110,33 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return readLine();
     }
 
-    function parseStackTrace(): StackTrace {
+    function parseStackTrace(indented?: boolean): StackTrace {
+        // Sometimes the 'caused by' and such are further indented for some reason.
+        const isIndented = indented ?? false
+        // if (isIndented) skipString("\t")
         const message = readLine();
         let details: ExceptionDetails | undefined = undefined
         if (nextIsString("Exception Details:")) {
             skipLine();
-            details = parseExceptionDetails();
+            details = parseExceptionDetails(isIndented);
         }
-        const trace = parseStackTraceElements();
+        const trace = parseStackTraceElements(isIndented);
 
         let causedBy: StackTrace | undefined = undefined;
+        const causedByIndented = current() === "\t"
+        if (causedByIndented) skip() // Skip tab
         if (nextIsString("Caused by: ")) {
             skipString("Caused by: ");
-            causedBy = parseStackTrace();
+            causedBy = parseStackTrace(causedByIndented);
+        }
+        if (nextIsString("Suppressed: ")) {
+            skipString("Suppressed: ");
+            causedBy = parseStackTrace(causedByIndented);
         }
         return {details, causedBy, message, trace};
     }
 
-    function parseExceptionDetails(): ExceptionDetails {
+    function parseExceptionDetails(isIndented: boolean): ExceptionDetails {
         const details: Record<string, string[]> = {};
         const startIndex = cursor;
         while (nextIsString("  ")) {
@@ -153,17 +163,21 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         return lines;
     }
 
-    function parseStackTraceElements(): StackTraceElement[] {
+    function parseStackTraceElements(indented: boolean): StackTraceElement[] {
         const trace = [];
         while (current() === "\t" && !isEof()) {
-            trace.push(parseStackTraceElement());
+            if (nextIsString("\tSuppressed: ") || nextIsString("\tCaused by: ")) {
+                break;
+            }
+            trace.push(parseStackTraceElement(indented));
         }
         return trace;
     }
 
-    function parseStackTraceElement(): StackTraceElement {
+    function parseStackTraceElement(isIndented: boolean): StackTraceElement {
         // Skip leading tab
         skip();
+        if (isIndented) skip() // Skip second leading tab due to indent
 
         // Most trace lines start with 'at ', but sometimes the last line says '... X more'. In that case we save the 'X more'.
         if (nextIsString("at ")) {
@@ -236,7 +250,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
         if (nextIsString("Stacktrace:")) {
             // Skip 'Stacktrace:'
             skipLine();
-            stacktrace = parseStackTraceElements();
+            stacktrace = parseStackTraceElements(false);
         }
         return stacktrace;
     }

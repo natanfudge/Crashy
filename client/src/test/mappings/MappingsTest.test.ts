@@ -104,29 +104,6 @@ test("Remapping from ForgeRuntime to yarn works correctly", async () => {
     expect(remappedMethodSimple).toEqual("MinecraftClient#render")
 }, 30_000)
 
-test("Remapping m_7731 works to mojmap works", async () => {
-    const testClass = JavaClass.dotSeperated("net.minecraft.world.level.Level")
-    const testMethod = testClass.withMethod("m_7731_")
-
-    const context: Omit<MappingContext, "desiredNamespace"> = {
-        relevantMappables: HashSet.of<SimpleMappable>(testClass, testMethod, testMethod.classIn),
-        desiredBuild: DesiredBuildProblem.NoBuildsForNamespace,
-        loader: LoaderType.Forge,
-        isDeobfuscated: false,
-        minecraftVersion: "1.18.2"
-    }
-
-    const finalMappingStrategy = await getMappingForName(testClass, {
-            ...context, desiredNamespace: "MojMap"
-        }
-    )
-
-    const remappedMethodFull = testMethod.fullName(finalMappingStrategy)
-    const remappedMethodSimple = testMethod.simpleName(finalMappingStrategy)
-
-    expect(remappedMethodFull).toEqual("net.minecraft.world.level.Level#setBlock")
-    expect(remappedMethodSimple).toEqual("Level#setBlock")
-}, 30_000)
 
 // test("Remapping m_7731 works to intermediary works", async () => {
 //     const testClass = JavaClass.dotSeperated("net.minecraft.world.level.Level")

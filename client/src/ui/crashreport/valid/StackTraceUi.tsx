@@ -102,6 +102,7 @@ function CausationButton(props: { causer: JavaClass, mappings: MappingContext, i
         wordBreak: "break-word",
         margin: 4,
         backgroundColor: props.selected ? ActiveColor : undefined,
+        border: props.totalAmount > 1 && props.index === props.totalAmount - 1 ? "2px solid white" : undefined // Emphasize root cause
         // color: "#ff5e5e"
     }} disableRipple={true} variant={"outlined"} size={"small"}
                    onClick={(e) => props.onClick(e.currentTarget)}>

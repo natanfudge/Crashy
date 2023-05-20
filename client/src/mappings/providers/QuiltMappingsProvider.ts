@@ -5,14 +5,15 @@ import {MappingsBuilder} from "../MappingsBuilder";
 import {httpGet} from "fudge-lib/dist/methods/Http";
 
 export async function getQuiltBuilds(minecraftVersion: string): Promise<string[]> {
+    return []
     // Arrives in xml
-    const builds = await (await httpGet({url: "https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-mappings/maven-metadata.xml"})).text()
-    //TODO: add removeBeforeFirst
-    const versionsPart = builds.removeBeforeFirst("<versions>").removeAfterLast("</versions>")
-    const relevantVersions = versionsPart.split("<version>")
-        .filter(versionString => versionString.startsWith(minecraftVersion))
-    const versionsParsed = relevantVersions.map(v => v.removeSuffix("</version>"))
-    return versionsParsed
+    // const builds = await (await httpGet({url: "https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-mappings/maven-metadata.xml"})).text()
+    // //TODO: add removeBeforeFirst
+    // const versionsPart = builds.removeBeforeFirst("<versions>").removeAfterLast("</versions>")
+    // const relevantVersions = versionsPart.split("<version>")
+    //     .filter(versionString => versionString.startsWith(minecraftVersion))
+    // const versionsParsed = relevantVersions.map(v => v.removeSuffix("</version>"))
+    // return versionsParsed
 }
 
 export async function getQuiltMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {

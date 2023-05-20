@@ -5,19 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/mappings/quilt/QuiltMappingsProvider.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Crashlog_JS_Tests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Mappings_JS_Tests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/ClassicQuilt.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/QuiltFabric.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Quilt TODO" beforeDir="false" afterPath="$PROJECT_DIR$/Quilt TODO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/react.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/McVersionNormalizer.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SemanticVersionImpl.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/Quilt.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/ConciseQuilt.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/testlogs/QuiltLittleMods.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/testlogs/QuiltLittleMods.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,8 +107,8 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "js.linters.configure.manually.selectedeslint": "true",
-    "ktor.last.update.timestamp": "1684437551779",
-    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client/src/fudge-lib-proposals",
+    "ktor.last.update.timestamp": "1684539694051",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client/src/test/mappings",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -125,8 +127,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\fudge-lib-proposals" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
+      <recent name="C:\Users\natan\Desktop\Crashy\client\src\fudge-lib-proposals" />
       <recent name="C:\Users\natan\Desktop\Crashy\client" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
@@ -139,32 +141,8 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Vitest.Quilt mappings work">
-    <configuration name="Crash with weird section formatting is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
-      <test-names>
-        <test-name value="Crash with weird section formatting is parsed correctly" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Fabric crash report is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
-      <test-names>
-        <test-name value="Fabric crash report is parsed correctly" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Quilt log can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="npm.Client Development">
+    <configuration name="Fabric-Quilt log can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
@@ -172,7 +150,31 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" />
       <test-names>
-        <test-name value="Quilt log can be parsed" />
+        <test-name value="Fabric-Quilt log can be parsed" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Intermediary mappings can be retrieved" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="Intermediary mappings can be retrieved" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="New test - Yarn mappings can be retrieved via new method" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" />
+      <test-names>
+        <test-name value="New test - Yarn mappings can be retrieved via new method" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -212,19 +214,21 @@
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="Vitest.All JS Tests" />
+      <item itemvalue="Vitest.Crashlog JS Tests" />
+      <item itemvalue="Vitest.Mappings JS Tests" />
+      <item itemvalue="Vitest.Fabric-Quilt log can be parsed" />
+      <item itemvalue="Vitest.Intermediary mappings can be retrieved" />
+      <item itemvalue="Vitest.New test - Yarn mappings can be retrieved via new method" />
       <item itemvalue="Vitest.Quilt mappings work" />
-      <item itemvalue="Vitest.Crash with weird section formatting is parsed correctly" />
-      <item itemvalue="Vitest.Fabric crash report is parsed correctly" />
-      <item itemvalue="Vitest.Quilt log can be parsed" />
       <item itemvalue="Vitest.Quilt log with a small amount of mods can be parsed" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Vitest.Quilt mappings work" />
-        <item itemvalue="Vitest.Quilt log can be parsed" />
+        <item itemvalue="Vitest.Fabric-Quilt log can be parsed" />
+        <item itemvalue="Vitest.Intermediary mappings can be retrieved" />
+        <item itemvalue="Vitest.New test - Yarn mappings can be retrieved via new method" />
         <item itemvalue="Vitest.Quilt log with a small amount of mods can be parsed" />
-        <item itemvalue="Vitest.Fabric crash report is parsed correctly" />
-        <item itemvalue="Vitest.Crash with weird section formatting is parsed correctly" />
+        <item itemvalue="Vitest.Quilt mappings work" />
       </list>
     </recent_temporary>
   </component>
@@ -301,7 +305,8 @@
       <workItem from="1684437106010" duration="4284000" />
       <workItem from="1684444164670" duration="5263000" />
       <workItem from="1684501612262" duration="2516000" />
-      <workItem from="1684509537447" duration="7582000" />
+      <workItem from="1684509537447" duration="7893000" />
+      <workItem from="1684536970106" duration="3949000" />
     </task>
     <servers />
   </component>
@@ -357,12 +362,6 @@
           <line>213</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts</url>
-          <line>10</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -372,6 +371,7 @@
       </configuration>
       <configuration name="JavaScriptTestRunnerVitest">
         <watch expression="rawReport.slice(cursor - 5, cursor + 100)" language="TypeScript" />
+        <watch expression="rawReport.slice(cursor, cursor + 100)" language="TypeScript" />
       </configuration>
     </watches-manager>
   </component>

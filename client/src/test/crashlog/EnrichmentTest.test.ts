@@ -243,7 +243,7 @@ function testForgeCrashReportEnrich(enriched: RichCrashReport) {
 
 test("Fabric crash report is enriched properly", () => {
     const parsed = parseCrashReport(testFabricCrashReport)
-    const enriched = enrichCrashReport(parseCrashReport(testFabricCrashReport));
+    const enriched = enrichCrashReport(parsed);
     testFabricCrashReportEnrich(enriched);
 
 })

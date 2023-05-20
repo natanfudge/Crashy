@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Mappings JS Tests" type="JavaScriptTestRunnerVitest">
+    <node-interpreter value="project" />
+    <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+    <working-dir value="$PROJECT_DIR$/client" />
+    <envs />
+    <scope-kind value="DIRECTORY" />
+    <test-directory value="$PROJECT_DIR$/client/src/test/mappings" />
+    <method v="2" />
+  </configuration>
+</component>

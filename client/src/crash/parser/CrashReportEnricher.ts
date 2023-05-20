@@ -76,7 +76,7 @@ function getCrashContext(report: CrashReport, mods?: Mod[]): CrashContext {
     const loader = getLoader(report, systemDetails, mods)
 
     return {
-        time: parseCrashDate(report.dateTime, loader.type === LoaderType.Quilt),
+        time: parseCrashDate(report.dateTime, report.description === undefined),
         javaVersion: javaVersion,
         minecraftVersion: systemDetails[MinecraftVersionTitle] ?? mods?.find(mod => mod.id === MinecraftModId)?.version,
         loader: loader,
@@ -176,11 +176,11 @@ function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]):
     }
 }
 
-function parseQuiltDate(dateStr: string): Date {
-    // Quilt format: 2023/05/14 08:25:36.8724
+function parseConciseDate(dateStr: string): Date {
+    // Concise format: 2023/05/14 08:25:36.8724
     const [date, time] = dateStr.split(" ")
     const [year, month, day] = date.split("/")
-    // A quiltSecond is 1/10_000th of a second. Fuck you quilt.
+    // A quiltSecond is 1/10_000th of a second. Fuck you random quilt mod.
     const [hourMinuteSecond, quiltSecond] = time.split(".")
     const [hour, minute, second] = hourMinuteSecond.split(":")
     return new Date( // Javascript Date month is 0-indexed
@@ -188,13 +188,13 @@ function parseQuiltDate(dateStr: string): Date {
     )
 }
 
-function parseFabricForgeDate(dateStr: string) {
+function parseNormalDate(dateStr: string) {
     // Fabric format: 20/08/2021, 7:41 OR 20/08/2021, 7:41 PM
     // Forge format: 15.08.21 17:36
     const isFabricFormat = dateStr.includes(",");
     const [date, hourStr] = dateStr.split(isFabricFormat ? ", " : " ");
     const {day, month, year} = parseDayMonthYear(date);
-    const [fullHourStr, minutesStr] = hourStr.removeSuffix(" a.m.").split(":");
+    const [fullHourStr, minutesStr, secondStr] = hourStr.removeSuffix(" a.m.").split(":");
     // Convert PM format to 24 hour format
     const fullHour = parseInt(fullHourStr) + (minutesStr.endsWith(" PM") ? 12 : 0);
 
@@ -207,15 +207,16 @@ function parseFabricForgeDate(dateStr: string) {
         parseInt(month) - 1, // Javascript Date month is 0-indexed
         parseInt(day),
         fullHour,
-        parseInt(removeSuffix(minutesStr, " PM")) // minutes
+        parseInt(removeSuffix(minutesStr, " PM")), // minutes
+        secondStr !== undefined ? parseInt(secondStr) : undefined // seconds
     );
 }
 
-function parseCrashDate(dateStr: string, isQuilt: boolean): Date {
-    if (isQuilt) {
-        return parseQuiltDate(dateStr)
+function parseCrashDate(dateStr: string, isConcise: boolean): Date {
+    if (isConcise) {
+        return parseConciseDate(dateStr)
     } else {
-        return parseFabricForgeDate(dateStr);
+        return parseNormalDate(dateStr);
     }
 }
 
@@ -507,9 +508,9 @@ function parseMods(systemDetails: StringMap): Mod[] | undefined {
     // Quilt mods is inserted by us in the parsing step.
     if (FabricModsTitle in systemDetails) {
         // Fabric
-        parseFabricMods(systemDetails)
+        return parseFabricMods(systemDetails)
     } else if (ForgeModsTitle in systemDetails) {
-        parseForgeMods(systemDetails)
+        return parseForgeMods(systemDetails)
     } else if (QuiltModsTitle in systemDetails) {
         return parseQuiltMods(systemDetails)
     }
