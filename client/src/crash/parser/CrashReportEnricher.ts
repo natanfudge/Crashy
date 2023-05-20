@@ -12,7 +12,7 @@ import {
     ExceptionFrame,
     ExceptionLocation,
     ExceptionStackmapTable,
-    ForgeTraceMetadata, getLoaderName,
+    ForgeTraceMetadata,
     Loader,
     LoaderType,
     Mod,
@@ -202,7 +202,7 @@ function parseNormalDate(dateStr: string) {
     // Add the 2000s when the 20 at the start is omitted, e.g. "08/20/21"
     const actualYear = yearNumber < 1920 ? yearNumber + 2000 : yearNumber;
 
-    return new Date(
+    return createDate(
         actualYear,
         parseInt(month) - 1, // Javascript Date month is 0-indexed
         parseInt(day),
@@ -210,6 +210,14 @@ function parseNormalDate(dateStr: string) {
         parseInt(removeSuffix(minutesStr, " PM")), // minutes
         secondStr !== undefined ? parseInt(secondStr) : undefined // seconds
     );
+}
+
+function createDate(year: number, month: number, day: number, hour: number, minute: number, second: number | undefined): Date {
+    if (second !== undefined) {
+        return new Date(year, month, day, hour, minute, second)
+    } else {
+        return new Date(year, month, day, hour, minute)
+    }
 }
 
 function parseCrashDate(dateStr: string, isConcise: boolean): Date {
@@ -579,7 +587,8 @@ function parseForgeMods(systemDetails: StringMap): Mod[] {
 function parseQuiltMods(systemDetails: StringMap): Mod[] {
     const raw = systemDetails[QuiltModsTitle]
     return raw.split("\n")
-        .filter(line => line !== "")
+        // Get rid of non-mod lines in the table
+        .filter(line => line !== "" && line !== "\t" && !line.startsWith("\t| Index") && !line.startsWith("\t|----"))
         .map(line => {
             // |   143 | Advancement Plaques | advancementplaques  | 1.4.6  | Fabric  | 4af48cf2e71ea3f1ba7987b3bf39662ae3838714 | <mods>\[进度牌匾] AdvancementPlaques-1.19.2-fabric-1.4.6.jar |  |
             const [_, index, name, id, version, type, hash, file, subFile] = line.split("|")

@@ -60,14 +60,19 @@ data class CrashlogMetadata(
 )
 
 @Serializable
-data class CrashlogHeader(val title: String, val exceptionDescription: String) {
+data class CrashlogHeader(val title: String?, val exceptionDescription: String) {
     companion object {
         fun readFromLog(log: UncompressedLog): CrashlogHeader? {
             // 1000 bytes saves a lot of time and should be enough in all cases
             val start = log.peek(bytes = 1000)
             val lines = start.split("\n")
             val descriptionLine = lines.indexOfFirst { it.startsWith("Description:") }
-            if (descriptionLine == -1) return null
+            if (descriptionLine == -1){
+                // Concise log
+                val crashLine = lines.indexOfFirst { it.startsWith("-- Crash") }
+                val exception = lines[crashLine + 2].trim()
+                return CrashlogHeader(title = null, exception)
+            }
             val description = lines[descriptionLine].removePrefix("Description:").trim()
             val exception = lines[descriptionLine + 2].trim()
             return CrashlogHeader(description, exception)

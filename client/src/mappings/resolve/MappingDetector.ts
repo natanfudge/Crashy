@@ -1,6 +1,6 @@
 import {MappingContext} from "./MappingStrategy";
 import {MappingsNamespace} from "../MappingsNamespace";
-import {SimpleMappable, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
+import {JavaClass, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
 import {LoaderType} from "../../crash/model/RichCrashReport";
 import {forgeUsesPureSrgForMinecraftVersion} from "../providers/ForgeRuntimeMappingsProvider";
 
@@ -12,6 +12,7 @@ export function detectMappingNamespace(name: SimpleMappable, context: MappingCon
     } else {
         switch (context.loader) {
             case LoaderType.Fabric:
+            case LoaderType.Quilt:
                 return "Intermediary"
             case LoaderType.Forge:
                 if (forgeUsesPureSrgForMinecraftVersion(context.minecraftVersion)) {
@@ -21,8 +22,6 @@ export function detectMappingNamespace(name: SimpleMappable, context: MappingCon
                 }
             case LoaderType.Vanilla:
                 return "Official"
-            default:
-                throw new Error("Impossible")
         }
     }
 }

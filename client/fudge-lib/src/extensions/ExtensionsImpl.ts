@@ -33,15 +33,44 @@ String.prototype.splitToTwoOnLast = function (this: string, splitOn: string): [s
     return [this.slice(0, index), this.slice(index + 1)]
 }
 
+String.prototype.removeBeforeFirstExclusive = function (this: string, removeBefore: string): string {
+    const index = this.indexOf(removeBefore)
+    if (index === -1) return this
+    else return this.slice(index + removeBefore.length)
+}
 
-String.prototype.removeAfterFirst = function (this: string, removeAfter: string): string {
+String.prototype.removeBeforeFirstInclusive = function (this: string, removeBefore: string): string {
+    const index = this.indexOf(removeBefore)
+    if (index === -1) return this
+    else return this.slice(index)
+}
+String.prototype.removeBeforeLastInclusive = function (this: string, removeBefore: string): string {
+    const index = this.lastIndexOf(removeBefore);
+    if (index === -1) {
+        return this;
+    } else {
+        return this.slice(index);
+    }
+}
+
+String.prototype.removeBeforeLastExclusive = function (this: string, removeBefore: string): string {
+    const index = this.lastIndexOf(removeBefore);
+    if (index === -1) {
+        return this;
+    } else {
+        return this.slice(index + removeBefore.length);
+    }
+}
+
+String.prototype.removeAfterFirstInclusive = function (this: string, removeAfter: string): string {
     const index = this.indexOf(removeAfter);
     if (index === -1) {
         return this;
     } else {
-        return this.slice(0, index + 1);
+        return this.slice(0, index + removeAfter.length);
     }
 }
+
 String.prototype.removeAfterFirstExclusive = function (this: string, removeAfter: string): string {
     const index = this.indexOf(removeAfter);
     if (index === -1) {
@@ -50,22 +79,27 @@ String.prototype.removeAfterFirstExclusive = function (this: string, removeAfter
         return this.slice(0, index);
     }
 }
-String.prototype.removeAfterLast = function (this: string, removeAfter: string): string {
-    const index = this.lastIndexOf(removeAfter);
-    if (index === -1) {
-        return this;
-    } else {
-        return this.slice(0, index + 1);
-    }
+
+String.prototype.removeAfterLastInclusive = function (this: string, removeBefore: string): string {
+    const index = this.lastIndexOf(removeBefore)
+    if (index === -1) return this
+    else return this.slice(0, index + removeBefore.length)
 }
-String.prototype.removeBeforeLastExclusive = function (this: string, removeBefore: string): string {
-    const index = this.lastIndexOf(removeBefore);
-    if (index === -1) {
-        return this;
-    } else {
-        return this.slice(index + 1);
-    }
+
+String.prototype.removeAfterLastExclusive = function (this: string, removeBefore: string): string {
+    const index = this.lastIndexOf(removeBefore)
+    if (index === -1) return this
+    else return this.slice(0, index)
 }
+
+String.prototype.removeAfterFirst = function (this: string, removeAfter: string): string {
+    return this.removeAfterFirstInclusive(removeAfter)
+}
+
+String.prototype.removeAfterLast =function (this: string, removeAfter: string): string {
+    return this.removeAfterLastInclusive(removeAfter)
+}
+
 Array.prototype.toRecord = function <T, K extends TsKey, V>(this: Array<T>, map: (element: T, index: number) => [K, V]): Record<K, V> {
     const record = {} as Record<K, V>;
     this.forEach((element, index) => {

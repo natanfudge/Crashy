@@ -96,7 +96,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         }
 
         logData("ID") { id }
-        logData("Title") { title }
+        logData("Title") { title.toString() }
         logData("Description") { description }
         logData("Code") { code }
 
@@ -105,7 +105,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
                 listOf(
                     "{PREFETCH}" to if (code == HttpStatusCode.OK) "rel=\"prefetch\" href=\"$id/raw.txt\"" else "",
                     "{DESCRIPTION}" to description,
-                    "{TITLE}" to title
+                    "{TITLE}" to (title ?: "Quilt Crash")
                 )
             ),
             code = code

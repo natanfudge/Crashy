@@ -1,13 +1,13 @@
 {
   "name": "fudge-lib",
   "private": false,
-  "version": "1.0.10",
+  "version": "1.0.14",
   "type": "module",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "vitest --ui",
-    "upload": "npm version patch & npm publish"
+    "upload": "npm run build && npm version patch & npm publish"
   },
   "eslintConfig": ".eslintrc.json",
   "dependencies": {},

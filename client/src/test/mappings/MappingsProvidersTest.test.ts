@@ -240,5 +240,10 @@ test("Mojang mappings work", async () => {
 
 
 test("Quilt mappings work", async () => {
-    await getQuiltBuilds("1.19.2")
+    const builds = await getQuiltBuilds("1.19.2")
+    expect(builds).toContainEqual("1.19.2+build.22")
+    expect(builds).not.toContainEqual("1.19.2+build.14")
+
+    const mappings = await getQuiltMappings({build: builds[0], minecraftVersion: "1.19.2"}, AllowAllMappings)
+    const x = 2
 })

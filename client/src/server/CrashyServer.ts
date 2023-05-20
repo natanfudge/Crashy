@@ -7,6 +7,7 @@ import {TestQuiltLog} from "../test/testlogs/ConciseQuilt";
 import {QuiltFabricLog} from "../test/testlogs/QuiltFabric";
 import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
 import {WayTooManyModsCrash} from "../test/testlogs/WayTooManyModsCrash";
+import {ClassicQuiltLog} from "../test/testlogs/ClassicQuilt";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -47,10 +48,10 @@ export type UploadCrashError = "Too Large" | "Invalid Crash"
 
 export namespace CrashyServer {
     const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost:80";
-    const crashyOrigin = origin.startsWith("http://localhost") ? "http://localhost:80" : origin;
+    const crashyOrigin = origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        return QuiltFabricLog
+        return ClassicQuiltLog
         // return TestQuiltLog
         // return VeryLongTraceCrash
         // return TestVerifyErrorCrash;

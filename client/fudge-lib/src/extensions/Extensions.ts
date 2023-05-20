@@ -17,15 +17,32 @@ declare global {
         // Splits on the last occurrence, returns undefined if splitOn doesn't exist in this
         splitToTwoOnLast(splitOn: string): [string, string] | undefined
 
-        removeAfterFirst(removeAfter: string): string
+        removeAfterFirstInclusive(removeAfter: string): string
 
-        // Excludes the removeAfter char
         removeAfterFirstExclusive(removeAfter: string): string
 
-        removeAfterLast(removeAfter: string): string
+        removeAfterLastInclusive(removeAfter: string): string
 
-        // Excludes the removeBefore char
+        removeAfterLastExclusive(removeBefore: string): string
+
+        removeBeforeFirstInclusive(removeBefore: string): string
+
+        removeBeforeFirstExclusive(removeBefore: string): string
+
+        removeBeforeLastInclusive(removeBefore: string): string
+
         removeBeforeLastExclusive(removeBefore: string): string
+
+        /**
+         * @deprecated use removeAfterFirstInclusive instead
+         */
+
+        removeAfterFirst(removeAfter: string): string
+
+        /**
+         * @deprecated use removeAfterLastInclusive instead
+         */
+        removeAfterLast(removeAfter: string): string
     }
 
     interface Array<T> {
@@ -36,6 +53,7 @@ declare global {
         firstOr<V>(or: () => V): T | V
 
         drop(amount: number): Array<T>
+
         splitBy(predicate: (item: T, index: number) => boolean): [Array<T>, Array<T>]
 
         // Happens synchronously, every item is evaluated after the previous one
