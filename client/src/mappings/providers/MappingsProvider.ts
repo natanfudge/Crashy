@@ -202,14 +202,13 @@ export const OfficialToMojmapMappingsProvider: MappingsProvider = {
 // This is the order it will show up in the UI
 const allMappingsProviders: MappingsProvider[] = [
     IntermediaryToYarnMappingsProvider,
-    // IntermediaryToQuiltMappingsProvider,
+    IntermediaryToQuiltMappingsProvider,
     SrgToMcpMappingsProvider,
     OfficialToMojmapMappingsProvider,
     OfficialToIntermediaryMappingsProvider,
     OfficialToSrgMappingsProvider,
     OfficialSrgToSrgMappingsProvider,
     ForgeRuntimeToOfficialSrgMappingsProvider,
-    IntermediaryToQuiltMappingsProvider
 ]
 
 export function getMappingProviders(mcVersion: string): MappingsProvider[] {

@@ -130,7 +130,7 @@ class CrashlogCacheTest {
         return bytes
     }
 
-    context (CrashlogCache, TestClock, Path)
+    context (CrashlogCache, TestClock, Path, LogContext)
     private fun testStore(id: CrashlogId, log: CrashlogEntry) {
         store(id, log)
         alignFileWithTestTime(id)

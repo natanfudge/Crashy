@@ -50,11 +50,15 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
 
 
 export function StackTraceElementsUi(props: { elements: RichStackTraceElement[], mappings: MappingContext }) {
-    return <LazyColumn data={props.elements} childProvider={(traceElement, i) =>   <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}
-                                                                                                        key={i}
-                                                                                                        traceElement={traceElement}/>}/>
-        {/*{props.elements.map((traceElement, i) =>*/}
-        {/*    <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}*/}
+    return <LazyColumn data={props.elements}
+                       childProvider={(traceElement, i) => <StackTraceElementUi mappings={props.mappings}
+                                                                                withMarginLeft={true}
+                                                                                key={i}
+                                                                                traceElement={traceElement}/>}/>
+    {/*{props.elements.map((traceElement, i) =>*/
+    }
+    {/*    <StackTraceElementUi mappings={props.mappings} withMarginLeft={true}*/
+    }
 }
 
 function CausationButtons(props: {
@@ -63,10 +67,10 @@ function CausationButtons(props: {
     onCauserIndexChanged: (index: number) => void,
     mappings: MappingContext
 }) {
-    return <div  style = {{flexFlow: "wrap", display: "flex", flexDirection: "row"}}>
+    return <div style={{flexFlow: "wrap", display: "flex", flexDirection: "row"}}>
         {props.causerList.map((causer, i) => {
             const causerClass = props.causerList[i].title.class
-            return <CausationButton key = {i} selected={props.currentCauserIndex === i} index={i}
+            return <CausationButton key={i} selected={props.currentCauserIndex === i} index={i}
                                     causer={causerClass}
                                     totalAmount={props.causerList.length} mappings={props.mappings}
                                     onClick={() => props.onCauserIndexChanged(i)}/>;
@@ -95,7 +99,14 @@ function causationButtonPrefix(index: number, totalAmount: number): string {
 }
 
 
-function CausationButton(props: { causer: JavaClass, mappings: MappingContext, index: number, totalAmount: number, selected: boolean, onClick: ClickCallback }) {
+function CausationButton(props: {
+    causer: JavaClass,
+    mappings: MappingContext,
+    index: number,
+    totalAmount: number,
+    selected: boolean,
+    onClick: ClickCallback
+}) {
     const mappingMethod = useMappingForName(props.causer, props.mappings)
     const prefix = causationButtonPrefix(props.index, props.totalAmount)
     return <Button style={{
@@ -107,7 +118,7 @@ function CausationButton(props: { causer: JavaClass, mappings: MappingContext, i
     }} disableRipple={true} variant={"outlined"} size={"small"}
                    onClick={(e) => props.onClick(e.currentTarget)}>
         {`${prefix}: `}
-        <p style = {{color:"#ff5e5e", marginLeft: 4}}>
+        <p style={{color: "#ff5e5e", marginLeft: 4}}>
             {`${props.causer.simpleName(mappingMethod)}`}
         </p>
         {/*<TextTheme color={}>*/}
@@ -136,7 +147,11 @@ export function StackTraceElementUi({
                                         traceElement,
                                         withMarginLeft,
                                         mappings
-                                    }: { traceElement: RichStackTraceElement, withMarginLeft: boolean, mappings: MappingContext }) {
+                                    }: {
+    traceElement: RichStackTraceElement,
+    withMarginLeft: boolean,
+    mappings: MappingContext
+}) {
     const [open, setOpen] = useState(false)
     const mappingMethod = useMappingFor(traceElement, mappings);
     const text = getTraceElementText(traceElement, open, mappingMethod)
@@ -147,7 +162,12 @@ export function StackTraceElementUi({
             at
         </Typography>
         <Text color={open || isXMore ? undefined : clickableColor} wordBreak="break-word" text={text}
-              onClick={isXMore ? undefined : () => setOpen(!open)}/>
+              onClick={isXMore ? undefined : () => {
+                  // Don't toggle if the user is trying to select this
+                  if (window.getSelection()?.type !== "Range") {
+                      setOpen(!open);
+                  }
+              }}/>
 
     </Row>;
 }

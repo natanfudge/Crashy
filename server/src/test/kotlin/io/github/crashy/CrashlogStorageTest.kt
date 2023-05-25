@@ -154,7 +154,7 @@ class CrashlogStorageTest {
     }
 
 
-    context (CrashlogStorage, TestClock, Path)
+    context (CrashlogStorage, TestClock, Path, LogContext)
     private fun testStore(id: CrashlogId, log: CrashlogEntry) {
         store(id, log)
         alignFileWithTestTime(id)

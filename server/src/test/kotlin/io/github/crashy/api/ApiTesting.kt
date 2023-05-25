@@ -7,7 +7,8 @@ object ApiTesting {
         "local".trim() -> Crashy.Build.Local
         "beta" -> Crashy.Build.Beta
         "release" -> Crashy.Build.Release
-        else -> error("test-target must be specified as local, beta, or release via -Dtest-target=XXX. Got: $value")
+        else -> Crashy.Build.Local
+//        else -> error("test-target must be specified as local, beta, or release via -Dtest-target=XXX. Got: $value")
     }
     fun domain() = when(TestingBuild){
         Crashy.Build.Local -> "localhost:80"

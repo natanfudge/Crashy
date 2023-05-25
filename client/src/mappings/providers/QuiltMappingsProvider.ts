@@ -4,6 +4,7 @@ import {Mappings} from "../Mappings";
 import {MappingsBuilder} from "../MappingsBuilder";
 import {httpGet} from "fudge-lib/dist/methods/Http";
 import {extractTinyMappings} from "./ProviderUtils";
+import {parseTinyFile} from "./TinyMappings";
 
 export async function getQuiltBuilds(minecraftVersion: string): Promise<string[]> {
     // Arrives in xml
@@ -18,11 +19,10 @@ export async function getQuiltBuilds(minecraftVersion: string): Promise<string[]
 }
 
 export async function getQuiltMappings(version: MappingsVersion, filter: MappingsFilter): Promise<Mappings> {
-    const mappings = new MappingsBuilder(filter, "Quilt")
     const jar = await httpGet({url: "https://maven.quiltmc.org/repository/release/org/quiltmc/quilt-mappings/1.19.2+build.16/quilt-mappings-1.19.2+build.16-intermediary-v2.jar"})
     const unzipped = await extractTinyMappings(jar);
 
-    return mappings.build()
+    return parseTinyFile(unzipped, filter);
 }
 
 const oldestQuiltSnapshotMain = 22

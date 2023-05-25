@@ -5,24 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/Debug_Browser.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/test/StringTests.test.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/AnotherQuiltLog.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/extensions/Extensions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/extensions/Extensions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/extensions/ExtensionsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/extensions/ExtensionsImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingDetector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingDetector.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/libs.versions.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +54,12 @@
                 <item name="Crashy" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="crashy" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Crashy" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="crashy setup" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -124,7 +121,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
     &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -145,17 +142,73 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Client Development">
-    <configuration name="Another Quilt log can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/QuiltTest.test.ts" />
-      <test-names>
-        <test-name value="Another Quilt log can be parsed" />
-      </test-names>
+  <component name="RunManager" selected="Kotlin.Run Server">
+    <configuration name="CrashLogApiTest.ZZInvalid uploadCrash requests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.api.CrashLogApiTest.ZZInvalid uploadCrash requests&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>true</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="server [runJarWindows]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runJarWindows" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="server [syncClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="syncClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
     <configuration name="Quilt mappings work" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
@@ -168,28 +221,6 @@
       <test-names>
         <test-name value="Quilt mappings work" />
       </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="string remove functions work" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/StringTests.test.ts" />
-      <test-names>
-        <test-name value="string remove functions work" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="update-lib" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/client/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="update-lib" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
       <method v="2" />
     </configuration>
     <configuration name="upload" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
@@ -207,6 +238,9 @@
       <item itemvalue="Compound.Run Fullstack" />
       <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="Gradle.Upload Beta Server" />
+      <item itemvalue="Gradle.CrashLogApiTest.ZZInvalid uploadCrash requests" />
+      <item itemvalue="Gradle.server [runJarWindows]" />
+      <item itemvalue="Gradle.server [syncClient]" />
       <item itemvalue="JavaScript Debug.Debug Browser" />
       <item itemvalue="JUnit.All Local Server Tests" />
       <item itemvalue="JUnit.All Beta Server Tests" />
@@ -214,22 +248,19 @@
       <item itemvalue="Multirun.Test Local Server" />
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
-      <item itemvalue="npm.update-lib" />
       <item itemvalue="npm.upload" />
       <item itemvalue="Vitest.All JS Tests" />
       <item itemvalue="Vitest.Crashlog JS Tests" />
       <item itemvalue="Vitest.Mappings JS Tests" />
       <item itemvalue="Vitest.Quilt mappings work" />
-      <item itemvalue="Vitest.string remove functions work" />
-      <item itemvalue="Vitest.Another Quilt log can be parsed" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.server [runJarWindows]" />
+        <item itemvalue="Gradle.server [syncClient]" />
+        <item itemvalue="Gradle.CrashLogApiTest.ZZInvalid uploadCrash requests" />
         <item itemvalue="Vitest.Quilt mappings work" />
         <item itemvalue="npm.upload" />
-        <item itemvalue="npm.update-lib" />
-        <item itemvalue="Vitest.string remove functions work" />
-        <item itemvalue="Vitest.Another Quilt log can be parsed" />
       </list>
     </recent_temporary>
   </component>
@@ -309,7 +340,16 @@
       <workItem from="1684509537447" duration="7893000" />
       <workItem from="1684536970106" duration="4011000" />
       <workItem from="1684573770233" duration="6831000" />
-      <workItem from="1684581953385" duration="1530000" />
+      <workItem from="1684581953385" duration="2236000" />
+      <workItem from="1684587457093" duration="1519000" />
+      <workItem from="1684591786600" duration="462000" />
+      <workItem from="1684592277208" duration="3000" />
+      <workItem from="1684601153108" duration="35000" />
+      <workItem from="1684618178330" duration="20000" />
+      <workItem from="1684961807357" duration="138000" />
+      <workItem from="1684961965647" duration="19000" />
+      <workItem from="1684962112937" duration="95000" />
+      <workItem from="1684962257148" duration="219000" />
     </task>
     <servers />
   </component>

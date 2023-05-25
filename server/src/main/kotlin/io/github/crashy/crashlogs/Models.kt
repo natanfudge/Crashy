@@ -4,7 +4,10 @@ import com.aayushatharva.brotli4j.decoder.Decoder
 import com.aayushatharva.brotli4j.decoder.DecoderJNI.Status.DONE
 import io.github.crashy.compat.firestoreIdToUUID
 import io.github.crashy.crashlogs.api.StringResponse
-import io.github.crashy.utils.*
+import io.github.crashy.utils.InstantSerializer
+import io.github.crashy.utils.UUIDSerializer
+import io.github.crashy.utils.compressBrotli
+import io.github.crashy.utils.randomString
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import java.nio.file.Path
@@ -46,7 +49,7 @@ value class CrashlogId private constructor(@Serializable(with = UUIDSerializer::
     }
 }
 
-fun uUIDFromIdString(id: String): UUID =  if (id.length == 20) firestoreIdToUUID(id) else UUID.fromString(id)
+fun uUIDFromIdString(id: String): UUID = if (id.length == 20) firestoreIdToUUID(id) else UUID.fromString(id)
 
 fun CrashlogId.s3Key() = value.toString()
 
@@ -67,9 +70,10 @@ data class CrashlogHeader(val title: String?, val exceptionDescription: String) 
             val start = log.peek(bytes = 1000)
             val lines = start.split("\n")
             val descriptionLine = lines.indexOfFirst { it.startsWith("Description:") }
-            if (descriptionLine == -1){
+            if (descriptionLine == -1) {
                 // Concise log
                 val crashLine = lines.indexOfFirst { it.startsWith("-- Crash") }
+                if (crashLine == -1) return null
                 val exception = lines[crashLine + 2].trim()
                 return CrashlogHeader(title = null, exception)
             }
