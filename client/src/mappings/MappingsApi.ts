@@ -29,15 +29,6 @@ export async function getMappingsCached(mappingsProvider: MappingsProvider, vers
         ));
 }
 
-export function useAnyMappingsLoading(): boolean {
-    const [loading, setLoading] = useState(false);
-    const promiseChangeCallback = () => setLoading(mappingsCache.anyPromisesUnfulfilled());
-    useEffect(() => {
-        mappingsCache.onOngoingPromisesChange(promiseChangeCallback)
-        return () => mappingsCache.unsubscribeToOngoingPromisesChange(promiseChangeCallback)
-    })
-    return loading;
-}
 
 
 const mappingsCache = new PromiseMemoryCache<Mappings>()

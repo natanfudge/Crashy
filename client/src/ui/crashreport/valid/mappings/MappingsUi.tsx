@@ -1,6 +1,6 @@
 
 import {DesiredBuild, DesiredBuildProblem} from "../../../../mappings/resolve/MappingStrategy";
-import {buildsOf, useAnyMappingsLoading} from "../../../../mappings/MappingsApi";
+import {buildsOf} from "../../../../mappings/MappingsApi";
 import {MappingsState, withBuild} from "./MappingsState";
 import {MappingsController} from "./MappingsController";
 import {WithChildren} from "../../../../fudge-commons/simple/SimpleElementProps";
@@ -16,9 +16,8 @@ import {getUserPreferences, setUserPreferences} from "../../../../utils/Preferen
 export function WithMappings({controller, children}:
                                  { controller: MappingsController }
                                  & WithChildren) {
-    const mappingsLoading = useAnyMappingsLoading();
     return <MappingSelectionLayout selection={
-        <MappingsSelection mappingsLoading={mappingsLoading}
+        <MappingsSelection
                            mappings={controller.mappingsState}
                            onMappingsChange={controller.onMappingsStateChanged}
                            minecraftVersion={controller.report.context.minecraftVersion}/>

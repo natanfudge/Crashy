@@ -6,14 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/StackTraceUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/collections/PromiseMemoryCache.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/collections/PromiseMemoryCache.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradle/libs.versions.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,33 +97,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1684539694051&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/src/test/mappings&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "ktor.last.update.timestamp": "1687036243617",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/client/src/test/mappings",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "settings.sync",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\compat\\functions\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
@@ -142,7 +140,7 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.Run Server">
+  <component name="RunManager" selected="Gradle.Upload Release Server">
     <configuration name="CrashLogApiTest.ZZInvalid uploadCrash requests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -350,6 +348,18 @@
       <workItem from="1684961965647" duration="19000" />
       <workItem from="1684962112937" duration="95000" />
       <workItem from="1684962257148" duration="219000" />
+      <workItem from="1685028381112" duration="367000" />
+      <workItem from="1685051092843" duration="611000" />
+      <workItem from="1685091444512" duration="4000" />
+      <workItem from="1685096500899" duration="1329000" />
+      <workItem from="1685115353241" duration="101000" />
+      <workItem from="1685121275192" duration="661000" />
+      <workItem from="1685128812367" duration="174000" />
+      <workItem from="1685132057077" duration="380000" />
+      <workItem from="1685973684562" duration="708000" />
+      <workItem from="1686603734995" duration="783000" />
+      <workItem from="1686654375798" duration="43000" />
+      <workItem from="1687031981721" duration="6501000" />
     </task>
     <servers />
   </component>

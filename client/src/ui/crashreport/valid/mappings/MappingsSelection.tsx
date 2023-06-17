@@ -16,15 +16,14 @@ import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
 
 export interface MappingsSelectionProps {
     mappings: MappingsState;
-    mappingsLoading: boolean;
     onMappingsChange: (mappings: MappingsState) => void;
     minecraftVersion: string
 }
 
 
-function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mappingsLoading}:
+function BuildSelection({isPortrait, builds, mappings, onMappingsChange}:
                             {
-                                isPortrait: boolean, builds: MappingsBuilds, mappingsLoading: boolean,
+                                isPortrait: boolean, builds: MappingsBuilds,
                                 mappings: MappingsState, onMappingsChange: (mappings: MappingsState) => void
                             }) {
     return <Column>
@@ -41,7 +40,7 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange, mapping
     </Column>;
 }
 
-export function MappingsSelection({mappings, onMappingsChange, minecraftVersion, mappingsLoading}:
+export function MappingsSelection({mappings, onMappingsChange, minecraftVersion}:
                                       MappingsSelectionProps) {
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
@@ -51,7 +50,7 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
     function Builds() {
         return builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
             {builds.length > 0 &&
-                <BuildSelection mappingsLoading={mappingsLoading} isPortrait={isPortrait} builds={builds}
+                <BuildSelection isPortrait={isPortrait} builds={builds}
                                 mappings={mappings}
                                 onMappingsChange={onMappingsChange}/>}
         </Fragment>
@@ -83,6 +82,7 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion,
 
 
         </Row>
+        {/*TODO: rework this so that mappings are resolved in a top-level way instead of individually per element. Then we just have a isLoading state.  */}
         {mappingsLoading &&
             <Text padding={{left: 8, right: 3}} className={"blinking_text"} align={"center"} fontWeight={"bold"}
                   text={"Loading Mappings..."}/>}

@@ -112,16 +112,16 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
                 lastAccessDayPath(id, today).deleteIfExists()
                 logWarn { "Could not find lastAccessDay of $id to delete." }
                 logData("old lastAccessDay") { oldLastAccessDay }
-                logData("today") { oldLastAccessDay }
+                logData("today") { today }
                 logData("lastAccessDay old location") { lastAccessDayPath(id, oldLastAccessDay) }
                 logData("lastAccessDay today location") { lastAccessDayPath(id, today) }
-                logData("contents of oldLastAccessDay dir") {
-                    val path = crashesLastAccessedAtDay(oldLastAccessDay)
-                    if (path.exists()) {
-                        logInfo { "$path exists." }
-                        path.listDirectoryEntries()
-                    } else "Dir Doesn't exist"
-                }
+//                logData("contents of oldLastAccessDay dir") {
+//                    val path = crashesLastAccessedAtDay(oldLastAccessDay)
+//                    if (path.exists()) {
+//                        logInfo { "$path exists." }
+//                        path.listDirectoryEntries()
+//                    } else "Dir Doesn't exist"
+//                }
             }
             storeLastAccessDay(id, today)
         }
@@ -139,6 +139,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         if (!parent.exists()) path.parent.createDirectories()
         if (!path.exists()) {
             path.createFile()
+            logInfo { "Stored lastAccessDay of $id at $path" }
         } else {
             logWarn { "LastAccessDay at $path already exists. Maybe there were issues archiving this?" }
         }
