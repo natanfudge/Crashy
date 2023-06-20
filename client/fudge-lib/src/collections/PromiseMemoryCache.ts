@@ -86,7 +86,6 @@ export class PromiseMemoryCache<T> {
     }
 
 
-    //TODO: test this well
     async ongoingPromiseValue(key: string, initialPromise: Promise<T>): Promise<T> {
         // const potentiallyOutdatedPromise = this.ongoingPromises[key]
         // While the promise's value is correct as of before awaiting, it may change to a different value during the await.

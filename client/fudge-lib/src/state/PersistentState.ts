@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {listenToStateChange, State} from "./State";
+import {State, useStateObject} from "./State";
 
 export class PersistentValue {
     private readonly key: string
@@ -19,11 +19,9 @@ export class PersistentValue {
 
 export function usePersistentState(key: string, defaultValue: string | (() => string)): State<string> {
     const persistent = new PersistentValue(key)
-    const valueState = useState(
+    const valueState = useStateObject(
         persistent.getValue() ?? (typeof defaultValue === "string" ? defaultValue : defaultValue())
     )
 
-    return listenToStateChange(valueState, (newValue) => {
-        persistent.setValue(newValue)
-    })
+    return valueState.onSet(newValue =>  persistent.setValue(newValue))
 }

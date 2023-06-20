@@ -3,14 +3,13 @@ import {buildsOf} from "../../../../mappings/MappingsApi";
 import {WithChildren} from "../../../../fudge-commons/simple/SimpleElementProps";
 import {Column} from "../../../../fudge-commons/simple/Flex";
 import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
-import {useState} from "react";
 import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {getVisibleMappingNamespaces, MappingsNamespace} from "../../../../mappings/MappingsNamespace";
 import {MappingsSelectionUi} from "./MappingsSelectionUi";
 import {MappingsSelection, withBuild} from "./MappingsSelection";
 import {MappingsController} from "./MappingsController";
 import {PersistentValue} from "fudge-lib/dist/state/PersistentState";
-import {mapState, State} from "fudge-lib/dist/state/State";
+import {State, useStateObject} from "fudge-lib/dist/state/State";
 
 
 export function WithMappings({controller, children}:
@@ -42,17 +41,17 @@ export function useMappingsSelection(minecraftVersion: string): State<MappingsSe
     // If the previous namespace selection is available here - use it. Otherwise - use the first available one.
     const initialNamespace = namespaces.includes(previousNamespaceSelection) ? previousNamespaceSelection : namespaces[0]
 
-    const [state, setState] = useState<MappingsSelection>(
+    const state = useStateObject<MappingsSelection>(
         {namespace: initialNamespace, build: DesiredBuildProblem.BuildsLoading}
     )
 
     // Sometimes the user build selection becomes invalid because the namespace no longer supports it.
     // So we fix up the state to have a valid build always.
-    const actualState = withBuild(state, useBuildFor(state, minecraftVersion));
-    return mapState([state, setState], actualState, (newValue) => {
-        namespaceSelectionStore.setValue(newValue.namespace)
-        return newValue
-    })
+    const actualState = withBuild(state.value, useBuildFor(state.value, minecraftVersion));
+
+    return state
+        .mapValue(actualState)
+        .onSet(newValue => namespaceSelectionStore.setValue(newValue.namespace))
 }
 
 function useBuildFor(state: MappingsSelection, minecraftVersion: string): DesiredBuild {

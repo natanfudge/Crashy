@@ -22,7 +22,7 @@ import {detectMappingNamespace} from "../../../../mappings/resolve/MappingDetect
  */
 export function useMappings(report: RichCrashReport): MappingsController {
     const minecraftVersion = report.context.minecraftVersion;
-    const [selection, onSelectionChanged] = useMappingsSelection(minecraftVersion)
+    const [selection, onSelectionChanged] = useMappingsSelection(minecraftVersion).destruct()
     const strategy = getStrategy()
 
     return {
