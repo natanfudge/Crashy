@@ -1,21 +1,21 @@
 import {MappingContext} from "./MappingStrategy";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {JavaClass, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
-import {LoaderType} from "../../crash/model/RichCrashReport";
+import {LoaderType, RichCrashReport} from "../../crash/model/RichCrashReport";
 import {forgeUsesPureSrgForMinecraftVersion} from "../providers/ForgeRuntimeMappingsProvider";
 
-export function detectMappingNamespace(name: SimpleMappable, context: MappingContext): MappingsNamespace {
+export function detectMappingNamespace(name: SimpleMappable, report: RichCrashReport): MappingsNamespace {
     if (isIntermediaryName(name)) {
         return "Intermediary";
-    } else if (context.isDeobfuscated) {
+    } else if (report.deobfuscated) {
         return "Yarn";
     } else {
-        switch (context.loader) {
+        switch (report.context.loader.type) {
             case LoaderType.Fabric:
             case LoaderType.Quilt:
                 return "Intermediary"
             case LoaderType.Forge:
-                if (forgeUsesPureSrgForMinecraftVersion(context.minecraftVersion)) {
+                if (forgeUsesPureSrgForMinecraftVersion(report.context.minecraftVersion)) {
                     return "Srg"
                 } else {
                     return "ForgeRuntime"

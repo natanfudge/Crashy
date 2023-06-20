@@ -22,7 +22,7 @@
     "@types/react-dom": "^18.0.10",
     "dayjs": "^1.11.7",
     "fflate": "^0.7.4",
-    "fudge-lib": "^1.0.14",
+    "fudge-lib": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-infinite-scroll-component": "^6.1.0",

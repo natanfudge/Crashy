@@ -1,7 +1,7 @@
 import "fudge-lib/dist/extensions/Extensions"
 
 import {getYarnBuilds} from "../../mappings/providers/YarnMappingsProvider";
-import {DesiredBuildProblem, getMappingForName, MappingContext} from "../../mappings/resolve/MappingStrategy";
+import {DesiredBuildProblem, getMappingForContext, MappingContext} from "../../mappings/resolve/MappingStrategy";
 import {resolveMappingsChain} from "../../mappings/resolve/MappingsResolver";
 import {
     IntermediaryToYarnMappingsProvider,
@@ -38,7 +38,7 @@ test("Remapping works correctly", async () => {
     const testClass: JavaClass = JavaClass.dotSeperated("net.minecraft.class_5973")
     const testMethod: SimpleMethod = SimpleMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
 
-    const mappingStrategy = await getMappingForName(testClass, {
+    const mappingStrategy = await getMappingForContext(testClass, {
         relevantMappables: HashSet.of<SimpleMappable>(testClass, testMethod, testMethod.classIn),
         desiredNamespace: "Yarn",
         desiredBuild: versions[0].version,
@@ -62,7 +62,7 @@ test("Remapping from yarn to mojmap works correctly", async () => {
     const testClass: JavaClass = JavaClass.dotSeperated("net.minecraft.client.MinecraftClient")
     const testMethod: SimpleMethod = SimpleMethod.dotSeperated("net.minecraft.client.MinecraftClient", "tick")
 
-    const mappingStrategy = await getMappingForName(testClass, {
+    const mappingStrategy = await getMappingForContext(testClass, {
         relevantMappables: HashSet.of<SimpleMappable>(testClass, testMethod, testMethod.classIn),
         desiredNamespace: "MojMap",
         desiredBuild: "1.17.1+build.65",
@@ -86,7 +86,7 @@ test("Remapping from ForgeRuntime to yarn works correctly", async () => {
     const testClass: JavaClass = JavaClass.dotSeperated("net.minecraft.client.Minecraft")
     const testMethod: SimpleMethod = SimpleMethod.dotSeperated("net.minecraft.client.Minecraft", "m_91383_")
 
-    const mappingStrategy = await getMappingForName(testClass, {
+    const mappingStrategy = await getMappingForContext(testClass, {
         relevantMappables: HashSet.of<SimpleMappable>(testClass, testMethod, testMethod.classIn),
         desiredNamespace: "Yarn",
         desiredBuild: "1.18.2+build.4",

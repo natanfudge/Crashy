@@ -58,18 +58,20 @@ export class PromiseMemoryCache<T> {
     async get(key: string, orProduce: () => Promise<T>): Promise<T> {
         const cachedValue = this.getOrUndefined(key);
         if (cachedValue !== undefined) return cachedValue;
+        return this.setPromise(key, orProduce())
+    }
 
-        const producedPromise = orProduce();
+    async setPromise(key: string, promise: Promise<T>): Promise<T> {
         // Promise not fulfilled yet - store it
-        this.ongoingPromises[key] = producedPromise
+        this.ongoingPromises[key] = promise
         // No cached value - await until orProduce gives a value
-        const resolvedValue = await this.ongoingPromiseValue(key, producedPromise).catch((e) => {
+        const resolvedValue = await this.ongoingPromiseValue(key, promise).catch((e) => {
                 // Make sure currently running promises know to throw too.
                 this.ongoingPromises[key] = {
                     _memory_cache_error_value: e
                 };
-                // This is a slight memory leak, but it is reasonable given that is an extreme case that errors are thrown it.
-            // The bright side is that the state will be completely correct.
+                // This is a slight memory leak, but it is reasonable given that it is an extreme case where errors are thrown in it.
+                // The bright side is that the state will be completely correct.
                 throw e
             }
         )
@@ -83,11 +85,14 @@ export class PromiseMemoryCache<T> {
         return resolvedValue;
     }
 
+
     //TODO: test this well
     async ongoingPromiseValue(key: string, initialPromise: Promise<T>): Promise<T> {
         // const potentiallyOutdatedPromise = this.ongoingPromises[key]
         // While the promise's value is correct as of before awaiting, it may change to a different value during the await.
         const potentiallyOutdatedValue = await initialPromise;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+
         const upToDatePromise = this.ongoingPromises[key]
         if (upToDatePromise !== initialPromise) {
             // Special cases
@@ -138,9 +143,10 @@ export class PromiseMemoryCache<T> {
      * to return 'null' which complicates the api for users - they need to handle the null case - the promise was removed.
      * If a value is replaced instead of removed, then a valid value will stay present and get will return something useful.
      */
-    async replace(key: string, byPromise: Promise<T>) {
-        this.ongoingPromises[key] = byPromise;
-        this.cache[key] = await byPromise;
+    async replace(key: string, byPromise: Promise<T>): Promise<T> {
+        return this.setPromise(key, byPromise)
+        // this.ongoingPromises[key] = byPromise;
+        // this.cache[key] = await this.ongoingPromiseValue(key, byPromise);
     }
 }
 

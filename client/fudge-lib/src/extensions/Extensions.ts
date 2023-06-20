@@ -67,6 +67,7 @@ declare global {
 
         sum(numberMap: (item: T) => number): number;
 
+        indexOfOrThrow(this: T[], element: T) : number
     }
 }
 

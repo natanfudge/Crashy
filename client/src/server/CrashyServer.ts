@@ -51,7 +51,7 @@ export namespace CrashyServer {
     const crashyOrigin = origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1") ? "http://localhost:80" : origin;
 
     export async function getCrash(id: string): Promise<GetCrashResponse> {
-        // return ClassicQuiltLog
+        return ClassicQuiltLog
         // return TestQuiltLog
         // return VeryLongTraceCrash
         // return TestVerifyErrorCrash;

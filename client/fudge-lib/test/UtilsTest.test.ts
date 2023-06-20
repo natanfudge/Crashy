@@ -1,5 +1,5 @@
-import {flipRecord} from "fudge-lib/dist/methods/Javascript";
 import {expect, test} from 'vitest'
+import {flipRecord} from "../src/methods/Javascript";
 
 test("Flip record works correctly", () => {
     const oldRecord = {
@@ -15,12 +15,5 @@ test("Flip record works correctly", () => {
             "bez": "booz"
         }
     )
-
-    // const record2 = {
-    //     ...oldRecord,
-    //     "amar" :"bar"
-    // }
-
-    // expect(() => flipRecord(record2)).toThrow()
 })
 

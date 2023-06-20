@@ -1,11 +1,15 @@
 import {ClassMethodSeparator, EnableAssertions} from "../../Constants";
-import {MappingStrategy} from "./MappingStrategy";
 import {Mappings} from "../../mappings/Mappings";
 import {hashString} from "fudge-lib/dist/collections/hashmap/Hashing";
 import "fudge-lib/dist/extensions/Extensions"
+import {MappingStrategy} from "../../mappings/resolve/MappingStrategy";
+
+export interface AnyMappable {
+    remap(mappings: Mappings, reverse: boolean): AnyMappable
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyMappable = Mappable<any>
+// export type AnyMappable = Mappable<any>
 // These are the mappables that appear in a crash report
 export type SimpleMappable = JavaClass | SimpleMethod
 
@@ -15,7 +19,7 @@ export function isSimpleMethod(mappable: AnyMappable): mappable is SimpleMethod 
     return "classIn" in mappable ;
 }
 
-export interface Mappable<To extends AnyMappable> {
+export interface Mappable<To extends AnyMappable> extends AnyMappable {
     remap(mappings: Mappings, reverse: boolean): To
 }
 

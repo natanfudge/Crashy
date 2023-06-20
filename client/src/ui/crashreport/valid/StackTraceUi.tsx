@@ -1,11 +1,6 @@
 import {WithMappings} from "./mappings/MappingsUi";
-import {
-    MappingContext,
-    MappingStrategy,
-    useMappingFor,
-    useMappingForName
-} from "../../../mappings/resolve/MappingStrategy";
-import {MappingsController} from "./mappings/MappingsController";
+import {MappingStrategy} from "../../../mappings/resolve/MappingStrategy";
+import {useMappings} from "./mappings/MappingsController";
 import {SimpleSpan, Text, TextTheme} from "../../../fudge-commons/simple/Text";
 import {
     RichCrashReport,
@@ -27,21 +22,20 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
     const [currentCauserIndex, setCauserIndex] = useState(0)
     const currentTrace = causerList[currentCauserIndex];
 
-    const mappingsController = new MappingsController(report)
-    const mappings = mappingsController.getContext();
+    const mappings = useMappings(report)
 
     return <Column width={"max"}>
-        <WithMappings controller={mappingsController}>
+        <WithMappings controller={mappings}>
             <div>
                 {causerList.length > 1 && <CausationButtons causerList={causerList}
-                                                            mappings={mappings}
+                                                            mappings={mappings.strategy}
                                                             onCauserIndexChanged={setCauserIndex}
                                                             currentCauserIndex={currentCauserIndex}/>}
 
-                <StackTraceMessageUi title={currentTrace.title} mappingContext={mappings}/>
+                <StackTraceMessageUi title={currentTrace.title} mappings={mappings.strategy}/>
 
                 <Divider/>
-                <StackTraceElementsUi elements={currentTrace.elements} mappings={mappings}/>
+                <StackTraceElementsUi elements={currentTrace.elements} mappings={mappings.strategy}/>
             </div>
         </WithMappings>
 
@@ -49,7 +43,7 @@ export function StackTraceUi({report}: { report: RichCrashReport }) {
 }
 
 
-export function StackTraceElementsUi(props: { elements: RichStackTraceElement[], mappings: MappingContext }) {
+export function StackTraceElementsUi(props: { elements: RichStackTraceElement[], mappings: MappingStrategy }) {
     return <LazyColumn data={props.elements}
                        childProvider={(traceElement, i) => <StackTraceElementUi mappings={props.mappings}
                                                                                 withMarginLeft={true}
@@ -65,7 +59,7 @@ function CausationButtons(props: {
     currentCauserIndex: number,
     causerList: RichStackTrace[],
     onCauserIndexChanged: (index: number) => void,
-    mappings: MappingContext
+    mappings: MappingStrategy
 }) {
     return <div style={{flexFlow: "wrap", display: "flex", flexDirection: "row"}}>
         {props.causerList.map((causer, i) => {
@@ -101,13 +95,12 @@ function causationButtonPrefix(index: number, totalAmount: number): string {
 
 function CausationButton(props: {
     causer: JavaClass,
-    mappings: MappingContext,
+    mappings: MappingStrategy,
     index: number,
     totalAmount: number,
     selected: boolean,
     onClick: ClickCallback
 }) {
-    const mappingMethod = useMappingForName(props.causer, props.mappings)
     const prefix = causationButtonPrefix(props.index, props.totalAmount)
     return <Button style={{
         wordBreak: "break-word",
@@ -119,7 +112,7 @@ function CausationButton(props: {
                    onClick={(e) => props.onClick(e.currentTarget)}>
         {`${prefix}: `}
         <p style={{color: "#ff5e5e", marginLeft: 4}}>
-            {`${props.causer.simpleName(mappingMethod)}`}
+            {`${props.causer.simpleName(props.mappings)}`}
         </p>
         {/*<TextTheme color={}>*/}
         {/*    */}
@@ -128,11 +121,10 @@ function CausationButton(props: {
     </Button>
 }
 
-function StackTraceMessageUi({title, mappingContext}: { title: StackTraceMessage, mappingContext: MappingContext }) {
+function StackTraceMessageUi({title, mappings}: { title: StackTraceMessage, mappings: MappingStrategy }) {
     const [open, setOpen] = useState(false)
-    const mappingMethod = useMappingForName(title.class, mappingContext);
 
-    const text = open ? title.class.fullName(mappingMethod) : title.class.simpleName(mappingMethod);
+    const text = open ? title.class.fullName(mappings) : title.class.simpleName(mappings);
     const variant = title.message === undefined || title.message.length < 150 ? "h5" : "body1"
     return <TextTheme wordBreak={"break-word"} variant={variant}>
         <SimpleSpan text={text} color={open ? undefined : clickableColor}
@@ -150,11 +142,10 @@ export function StackTraceElementUi({
                                     }: {
     traceElement: RichStackTraceElement,
     withMarginLeft: boolean,
-    mappings: MappingContext
+    mappings: MappingStrategy
 }) {
     const [open, setOpen] = useState(false)
-    const mappingMethod = useMappingFor(traceElement, mappings);
-    const text = getTraceElementText(traceElement, open, mappingMethod)
+    const text = getTraceElementText(traceElement, open, mappings)
     const isXMore = typeof traceElement === "number"
 
     return <Row margin={{left: withMarginLeft ? 30 : 0}}>

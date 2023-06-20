@@ -1,36 +1,94 @@
-import {MappingsState} from "./MappingsState";
-import {useMappingsState} from "./MappingsUi";
-import {MappingContext} from "../../../../mappings/resolve/MappingStrategy";
+import {MappingsSelection} from "./MappingsSelection";
+import {useMappingsSelection} from "./MappingsUi";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "../../../../crash/model/RichCrashReport";
 import {useMemo} from "react";
 import {SimpleMappable} from "../../../../crash/model/Mappable";
 import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
+import {
+    getMappingForContext,
+    IdentityMapping,
+    MappingContext,
+    MappingStrategy
+} from "../../../../mappings/resolve/MappingStrategy";
+import {MappingsNamespace} from "../../../../mappings/MappingsNamespace";
+import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
+import {detectMappingNamespace} from "../../../../mappings/resolve/MappingDetector";
+
 // import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 
-export class MappingsController {
-    mappingsState: MappingsState
-    onMappingsStateChanged: (newState: MappingsState) => void
-    report: RichCrashReport
 
-    constructor(report: RichCrashReport) {
-        const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
-        this.mappingsState = mappingsState
-        this.onMappingsStateChanged = setMappingsState;
-        this.report = report;
+/**
+ * Returns undefined if mappings are loading
+ */
+export function useMappings(report: RichCrashReport): MappingsController {
+    const minecraftVersion = report.context.minecraftVersion;
+    const [selection, onSelectionChanged] = useMappingsSelection(minecraftVersion)
+    const strategy = getStrategy()
+
+    return {
+        selection: selection,
+        minecraftVersion: report.context.minecraftVersion,
+        onSelectionChanged: onSelectionChanged,
+        strategy: strategy ?? IdentityMapping,
+        isLoading: strategy === undefined
     }
 
-    getContext(): MappingContext {
-        const mappables = useMemo(() => findAllMappablesInReport(this.report), [this.report])
-        return {
+    function getStrategy(): MappingStrategy | undefined {
+        const mappables = useMemo(() => findAllMappablesInReport(report), [report])
+        const originalNamespace = useMemo(() => detectReportMappingsNamespace(mappables, report), [report])
+        if (originalNamespace === undefined) return IdentityMapping
+        const context: MappingContext = {
             relevantMappables: mappables,
-            desiredBuild: this.mappingsState.build,
-            desiredNamespace: this.mappingsState.namespace,
-            isDeobfuscated: this.report.deobfuscated,
-            loader: this.report.context.loader.type,
-            minecraftVersion: this.report.context.minecraftVersion
+            desiredBuild: selection.build,
+            desiredNamespace: selection.namespace,
+            minecraftVersion: report.context.minecraftVersion,
+            originalNamespace
         }
+        // console.log(Object.values(context))
+        // return IdentityMapping
+        return usePromise(
+            () => getMappingForContext(context), [selection.namespace, selection.build]
+        )
+    }
+
+}
+
+export interface MappingsController {
+    selection: MappingsSelection
+    onSelectionChanged: (newState: MappingsSelection) => void
+    minecraftVersion: string
+    strategy: MappingStrategy
+    isLoading: boolean
+}
+
+function detectReportMappingsNamespace(mappables: HashSet<SimpleMappable>, report: RichCrashReport): MappingsNamespace | undefined {
+    if (mappables.isEmpty) return undefined
+    else {
+        return detectMappingNamespace(mappables.toArray()[0], report)
     }
 }
+
+// interface MappingsController {
+//     //TODO: rename to selection
+//     mappingsState: MappingsSelection,
+//     //TODO: rename to onSelectionChanged
+//     onMappingsStateChanged: (newState: MappingsSelection) => void
+//     report: RichCrashReport
+//     strategy:
+// }
+
+// export class MappingsController {
+//
+//
+//     // strategy
+//
+//     constructor(report: RichCrashReport) {
+//         const [mappingsState, setMappingsState] = useMappingsState(report.context.minecraftVersion);
+//         this.selection = mappingsState
+//         this.onSelectionChanged = setMappingsState;
+//         this.report = report;
+//     }
+// }
 
 function findAllMappablesInReport(report: RichCrashReport): HashSet<SimpleMappable> {
     const all = HashSet.ofCapacity<SimpleMappable>(50)

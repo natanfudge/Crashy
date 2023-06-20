@@ -23,7 +23,7 @@ export interface MappingStrategy {
     mapClass: (unmapped: JavaClass) => JavaClass
 }
 
-const IdentityMapping: MappingStrategy = {
+export const IdentityMapping: MappingStrategy = {
     mapClass: unmapped => unmapped,
     mapMethod: unmapped => unmapped
 }
@@ -39,41 +39,46 @@ export function isValidDesiredBuild(desiredBuild: DesiredBuild): desiredBuild is
     return typeof desiredBuild === "string";
 }
 
+/**
+ * Information required to produce a MappingStrategy
+ */
 export interface MappingContext {
+    originalNamespace: MappingsNamespace
     desiredNamespace: MappingsNamespace;
     // undefined if builds are still loading
     desiredBuild: DesiredBuild;
     minecraftVersion: string
-    isDeobfuscated: boolean;
-    loader: LoaderType;
+    // isDeobfuscated: boolean;
+    // loader: LoaderType;
     relevantMappables: HashSet<SimpleMappable>
 }
 
-export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingStrategy {
-    return usePromise(
-        getMappingFor(element, context), [context.desiredBuild, context.desiredNamespace]
-    ) ?? IdentityMapping
-}
+// export function useMappingFor(element: RichStackTraceElement, context: MappingContext): MappingStrategy {
+//     return usePromise(
+//         getMappingFor(element, context), [context.desiredBuild, context.desiredNamespace]
+//     ) ?? IdentityMapping
+// }
+//
+// export function useMappingForName(name: SimpleMappable, context: MappingContext): MappingStrategy {
+//     return usePromise(
+//         getMappingForName(name, context), [context.desiredBuild, context.desiredNamespace]
+//     ) ?? IdentityMapping; // When mappings have not loaded yet keep name as-is
+// }
 
-export function useMappingForName(name: SimpleMappable, context: MappingContext): MappingStrategy {
-    return usePromise(
-        getMappingForName(name, context), [context.desiredBuild, context.desiredNamespace]
-    ) ?? IdentityMapping; // When mappings have not loaded yet keep name as-is
-}
-
-async function getMappingFor(element: RichStackTraceElement, context: MappingContext): Promise<MappingStrategy> {
-    if (typeof element === "number") {
-        return IdentityMapping
-    } else {
-        return getMappingForName(element.method, context);
-    }
-}
+// async function getMappingFor(element: RichStackTraceElement, context: MappingContext): Promise<MappingStrategy> {
+//     if (typeof element === "number") {
+//         return IdentityMapping
+//     } else {
+//         return getMappingForName(element.method, context);
+//     }
+// }
 
 // export for testing
-export async function getMappingForName(name: SimpleMappable, context: MappingContext): Promise<MappingStrategy> {
+export async function getMappingForContext(context: MappingContext): Promise<MappingStrategy> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
     //TODO: I don't like how everything is resolved every time
-    const originalNamespace = detectMappingNamespace(name, context);
+    // const originalNamespace = detectMappingNamespace(context.originalNamespace, context);
+    const originalNamespace = context.originalNamespace;
     const mappingChain = resolveMappingsChain(originalNamespace, context.desiredNamespace, context.minecraftVersion);
     if (mappingChain === undefined) {
         throw new Error(`Cannot find path from namespace '${originalNamespace}' to namespace '${context.desiredNamespace}'`)
@@ -112,7 +117,6 @@ async function mappingViaProviderChain(
     relevantMappables: HashSet<SimpleMappable>,
     version: DesiredVersion,
 ): Promise<MappingStrategy> {
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     if (providerChain.isEmpty()) return IdentityMapping;
     // Say the relevant mappables are the following:
     // - d#b
@@ -136,7 +140,7 @@ async function mappingViaProviderChain(
 
         if (!last) {
             relevantMappablesOfNamespaceOfStep = relevantMappablesOfNamespaceOfStep.map(mappable => {
-                return currentStrategy<JavaClass | DescriptoredMethod>(mappable);
+                return currentStrategy(mappable);
             })
         }
         return currentStrategy;
@@ -184,9 +188,9 @@ async function resolveUsedBuild(last: boolean, version: DesiredVersion, dirProvi
 }
 
 
-function keepOnMappin<Out extends AnyMappable>(target: Mappable<Out>, calls: ((value: Mappable<Out>) => Out)[]): Out {
+function keepOnMappin<Out extends AnyMappable>(target: Mappable<Out>, calls: ((value: AnyMappable) => AnyMappable)[]): Out {
     if (calls.length === 0) throw new Error("Expected to map at least once!")
-    let current = target;
+    let current: AnyMappable = target;
     for (const call of calls) {
         current = call(current)
     }

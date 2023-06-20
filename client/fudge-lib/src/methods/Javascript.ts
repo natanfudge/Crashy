@@ -1,12 +1,10 @@
-import {Rect} from "../types/Gui";
 import {typedKeys} from "./Typescript";
 import {TsKey} from "../types/Basic";
 
 
-
-export  function recordForEach<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K,V>, action: (key: K, value: V) => void): void {
-    for(const key in record){
-        action(key,record[key])
+export function recordForEach<V, Rec extends Record<keyof Rec, V>, K extends keyof Rec>(record: Record<K, V>, action: (key: K, value: V) => void): void {
+    for (const key in record) {
+        action(key, record[key])
     }
 }
 
@@ -21,46 +19,48 @@ export function mapRecord<K extends TsKey, V, NK extends TsKey, NV>(
     return newRecord
 }
 
-export  function mapRecordValues<K extends TsKey, V, NV>(record: Record<K, V>, valueMap: (key: K, value: V) => NV): Record<K, NV> {
-    return mapRecord(record,k => k,valueMap);
+export function mapRecordValues<K extends TsKey, V, NV>(record: Record<K, V>, valueMap: (key: K, value: V) => NV): Record<K, NV> {
+    return mapRecord(record, k => k, valueMap);
 }
 
-export  function recordFilter<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>
-(record: Record<K,V>, filter: (key: K, value: V, index: number) => boolean): Rec {
+export function recordFilter<V, Rec extends Record<keyof Rec, V>, K extends keyof Rec>
+(record: Record<K, V>, filter: (key: K, value: V, index: number) => boolean): Rec {
     const newObj = {} as Rec;
-    let i =0;
+    let i = 0;
     for (const key in record) {
         const value = record[key];
         //@ts-ignore
-        if (filter(key, record[key],i)) newObj[key] = value;
+        if (filter(key, record[key], i)) newObj[key] = value;
         i++;
     }
     return newObj;
 }
 
-export function recordSome<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean) : boolean{
-    for(const key in record){
+export function recordSome<V, Rec extends Record<keyof Rec, V>, K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean): boolean {
+    for (const key in record) {
         const value = record[key]
-        if(condition(key,value)) return true;
+        if (condition(key, value)) return true;
     }
     return false;
 }
-export function recordAll<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean) : boolean{
-    for(const key in record){
+
+export function recordAll<V, Rec extends Record<keyof Rec, V>, K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean): boolean {
+    for (const key in record) {
         const value = record[key]
-        if(!condition(key,value)) return false;
+        if (!condition(key, value)) return false;
     }
     return true;
 }
-export function recordNone<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean) : boolean{
-    return !recordSome(record,condition)
+
+export function recordNone<V, Rec extends Record<keyof Rec, V>, K extends keyof Rec>(record: Record<K, V>, condition: (key: K, value: V) => boolean): boolean {
+    return !recordSome(record, condition)
 }
 
-export  function recordToArray<V,Rec extends Record<keyof Rec, V>,K extends keyof Rec, R>(record: Record<K,V>, mapFn: (key: K, value: V, index: number) => R): R[] {
+export function recordToArray<V, Rec extends Record<keyof Rec, V>, K extends keyof Rec, R>(record: Record<K, V>, mapFn: (key: K, value: V, index: number) => R): R[] {
     return typedKeys(record).map((key, index) => mapFn(key, record[key], index));
 }
 
-export function objectLength(obj: object) : number {
+export function objectLength(obj: object): number {
     return Object.keys(obj).length;
 }
 
@@ -107,7 +107,7 @@ export function removeSuffix(str: string, suffix: string): string {
  * @deprecated use recordToArray instead
  */
 export function objectMap<V, R>(object: Record<string, V>, mapFn: (key: string, value: V, index: number) => R): R[] {
-    return recordToArray(object,mapFn)
+    return recordToArray(object, mapFn)
 }
 
 /**
@@ -130,5 +130,5 @@ export function indexOfOrThrow<T>(arr: T[], element: T): number {
  * @deprecated use recordFilter instead
  */
 export function objectFilter<V>(object: Record<string, V>, filter: (key: string, value: V) => boolean): Record<string, V> {
-    return recordFilter(object,filter)
+    return recordFilter(object, filter)
 }

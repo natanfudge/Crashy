@@ -1,7 +1,7 @@
 
 import {WithMappings} from "./mappings/MappingsUi";
-import {MappingContext} from "../../../mappings/resolve/MappingStrategy";
-import {MappingsController} from "./mappings/MappingsController";
+import {MappingContext, MappingStrategy} from "../../../mappings/resolve/MappingStrategy";
+import {MappingsController, useMappings} from "./mappings/MappingsController";
 import {
     FullRichStackTraceElement,
     Mod,
@@ -49,20 +49,19 @@ export function ForgeExtraInfoSection({report}: { report: RichCrashReport }) {
 
 
 function TraceFeiUi(props: {report: RichCrashReport, fei: TraceFei}) {
-    const mappingsController = new MappingsController(props.report);
-    const context = mappingsController.getContext();
+    const mappingsController = useMappings(props.report)
     return <WithMappings controller={mappingsController}>
         <Column style = {{wordBreak: "break-all"}}>
             <Spacer height={5}/>
             <SimpleDivider height={1}/>
             <Spacer height={5}/>
             <LazyColumn data={props.fei.metadata} batchSize={10}
-                        childProvider={(element, i) => <TraceFeiElement key={i} element={element} mappings={context}/>}/>
+                        childProvider={(element, i) => <TraceFeiElement key={i} element={element} mappings={mappingsController.strategy}/>}/>
         </Column>
     </WithMappings>
 }
 
-function TraceFeiElement({element, mappings}: { element: ElementWithFei, mappings: MappingContext }) {
+function TraceFeiElement({element, mappings}: { element: ElementWithFei, mappings: MappingStrategy }) {
     const metadata = element.forgeMetadata;
     return <Column>
         <StackTraceElementUi withMarginLeft={false} traceElement={element} mappings={mappings}/>

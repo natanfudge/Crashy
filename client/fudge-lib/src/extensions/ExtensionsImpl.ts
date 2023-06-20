@@ -173,3 +173,9 @@ Array.prototype.splitBy = function <T>(this: T[], predicate: (item: T, index: nu
     }
     return [arr1,arr2]
 }
+
+Array.prototype.indexOfOrThrow = function<T>(this: T[], element: T): number {
+    const index = this.indexOf(element);
+    if (index === -1) throw new Error(`The element '${element}' doesn't exist in the array: ${this}`)
+    return index;
+}

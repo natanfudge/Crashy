@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All fudge-lib Tests" type="JavaScriptTestRunnerVitest">
+    <node-interpreter value="project" />
+    <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+    <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
+    <envs />
+    <scope-kind value="DIRECTORY" />
+    <test-directory value="$PROJECT_DIR$/client/fudge-lib/test" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 
 import {DesiredBuildProblem, isValidDesiredBuild} from "../../../../mappings/resolve/MappingStrategy";
-import {MappingsState, withBuild} from "./MappingsState";
+import {MappingsSelection, withBuild} from "./MappingsSelection";
 import {buildsOf} from "../../../../mappings/MappingsApi";
 import {DropdownSelection} from "../../../../fudge-commons/components/DropdownSelection";
 import {useScreenSize} from "fudge-lib/dist/methods/Gui";
@@ -13,18 +13,19 @@ import {indexOfOrThrow} from "fudge-lib/dist/methods/Javascript";
 import {MappingsBuilds} from "../../../../mappings/providers/MappingsProvider";
 import {Text} from "../../../../fudge-commons/simple/Text";
 import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
+import {MappingsController} from "./MappingsController";
 
-export interface MappingsSelectionProps {
-    mappings: MappingsState;
-    onMappingsChange: (mappings: MappingsState) => void;
-    minecraftVersion: string
-}
+// export interface MappingsSelectionProps {
+//     mappings: MappingsSelection;
+//     onMappingsChange: (mappings: MappingsSelection) => void;
+//     minecraftVersion: string
+// }
 
 
 function BuildSelection({isPortrait, builds, mappings, onMappingsChange}:
                             {
                                 isPortrait: boolean, builds: MappingsBuilds,
-                                mappings: MappingsState, onMappingsChange: (mappings: MappingsState) => void
+                                mappings: MappingsSelection, onMappingsChange: (mappings: MappingsSelection) => void
                             }) {
     return <Column>
         <DropdownSelection variant={isPortrait ? "standard" : "outlined"}
@@ -40,29 +41,29 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange}:
     </Column>;
 }
 
-export function MappingsSelection({mappings, onMappingsChange, minecraftVersion}:
-                                      MappingsSelectionProps) {
+export function MappingsSelectionUi({mappings}:
+                                        { mappings: MappingsController }) {
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
-    const builds = usePromise(buildsOf(mappings.namespace, minecraftVersion), [mappings.namespace]);
-    const mappingNamespaces = getVisibleMappingNamespaces(minecraftVersion)
+    const builds = usePromise(() => buildsOf(mappings.selection.namespace, mappings.minecraftVersion), [mappings.selection.namespace]);
+    const mappingNamespaces = getVisibleMappingNamespaces(mappings.minecraftVersion)
 
     function Builds() {
         return builds === undefined ? <CircularProgress style={{padding: 7}}/> : <Fragment>
             {builds.length > 0 &&
                 <BuildSelection isPortrait={isPortrait} builds={builds}
-                                mappings={mappings}
-                                onMappingsChange={onMappingsChange}/>}
+                                mappings={mappings.selection}
+                                onMappingsChange={mappings.onSelectionChanged}/>}
         </Fragment>
     }
 
     function Namespaces() {
         return <ItemSelection type={isPortrait ? SelectionType.Dropdown : SelectionType.Expandable}
                               values={mappingNamespaces.map(type => mappingsName(type))}
-                              index={indexOfOrThrow(mappingNamespaces, mappings.namespace)}
+                              index={mappingNamespaces.indexOfOrThrow(mappings.selection.namespace)}
                               onIndexChange={i => {
                                   const newNamespace = mappingNamespaces[i];
-                                  onMappingsChange({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
+                                  mappings.onSelectionChanged({namespace: newNamespace, build: DesiredBuildProblem.BuildsLoading})
                               }}/>
     }
 
@@ -82,8 +83,7 @@ export function MappingsSelection({mappings, onMappingsChange, minecraftVersion}
 
 
         </Row>
-        {/*TODO: rework this so that mappings are resolved in a top-level way instead of individually per element. Then we just have a isLoading state.  */}
-        {mappingsLoading &&
+        {mappings.isLoading &&
             <Text padding={{left: 8, right: 3}} className={"blinking_text"} align={"center"} fontWeight={"bold"}
                   text={"Loading Mappings..."}/>}
     </Column>
