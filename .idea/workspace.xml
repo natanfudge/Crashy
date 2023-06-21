@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/fudge-lib-proposals/state/State.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/secondLocal.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/collections/PromiseMemoryCache.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/collections/PromiseMemoryCache.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/State.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/State.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-lib-proposals/state/State.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-lib-proposals/state/State.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,40 +99,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1687195600630&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/fudge-lib/src&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\compat\\functions\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "ktor.last.update.timestamp": "1687347433768",
+    "last_opened_file_path": "C:/Users/natan/.m2/repository/io/github/natanfudge/loggy/0.3.0/loggy-0.3.0-sources.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "settings.sync",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\compat\\functions\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\server" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\fudge-lib-proposals" />
       <recent name="C:\Users\natan\Desktop\Crashy\client" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
@@ -142,27 +142,105 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Upload Fudge-Lib">
-    <configuration name="Flip record works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/UtilsTest.test.ts" />
-      <test-names>
-        <test-name value="Flip record works correctly" />
-      </test-names>
+  <component name="RunManager" selected="Gradle.Upload Beta Server">
+    <configuration name="server [runJarWindows]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runJarWindows" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
-    <configuration name="update-lib" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/client/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="update-lib" />
-      </scripts>
+    <configuration name="server [runSecondJarWindows]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="runSecondJarWindows" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="server [secondWindowsLocalJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="secondWindowsLocalJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="server [windowsLocalJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="windowsLocalJar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>false</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="Remapping works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client" />
       <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
+      <test-names>
+        <test-name value="Remapping works correctly" />
+      </test-names>
       <method v="2" />
     </configuration>
     <list>
@@ -170,6 +248,10 @@
       <item itemvalue="Compound.Run Fullstack" />
       <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="Gradle.Upload Beta Server" />
+      <item itemvalue="Gradle.server [runJarWindows]" />
+      <item itemvalue="Gradle.server [runSecondJarWindows]" />
+      <item itemvalue="Gradle.server [secondWindowsLocalJar]" />
+      <item itemvalue="Gradle.server [windowsLocalJar]" />
       <item itemvalue="JavaScript Debug.Debug Browser" />
       <item itemvalue="JUnit.All Local Server Tests" />
       <item itemvalue="JUnit.All Beta Server Tests" />
@@ -178,17 +260,19 @@
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
       <item itemvalue="npm.Upload Fudge-Lib" />
-      <item itemvalue="npm.update-lib" />
       <item itemvalue="Vitest.All JS Tests" />
       <item itemvalue="Vitest.Crashlog JS Tests" />
       <item itemvalue="Vitest.Mappings JS Tests" />
       <item itemvalue="Vitest.All fudge-lib Tests" />
-      <item itemvalue="Vitest.Flip record works correctly" />
+      <item itemvalue="Vitest.Remapping works correctly" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.update-lib" />
-        <item itemvalue="Vitest.Flip record works correctly" />
+        <item itemvalue="Gradle.server [runSecondJarWindows]" />
+        <item itemvalue="Gradle.server [runJarWindows]" />
+        <item itemvalue="Gradle.server [windowsLocalJar]" />
+        <item itemvalue="Gradle.server [secondWindowsLocalJar]" />
+        <item itemvalue="Vitest.Remapping works correctly" />
       </list>
     </recent_temporary>
   </component>
@@ -296,7 +380,9 @@
       <workItem from="1687250250523" duration="7682000" />
       <workItem from="1687270539502" duration="20000" />
       <workItem from="1687270994057" duration="2371000" />
-      <workItem from="1687282550713" duration="913000" />
+      <workItem from="1687282550713" duration="922000" />
+      <workItem from="1687284387829" duration="6000" />
+      <workItem from="1687341805739" duration="5701000" />
     </task>
     <servers />
   </component>

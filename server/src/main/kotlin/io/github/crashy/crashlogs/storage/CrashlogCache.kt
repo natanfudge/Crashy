@@ -3,6 +3,7 @@ package io.github.crashy.crashlogs.storage
 
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
+import io.github.crashy.utils.lastAccessInstant
 import io.github.natanfudge.logs.LogContext
 import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
@@ -18,22 +19,22 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     // Crash logs are stored on a separate directory per ID, with the crashlog and metadata as separate files in that directory.
     private val crashes = parentDir.resolve("crashlogs").createDirectories()
 
-    // The last day that crash logs were accessed are stored under /last_access, with a separate directory for each day
-    // containing the ID of logs that their last access day is equal to said day as the file name.
+    // Every relevant day has a directory under /last_access that contains all the crash logs that were last accessed that day.
+    // This directory is called the 'day index' for that specific day.
     // This allows quickly figuring out which logs have not been accessed in a long time.
     // Days are in GMT.
-    private val lastAccessDays = parentDir.resolve("last_access").createDirectories()
+    private val dayIndex = parentDir.resolve("last_access").createDirectories()
     context(LogContext)
     fun store(id: CrashlogId, log: CrashlogEntry) {
         log.addToCrashesDir(id)
-        storeLastAccessDay(id, clock.today())
+        addCrashToDayIndex(id, clock.today())
     }
 
     context (LogContext)
     fun get(id: CrashlogId): CrashlogEntry? {
         val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
 
-        updateLastAccessDay(id, oldLastAccessDay = lastAccessDay)
+        updateDayIndex(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.fromCrashesDir(id)
     }
 
@@ -41,7 +42,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     fun peek(id: CrashlogId): CrashlogMetadata? {
         val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
 
-        updateLastAccessDay(id, oldLastAccessDay = lastAccessDay)
+        updateDayIndex(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.peek(id)
     }
 
@@ -55,7 +56,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 
         val correctKey = CrashlogEntry.peekDeletionKey(id)
         if (key != correctKey) {
-            updateLastAccessDay(id, oldLastAccessDay)
+            updateDayIndex(id, oldLastAccessDay)
             return DeleteCrashResult.IncorrectDeletionKey
         }
 
@@ -65,7 +66,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
     private fun deleteLastAccessDay(id: CrashlogId, lastAccessDay: LastAccessDay) {
-        lastAccessDayPath(id, lastAccessDay).deleteExisting()
+        dayIndexPath(id, lastAccessDay).deleteExisting()
     }
 
     private val daysToEvictCrash = 30L
@@ -73,7 +74,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     context(LogContext)
     @OptIn(ExperimentalPathApi::class)
     suspend fun evictOld(onEvicted: suspend (CrashlogId, CrashlogEntry) -> Unit) {
-        val existingDays = lastAccessDays.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
+        val existingDays = dayIndex.listDirectoryEntries().map { LastAccessDay.fromFileName(it.fileName) }
         val thirtyDaysAgo = clock.now().minusDays(daysToEvictCrash)
         val oldDays = existingDays.filter { it.toGmtZonedDateTime().isBefore(thirtyDaysAgo) }
         logInfo { "Evicting crashes from days: $oldDays" }
@@ -95,26 +96,28 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
                 } else {
                     logWarn { "Could not archive $crashId because the entry could not be read." }
                 }
-
             }
             crashesLastAccessedAtOldDay.deleteRecursively()
         }
     }
 
     context (LogContext)
-    private fun updateLastAccessDay(id: CrashlogId, oldLastAccessDay: LastAccessDay) {
+    private fun updateDayIndex(id: CrashlogId, oldLastAccessDay: LastAccessDay) {
         val today = clock.today()
         // Only update last access day if the new day (today) is actually different from the old last access time
         if (oldLastAccessDay != today) {
             // Delete old lastDay file and create a new one at the updated day
-            val deleted = lastAccessDayPath(id, oldLastAccessDay).deleteIfExists()
+            val deleted = dayIndexPath(id, oldLastAccessDay).deleteIfExists()
             if (!deleted) {
-                lastAccessDayPath(id, today).deleteIfExists()
-                logWarn { "Could not find lastAccessDay of $id to delete." }
+                dayIndexPath(id, today).deleteIfExists()
+                logWarn { "Could not find day index of $id at day $oldLastAccessDay to delete." }
+                val metadataFile = crashes.crashParentDir(id).crashMetadataFile()
+                logData("Crash metadata file location") { metadataFile.absolute() }
+                logData("Crash metadata last access day") { lastAccessDay(metadataFile)}
                 logData("old lastAccessDay") { oldLastAccessDay }
                 logData("today") { today }
-                logData("lastAccessDay old location") { lastAccessDayPath(id, oldLastAccessDay) }
-                logData("lastAccessDay today location") { lastAccessDayPath(id, today) }
+                logData("day index old location") { dayIndexPath(id, oldLastAccessDay) }
+                logData("day index today location") { dayIndexPath(id, today) }
 //                logData("contents of oldLastAccessDay dir") {
 //                    val path = crashesLastAccessedAtDay(oldLastAccessDay)
 //                    if (path.exists()) {
@@ -123,30 +126,30 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 //                    } else "Dir Doesn't exist"
 //                }
             }
-            storeLastAccessDay(id, today)
+            addCrashToDayIndex(id, today)
         }
     }
 
 
-    private fun lastAccessDayPath(id: CrashlogId, lastAccessDay: LastAccessDay): Path {
+    private fun dayIndexPath(id: CrashlogId, lastAccessDay: LastAccessDay): Path {
         return crashesLastAccessedAtDay(lastAccessDay).resolve(id.value.toString())
     }
 
     context (LogContext)
-    private fun storeLastAccessDay(id: CrashlogId, lastAccessDay: LastAccessDay) {
-        val path = lastAccessDayPath(id, lastAccessDay)
+    private fun addCrashToDayIndex(id: CrashlogId, lastAccessDay: LastAccessDay) {
+        val path = dayIndexPath(id, lastAccessDay)
         val parent = path.parent
         if (!parent.exists()) path.parent.createDirectories()
         if (!path.exists()) {
             path.createFile()
-            logInfo { "Stored lastAccessDay of $id at $path" }
+            logInfo { "Indexed last access day of $id at $path" }
         } else {
-            logWarn { "LastAccessDay at $path already exists. Maybe there were issues archiving this?" }
+            logWarn { "Day index at $path already exists. Maybe there were issues archiving this?" }
         }
     }
 
     private fun crashesLastAccessedAtDay(lastAccessDay: LastAccessDay): Path {
-        return lastAccessDays.resolve(lastAccessDay.toFileName())
+        return dayIndex.resolve(lastAccessDay.toFileName())
     }
 
     private fun CrashlogEntry.addToCrashesDir(underId: CrashlogId) {
@@ -195,6 +198,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
     companion object {
+        @Suppress("FunctionName")
         @TestOnly
         fun __testGetMetadataFile(cacheParentDir: Path, id: CrashlogId): Path {
             return cacheParentDir.resolve("crashlogs").crashParentDir(id).crashMetadataFile()
@@ -213,5 +217,6 @@ private fun Path.readMetadataFromCrashEntryFolder(): CrashlogMetadata? {
         logWarn { "Metadata file is missing from entry directory at $this!" }
         return null
     }
-    return Crashy.json.decodeFromString(CrashlogMetadata.serializer(), crashMetadataFile().readText())
+    logInfo { "Reading metadata of file at ${file.absolutePathString()}" }
+    return Crashy.json.decodeFromString(CrashlogMetadata.serializer(), file.readText())
 }

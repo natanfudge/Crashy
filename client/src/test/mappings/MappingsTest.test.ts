@@ -38,12 +38,11 @@ test("Remapping works correctly", async () => {
     const testClass: JavaClass = JavaClass.dotSeperated("net.minecraft.class_5973")
     const testMethod: SimpleMethod = SimpleMethod.dotSeperated("net.minecraft.class_3060", "method_13365")
 
-    const mappingStrategy = await getMappingForContext(testClass, {
+    const mappingStrategy = await getMappingForContext({
+        originalNamespace: "Intermediary",
         relevantMappables: HashSet.of<SimpleMappable>(testClass, testMethod, testMethod.classIn),
         desiredNamespace: "Yarn",
         desiredBuild: versions[0].version,
-        loader: LoaderType.Fabric,
-        isDeobfuscated: false,
         minecraftVersion: "1.18.1"
     })
     const remappedClass = testClass.fullName(mappingStrategy)
@@ -62,12 +61,11 @@ test("Remapping from yarn to mojmap works correctly", async () => {
     const testClass: JavaClass = JavaClass.dotSeperated("net.minecraft.client.MinecraftClient")
     const testMethod: SimpleMethod = SimpleMethod.dotSeperated("net.minecraft.client.MinecraftClient", "tick")
 
-    const mappingStrategy = await getMappingForContext(testClass, {
+    const mappingStrategy = await getMappingForContext({
         relevantMappables: HashSet.of<SimpleMappable>(testClass, testMethod, testMethod.classIn),
         desiredNamespace: "MojMap",
         desiredBuild: "1.17.1+build.65",
-        loader: LoaderType.Fabric,
-        isDeobfuscated: true,
+        originalNamespace: "Yarn",
         minecraftVersion: "1.17.1"
     })
     const remappedClass = testClass.fullName(mappingStrategy)
@@ -86,12 +84,11 @@ test("Remapping from ForgeRuntime to yarn works correctly", async () => {
     const testClass: JavaClass = JavaClass.dotSeperated("net.minecraft.client.Minecraft")
     const testMethod: SimpleMethod = SimpleMethod.dotSeperated("net.minecraft.client.Minecraft", "m_91383_")
 
-    const mappingStrategy = await getMappingForContext(testClass, {
+    const mappingStrategy = await getMappingForContext({
         relevantMappables: HashSet.of<SimpleMappable>(testClass, testMethod, testMethod.classIn),
         desiredNamespace: "Yarn",
         desiredBuild: "1.18.2+build.4",
-        loader: LoaderType.Forge,
-        isDeobfuscated: false,
+        originalNamespace: "ForgeRuntime",
         minecraftVersion: "1.18.2"
     })
     const remappedClass = testClass.fullName(mappingStrategy)

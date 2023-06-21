@@ -19,7 +19,7 @@ object Routes {
 }
 
 fun Application.configureRouting() {
-    val crashyDir = Paths.get(System.getProperty("user.home"), ".crashy")
+    val crashyDir = Crashy.HomeDir
     val logStorage = runBlocking {
         CrashlogStorage(
             bucketName = Crashy.S3CrashlogBucket,

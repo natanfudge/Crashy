@@ -6,7 +6,6 @@ import io.github.crashy.routing.configureRouting
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.cachingheaders.*
@@ -27,7 +26,7 @@ object AppKt {
 private fun createAppEnvironment() = applicationEngineEnvironment {
     watchPaths = listOf("classes")
     connector {
-        port = if (Crashy.isBeta()) 8080 else 80
+        port = if (Crashy.isSecondaryInstance()) 8080 else 80
         host = "0.0.0.0"
     }
     configureSSL()

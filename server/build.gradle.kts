@@ -7,6 +7,7 @@ import com.sshtools.client.SshClient
 import com.sshtools.client.scp.ScpClient
 import com.sshtools.client.tasks.AbstractCommandTask
 import com.sshtools.client.tasks.FileTransferProgress
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.libsDirectory
 import java.nio.charset.Charset
 import java.nio.file.Files
 import kotlin.math.absoluteValue
@@ -78,7 +79,7 @@ dependencies {
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
     linuxOnly(objectboxLinuxNatives)
-    implementation("io.github.natanfudge:loggy:0.2.3")
+    implementation("io.github.natanfudge:loggy:0.3.0")
 }
 
 
@@ -196,30 +197,47 @@ tasks {
         from("beta.txt")
     }
 
-
-    // Windows jar for testing
-    val windowsLocalJar by registering(ShadowJar::class) {
-        archiveClassifier.set("windows")
+    fun windowsLocalJarTask(classifier: String, additionalConfig: ShadowJar.() -> Unit = {}) = registering(ShadowJar::class) {
+        archiveClassifier.set(classifier)
         from(sourceSets.main.get().output)
+
+        // Put the different jars in different directories so they won't clash
+        destinationDirectory.set(libsDirectory.get().dir(classifier))
+
         // Exclude linux deps
         configurations = shadowJar.get().configurations.filter { it != linuxOnly }
         // Include windows deps
         configurations += windowsOnly
         group = "crashy setup"
+        additionalConfig()
+    }
+
+
+    // Windows jar for testing
+    val windowsLocalJar by windowsLocalJarTask("windows-1")
+
+    // Second jar for testing running two servers at once
+    val secondWindowsLocalJar by windowsLocalJarTask("windows-2") {
+        from("secondLocal.txt")
     }
 
     afterEvaluate {
 
-        val windowsShadowJarFiles = windowsLocalJar.get().outputs.files
-        val windowsShadowJarFile = windowsShadowJarFiles.singleFile
+        fun registerRunWindowsJar(name: String, jarTask: Provider<ShadowJar>) {
+            val windowsShadowJarFiles = jarTask.get().outputs.files
+            val windowsShadowJarFile = windowsShadowJarFiles.singleFile
 
-        register<Exec>("runJarWindows") {
-            group = "crashy"
-            dependsOn(windowsLocalJar)
+            register<Exec>(name) {
+                group = "crashy"
+                dependsOn(jarTask)
 
-            workingDir(windowsShadowJarFile.parent)
-            commandLine("java", "-jar", windowsShadowJarFile.name)
+                workingDir(windowsShadowJarFile.parent)
+                commandLine("java", "-jar", windowsShadowJarFile.name)
+            }
         }
+
+        registerRunWindowsJar("runJarWindows", windowsLocalJar)
+        registerRunWindowsJar("runSecondJarWindows", secondWindowsLocalJar)
 
 
         fun Task.configureEc2Upload(release: Boolean) {
@@ -299,8 +317,8 @@ fun Task.configureEc2Upload(crashyJarTask: Task, release: Boolean) {
         val cleanDirsCommand = "sudo find $fullJarsDir -empty -type d -delete"
         val jarDir = "$fullJarsDir/$randomId"
         val logFile = "$jarDir/output.txt"
-//        val javaCommand = "nohup sudo java -jar $jarDir/$jarName >$logFile 2>$logFile <$logFile &"
-        val javaCommand = "nohup sudo java -jar $jarDir/$jarName &"
+        val javaCommand = "nohup sudo java -jar $jarDir/$jarName >$logFile 2>$logFile <$logFile &"
+//        val javaCommand = "nohup sudo java -jar $jarDir/$jarName &"
 
         // Kill old java process, remove all old files, delete empty directories
         val remoteCleanupCommand = "$killCommand ; $removeCommand && $cleanDirsCommand"
