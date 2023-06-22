@@ -71,7 +71,7 @@ fun randomString(length: Int) = buildString {
 fun getResource(path: String): String? =
     Crashy::class.java.getResourceAsStream(path)?.readBytes()?.toString(Charset.defaultCharset())
 
-fun Path.lastAccessInstant() = readAttributes<BasicFileAttributes>().lastAccessTime().toInstant()
+//
 
 suspend fun <T> CompletableFuture<T>.suspendResult(): Result<T> = suspendCancellableCoroutine { cont ->
     whenCompleteAsync { value, e ->

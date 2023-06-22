@@ -2,8 +2,9 @@ package io.github.crashy.crashlogs
 
 import com.aayushatharva.brotli4j.decoder.Decoder
 import com.aayushatharva.brotli4j.decoder.DecoderJNI.Status.DONE
-import io.github.crashy.compat.firestoreIdToUUID
+import io.github.crashy.compat.BackwardCompatibility
 import io.github.crashy.crashlogs.api.StringResponse
+import io.github.crashy.crashlogs.storage.LastAccessDay
 import io.github.crashy.utils.InstantSerializer
 import io.github.crashy.utils.UUIDSerializer
 import io.github.crashy.utils.compressBrotli
@@ -49,18 +50,28 @@ value class CrashlogId private constructor(@Serializable(with = UUIDSerializer::
     }
 }
 
-fun uUIDFromIdString(id: String): UUID = if (id.length == 20) firestoreIdToUUID(id) else UUID.fromString(id)
+fun uUIDFromIdString(id: String): UUID = if (id.length == 20) BackwardCompatibility.firestoreIdToUUID(id) else UUID.fromString(id)
 
 fun CrashlogId.s3Key() = value.toString()
 
 
 @Serializable
-data class CrashlogMetadata(
+data class CrashlogMetadata private constructor(
     val deletionKey: DeletionKey,
 
     @Serializable(with = InstantSerializer::class) val uploadDate: Instant,
-    val header: CrashlogHeader
-)
+    val header: CrashlogHeader,
+    private val lastAccessDay: LastAccessDay? = null
+) {
+    fun getLastAccessDay(fileLocation: Path) = lastAccessDay ?: BackwardCompatibility.fileSystemLastAccessDay(fileLocation)
+
+    companion object {
+        /** We want to make sure none-serializable constructors of this specify [lastAccessDay] */
+        fun create(deletionKey: DeletionKey, uploadDate: Instant, header: CrashlogHeader, lastAccessDay: LastAccessDay): CrashlogMetadata {
+            return CrashlogMetadata(deletionKey, uploadDate, header, lastAccessDay)
+        }
+    }
+}
 
 @Serializable
 data class CrashlogHeader(val title: String?, val exceptionDescription: String) {

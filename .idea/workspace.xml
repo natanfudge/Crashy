@@ -5,15 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/server/secondLocal.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/compat/NewLastAccessDay.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/fudge-lib-proposals/state/State.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-lib-proposals/state/State.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/Crashy.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/compat/CompatUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/compat/CompatUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Models.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogCache.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/StorageTime.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/StorageTime.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/Utils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogCacheTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/CrashlogStorageTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/Utils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/ApiTesting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +83,7 @@
       <list>
         <option value="Kotlin Object" />
         <option value="TypeScript File" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -108,7 +114,7 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "js.linters.configure.manually.selectedeslint": "true",
-    "ktor.last.update.timestamp": "1687347433768",
+    "ktor.last.update.timestamp": "1687434237029",
     "last_opened_file_path": "C:/Users/natan/.m2/repository/io/github/natanfudge/loggy/0.3.0/loggy-0.3.0-sources.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
@@ -142,7 +148,79 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Upload Beta Server">
+  <component name="RunManager" selected="Compound.Run Fullstack">
+    <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.CrashlogCacheTest.testCache&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>true</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="CrashlogStorageTest.testStorage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.CrashlogStorageTest.testStorage&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>true</ForceTestExec>
+      <method v="2" />
+    </configuration>
+    <configuration name="NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.compat.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <ForceTestExec>true</ForceTestExec>
+      <method v="2" />
+    </configuration>
     <configuration name="server [runJarWindows]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -187,71 +265,16 @@
       <ForceTestExec>false</ForceTestExec>
       <method v="2" />
     </configuration>
-    <configuration name="server [secondWindowsLocalJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="secondWindowsLocalJar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
-      <method v="2" />
-    </configuration>
-    <configuration name="server [windowsLocalJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="windowsLocalJar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>false</ForceTestExec>
-      <method v="2" />
-    </configuration>
-    <configuration name="Remapping works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
-      <test-names>
-        <test-name value="Remapping works correctly" />
-      </test-names>
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Compound.Run Fullstack" />
       <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="Gradle.Upload Beta Server" />
+      <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
+      <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
+      <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
       <item itemvalue="Gradle.server [runJarWindows]" />
       <item itemvalue="Gradle.server [runSecondJarWindows]" />
-      <item itemvalue="Gradle.server [secondWindowsLocalJar]" />
-      <item itemvalue="Gradle.server [windowsLocalJar]" />
       <item itemvalue="JavaScript Debug.Debug Browser" />
       <item itemvalue="JUnit.All Local Server Tests" />
       <item itemvalue="JUnit.All Beta Server Tests" />
@@ -264,15 +287,14 @@
       <item itemvalue="Vitest.Crashlog JS Tests" />
       <item itemvalue="Vitest.Mappings JS Tests" />
       <item itemvalue="Vitest.All fudge-lib Tests" />
-      <item itemvalue="Vitest.Remapping works correctly" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
+        <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
+        <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
         <item itemvalue="Gradle.server [runSecondJarWindows]" />
         <item itemvalue="Gradle.server [runJarWindows]" />
-        <item itemvalue="Gradle.server [windowsLocalJar]" />
-        <item itemvalue="Gradle.server [secondWindowsLocalJar]" />
-        <item itemvalue="Vitest.Remapping works correctly" />
       </list>
     </recent_temporary>
   </component>
@@ -382,7 +404,10 @@
       <workItem from="1687270994057" duration="2371000" />
       <workItem from="1687282550713" duration="922000" />
       <workItem from="1687284387829" duration="6000" />
-      <workItem from="1687341805739" duration="5701000" />
+      <workItem from="1687341805739" duration="8299000" />
+      <workItem from="1687365343246" duration="290000" />
+      <workItem from="1687366585263" duration="738000" />
+      <workItem from="1687430347063" duration="4737000" />
     </task>
     <servers />
   </component>
@@ -395,6 +420,17 @@
     <option featureType="dependencySupport" implementationName="java:io.grpc:grpc-api" />
     <option featureType="dependencySupport" implementationName="javascript:npm:vite" />
     <option featureType="dependencySupport" implementationName="java:software.amazon.awssdk:sdk-core" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

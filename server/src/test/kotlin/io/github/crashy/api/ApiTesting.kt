@@ -14,6 +14,7 @@ object ApiTesting {
         Crashy.Build.Local -> "localhost:80"
         Crashy.Build.Beta -> "crashy.net:4433"
         Crashy.Build.Release -> "crashy.net"
+        Crashy.Build.SecondLocal -> "localhost:4433"
     }
 
     fun isLocal() = TestingBuild == Crashy.Build.Local

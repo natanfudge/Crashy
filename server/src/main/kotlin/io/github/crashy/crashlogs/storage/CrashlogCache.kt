@@ -3,7 +3,6 @@ package io.github.crashy.crashlogs.storage
 
 import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
-import io.github.crashy.utils.lastAccessInstant
 import io.github.natanfudge.logs.LogContext
 import org.jetbrains.annotations.TestOnly
 import java.nio.file.Path
@@ -32,7 +31,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 
     context (LogContext)
     fun get(id: CrashlogId): CrashlogEntry? {
-        val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
+        val lastAccessDay = CrashlogEntry.peekLastAccessDay(id) ?: return null
 
         updateDayIndex(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.fromCrashesDir(id)
@@ -40,7 +39,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 
     context(LogContext)
     fun peek(id: CrashlogId): CrashlogMetadata? {
-        val lastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return null
+        val lastAccessDay = CrashlogEntry.peekLastAccessDay(id) ?: return null
 
         updateDayIndex(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.peek(id)
@@ -52,7 +51,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
      */
     context(LogContext)
     fun delete(id: CrashlogId, key: DeletionKey): DeleteCrashResult {
-        val oldLastAccessDay = CrashlogEntry.lastAccessDay(id) ?: return DeleteCrashResult.NoSuchId
+        val oldLastAccessDay = CrashlogEntry.peekLastAccessDay(id) ?: return DeleteCrashResult.NoSuchId
 
         val correctKey = CrashlogEntry.peekDeletionKey(id)
         if (key != correctKey) {
@@ -101,6 +100,8 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         }
     }
 
+    ///   /root/.crashy/cache/crashlogs/0ed50914-1646-68c2-07bd-11dee21dcd14/meta.json
+//    /root/.crashy/cache/crashlogs/0ed50914-1646-68c2-07bd-11dee21dcd14/meta.json
     context (LogContext)
     private fun updateDayIndex(id: CrashlogId, oldLastAccessDay: LastAccessDay) {
         val today = clock.today()
@@ -111,9 +112,9 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
             if (!deleted) {
                 dayIndexPath(id, today).deleteIfExists()
                 logWarn { "Could not find day index of $id at day $oldLastAccessDay to delete." }
-                val metadataFile = crashes.crashParentDir(id).crashMetadataFile()
-                logData("Crash metadata file location") { metadataFile.absolute() }
-                logData("Crash metadata last access day") { lastAccessDay(metadataFile)}
+//                val metadataFile = crashes.crashParentDir(id).crashMetadataFile()
+//                logData("Crash metadata file location") { metadataFile.absolute() }
+//                logData("Crash metadata last access day") { lastAccessDay(metadataFile) }
                 logData("old lastAccessDay") { oldLastAccessDay }
                 logData("today") { today }
                 logData("day index old location") { dayIndexPath(id, oldLastAccessDay) }
@@ -136,7 +137,7 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     }
 
     context (LogContext)
-    private fun addCrashToDayIndex(id: CrashlogId, lastAccessDay: LastAccessDay) {
+    private fun addCrashToDayIndex(id: CrashlogId, lastAccessDay: LastAccessDay, oldLastAccessDay: LastAccessDay? = null) {
         val path = dayIndexPath(id, lastAccessDay)
         val parent = path.parent
         if (!parent.exists()) path.parent.createDirectories()
@@ -144,6 +145,8 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
             path.createFile()
             logInfo { "Indexed last access day of $id at $path" }
         } else {
+            logData("lastAccessDay") { lastAccessDay }
+            logData("oldLastAccessDay") { oldLastAccessDay ?: "null" }
             logWarn { "Day index at $path already exists. Maybe there were issues archiving this?" }
         }
     }
@@ -173,28 +176,32 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         }
         return CrashlogEntry(
             CompressedLog.readFromFile(logFile),
-            entryDir.readMetadataFromCrashEntryFolder() ?: return null
+            entryDir.readMetadataFromCrashEntryFolder(updateLastAccessTime = true) ?: return null
         )
     }
 
     context (LogContext)
     private fun CrashlogEntry.Companion.peekDeletionKey(underId: CrashlogId): DeletionKey? {
-        return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder()?.deletionKey
+        return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder(updateLastAccessTime = false)?.deletionKey
     }
 
     context (LogContext)
     private fun CrashlogEntry.Companion.peek(underId: CrashlogId): CrashlogMetadata? {
-        return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder()
+        return crashes.crashParentDir(underId).readMetadataFromCrashEntryFolder(updateLastAccessTime = false)
     }
 
     private fun CrashlogEntry.Companion.deleteEntryFiles(underId: CrashlogId) {
         crashes.crashParentDir(underId).toFile().deleteRecursively()
     }
 
-    private fun CrashlogEntry.Companion.lastAccessDay(ofId: CrashlogId): LastAccessDay? {
-        val file = crashes.crashParentDir(ofId).crashMetadataFile()
+    context(LogContext)
+    private fun CrashlogEntry.Companion.peekLastAccessDay(ofId: CrashlogId): LastAccessDay? {
+        val crashParent = crashes.crashParentDir(ofId)
+        // We need the file itself for backwards compatibility
+        val file = crashParent.crashMetadataFile()
         if (!file.exists()) return null
-        return lastAccessDay(file)
+        val metadata = crashParent.readMetadataFromCrashEntryFolder(updateLastAccessTime = false) ?: return null
+        return metadata.getLastAccessDay(file)
     }
 
     companion object {
@@ -210,13 +217,25 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 private fun Path.crashParentDir(id: CrashlogId) = resolve(id.value.toString())
 private fun Path.compressedLogFile() = resolve("crash.br")
 private fun Path.crashMetadataFile() = resolve("meta.json")
+
+/**
+ * 'Peeking' doesn't update the [updateLastAccessTime], so it doesn't think the file was accessed.
+ */
 context (LogContext)
-private fun Path.readMetadataFromCrashEntryFolder(): CrashlogMetadata? {
-    val file = crashMetadataFile()
-    if (!file.exists()) {
-        logWarn { "Metadata file is missing from entry directory at $this!" }
-        return null
+private fun Path.readMetadataFromCrashEntryFolder(updateLastAccessTime: Boolean): CrashlogMetadata? {
+    synchronized(this) {
+        val file = crashMetadataFile()
+        if (!file.exists()) {
+            logWarn { "Metadata file is missing from entry directory at $this!" }
+            return null
+        }
+        logInfo { "Reading metadata of file at ${file.absolutePathString()}" }
+        val metadata = Crashy.json.decodeFromString(CrashlogMetadata.serializer(), file.readText())
+        if (updateLastAccessTime) {
+            val updatedMetadata = metadata.copy(lastAccessDay = LastAccessDay.today())
+            file.writeText(Crashy.json.encodeToString(CrashlogMetadata.serializer(), updatedMetadata))
+        }
+        return metadata
     }
-    logInfo { "Reading metadata of file at ${file.absolutePathString()}" }
-    return Crashy.json.decodeFromString(CrashlogMetadata.serializer(), file.readText())
 }
+

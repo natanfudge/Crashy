@@ -1,22 +1,46 @@
 package io.github.crashy.compat
 
+import io.github.crashy.crashlogs.storage.LastAccessDay
+import java.nio.file.Files.readAttributes
+import java.nio.file.Path
+import java.nio.file.attribute.BasicFileAttributes
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.util.*
+import kotlin.io.path.readAttributes
 
-fun firestoreIdToUUID(id: String): UUID {
-    // Represent each char as 6 bytes, in total we need 120 bytes (UUID can store up to 128 so we're fine)
-    require(id.length == 20)
-    var firstHalf = 0L
-    repeat(10) { i ->
-        val indexValue = charMap[id[i]]?.toLong() ?: error("Unexpected firestore ID character: ${id[i]}")
-        firstHalf += indexValue shl (i * 6) // 6 bits for each char, total 64 options
+object BackwardCompatibility {
+    /**
+     * We used to use Firebase storage for crashes, and use the firebase generated ID for them. Now we just use UUID.
+     */
+    fun firestoreIdToUUID(id: String): UUID {
+        // Represent each char as 6 bytes, in total we need 120 bytes (UUID can store up to 128 so we're fine)
+        require(id.length == 20)
+        var firstHalf = 0L
+        repeat(10) { i ->
+            val indexValue = charMap[id[i]]?.toLong() ?: error("Unexpected firestore ID character: ${id[i]} in id $id")
+            firstHalf += indexValue shl (i * 6) // 6 bits for each char, total 64 options
+        }
+        var secondHalf = 0L
+        repeat(10) { i ->
+            val indexValue = charMap[id[i + 10]]?.toLong() ?: error("Unexpected firestore ID character: ${id[i]} in id $id")
+            secondHalf += indexValue shl (i * 6) // 6 bits for each char, total 64 options
+        }
+        return UUID(firstHalf, secondHalf)
     }
-    var secondHalf = 0L
-    repeat(10) { i ->
-        val indexValue = charMap[id[i + 10]]?.toLong() ?: error("Unexpected firestore ID character: ${id[i]}")
-        secondHalf += indexValue shl (i * 6) // 6 bits for each char, total 64 options
+
+    /**
+     * Originally the last access day of a crash was determined by the file system lastAccessTime attribute, but it turns out it just doesn't work well.
+     * Now we store the last access day explicitly in the json.
+     */
+    fun fileSystemLastAccessDay(file: Path): LastAccessDay {
+        return LastAccessDay.fromDate(ZonedDateTime.ofInstant(file.lastAccessInstant(), ZoneOffset.UTC))
     }
-    return UUID(firstHalf, secondHalf)
 }
+
+private fun Path.lastAccessInstant(): Instant = readAttributes<BasicFileAttributes>().lastAccessTime().toInstant()
+
 
 //               --8--   -4-  -4-  -4-    -- 12 --
 // UUID format: cccccccc-cccc-cccc-cccc-cccccccccccc

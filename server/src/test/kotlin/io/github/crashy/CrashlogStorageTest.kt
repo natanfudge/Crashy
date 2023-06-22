@@ -17,6 +17,7 @@ import kotlin.test.Test
 
 
 class CrashlogStorageTest {
+    // Should pass without warnings
     @Test
     fun testStorage() = testScope {
         testBody()
@@ -142,14 +143,17 @@ class CrashlogStorageTest {
     private suspend fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
         val result = getLog(id)
         if (result is GetCrashlogResult.Success) {
-            alignFileWithTestTime(id)
+            alignLastAccessMetadataWithTestTime(id)
         }
         expectThat(result)
             .isA<GetCrashlogResult.Success>()
             .get(GetCrashlogResult.Success::log)
             .and {
                 get(CrashlogEntry::compressedLog).get(CompressedLog::bytes).isEqualTo(log.compressedLog.bytes)
-                get(CrashlogEntry::metadata).isEqualTo(log.metadata)
+                get(CrashlogEntry::metadata)
+                    .and { get(CrashlogMetadata::deletionKey).isEqualTo(log.metadata.deletionKey) }
+                    .and { get(CrashlogMetadata::header).isEqualTo(log.metadata.header) }
+                    .and { get(CrashlogMetadata::uploadDate).isEqualTo(log.metadata.uploadDate) }
             }
     }
 
@@ -157,13 +161,13 @@ class CrashlogStorageTest {
     context (CrashlogStorage, TestClock, Path, LogContext)
     private fun testStore(id: CrashlogId, log: CrashlogEntry) {
         store(id, log)
-        alignFileWithTestTime(id)
+        alignLastAccessMetadataWithTestTime(id)
     }
 
     context (CrashlogStorage, TestClock, Path, LogContext)
     private fun testDelete(id: CrashlogId, deletionKey: DeletionKey): DeleteCrashResult {
         val res = delete(id, deletionKey)
-        alignFileWithTestTime(id)
+        alignLastAccessMetadataWithTestTime(id)
         return res
     }
 

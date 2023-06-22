@@ -6,6 +6,7 @@ import io.github.crashy.Crashy.StaticDir
 import io.github.crashy.crashlogs.*
 import io.github.crashy.crashlogs.storage.CrashlogStorage
 import io.github.crashy.crashlogs.storage.GetCrashlogResult
+import io.github.crashy.crashlogs.storage.LastAccessDay
 import io.github.crashy.crashlogs.storage.PeekCrashlogResult
 import io.github.crashy.utils.replaceSequentially
 import io.github.natanfudge.logs.LogContext
@@ -38,7 +39,7 @@ class CrashlogApi(private val logs: CrashlogStorage) {
         logData("Deletion Key") { key }
 
         val header = CrashlogHeader.readFromLog(request) ?: return UploadCrashResponse.MalformedCrashError
-        logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata(key, Instant.now(), header)))
+        logs.store(id = id, log = CrashlogEntry(request.compress(), CrashlogMetadata.create(key, Instant.now(), header, LastAccessDay.today())))
 
         return UploadCrashResponse.Success(
             id,

@@ -3,7 +3,9 @@ package io.github.crashy
 import io.github.crashy.crashlogs.CompressedLog
 import io.github.crashy.crashlogs.CrashlogEntry
 import io.github.crashy.crashlogs.CrashlogId
+import io.github.crashy.crashlogs.CrashlogMetadata
 import io.github.crashy.crashlogs.storage.CrashlogCache
+import io.github.crashy.crashlogs.storage.LastAccessDay
 import io.github.crashy.crashlogs.storage.NowDefinition
 import io.github.crashy.crashlogs.storage.RealClock
 import io.github.natanfudge.logs.LogContext
@@ -13,6 +15,7 @@ import strikt.assertions.isEqualTo
 import strikt.assertions.isNotNull
 import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.ZonedDateTime
 import kotlin.test.Test
 
@@ -28,6 +31,7 @@ class TestClock : NowDefinition {
 }
 
 class CrashlogCacheTest {
+    // Should pass without warnings!
     @Test
     fun testCache() = testScope {
         testCacheBody()
@@ -43,7 +47,7 @@ class CrashlogCacheTest {
 
         checkBytes(id1, log1)
 
-//        println()
+        println()
 
         val id2 = CrashlogId.generate()
         expectThat(getForTest(id2)).isEqualTo(null)
@@ -101,10 +105,15 @@ class CrashlogCacheTest {
         expectThat(getForTest(id3)).isEqualTo(null)
     }
 
-    context (CrashlogCache, TestClock, Path, LogContext)   fun checkBytes(id: CrashlogId, log: CrashlogEntry) {
+    context (CrashlogCache, TestClock, Path, LogContext)   fun checkBytes(id: CrashlogId, log: CrashlogEntry/*, expectedLastAccessDay: LastAccessDay*/) {
         expectThat(getForTest(id)).isNotNull().and {
             get(CrashlogEntry::compressedLog).get(CompressedLog::bytes).isEqualTo(log.compressedLog.bytes)
-            get(CrashlogEntry::metadata).isEqualTo(log.metadata)
+            get(CrashlogEntry::metadata)
+                .and { get(CrashlogMetadata::deletionKey).isEqualTo(log.metadata.deletionKey) }
+                .and { get(CrashlogMetadata::header).isEqualTo(log.metadata.header) }
+                .and { get(CrashlogMetadata::uploadDate).isEqualTo(log.metadata.uploadDate) }
+                // Path doesn't matter here
+//                .and { get { getLastAccessDay(Paths.get("foo")) }.isEqualTo(expectedLastAccessDay) }
         }
     }
 
@@ -114,7 +123,7 @@ class CrashlogCacheTest {
         val dir = Files.createTempDirectory("test")
         val cache = CrashlogCache(dir, clock)
         runBlocking {
-            Crashy.logger.startSuspendWithContextAsParam("test_crashlog_cache"){
+            Crashy.logger.startSuspendWithContextAsParam("test_crashlog_cache") {
                 test(cache, clock, dir, it)
             }
         }
@@ -125,7 +134,7 @@ class CrashlogCacheTest {
     private fun getForTest(id: CrashlogId): CrashlogEntry? {
         val bytes = get(id)
         if (bytes != null) {
-            alignFileWithTestTime(id)
+            alignLastAccessMetadataWithTestTime(id)
         }
         return bytes
     }
@@ -133,7 +142,7 @@ class CrashlogCacheTest {
     context (CrashlogCache, TestClock, Path, LogContext)
     private fun testStore(id: CrashlogId, log: CrashlogEntry) {
         store(id, log)
-        alignFileWithTestTime(id)
+        alignLastAccessMetadataWithTestTime(id)
     }
 
 

@@ -40,7 +40,7 @@ application {
     mainClass.set(mainClassName)
 }
 group = "io.github.crashy"
-version = "1.0.0"
+version = "1.0.1"
 kotlin {
     jvmToolchain(17)
 }

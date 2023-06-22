@@ -10,8 +10,9 @@ import com.google.firebase.cloud.FirestoreClient
 import io.github.crashy.Crashy
 import io.github.crashy.api.utils.savedInt
 import io.github.crashy.api.utils.savedTimestamp
-import io.github.crashy.compat.firestoreIdToUUID
+import io.github.crashy.compat.BackwardCompatibility
 import io.github.crashy.crashlogs.*
+import io.github.crashy.crashlogs.storage.LastAccessDay
 import io.github.crashy.utils.*
 import io.ktor.util.date.*
 import kotlinx.coroutines.Dispatchers
@@ -109,10 +110,11 @@ class FirebaseMigration {
                             println("Failed to read header of crash log with ID ${crash.id}, it will be given a stub header")
                             CrashlogHeader(title = "Some Crash", exceptionDescription = "Something wrong happened")
                         }
-                        val metadata = CrashlogMetadata(
+                        val metadata = CrashlogMetadata.create(
                             DeletionKey.fromExisting(deletionKey),
                             uploadDate = uploadDate.toDate().toInstant(),
-                            header
+                            header,
+                            LastAccessDay.today()
                         )
 
                         val entry = CrashlogEntry(brotliCompressed, metadata)
@@ -281,8 +283,8 @@ class FirebaseMigration {
     fun testIdConversion() {
         val id1 = "001hsUWaLr9dktPz-KCt"
         val id2 = "12BNXMNpcG9PS8R78EQZ"
-        val converted1 = firestoreIdToUUID(id1)
-        val converted2 = firestoreIdToUUID(id2)
+        val converted1 = BackwardCompatibility.firestoreIdToUUID(id1)
+        val converted2 = BackwardCompatibility.firestoreIdToUUID(id2)
 
         expectThat(converted1).isNotEqualTo(converted2)
         println(converted1)
