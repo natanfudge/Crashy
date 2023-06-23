@@ -12,18 +12,24 @@ import {QuiltModsTitle, SystemDetailsTitle} from "./CrashReportEnricher";
 
 
 export function parseCrashReport(rawReport: string): CrashReport {
-    return parseCrashReportImpl(rawReport, true);
+    const usesSpacesInsteadOfTabs = rawReport.includes("  Minecraft Version:")
+    // Sometimes dumb mods force spaces instead of tabs, and they even replace some tabs with 4 spaces, and some tabs with 2 spaces, IN THE SAME CRASH.
+    const usedReport = usesSpacesInsteadOfTabs ? rawReport.replaceAll("    ", "\t").replaceAll("  ", "\t")
+        : rawReport
+    return parseCrashReportImpl(usedReport, true);
 }
 
-
-export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
+//TODO: i wanna rewrite this using tokenization.
+function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     let cursor = 0;
 
     const firstLine = readLine()
     const isConcise = firstLine === "---- Crashed! ----"
     if (isConcise) return parseConciseLog()
 
-    const wittyComment = parseWittyComment();
+    let wittyComment = parseWittyComment();
+    // Sometimes a comment line is added, in that case, only use the second comment line
+    if (nextIsString("//")) wittyComment = parseWittyComment()
 
     // Skip empty line
     skipLine();
@@ -233,14 +239,19 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
 
     function parseSectionDetails() {
         let details: StringMap | undefined;
-        if (nextIsString("Details:")) {
+        const nextIsDetails = nextIsString("Details:")
+        const nextLine = peekLine()
+        // Some dumb mods get rid of the "Details:" thing
+        const nextLineIsKeyValue = nextLine.startsWith("\t") && nextLine.includes(":")
+        if (nextIsDetails || nextLineIsKeyValue) {
             // Skip 'Details:'
-            skipLine();
+            if (nextIsDetails) skipLine();
             details = {};
             while (!isEof() && current() === "\t") {
                 const {name, detail} = parseSectionElement();
                 details[name] = detail;
             }
+            let x = 2
         }
         return details;
     }
@@ -485,11 +496,10 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
     }
 
     /**
-     * Does not include the char itself, but skips it
+     * Does not include the string itself, but skips it
      */
     function readBeforeString(string: string): string {
         const startIndex = cursor
-        // const result = buildString((str) => {
         let amountEqualToString = 0
         while (!isEof()) {
             const char = readCurrent()
@@ -501,10 +511,7 @@ export function parseCrashReportImpl(rawReport: string, strict: boolean): CrashR
                 // Something's not equal, start again.
                 amountEqualToString = 0
             }
-            // cursor: 6180
         }
-        // });
-        // skip()
         // Get rid of the string that we are searching for in the result
         return rawReport.slice(startIndex, cursor - string.length);
     }

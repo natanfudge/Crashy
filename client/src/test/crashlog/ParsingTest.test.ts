@@ -8,9 +8,10 @@ import {BrokenSectionCrash} from "../testlogs/BrokenSectionCrash";
 import {CrashReport} from "../../crash/model/CrashReport";
 import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
 import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../../crash/model/RichCrashReport";
-import {parseCrashReport, parseCrashReportImpl} from "../../crash/parser/CrashReportParser";
+import {parseCrashReport} from "../../crash/parser/CrashReportParser";
 import {NecFabricCrash} from "../testlogs/NecFabricCrash";
 import {expect, test} from 'vitest'
+import {loliCrash} from "../testlogs/LoliCrash";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -299,7 +300,7 @@ test("Empty space crash is parsed correctly", () => {
 })
 
 test("Broken section crash is parsed well enough", () => {
-    const parsed = parseCrashReportImpl(BrokenSectionCrash, true);
+    const parsed = parseCrashReport(BrokenSectionCrash);
     expect(parsed.sections[2].details!["Graphics mode"]).toEqual("fancy")
 })
 
@@ -309,4 +310,12 @@ test("Nec Fabric crash log is parsed correctly", () => {
     const enriched = enrichCrashReport(report);
 
     expect(enriched.deobfuscated).toEqual(true)
+})
+
+test("Loli crash log is parsed correctly", () => {
+    const report = parseCrashReport(loliCrash);
+    const enriched = enrichCrashReport(report);
+    expect(enriched.wittyComment).toEqual("On the bright side, I bought you a teddy bear!")
+    expect(enriched.sections[0].details!["Current Language"]).toEqual("English (US)")
+
 })
