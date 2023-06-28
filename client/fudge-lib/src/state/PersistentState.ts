@@ -1,25 +1,25 @@
 import {useState} from "react";
 import {State, useStateObject} from "./State";
 
-export class PersistentValue {
+export class PersistentValue<T extends string> {
     private readonly key: string
 
     constructor(key: string) {
         this.key = key;
     }
 
-    getValue(): string | null {
-        return localStorage.getItem(this.key)
+    getValue(): T | null {
+        return localStorage.getItem(this.key) as T
     }
 
-    setValue(value: string) {
+    setValue(value: T) {
         localStorage.setItem(this.key, value)
     }
 }
 
-export function usePersistentState(key: string, defaultValue: string | (() => string)): State<string> {
-    const persistent = new PersistentValue(key)
-    const valueState = useStateObject(
+export function usePersistentState<T extends string = string>(key: string, defaultValue: T | (() => T)): State<T> {
+    const persistent = new PersistentValue<T>(key)
+    const valueState = useStateObject<T>(
         persistent.getValue() ?? (typeof defaultValue === "string" ? defaultValue : defaultValue())
     )
 

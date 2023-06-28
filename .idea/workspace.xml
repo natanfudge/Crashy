@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/LoliCrash.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Test_Local_Server.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/Test_Local_Server.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Upload_Fudge_Lib.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/types/React.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/standards-style/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/standards-style/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/standards-style/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/standards-style/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/compat/CompatUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/compat/CompatUtils.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +84,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
   <component name="NamedScopeManager">
     <order>
       <scope name="Crashy" />
@@ -100,13 +106,16 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1687434237029&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/.m2/repository/io/github/natanfudge/loggy/0.3.0/loggy-0.3.0-sources.jar&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1687954265655&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/IWantTo&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -118,8 +127,8 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.sync&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\compat\\functions\\node_modules\\typescript\\lib&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -139,7 +148,7 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Upload Release Server">
+  <component name="RunManager" selected="npm.Upload Fudge-Lib">
     <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -236,6 +245,16 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="Upload Fudge-Lib" type="js.build_tools.npm" temporary="true">
+      <package-json value="$PROJECT_DIR$/client/fudge-lib/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="upload" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Compound.Run Fullstack" />
@@ -261,11 +280,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.Upload Fudge-Lib" />
         <item itemvalue="Vitest.Loli crash log is parsed correctly" />
         <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
-        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
-        <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
         <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
+        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
       </list>
     </recent_temporary>
   </component>
@@ -380,7 +399,14 @@
       <workItem from="1687366585263" duration="738000" />
       <workItem from="1687430347063" duration="6701000" />
       <workItem from="1687507051526" duration="9000" />
-      <workItem from="1687515614501" duration="2852000" />
+      <workItem from="1687515614501" duration="5655000" />
+      <workItem from="1687521590190" duration="3456000" />
+      <workItem from="1687535032933" duration="537000" />
+      <workItem from="1687881290269" duration="775000" />
+      <workItem from="1687885232208" duration="605000" />
+      <workItem from="1687953329722" duration="124000" />
+      <workItem from="1687954262895" duration="1062000" />
+      <workItem from="1687972647339" duration="803000" />
     </task>
     <servers />
   </component>
@@ -415,6 +441,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -455,13 +485,11 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
           <line>422</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
           <line>253</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="23" />
         </line-breakpoint>
       </breakpoints>

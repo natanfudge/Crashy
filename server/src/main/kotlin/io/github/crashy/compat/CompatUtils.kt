@@ -19,12 +19,12 @@ object BackwardCompatibility {
         require(id.length == 20)
         var firstHalf = 0L
         repeat(10) { i ->
-            val indexValue = charMap[id[i]]?.toLong() ?: error("Unexpected firestore ID character: ${id[i]} in id $id")
+            val indexValue = charMap[id[i]]?.toLong() ?: throw IllegalArgumentException("Illegal firestore ID character: ${id[i]} in id $id")
             firstHalf += indexValue shl (i * 6) // 6 bits for each char, total 64 options
         }
         var secondHalf = 0L
         repeat(10) { i ->
-            val indexValue = charMap[id[i + 10]]?.toLong() ?: error("Unexpected firestore ID character: ${id[i]} in id $id")
+            val indexValue = charMap[id[i + 10]]?.toLong() ?: throw IllegalArgumentException("Illegal firestore ID character: ${id[i + 10]} in id $id")
             secondHalf += indexValue shl (i * 6) // 6 bits for each char, total 64 options
         }
         return UUID(firstHalf, secondHalf)

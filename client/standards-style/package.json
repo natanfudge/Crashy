@@ -1,17 +1,18 @@
 {
-  "name": "eslint-config-standards-style",
-  "version": "1.0.1",
-  "description": "Standard ESLint style",
+  "name": "eslint-config-fudge-style",
+  "version": "1.1.0",
+  "description": "Fudge's ESLint style",
   "main": "index.js",
   "scripts": {
+    "upload": "npm run build && npm version patch & npm publish",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.59.5",
-    "@typescript-eslint/parser": "^5.59.5",
-    "eslint": "^8.40.0",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
     "eslint-plugin-react": "^7.32.2"
   }
 }
