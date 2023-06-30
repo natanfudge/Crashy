@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Upload_Fudge_Lib.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/fudge-lib/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/types/React.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/standards-style/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/standards-style/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/standards-style/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/standards-style/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/compat/CompatUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/compat/CompatUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/components/PromiseBuilder.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/components/PromiseBuilder.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelectionUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelectionUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,7 +114,7 @@
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1687954265655&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1688123007352&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/IWantTo&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
@@ -149,54 +149,6 @@
     </key>
   </component>
   <component name="RunManager" selected="npm.Upload Fudge-Lib">
-    <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.CrashlogCacheTest.testCache&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>true</ForceTestExec>
-      <method v="2" />
-    </configuration>
-    <configuration name="CrashlogStorageTest.testStorage" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.CrashlogStorageTest.testStorage&quot;" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <ForceTestExec>true</ForceTestExec>
-      <method v="2" />
-    </configuration>
     <configuration name="NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -255,13 +207,21 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="update-lib" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="update-lib" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Compound.Run Fullstack" />
       <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="Gradle.Upload Beta Server" />
-      <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
-      <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
       <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
       <item itemvalue="JavaScript Debug.Debug Browser" />
       <item itemvalue="JUnit.All Local Server Tests" />
@@ -270,6 +230,7 @@
       <item itemvalue="Multirun.Test Local Server" />
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
+      <item itemvalue="npm.update-lib" />
       <item itemvalue="npm.Upload Fudge-Lib" />
       <item itemvalue="Vitest.All JS Tests" />
       <item itemvalue="Vitest.Crashlog JS Tests" />
@@ -281,10 +242,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.Upload Fudge-Lib" />
+        <item itemvalue="npm.update-lib" />
         <item itemvalue="Vitest.Loli crash log is parsed correctly" />
         <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
         <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
-        <item itemvalue="Gradle.CrashlogStorageTest.testStorage" />
       </list>
     </recent_temporary>
   </component>
@@ -406,7 +367,12 @@
       <workItem from="1687885232208" duration="605000" />
       <workItem from="1687953329722" duration="124000" />
       <workItem from="1687954262895" duration="1062000" />
-      <workItem from="1687972647339" duration="803000" />
+      <workItem from="1687972647339" duration="813000" />
+      <workItem from="1688046065811" duration="153000" />
+      <workItem from="1688104984468" duration="568000" />
+      <workItem from="1688123003707" duration="67000" />
+      <workItem from="1688123143279" duration="212000" />
+      <workItem from="1688129681059" duration="642000" />
     </task>
     <servers />
   </component>

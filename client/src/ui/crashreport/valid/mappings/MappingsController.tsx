@@ -11,7 +11,7 @@ import {
     MappingStrategy
 } from "../../../../mappings/resolve/MappingStrategy";
 import {MappingsNamespace} from "../../../../mappings/MappingsNamespace";
-import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
+import {usePromise} from "fudge-lib/dist/state/UsePromise";
 import {detectMappingNamespace} from "../../../../mappings/resolve/MappingDetector";
 
 // import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";

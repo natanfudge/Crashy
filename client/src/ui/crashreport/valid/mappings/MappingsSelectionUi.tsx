@@ -12,7 +12,7 @@ import {ItemSelection, SelectionType} from "../../../../fudge-commons/components
 import {indexOfOrThrow} from "fudge-lib/dist/methods/Javascript";
 import {MappingsBuilds} from "../../../../mappings/providers/MappingsProvider";
 import {Text} from "../../../../fudge-commons/simple/Text";
-import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
+import {usePromise} from "fudge-lib/dist/state/UsePromise";
 import {MappingsController} from "./MappingsController";
 
 // export interface MappingsSelectionProps {

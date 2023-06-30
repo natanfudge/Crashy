@@ -2,7 +2,7 @@ import {DesiredBuild, DesiredBuildProblem} from "../../../../mappings/resolve/Ma
 import {buildsOf} from "../../../../mappings/MappingsApi";
 import {WithChildren} from "../../../../fudge-commons/simple/SimpleElementProps";
 import {Column} from "../../../../fudge-commons/simple/Flex";
-import {usePromise} from "../../../../fudge-commons/components/PromiseBuilder";
+import {usePromise} from "fudge-lib/dist/state/UsePromise";
 import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {getVisibleMappingNamespaces, MappingsNamespace} from "../../../../mappings/MappingsNamespace";
 import {MappingsSelectionUi} from "./MappingsSelectionUi";
