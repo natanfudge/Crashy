@@ -229,10 +229,12 @@ private fun Path.readMetadataFromCrashEntryFolder(updateLastAccessTime: Boolean)
             logWarn { "Metadata file is missing from entry directory at $this!" }
             return null
         }
-        logInfo { "Reading metadata of file at ${file.absolutePathString()}" }
+
         val metadata = Crashy.json.decodeFromString(CrashlogMetadata.serializer(), file.readText())
         if (updateLastAccessTime) {
-            val updatedMetadata = metadata.copy(lastAccessDay = LastAccessDay.today())
+            val today = LastAccessDay.today()
+            logInfo { "Updating last access day at $file to be $today" }
+            val updatedMetadata = metadata.copy(lastAccessDay = today)
             file.writeText(Crashy.json.encodeToString(CrashlogMetadata.serializer(), updatedMetadata))
         }
         return metadata

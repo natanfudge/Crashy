@@ -6,6 +6,7 @@ import io.github.crashy.crashlogs.api.Response
 import io.github.natanfudge.logs.LogContext
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -22,8 +23,9 @@ inline fun <reified R : Any> Routing.crashyPost(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>) (R) -> Unit
 ) {
     post<R>(path) { body ->
-        Crashy.logger.startSuspendWithContextAsParam(path) { logContext ->
-            handler(logContext, this@post, body)
+        Crashy.logger.startSuspendWithContextAsParam(path) { log ->
+            log.logData("IP") { call.request.origin.remoteAddress}
+            handler(log, this@post, body)
         }
     }
 }
@@ -34,8 +36,9 @@ inline fun Routing.crashyRoute(
 ) {
     for (route in routes) {
         get(route) {
-            Crashy.logger.startSuspendWithContextAsParam(route) {
-                body(it, this@get)
+            Crashy.logger.startSuspendWithContextAsParam(route) {log ->
+                log.logData("IP") { call.request.origin.remoteAddress}
+                body(log, this@get)
             }
         }
     }
@@ -48,6 +51,7 @@ inline fun <reified T : Any> Routing.json(
 ) {
     post(path) {
         Crashy.logger.startSuspendWithContextAsParam(path) { log ->
+            log.logData("IP") { call.request.origin.remoteAddress}
             call.receiveStream().use { body ->
                 try {
                     val decoded = withContext<T>(Dispatchers.IO) {

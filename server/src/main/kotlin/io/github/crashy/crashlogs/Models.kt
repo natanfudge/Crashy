@@ -9,6 +9,7 @@ import io.github.crashy.utils.InstantSerializer
 import io.github.crashy.utils.UUIDSerializer
 import io.github.crashy.utils.compressBrotli
 import io.github.crashy.utils.randomString
+import io.github.natanfudge.logs.LogContext
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
 import java.nio.file.Path
@@ -63,7 +64,12 @@ data class CrashlogMetadata private constructor(
     val header: CrashlogHeader,
     private val lastAccessDay: LastAccessDay? = null
 ) {
-    fun getLastAccessDay(fileLocation: Path) = lastAccessDay ?: BackwardCompatibility.fileSystemLastAccessDay(fileLocation)
+    context(LogContext)
+    fun getLastAccessDay(fileLocation: Path): LastAccessDay {
+        if (lastAccessDay != null) logInfo { "Getting new format lastAccessDay: $lastAccessDay" }
+        else logInfo { "Getting lastAccessDay from OS of file $fileLocation because no new format value exists" }
+        return lastAccessDay ?: BackwardCompatibility.fileSystemLastAccessDay(fileLocation)
+    }
 
     companion object {
         /** We want to make sure none-serializable constructors of this specify [lastAccessDay] */
