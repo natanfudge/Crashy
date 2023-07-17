@@ -6,12 +6,13 @@ import {BrokenTimeCrash} from "../testlogs/BrokenTimeCrash";
 import {TestEmptySectionCrash} from "../testlogs/TestEmptySectionCrash";
 import {BrokenSectionCrash} from "../testlogs/BrokenSectionCrash";
 import {CrashReport} from "../../crash/model/CrashReport";
-import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
+import {enrichCrashReport, parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
 import {ExceptionLocation, ExceptionStackmapTable, LoaderType} from "../../crash/model/RichCrashReport";
 import {parseCrashReport} from "../../crash/parser/CrashReportParser";
 import {NecFabricCrash} from "../testlogs/NecFabricCrash";
 import {expect, test} from 'vitest'
 import {loliCrash} from "../testlogs/LoliCrash";
+import {MissingTitleLog} from "../testlogs/MIssingTitleLog";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -317,5 +318,10 @@ test("Loli crash log is parsed correctly", () => {
     const enriched = enrichCrashReport(report);
     expect(enriched.wittyComment).toEqual("On the bright side, I bought you a teddy bear!")
     expect(enriched.sections[0].details!["Current Language"]).toEqual("English (US)")
+})
 
+test("Mixin crash log is not missing information", () => {
+    const enriched = parseCrashReportRich(MissingTitleLog);
+    const targetException = enriched.stackTrace.causedBy!.causedBy!.causedBy!.causedBy!
+    expect(targetException.title.message).toEqual("Critical injection failure: Redirector yeetUpdateSuppressionCrash_implOnTickWorlds(Lnet/minecraft/class_3218;Ljava/util/function/BooleanSupplier;)V in #carpet-tis-addition:carpet-tis-addition.mixins.json:rule.yeetUpdateSuppressionCrash.MinecraftServerMixin from mod carpet-tis-addition failed injection check, (0/1) succeeded. Scanned 1 target(s). Using refmap carpet-tis-addition-mc1.19.2-refmap.json")
 })

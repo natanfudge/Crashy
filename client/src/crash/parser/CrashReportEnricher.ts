@@ -374,9 +374,9 @@ function parseStackmapObject(rawObject: string): string[] {
 
 function enrichStackTraceMessage(rawMessage: string): StackTraceMessage {
     //Example: java.lang.NullPointerException: Unexpected error
-    const [exception, message] = rawMessage.split(": ");
+    const [exception, ...message] = rawMessage.split(": ");
     return {
-        message,
+        message: message.join(": "),
         class: parseJavaClass(exception)
     };
 }
