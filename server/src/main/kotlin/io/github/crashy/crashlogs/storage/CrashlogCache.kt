@@ -32,6 +32,8 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
     context (LogContext)
     fun get(id: CrashlogId): CrashlogEntry? {
         val lastAccessDay = CrashlogEntry.peekLastAccessDay(id) ?: return null
+        //TODO: delete this
+        logInfo { "Getting crash log" }
 
         updateDayIndex(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.fromCrashesDir(id)
@@ -174,6 +176,8 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
         if (!logFile.exists()) {
             logWarn { "Log file is missing from entry directory of crash id $underId! It's supposed to exist at $logFile." }
         }
+        //TODo: delete this
+        logInfo { "Getting from crashes dir" }
         return CrashlogEntry(
             CompressedLog.readFromFile(logFile),
             entryDir.readMetadataFromCrashEntryFolder(updateLastAccessTime = true) ?: return null
@@ -231,11 +235,16 @@ private fun Path.readMetadataFromCrashEntryFolder(updateLastAccessTime: Boolean)
         }
 
         val metadata = Crashy.json.decodeFromString(CrashlogMetadata.serializer(), file.readText())
+        //TODO: delete this
+        logInfo { "Reading metadata with update = $updateLastAccessTime" }
         if (updateLastAccessTime) {
             val today = LastAccessDay.today()
             logInfo { "Updating last access day at $file to be $today" }
             val updatedMetadata = metadata.copy(lastAccessDay = today)
             file.writeText(Crashy.json.encodeToString(CrashlogMetadata.serializer(), updatedMetadata))
+        } else {
+            //TODO: delete this
+            logInfo { "Not updating lastAccessTime" }
         }
         return metadata
     }
