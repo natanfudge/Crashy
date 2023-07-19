@@ -41,10 +41,17 @@ class CrashlogCache(parentDir: Path, private val clock: NowDefinition) {
 
     context(LogContext)
     fun peek(id: CrashlogId): CrashlogMetadata? {
-        val lastAccessDay = CrashlogEntry.peekLastAccessDay(id) ?: return null
+        if (!idExists(id)) return null
+//        val lastAccessDay = CrashlogEntry.peekLastAccessDay(id) ?: return null
 
-        updateDayIndex(id, oldLastAccessDay = lastAccessDay)
+//        updateDayIndex(id, oldLastAccessDay = lastAccessDay)
         return CrashlogEntry.peek(id)
+    }
+
+    private fun idExists(id: CrashlogId): Boolean {
+        return crashes.crashParentDir(id).exists()
+        // We need the file itself for backwards compatibility
+//        return crashParent.crashMetadataFile().exists()
     }
 
 

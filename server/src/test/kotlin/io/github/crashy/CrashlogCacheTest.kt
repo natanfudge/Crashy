@@ -91,6 +91,7 @@ class CrashlogCacheTest {
 
         checkBytes(id1, log1)
         checkBytes(id2, log2)
+        peek(id3)
         expectThat(getForTest(id3)).isEqualTo(null)
 
 
