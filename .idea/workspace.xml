@@ -5,7 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/Flow.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/Theme.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/json.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/CallDeduplicator.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/types/React.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/types/TypeUtils.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/fudge-lib/test/JsonTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/io.github.crashy.Crashy.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/extensions/Extensions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/extensions/Extensions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/extensions/ExtensionsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/extensions/ExtensionsImpl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/UsePromise.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/UsePromise.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/fudge-lib/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,29 +45,6 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="Crashy" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="crashy" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="crashy setup" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -85,6 +78,10 @@
       <scope name="Crashy" />
     </order>
   </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2LaSDIItpiOuBOpBSG3IX907Dri" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -95,86 +92,111 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "js.linters.configure.manually.selectedeslint": "true",
-    "ktor.last.update.timestamp": "1689693860614",
-    "last_opened_file_path": "C:/Users/natan/Desktop/IWantTo",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\compat\\functions\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
+    &quot;ktor.last.update.timestamp&quot;: &quot;1689693860614&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/fudge-lib/src&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\fudge-lib\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\natan\Desktop\Crashy\server" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
+      <recent name="C:\Users\natan\Desktop\Crashy\server" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\fudge-lib-proposals" />
       <recent name="C:\Users\natan\Desktop\Crashy\client" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\state" />
+      <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\collections" />
       <recent name="C:\Users\natan\Desktop\Crashy\trash\table\editable" />
-      <recent name="C:\Users\natan\Desktop\Crashy\trash" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\standards-style\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Upload Release Server">
-    <configuration name="1.10.2 Forge crash parse doesn't fail" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" />
-      <test-names>
-        <test-name value="1.10.2 Forge crash parse doesn't fail" />
-      </test-names>
+  <component name="RunManager" selected="npm.uploadNoBump">
+    <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.CrashlogCacheTest.testCache&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Loli crash log is parsed correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
-      <test-names>
-        <test-name value="Loli crash log is parsed correctly" />
-      </test-names>
+    <configuration name="NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;io.github.crashy.compat.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="Mixin crash log is not missing information" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="dayjs json writing" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client" />
+      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
+      <vitest-options value="--run" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/JsonTest.test.ts" />
       <test-names>
-        <test-name value="Mixin crash log is not missing information" />
+        <test-name value="dayjs json writing" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -188,11 +210,11 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="update-lib" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/client/package.json" />
+    <configuration name="uploadNoBump" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/client/fudge-lib/package.json" />
       <command value="run" />
       <scripts>
-        <script value="update-lib" />
+        <script value="uploadNoBump" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -203,6 +225,8 @@
       <item itemvalue="Compound.Run Fullstack" />
       <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="Gradle.Upload Beta Server" />
+      <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
+      <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
       <item itemvalue="JavaScript Debug.Debug Browser" />
       <item itemvalue="JUnit.All Local Server Tests" />
       <item itemvalue="JUnit.All Beta Server Tests" />
@@ -210,23 +234,21 @@
       <item itemvalue="Multirun.Test Local Server" />
       <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
-      <item itemvalue="npm.update-lib" />
+      <item itemvalue="npm.uploadNoBump" />
       <item itemvalue="npm.Upload Fudge-Lib" />
       <item itemvalue="Vitest.All JS Tests" />
       <item itemvalue="Vitest.Crashlog JS Tests" />
       <item itemvalue="Vitest.Mappings JS Tests" />
       <item itemvalue="Vitest.All fudge-lib Tests" />
-      <item itemvalue="Vitest.Mixin crash log is not missing information" />
-      <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
-      <item itemvalue="Vitest.Loli crash log is parsed correctly" />
+      <item itemvalue="Vitest.dayjs json writing" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Vitest.Mixin crash log is not missing information" />
+        <item itemvalue="npm.uploadNoBump" />
+        <item itemvalue="Vitest.dayjs json writing" />
         <item itemvalue="npm.Upload Fudge-Lib" />
-        <item itemvalue="npm.update-lib" />
-        <item itemvalue="Vitest.Loli crash log is parsed correctly" />
-        <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
+        <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
+        <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
       </list>
     </recent_temporary>
   </component>
@@ -359,6 +381,16 @@
       <workItem from="1689584527690" duration="1866000" />
       <workItem from="1689586886804" duration="1289000" />
       <workItem from="1689693855321" duration="697000" />
+      <workItem from="1689768078015" duration="1579000" />
+      <workItem from="1691728323324" duration="1515000" />
+      <workItem from="1691743036526" duration="62000" />
+      <workItem from="1692537240619" duration="675000" />
+      <workItem from="1692591862613" duration="15000" />
+      <workItem from="1693908323894" duration="1411000" />
+      <workItem from="1694779935931" duration="7359000" />
+      <workItem from="1694788400872" duration="254000" />
+      <workItem from="1694788678650" duration="44000" />
+      <workItem from="1694789322771" duration="599000" />
     </task>
     <servers />
   </component>

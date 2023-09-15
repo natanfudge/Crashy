@@ -1,9 +1,0 @@
-{
-  "extends": [
-    "standards-style"
-  ],
-  "rules": {
-    "@typescript-eslint/restrict-plus-operands": "off"
-  },
-  "ignorePatterns": ["/test/*"]
-}
