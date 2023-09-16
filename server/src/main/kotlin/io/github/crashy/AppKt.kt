@@ -12,15 +12,24 @@ import io.ktor.server.plugins.cachingheaders.*
 import io.ktor.server.plugins.httpsredirect.*
 
 object AppKt {
+    private lateinit var server: ApplicationEngine
+
     @JvmStatic
     fun main(args: Array<String>) {
         Brotli4jLoader.ensureAvailability()
         copyStaticResourcesForServing()
-        embeddedServer(Netty, environment = createAppEnvironment()).start(wait = true)
+        startServer()
+    }
+
+    fun restartServer() {
+        server.stop()
+        startServer()
+    }
+
+    private fun startServer() {
+        server = embeddedServer(Netty, environment = createAppEnvironment()).start(wait = true)
     }
 }
-
-
 
 
 private fun createAppEnvironment() = applicationEngineEnvironment {
@@ -30,6 +39,7 @@ private fun createAppEnvironment() = applicationEngineEnvironment {
         host = "0.0.0.0"
     }
     configureSSL()
+
 
 
     module {

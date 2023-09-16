@@ -45,5 +45,6 @@ test("First migrated crash can be parsed", () => {
 
 test("Last minute failing log can be parsed", () => {
     const enriched = parseCrashReportRich(LastMinuteFailingLog)
+    expect(enriched.stackTrace.title.message).toEqual("Java heap space")
     // expect(enriched.sections)
 })

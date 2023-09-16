@@ -9,17 +9,10 @@ import {CircularProgress} from "@mui/material";
 import {getVisibleMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
 import {Column, Row} from "../../../../fudge-commons/simple/Flex";
 import {ItemSelection, SelectionType} from "../../../../fudge-commons/components/Selection";
-import {indexOfOrThrow} from "fudge-lib/dist/methods/Javascript";
 import {MappingsBuilds} from "../../../../mappings/providers/MappingsProvider";
 import {Text} from "../../../../fudge-commons/simple/Text";
 import {usePromise} from "fudge-lib/dist/state/UsePromise";
 import {MappingsController} from "./MappingsController";
-
-// export interface MappingsSelectionProps {
-//     mappings: MappingsSelection;
-//     onMappingsChange: (mappings: MappingsSelection) => void;
-//     minecraftVersion: string
-// }
 
 
 function BuildSelection({isPortrait, builds, mappings, onMappingsChange}:
@@ -35,7 +28,7 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange}:
                                alignSelf: isPortrait ? "center" : undefined,
                            }}
                            values={builds}
-                           index={isValidDesiredBuild(mappings.build) ? indexOfOrThrow(builds, mappings.build) : 0}
+                           index={isValidDesiredBuild(mappings.build) ? builds.indexOfOrThrow(mappings.build) : 0}
                            onIndexChange={i => onMappingsChange(withBuild(mappings, builds[i]))}/>
 
     </Column>;
@@ -43,9 +36,11 @@ function BuildSelection({isPortrait, builds, mappings, onMappingsChange}:
 
 export function MappingsSelectionUi({mappings}:
                                         { mappings: MappingsController }) {
+    if (mappings.minecraftVersion === undefined) return <></>
+
     const screen = useScreenSize();
     const isPortrait = screen.isPortrait;
-    const builds = usePromise(() => buildsOf(mappings.selection.namespace, mappings.minecraftVersion), [mappings.selection.namespace]);
+    const builds = usePromise(() => buildsOf(mappings.selection.namespace, mappings.minecraftVersion!), [mappings.selection.namespace]);
     const mappingNamespaces = getVisibleMappingNamespaces(mappings.minecraftVersion)
 
     function Builds() {

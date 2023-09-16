@@ -36,8 +36,9 @@ export function useMappingsSelection(minecraftVersion: string): State<MappingsSe
     // Initially, immediately show a mapping, and since getting what versions are available takes time, we'll set the version to undefined
     // for now and when the available versions load we will set it to the first available one.
     const namespaces = getVisibleMappingNamespaces(minecraftVersion);
-    const namespaceSelectionStore = new PersistentValue(`namespace-selection-${minecraftVersion}`)
-    const previousNamespaceSelection = namespaceSelectionStore.getValue() as MappingsNamespace;
+    // The persistentValue format was changed so we add a "-2"
+    const namespaceSelectionStore = new PersistentValue<MappingsNamespace>(`namespace-selection-${minecraftVersion}-2`)
+    const previousNamespaceSelection = namespaceSelectionStore.getValue() ?? namespaces[0] ;
     // If the previous namespace selection is available here - use it. Otherwise - use the first available one.
     const initialNamespace = namespaces.includes(previousNamespaceSelection) ? previousNamespaceSelection : namespaces[0]
 

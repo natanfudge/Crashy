@@ -4,18 +4,13 @@ import io.github.crashy.Crashy
 import io.github.crashy.crashlogs.*
 import io.github.crashy.utils.*
 import io.github.natanfudge.logs.LogContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.ExperimentalSerializationApi
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3AsyncClient
 import software.amazon.awssdk.services.s3.model.S3Exception
 import software.amazon.awssdk.services.s3.model.Tier
 import java.nio.file.Path
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.io.path.createDirectories
 
 
@@ -25,7 +20,12 @@ class CrashlogStorage(
     clock: NowDefinition,
     private val deleteFromS3OnFetch: Boolean
 ) : AutoCloseable {
-    private val s3 = S3AsyncClient.builder().region(Region.EU_CENTRAL_1).build()
+    private val s3 = S3AsyncClient.builder()
+        .apply {
+            if (Crashy.isLocal()) credentialsProvider(ProfileCredentialsProvider.create("personal"))
+        }
+        .region(Region.EU_CENTRAL_1)
+        .build()
     private val cache = CrashlogCache(parentDir = appDataDir.resolve("cache").createDirectories(), clock)
 
     context(LogContext)
@@ -56,7 +56,7 @@ class CrashlogStorage(
     }
 
     context(LogContext)
-    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult  {
+    private suspend fun getFromS3(id: CrashlogId): GetCrashlogResult {
         val s3Key = id.s3Key()
         return when (val s3Result = s3.getObjectSuspend(bucket = bucketName, key = s3Key)) {
             is AnyGetObjectResponse.Success -> pullLogFromS3(s3Result, id, s3Key)

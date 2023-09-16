@@ -5,23 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/Flow.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/Theme.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/json.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/CallDeduplicator.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/types/React.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/src/types/TypeUtils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/fudge-lib/test/JsonTest.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/io.github.crashy.Crashy.iml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/NoIndentCrash.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/test/testlogs/SeeminglySimpleLog.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/Blacklist.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Client_Build_Production.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/Upload_Release_Server.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/extensions/Extensions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/extensions/Extensions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/extensions/ExtensionsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/extensions/ExtensionsImpl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/PersistentState.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/src/state/UsePromise.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/src/state/UsePromise.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/fudge-lib/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/fudge-lib/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/old.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/RichCrashReport.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleElementProps.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleElementProps.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingDetector.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingDetector.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashContextUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelectionUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelectionUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Preferences.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/Preferences.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/AppKt.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/storage/CrashlogStorage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/Routing.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/RoutingUtils.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,17 +51,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="Crashy" type="f1a62948:ProjectNode" />
-                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -92,36 +92,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1689693860614&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/fudge-lib/src&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\fudge-lib\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "ktor.last.update.timestamp": "1689693860614",
+    "last_opened_file_path": "C:/Users/natan/.m2/repository/io/github/natanfudge/loggy/0.3.0/loggy-0.3.0-sources.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.tabs",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\compat\\functions\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
@@ -138,8 +138,8 @@
       <recent name="C:\Users\natan\Desktop\Crashy\trash\table\editable" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.uploadNoBump">
-    <configuration name="CrashlogCacheTest.testCache" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+  <component name="RunManager" selected="Gradle.Upload Release Server">
+    <configuration name="Upload Release Server" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
@@ -150,105 +150,128 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.CrashlogCacheTest.testCache&quot;" />
+            <option value="uploadToEc2Release" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="server [buildClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
+        <option name="scriptParameters" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value=":test" />
-            <option value="--tests" />
-            <option value="&quot;io.github.crashy.compat.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks&quot;" />
+            <option value="buildClient" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
+      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="dayjs json writing" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="server [syncClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="syncClient" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="1.10.2 Forge crash parse doesn't fail" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
-      <working-dir value="$PROJECT_DIR$/client/fudge-lib" />
+      <working-dir value="$PROJECT_DIR$/client" />
       <vitest-options value="--run" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/fudge-lib/test/JsonTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" />
       <test-names>
-        <test-name value="dayjs json writing" />
+        <test-name value="1.10.2 Forge crash parse doesn't fail" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Upload Fudge-Lib" type="js.build_tools.npm" temporary="true">
-      <package-json value="$PROJECT_DIR$/client/fudge-lib/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="upload" />
-      </scripts>
+    <configuration name="Crash that starts with the time can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <vitest-options value="--run" />
       <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-names>
+        <test-name value="Crash that starts with the time can be parsed" />
+      </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="uploadNoBump" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/client/fudge-lib/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="uploadNoBump" />
-      </scripts>
+    <configuration name="Crash with very little info can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <vitest-options value="--run" />
       <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-names>
+        <test-name value="Crash with very little info can be parsed" />
+      </test-names>
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Compound.Run Fullstack" />
-      <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="Gradle.Upload Beta Server" />
-      <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
-      <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
+      <item itemvalue="Gradle.server [buildClient]" />
+      <item itemvalue="Gradle.server [syncClient]" />
+      <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="JavaScript Debug.Debug Browser" />
       <item itemvalue="JUnit.All Local Server Tests" />
       <item itemvalue="JUnit.All Beta Server Tests" />
       <item itemvalue="Kotlin.Run Server" />
       <item itemvalue="Multirun.Test Local Server" />
-      <item itemvalue="npm.Client Build Production" />
       <item itemvalue="npm.Client Development" />
-      <item itemvalue="npm.uploadNoBump" />
-      <item itemvalue="npm.Upload Fudge-Lib" />
       <item itemvalue="Vitest.All JS Tests" />
       <item itemvalue="Vitest.Crashlog JS Tests" />
       <item itemvalue="Vitest.Mappings JS Tests" />
       <item itemvalue="Vitest.All fudge-lib Tests" />
-      <item itemvalue="Vitest.dayjs json writing" />
+      <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
+      <item itemvalue="Vitest.Crash that starts with the time can be parsed" />
+      <item itemvalue="Vitest.Crash with very little info can be parsed" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.uploadNoBump" />
-        <item itemvalue="Vitest.dayjs json writing" />
-        <item itemvalue="npm.Upload Fudge-Lib" />
-        <item itemvalue="Gradle.CrashlogCacheTest.testCache" />
-        <item itemvalue="Gradle.NewLastAccessDay.crashlogMetadataWithNoLastAccessDayWorks" />
+        <item itemvalue="Gradle.Upload Release Server" />
+        <item itemvalue="Vitest.Crash with very little info can be parsed" />
+        <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
+        <item itemvalue="Vitest.Crash that starts with the time can be parsed" />
+        <item itemvalue="Gradle.server [syncClient]" />
       </list>
     </recent_temporary>
   </component>
@@ -391,6 +414,10 @@
       <workItem from="1694788400872" duration="254000" />
       <workItem from="1694788678650" duration="44000" />
       <workItem from="1694789322771" duration="599000" />
+      <workItem from="1694806788175" duration="824000" />
+      <workItem from="1694808467737" duration="1362000" />
+      <workItem from="1694846889888" duration="12279000" />
+      <workItem from="1694861612026" duration="4993000" />
     </task>
     <servers />
   </component>
@@ -462,24 +489,10 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
-          <line>578</line>
-          <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
-          <line>422</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
-          <line>253</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts</url>
-          <line>271</line>
-          <option name="timeStamp" value="27" />
+          <line>24</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -491,9 +504,9 @@
       <configuration name="JavaScriptTestRunnerVitest">
         <watch expression="rawReport.slice(cursor - 5, cursor + 100)" language="TypeScript" />
         <watch expression="rawReport.slice(cursor, cursor + 100)" language="TypeScript" />
-        <watch expression="parseInt(v.removeAfterLastExclusive(&quot;build.&quot;))" />
         <watch expression="cursor" language="TypeScript" />
         <watch expression="rawReport.slice(cursor - 100, cursor + 100)" language="TypeScript" />
+        <watch expression="current()" language="TypeScript" />
       </configuration>
     </watches-manager>
   </component>

@@ -13,6 +13,8 @@ import {NecFabricCrash} from "../testlogs/NecFabricCrash";
 import {expect, test} from 'vitest'
 import {loliCrash} from "../testlogs/LoliCrash";
 import {MissingTitleLog} from "../testlogs/MIssingTitleLog";
+import {NoIndentCrash} from "../testlogs/NoIndentCrash";
+import {SeeminglySimpleLog} from "../testlogs/SeeminglySimpleLog";
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
@@ -89,28 +91,28 @@ export function testForgeCrashReportParse(report: CrashReport) {
         "9 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump -Xss1M -Xmx1G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=16M"
     );
     expect(systemDetails["ModLauncher services"]).toEqual(
-        "\n\t/mixin-0.8.2.jar mixin PLUGINSERVICE " +
-        "\n\t/eventbus-4.0.0.jar eventbus PLUGINSERVICE " +
-        "\n\t/forge-1.16.5-36.1.16.jar object_holder_definalize PLUGINSERVICE " +
-        "\n\t/forge-1.16.5-36.1.16.jar runtime_enum_extender PLUGINSERVICE " +
-        "\n\t/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE " +
-        "\n\t/forge-1.16.5-36.1.16.jar capability_inject_definalize PLUGINSERVICE " +
-        "\n\t/forge-1.16.5-36.1.16.jar runtimedistcleaner PLUGINSERVICE " +
-        "\n\t/mixin-0.8.2.jar mixin TRANSFORMATIONSERVICE " +
-        "\n\t/optifine_1.16.5_hd_u_g8.jar OptiFine TRANSFORMATIONSERVICE " +
-        "\n\t/forge-1.16.5-36.1.16.jar fml TRANSFORMATIONSERVICE "
+        "/mixin-0.8.2.jar mixin PLUGINSERVICE " +
+        "\n/eventbus-4.0.0.jar eventbus PLUGINSERVICE " +
+        "\n/forge-1.16.5-36.1.16.jar object_holder_definalize PLUGINSERVICE " +
+        "\n/forge-1.16.5-36.1.16.jar runtime_enum_extender PLUGINSERVICE " +
+        "\n/accesstransformers-3.0.1.jar accesstransformer PLUGINSERVICE " +
+        "\n/forge-1.16.5-36.1.16.jar capability_inject_definalize PLUGINSERVICE " +
+        "\n/forge-1.16.5-36.1.16.jar runtimedistcleaner PLUGINSERVICE " +
+        "\n/mixin-0.8.2.jar mixin TRANSFORMATIONSERVICE " +
+        "\n/optifine_1.16.5_hd_u_g8.jar OptiFine TRANSFORMATIONSERVICE " +
+        "\n/forge-1.16.5-36.1.16.jar fml TRANSFORMATIONSERVICE"
     );
     expect(systemDetails["FML"]).toEqual("36.1");
-    expect(systemDetails["FML Language Providers"]).toEqual("\n\tjavafml@36.1\n\tminecraft@1");
-    expect(systemDetails["Mod List"]).toEqual("\n\tforge-1.16.5-36.1.16-client.jar                   |Minecraft                     |minecraft                     |1.16.5              |DONE      |NOSIGNATURE" +
-        "\n\tnotenoughcrashes-3.2.0-forge.jar                  |Not Enough Crashes            |notenoughcrashes              |3.2.0               |DONE      |NOSIGNATURE" +
-        "\n\tcameraoverhaul-1_0-1_16_4.jar                     |Camera Overhaul               |cameraoverhaul                |1.0.0               |DONE      |NOSIGNATURE" +
-        "\n\tforge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90" +
-        "\n\ttoolswap-1.16.2-1.3.2.jar                         |ToolSwap                      |toolswap                      |1.3.2               |DONE      |NOSIGNATURE" +
-        "\n\tworldedit-mod-7.2.5-dist.jar                      |WorldEdit                     |worldedit                     |7.2.5+57d5ac9       |DONE      |NOSIGNATURE" +
-        "\n\tadvanced-xray-forge-1.16.5-2.7.0.jar              |Advanced XRay                 |xray                          |2.7.0               |DONE      |NOSIGNATURE" +
-        "\n\tshulkertooltip-1.9.9-1.jar                        |Shulker Tooltip               |shulkertooltip                |1.9.9               |DONE      |NOSIGNATURE" +
-        "\n\tjei-1.16.5-7.7.1.118.jar                          |Just Enough Items             |jei                           |7.7.1.118           |DONE      |NOSIGNATURE"
+    expect(systemDetails["FML Language Providers"]).toEqual("javafml@36.1\nminecraft@1");
+    expect(systemDetails["Mod List"]).toEqual("forge-1.16.5-36.1.16-client.jar                   |Minecraft                     |minecraft                     |1.16.5              |DONE      |NOSIGNATURE" +
+        "\nnotenoughcrashes-3.2.0-forge.jar                  |Not Enough Crashes            |notenoughcrashes              |3.2.0               |DONE      |NOSIGNATURE" +
+        "\ncameraoverhaul-1_0-1_16_4.jar                     |Camera Overhaul               |cameraoverhaul                |1.0.0               |DONE      |NOSIGNATURE" +
+        "\nforge-1.16.5-36.1.16-universal.jar                |Forge                         |forge                         |36.1.16             |DONE      |22:af:21:d8:19:82:7f:93:94:fe:2b:ac:b7:e4:41:57:68:39:87:b1:a7:5c:c6:44:f9:25:74:21:14:f5:0d:90" +
+        "\ntoolswap-1.16.2-1.3.2.jar                         |ToolSwap                      |toolswap                      |1.3.2               |DONE      |NOSIGNATURE" +
+        "\nworldedit-mod-7.2.5-dist.jar                      |WorldEdit                     |worldedit                     |7.2.5+57d5ac9       |DONE      |NOSIGNATURE" +
+        "\nadvanced-xray-forge-1.16.5-2.7.0.jar              |Advanced XRay                 |xray                          |2.7.0               |DONE      |NOSIGNATURE" +
+        "\nshulkertooltip-1.9.9-1.jar                        |Shulker Tooltip               |shulkertooltip                |1.9.9               |DONE      |NOSIGNATURE" +
+        "\njei-1.16.5-7.7.1.118.jar                          |Just Enough Items             |jei                           |7.7.1.118           |DONE      |NOSIGNATURE"
     );
     expect(systemDetails["GL Caps"]).toEqual("Using framebuffer using OpenGL 3.0")
     expect(systemDetails["Integrated Server Crashes Since Restart"]).toEqual("0")
@@ -324,4 +326,32 @@ test("Mixin crash log is not missing information", () => {
     const enriched = parseCrashReportRich(MissingTitleLog);
     const targetException = enriched.stackTrace.causedBy!.causedBy!.causedBy!.causedBy!
     expect(targetException.title.message).toEqual("Critical injection failure: Redirector yeetUpdateSuppressionCrash_implOnTickWorlds(Lnet/minecraft/class_3218;Ljava/util/function/BooleanSupplier;)V in #carpet-tis-addition:carpet-tis-addition.mixins.json:rule.yeetUpdateSuppressionCrash.MinecraftServerMixin from mod carpet-tis-addition failed injection check, (0/1) succeeded. Scanned 1 target(s). Using refmap carpet-tis-addition-mc1.19.2-refmap.json")
+})
+
+
+test("Crash logs with no indents can be parsed", () => {
+    // const parsed = parseCrashReport(NoIndentCrash)
+    // expect(parsed.sections)
+    const enriched = parseCrashReportRich(NoIndentCrash)
+    expect(enriched.stackTrace.title.message).toEqual("ConnectedTexturesMod (ctm) encountered an error during the done event phase\n§7java.lang.NullPointerException: Cannot invoke \"net.minecraft.client.resources.model.BakedModel.m_7521_()\" because \"this.originalModel\" is null")
+    expect(enriched.context.javaVersion).toEqual("17.0.3")
+    expect(enriched.mods![0].name).toEqual("Minecraft")
+    expect(enriched.mods![2].name).toEqual("Create Big Cannons")
+    expect(enriched.sections[2].details!["Reload number"]).toEqual("1")
+    expect(enriched.sections[3].details!["ModLauncher services"]).toEqual(`mixin-0.8.5.jar mixin PLUGINSERVICE
+eventbus-6.0.3.jar eventbus PLUGINSERVICE
+fmlloader-1.19.2-43.2.11.jar slf4jfixer PLUGINSERVICE
+fmlloader-1.19.2-43.2.11.jar object_holder_definalize PLUGINSERVICE
+fmlloader-1.19.2-43.2.11.jar runtime_enum_extender PLUGINSERVICE
+fmlloader-1.19.2-43.2.11.jar capability_token_subclass PLUGINSERVICE
+accesstransformers-8.0.4.jar accesstransformer PLUGINSERVICE
+fmlloader-1.19.2-43.2.11.jar runtimedistcleaner PLUGINSERVICE
+modlauncher-10.0.8.jar mixin TRANSFORMATIONSERVICE
+modlauncher-10.0.8.jar fml TRANSFORMATIONSERVICE`)
+})
+
+test("Crash with very little info can be parsed", () => {
+    const enriched = parseCrashReportRich(SeeminglySimpleLog)
+    expect(enriched.context.time).toEqual(new Date(2023,7,5,11,17,48))
+    expect(enriched.title).toEqual("Rendering overlay")
 })

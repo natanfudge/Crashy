@@ -1,21 +1,9 @@
-import {usePromise} from "fudge-lib/dist/state/UsePromise";
 import {getBuildsCached, MappingsProvider} from "../providers/MappingsProvider";
 import {getMappingsCached} from "../MappingsApi";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {resolveMappingsChain} from "./MappingsResolver";
 import {mappingFilterForMappables, MappingsFilter} from "../MappingsFilter";
-import {
-    AnyMappable,
-    DescriptoredMethod,
-    isSimpleMethod,
-    JavaClass,
-    JavaMethod,
-    Mappable,
-    SimpleMappable,
-    SimpleMethod
-} from "../../crash/model/Mappable";
-import {detectMappingNamespace} from "./MappingDetector";
-import {LoaderType, RichStackTraceElement} from "../../crash/model/RichCrashReport";
+import {AnyMappable, isSimpleMethod, JavaClass, JavaMethod, Mappable, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
 import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 
 export interface MappingStrategy {
@@ -47,7 +35,7 @@ export interface MappingContext {
     desiredNamespace: MappingsNamespace;
     // undefined if builds are still loading
     desiredBuild: DesiredBuild;
-    minecraftVersion: string
+    minecraftVersion: string | undefined
     // isDeobfuscated: boolean;
     // loader: LoaderType;
     relevantMappables: HashSet<SimpleMappable>
@@ -76,6 +64,7 @@ export interface MappingContext {
 // export for testing
 export async function getMappingForContext(context: MappingContext): Promise<MappingStrategy> {
     if (context.desiredBuild === DesiredBuildProblem.BuildsLoading) return IdentityMapping;
+    if (context.minecraftVersion === undefined) return IdentityMapping
     //TODO: I don't like how everything is resolved every time
     // const originalNamespace = detectMappingNamespace(context.originalNamespace, context);
     const originalNamespace = context.originalNamespace;

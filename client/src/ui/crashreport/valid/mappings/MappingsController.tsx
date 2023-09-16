@@ -1,7 +1,7 @@
 import {MappingsSelection} from "./MappingsSelection";
 import {useMappingsSelection} from "./MappingsUi";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "../../../../crash/model/RichCrashReport";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {SimpleMappable} from "../../../../crash/model/Mappable";
 import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 import {
@@ -22,7 +22,9 @@ import {detectMappingNamespace} from "../../../../mappings/resolve/MappingDetect
  */
 export function useMappings(report: RichCrashReport): MappingsController {
     const minecraftVersion = report.context.minecraftVersion;
-    const [selection, onSelectionChanged] = useMappingsSelection(minecraftVersion).destruct()
+    const [selection, onSelectionChanged] = minecraftVersion !== undefined ? useMappingsSelection(minecraftVersion).destruct()
+        // Provide a dummy selection in case there's no minecraft version available
+        : useState<MappingsSelection>({namespace: "Yarn", build: "1"})
     const strategy = getStrategy()
 
     return {
@@ -56,7 +58,7 @@ export function useMappings(report: RichCrashReport): MappingsController {
 export interface MappingsController {
     selection: MappingsSelection
     onSelectionChanged: (newState: MappingsSelection) => void
-    minecraftVersion: string
+    minecraftVersion: string | undefined
     strategy: MappingStrategy
     isLoading: boolean
 }

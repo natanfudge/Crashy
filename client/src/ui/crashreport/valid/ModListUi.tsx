@@ -2,13 +2,20 @@ import {Mod} from "../../../crash/model/RichCrashReport";
 import {FormControlLabel, FormGroup, Switch} from "@mui/material";
 import {SimpleDivider} from "../../../fudge-commons/simple/SimpleDivider";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
-import {Text, TextTheme} from "../../../fudge-commons/simple/Text";
+import {Text} from "../../../fudge-commons/simple/Text";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
-import {LazyColumn} from "../../../fudge-commons/components/LazyColumn";
 import {Fragment, useState} from "react";
 import {useScreenSize} from "fudge-lib/dist/methods/Gui";
-import {getUserPreferences, setUserPreferences} from "../../../utils/Preferences";
 import styled from "@emotion/styled";
+import {usePersistentState} from "fudge-lib/dist/state/PersistentState";
+import {State} from "fudge-lib/dist/state/State";
+
+interface ModDisplayPreferences {
+    id: boolean
+    version: boolean
+    filename: boolean
+}
+
 
 
 export function ModListUi({mods}: { mods: Mod[] }) {
@@ -31,13 +38,19 @@ export function ModListUi({mods}: { mods: Mod[] }) {
         }
     )
 
+    const displayPreferences = usePersistentState<ModDisplayPreferences>(
+        "mod-display-preferences",{id: false, filename: false, version: false}
+    )
 
-    const [idsEnabled, setIdsEnabled] = useState(getUserPreferences().showModIds === "true");
-    const [versionsEnabled, setVersionsEnabled] = useState(getUserPreferences().showModVersions === "true" ?? !screenSize.isPhone);
+    // const [idsEnabled, setIdsEnabled] = useState(getUserPreferences().showModIds === "true");
+    // const [versionsEnabled, setVersionsEnabled] = useState(getUserPreferences().showModVersions === "true" ?? !screenSize.isPhone);
+    // const [filenamesEnabled, setFilenamesEnabled] = useState(getUserPreferences().showModVersions === "true" ?? !screenSize.isPhone);
 
 
     const [firstHalfOfMods, secondHalfOfMods] = screenSize.isPhone ? [modsPrioritizingSuspectedMods, []] :
         modsPrioritizingSuspectedMods.splitBy((_, i) => i < mods.length / 2)
+
+    const filenamesExist = !mods.isEmpty() && mods[0].forgeMetadata !== undefined
 
     return <Column margin={{top: 20}} width={"max"}>
         <Column>
@@ -47,45 +60,33 @@ export function ModListUi({mods}: { mods: Mod[] }) {
                 <Text text={"Mods"} variant={"h4"} alignSelf={"center"}/>
                 <Spacer flexGrow={1}/>
                 <FormGroup>
-                    <FormControlLabel control={
-                        <Switch checked={idsEnabled} onChange={e => {
-                            setIdsEnabled(e.target.checked);
-                            setUserPreferences({showModIds: e.target.checked ? "true" : "false"})
-                        }}/>
-                    } label="Show Mod IDs"/>
-                    <FormControlLabel control={
-                        <Switch checked={versionsEnabled} onChange={e => {
-                            setVersionsEnabled(e.target.checked);
-                            setUserPreferences({showModVersions: e.target.checked ? "true" : "false"})
-                        }}/>
-                    } label="Show Versions"/>
+                    <LabeledSwitch state={displayPreferences.field("id")} label={"Show Mod Ids"}/>
+                    <LabeledSwitch state={displayPreferences.field("version")} label={"Show Versions"}/>
+                    {filenamesExist && <LabeledSwitch state={displayPreferences.field("filename")} label={"Show File Names"}/>}
                 </FormGroup>
             </Row>
 
             <SimpleDivider width={"max"}/>
         </Column>
         <Row>
-            {/*<Column>*/}
-                <ModText>
-                    {/*First Mod <br/>*/}
-                    {/*Second Mod*/}
-                    {firstHalfOfMods.map(mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled} showVersions={versionsEnabled}/>)}
-                </ModText>
-                <ModText>
-                    {secondHalfOfMods.map(mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled} showVersions={versionsEnabled}/>)}
-                </ModText>
-
-            {/*</Column>*/}
-            {/*<LazyColumn data={firstHalfOfMods}*/}
-            {/*            childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}*/}
-            {/*                                         showVersions={versionsEnabled}/>}/>*/}
-            {/*<LazyColumn data={secondHalfOfMods}*/}
-            {/*            childProvider={mod => <ModUi mod={mod} key={mod.id} showIds={idsEnabled}*/}
-            {/*                                         showVersions={versionsEnabled}/>}/>*/}
+            <ModText>
+                {firstHalfOfMods.map(mod => <ModUi mod={mod} key={mod.id} {...displayPreferences.value}/>)}
+            </ModText>
+            <ModText>
+                {secondHalfOfMods.map(mod => <ModUi mod={mod} key={mod.id} {...displayPreferences.value}/>)}
+            </ModText>
         </Row>
 
 
     </Column>
+}
+
+function LabeledSwitch(props: {state: State<boolean>, label: string}) {
+    return <FormControlLabel control={
+        <Switch checked={props.state.value} onChange={e => {
+            props.state.setValue(e.target.checked)
+        }}/>
+    } label={props.label}/>
 }
 
 const ModText = styled.h6`
@@ -100,8 +101,6 @@ const ModText = styled.h6`
   word-break: break-all;
   align-self: start;
   max-width: 100%;
-  //overflow: auto;
-  //white-space: nowrap;
 `
 
 const ModIdText = styled.span`
@@ -110,28 +109,28 @@ const ModIdText = styled.span`
   word-break: break-all;
 `
 
-function ModUi({mod, showIds, showVersions}: { mod: Mod, showIds: boolean, showVersions: boolean }) {
-    if (mod.isSuspected) {
-        return <span style ={{color: "red"}}>
-            <ListedModContent mod={mod} showIds={showIds} showVersions={showVersions}/>
+interface ModDisplayConfig extends ModDisplayPreferences{
+    mod: Mod
+}
+
+function ModUi(props: ModDisplayConfig) {
+    if (props.mod.isSuspected) {
+        return <span style={{color: "red"}}>
+            <ListedModContent {...props}/>
         </span>
     } else {
         return <Fragment>
-            <ListedModContent mod={mod} showIds={showIds} showVersions={showVersions}/>
+            <ListedModContent {...props}/>
         </Fragment>
     }
-    // return <Fragment /*style = {{color: mod.isSuspected ? "red" : undefined}}*/>
-    //     <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
-    //     {showIds && <ModIdText> ({mod.id})</ModIdText>}
-    //     <br/>
-    // </Fragment>
 }
 
 
-function ListedModContent({mod, showIds, showVersions}: { mod: Mod, showIds: boolean, showVersions: boolean }) {
+function ListedModContent({mod, id, version, filename}: ModDisplayConfig) {
     return <Fragment>
-        <b>{mod.name + (showVersions ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
-        {showIds && <ModIdText> ({mod.id})</ModIdText>}
+        <b>{mod.name + (version ? (" " + mod.version) : "") + (mod.isSuspected ? " - may have caused crash" : "")}</b>
+        {id && <ModIdText> ({mod.id})</ModIdText>}
+        {filename && mod.forgeMetadata !== undefined && <ModIdText> from {mod.forgeMetadata.file}</ModIdText>}
         <br/>
     </Fragment>
 }

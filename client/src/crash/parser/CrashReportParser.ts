@@ -1,11 +1,4 @@
-import {
-    CrashReport,
-    CrashReportSection,
-    ExceptionDetails,
-    StackTrace,
-    StackTraceElement,
-    StringMap
-} from "../model/CrashReport";
+import {CrashReport, CrashReportSection, ExceptionDetails, StackTrace, StackTraceElement, StringMap} from "../model/CrashReport";
 import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 import {QuiltModsTitle, SystemDetailsTitle} from "./CrashReportEnricher";
@@ -23,17 +16,19 @@ export function parseCrashReport(rawReport: string): CrashReport {
 function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     let cursor = 0;
 
-    const firstLine = readLine()
+    const firstLine = peekLine()
     const isConcise = firstLine === "---- Crashed! ----"
-    if (isConcise) return parseConciseLog()
+    if (isConcise) {
+        skipLine()
+        return parseConciseLog()
+    }
+    skipBeforeEither(["//", "Time:"])
 
     let wittyComment = parseWittyComment();
     // Sometimes a comment line is added, in that case, only use the second comment line
     if (nextIsString("//")) wittyComment = parseWittyComment()
 
-    // Skip empty line
-    skipLine();
-
+    skipEmptyLine()
     const time = parseTime();
     const description = parseDescription();
 
@@ -41,16 +36,6 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     skipLine();
 
     const stacktrace = parseStackTrace();
-
-    // Skip two blank lines before 'A detailed walkthrough...'
-    skipLine();
-    skipLine();
-    // Skip 'A detailed walkthrough of the error, its code path and all known details is as follows'.
-    skipLine();
-    // Skip '---------------------------------------------------------------------------------------'
-    skipLine();
-    // Skip blank line afterwards
-    skipLine();
 
     const sections = parseSections();
 
@@ -79,7 +64,7 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
         skipLine() // Skip | Index | ...
         skipLine() // Skip | ----: |
 
-        const mods = readBeforeString("|------:|")
+        const mods = readUntilString("|------:|")
         skipLine() // Skip last line of table
 
         return {
@@ -100,7 +85,8 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
 
     }
 
-    function parseWittyComment(): string {
+    function parseWittyComment(): string | undefined {
+        if (!nextIsString("//")) return undefined
         skipUntilAfterChar("/")
         skipChars(["/", " "]);
         return readLine();
@@ -116,33 +102,33 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
         return readLine();
     }
 
-    function parseStackTrace(indented?: boolean): StackTrace {
-        // Sometimes the 'caused by' and such are further indented for some reason.
-        const isIndented = indented ?? false
-        // if (isIndented) skipString("\t")
-        const message = readLine();
+    function parseStackTrace(): StackTrace {
+        const message = parseExceptionMessage()
         let details: ExceptionDetails | undefined = undefined
         if (nextIsString("Exception Details:")) {
             skipLine();
-            details = parseExceptionDetails(isIndented);
+            details = parseExceptionDetails();
         }
-        const trace = parseStackTraceElements(isIndented);
+        const trace = parseStackTraceElements();
 
         let causedBy: StackTrace | undefined = undefined;
-        const causedByIndented = current() === "\t"
-        if (causedByIndented) skip() // Skip tab
+        skipTabs()
         if (nextIsString("Caused by: ")) {
             skipString("Caused by: ");
-            causedBy = parseStackTrace(causedByIndented);
+            causedBy = parseStackTrace();
         }
         if (nextIsString("Suppressed: ")) {
             skipString("Suppressed: ");
-            causedBy = parseStackTrace(causedByIndented);
+            causedBy = parseStackTrace();
         }
         return {details, causedBy, message, trace};
     }
 
-    function parseExceptionDetails(isIndented: boolean): ExceptionDetails {
+    function parseExceptionMessage(): string {
+        return readBeforeEither(["at ", "Exception Details:", "\n\n"])!.trim()
+    }
+
+    function parseExceptionDetails(): ExceptionDetails {
         const details: Record<string, string[]> = {};
         const startIndex = cursor;
         while (nextIsString("  ")) {
@@ -169,22 +155,18 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
         return lines;
     }
 
-    function parseStackTraceElements(indented: boolean): StackTraceElement[] {
+    function parseStackTraceElements(): StackTraceElement[] {
         const trace = [];
-        while (current() === "\t" && !isEof()) {
-            if (nextIsString("\tSuppressed: ") || nextIsString("\tCaused by: ")) {
-                break;
-            }
-            trace.push(parseStackTraceElement(indented));
+        skipTabs()
+        // Keep going while it's still a stack trace
+        while (nextIsEither(["at ", "... "]) && !isEof()) {
+            trace.push(parseStackTraceElement())
+            skipTabs()
         }
         return trace;
     }
 
-    function parseStackTraceElement(isIndented: boolean): StackTraceElement {
-        // Skip leading tab
-        skip();
-        if (isIndented) skip() // Skip second leading tab due to indent
-
+    function parseStackTraceElement(): StackTraceElement {
         // Most trace lines start with 'at ', but sometimes the last line says '... X more'. In that case we save the 'X more'.
         if (nextIsString("at ")) {
             skipString("at ");
@@ -199,8 +181,8 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
         const sections = [];
         while (!isEof()) {
             // Ignore empty lines
-            if (current() === "\n" || current() === "\r") {
-                skip();
+            if (nextIsNewline()) {
+                skipLine()
                 continue;
             }
             sections.push(parseSection());
@@ -209,9 +191,7 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     }
 
     function parseSection(): CrashReportSection {
-        skipEmptyLine()
-        skipEmptyLine()
-        skipString("-- ")
+        skipUntilString("-- ")
 
         const title = readUntilNextChar("-");
         // Skip ' --'
@@ -247,11 +227,11 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
             // Skip 'Details:'
             if (nextIsDetails) skipLine();
             details = {};
-            while (!isEof() && current() === "\t") {
+            // If a new line exists, or we've reached "Stacktrace:" or "-- ", it means the details have ended
+            while (!isEof() && !nextIsNewline() && !nextIsEither(["Stacktrace:", "-- "])) {
                 const {name, detail} = parseSectionElement();
                 details[name] = detail;
             }
-            let x = 2
         }
         return details;
     }
@@ -261,7 +241,7 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
         if (nextIsString("Stacktrace:")) {
             // Skip 'Stacktrace:'
             skipLine();
-            stacktrace = parseStackTraceElements(false);
+            stacktrace = parseStackTraceElements();
         }
         return stacktrace;
     }
@@ -271,12 +251,12 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     function parseSectionAdditionalInfo(): StringMap {
         const additionalInfoKeys: StringMap = {}
         // '-' Marks the start of a new section
-        while (current() != "-" && !isWhitespace(current()) && !isEof()) {
+        while (current() !== "-" && !isWhitespace(current()) && !isEof()) {
             const additionalInfoKey = readUntilChar(":")
             skipEmptyLine()
             let nextLine = readLine()
             let info = nextLine
-            while (nextLine != "") {
+            while (nextLine !== "") {
                 nextLine = readLine()
                 info += nextLine
             }
@@ -299,64 +279,34 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
 
 
     function parseSectionElement(): { detail: string, name: string } {
-        let name = parseSectionName();
+        const name = parseSectionName();
 
         let detail = readLine()
 
         while (!isEof()) {
+            skipTabs()
             const nextLine = peekLine();
-            if (nextLine === "" || nextLine === "\t") {
+            if (nextLine === "") {
                 // Empty line - end of element/section
                 skipLine()
                 break;
-            } else if (
-                // Start of new element
-                (nextLine[0] === "\t" && isUpperCase(nextLine[1]) && (nextLine.includes(": ") || nextLine.endsWith(":"))) ||
-                // Start of Stack Trace
-                nextLine === "Stacktrace:" ||
-                // Start of new section
-                nextLine.startsWith("-- ")
-            ) {
+            } else if (isNewElement(nextLine)) {
                 break
             } else {
                 // Multiline element
-                // Skip first leading tab, don't skip other leading tabs because they have semantic value
-                detail += ("\n") + nextLine.removePrefix("\t")
+                detail += nextLine + ("\n")
                 skipLine()
             }
         }
 
-        return {name, detail}
+        return {name, detail: detail.trim()}
+    }
 
-
-        // return name
-
-
-        //
-        // // Forge completely fucked up the indentation with this one so we just give up and put everything in this element
-        // if (name == "Loaded coremods (and transformers)") {
-        //     return {
-        //         detail: readToEnd(),
-        //         name
-        //     }
-        // }
-        //
-        // let detail = readLine();
-        // // Read multiline details
-        // let currentAndNextValue: string = currentAndNext()
-        //
-        // while (!isEof() && currentAndNextValue === "\t\t"
-        // //*** Old Forge special case: Forge (in 1.12.2 at least) has this weird table in system details that fucks up
-        // // the system details section, so we include the table as a part of 'States' by checking for '\t|' / '\n\t|'
-        // || currentAndNextValue === "\t|" || nextIsString("\n\t|")) {
-        //     // Skip first leading tab, don't skip other leading tabs because they have semantic value
-        //     skip();
-        //     detail += ("\n" + readLine());
-        //     currentAndNextValue = currentAndNext();
-        // }
-        // // The stupid forge table leaves a trailing new line
-        // if (current() === "\n") skip()
-        // return {detail, name};
+    function isNewElement(line: string): boolean {
+        // Handle a special case where forge mod elements have a |Manifest: part that trips up the ":" check
+        if (line.includes("|Manifest")) return false
+        if (isUpperCase(line[0]) && line.includes(":")) return true
+        return line === "Stacktrace: " || line.startsWith("-- ")
     }
 
 
@@ -366,7 +316,7 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
 
     function parseSectionName() {
         // Skip leading tab
-        skip();
+        skipTabs()
         let name: string;
         // Weird old Forge special case: it details the mods with a 'UCHIJAA' prefix
         if (nextIsString("UCHIJAA")) {
@@ -377,6 +327,11 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
             if (current() === " ") skip();
         }
         return name;
+    }
+
+    function skipTabs() {
+        // Skip leading tabs
+        while (current() === "\t") skip()
     }
 
     // function
@@ -393,7 +348,7 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     }
 
     function readLine(): string {
-        const value = readUntilEither(["\r", "\n"]);
+        const value = readUntilEitherChars(["\r", "\n"]);
         skipLine();
         return value;
     }
@@ -402,7 +357,7 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
      * Doesn't include newlines
      */
     function peekLine(): string {
-        return peekUntilEither(["\r", "\n"])
+        return peekUntilEitherChars(["\r", "\n"])
     }
 
     function skip() {
@@ -414,7 +369,11 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     }
 
     function skipEmptyLine() {
-        if (current() === "\n" || current() === "\r" || currentAndNext() === " \n") skipLine();
+        if (nextIsNewline() || currentAndNext() === " \n") skipLine();
+    }
+
+    function nextIsNewline() {
+        return nextIsEither(["\n", "\r", " \n"])
     }
 
     function skipString(string: string) {
@@ -436,6 +395,20 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
             if (rawReport[cursor + i] !== string[i]) return false;
         }
         return true;
+    }
+
+    /**
+     * Returns whether or not the following text is either of the `string`
+     */
+    function nextIsEither(strings: string[]) {
+        return nextOutOf(strings) !== undefined
+    }
+
+    /**
+     * Returns which of the `strings` is the following text, undefined if none of them
+     */
+    function nextOutOf(strings: string[]): string | undefined {
+        return strings.find(string => nextIsString(string))
     }
 
     function readUntilNextChar(char: string): string {
@@ -496,10 +469,20 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
     }
 
     /**
+     * Reads until `string` is encountered, including the string
      * Does not include the string itself, but skips it
      */
-    function readBeforeString(string: string): string {
+    function readUntilString(string: string): string {
         const startIndex = cursor
+        skipUntilString(string)
+        // Get rid of the string that we are searching for in the result
+        return rawReport.slice(startIndex, cursor - string.length);
+    }
+
+    /**
+     * Skips until `string` is encountered, including the string itself
+     */
+    function skipUntilString(string: string) {
         let amountEqualToString = 0
         while (!isEof()) {
             const char = readCurrent()
@@ -512,11 +495,43 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
                 amountEqualToString = 0
             }
         }
-        // Get rid of the string that we are searching for in the result
-        return rawReport.slice(startIndex, cursor - string.length);
     }
 
-    function readUntilEither(chars: string[]): string {
+    /**
+     * Skips until one of the `strings` is encountered, but does not skip the string itself
+     * Returns which of the `strings` it encountered
+     */
+    function skipBeforeEither(strings: string[]): string | undefined {
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+            if (isEof()) return undefined
+            const next = nextOutOf(strings)
+            if (next !== undefined) {
+                return next
+            }
+            skip()
+        }
+    }
+
+    function readBeforeEither(strings: string[]): string | undefined {
+        const startIndex = cursor
+        const reachedString = skipBeforeEither(strings)
+        if (reachedString === undefined) return undefined
+        // Get rid of the string that we are searching for in the result
+        return rawReport.slice(startIndex, cursor);
+    }
+
+    // /**
+    //  * Reads until `string` is encountered
+    //  * Does not include the string itself, and does not skip it, to leave it for later processing
+    //  */
+    // function readBeforeString(string: string): string {
+    //     const read = readUntilString(string)
+    //     cursor -= string.length
+    //     return read
+    // }
+
+    function readUntilEitherChars(chars: string[]): string {
         const startIndex = cursor
         while (!isEof() && !(chars.includes(readCurrent()))) {
             // Read until reaching char
@@ -525,7 +540,7 @@ function parseCrashReportImpl(rawReport: string, strict: boolean): CrashReport {
         return rawReport.slice(startIndex, cursor)
     }
 
-    function peekUntilEither(chars: string[]): string {
+    function peekUntilEitherChars(chars: string[]): string {
         let distance = 0;
         while (!(chars.includes(peek(distance))) && !isEofAtDistance(distance)) {
             distance++

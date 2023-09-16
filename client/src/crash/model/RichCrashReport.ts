@@ -126,8 +126,8 @@ export interface TraceLine {
 
 
 export interface CrashContext {
-    javaVersion: string
-    minecraftVersion: string
+    javaVersion: string | undefined
+    minecraftVersion: string | undefined
     loader: Loader
     time: Date
     operatingSystem: OperatingSystem | undefined

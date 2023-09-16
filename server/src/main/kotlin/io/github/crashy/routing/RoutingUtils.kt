@@ -1,6 +1,7 @@
 package io.github.crashy.routing
 
 import io.github.crashy.Crashy
+import io.github.crashy.crashlogs.Blacklist
 import io.github.crashy.crashlogs.api.Encoding
 import io.github.crashy.crashlogs.api.Response
 import io.github.natanfudge.logs.LogContext
@@ -23,8 +24,7 @@ inline fun <reified R : Any> Routing.crashyPost(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>) (R) -> Unit
 ) {
     post<R>(path) { body ->
-        Crashy.logger.startSuspendWithContextAsParam(path) { log ->
-            log.logData("IP") { call.request.origin.remoteAddress}
+        response(path) { log ->
             handler(log, this@post, body)
         }
     }
@@ -36,8 +36,7 @@ inline fun Routing.crashyRoute(
 ) {
     for (route in routes) {
         get(route) {
-            Crashy.logger.startSuspendWithContextAsParam(route) {log ->
-                log.logData("IP") { call.request.origin.remoteAddress}
+            response(route) { log ->
                 body(log, this@get)
             }
         }
@@ -50,8 +49,7 @@ inline fun <reified T : Any> Routing.json(
     crossinline handler: suspend context(LogContext, PipelineContext<Unit, ApplicationCall>)(T) -> Unit
 ) {
     post(path) {
-        Crashy.logger.startSuspendWithContextAsParam(path) { log ->
-            log.logData("IP") { call.request.origin.remoteAddress}
+        response(path) { log ->
             call.receiveStream().use { body ->
                 try {
                     val decoded = withContext<T>(Dispatchers.IO) {
@@ -60,7 +58,7 @@ inline fun <reified T : Any> Routing.json(
                     handler(log, this@post, decoded)
                 } catch (e: IllegalArgumentException) {
                     call.respondText("Error deserializing body", status = HttpStatusCode.UnsupportedMediaType)
-                    log.logWarn  { "Error deserializing body $e" }
+                    log.logWarn { "Error deserializing body $e" }
                 }
             }
         }
@@ -82,6 +80,21 @@ suspend fun PipelineContext<Unit, ApplicationCall>.respond(response: Response) {
     call.respondBytes(
         response.bytes, status = response.statusCode, contentType = response.contentType
     )
+}
+
+suspend fun PipelineContext<Unit, ApplicationCall>.response(
+    path: String,
+    handler: suspend (log: LogContext) -> Unit
+) {
+    val ip = call.request.origin.remoteAddress
+    if (Blacklist.isBlacklisted(ip)) {
+        // Don't respond anything, fuck you
+        return
+    }
+    Crashy.logger.startSuspendWithContextAsParam(path) { log ->
+        log.logData("IP") { ip }
+        handler(log)
+    }
 }
 
 

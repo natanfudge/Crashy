@@ -1,11 +1,4 @@
-import {
-    CrashReport,
-    CrashReportSection,
-    ExceptionDetails,
-    StackTrace,
-    StackTraceElement,
-    StringMap
-} from "../model/CrashReport";
+import {CrashReport, CrashReportSection, ExceptionDetails, StackTrace, StackTraceElement, StringMap} from "../model/CrashReport";
 import {
     CrashContext,
     ExceptionBytecode,
@@ -68,19 +61,18 @@ const IsModdedTitle = "Is Modded"
 const MinecraftModId = "minecraft"
 
 function getCrashContext(report: CrashReport, mods?: Mod[]): CrashContext {
-    const systemDetails = getSystemDetails(report).details!;
+    const systemDetails = getSystemDetails(report)?.details;
     //16.0.2, Oracle Corporation
     // Brand ignored
-    const javaVersionString = systemDetails[JavaVersionTitle] ?? mods?.find(mod => mod.id === JavaModId)?.version
-    const [javaVersion] = javaVersionString.split(",");
-    const loader = getLoader(report, systemDetails, mods)
+    const javaVersionString = systemDetails?.[JavaVersionTitle] ?? mods?.find(mod => mod.id === JavaModId)?.version
+    const loader = getLoader(systemDetails, mods)
 
     return {
         time: parseCrashDate(report.dateTime, report.description === undefined),
-        javaVersion: javaVersion,
-        minecraftVersion: systemDetails[MinecraftVersionTitle] ?? mods?.find(mod => mod.id === MinecraftModId)?.version,
+        javaVersion: javaVersionString?.split(",")?.[0],
+        minecraftVersion: systemDetails?.[MinecraftVersionTitle] ?? mods?.find(mod => mod.id === MinecraftModId)?.version,
         loader: loader,
-        operatingSystem: parseOperatingSystem(systemDetails[OperatingSystemTitle])
+        operatingSystem: parseOperatingSystem(systemDetails?.[OperatingSystemTitle])
     };
 }
 
@@ -111,7 +103,11 @@ function parseOperatingSystem(osString: string | undefined): OperatingSystem | u
     }
 }
 
-function getLoader(report: CrashReport, systemDetails: StringMap, mods?: Mod[]): Loader {
+function getLoader(systemDetails: StringMap | undefined, mods?: Mod[]): Loader {
+    if (systemDetails === undefined) return {
+        type: LoaderType.Vanilla,
+        version: undefined
+    }
     const forgeEntry = systemDetails[ForgeLoaderTitle];
     if (forgeEntry !== undefined) {
         // Forge
@@ -488,14 +484,14 @@ const ForgeModsTitle = "Mod List";
 export const QuiltModsTitle = "Quilt Mods"
 const SuspectedModsTitle = "Suspected Mods";
 
-function getSystemDetails(report: CrashReport): CrashReportSection {
+function getSystemDetails(report: CrashReport): CrashReportSection | undefined {
     return report.sections.find((section) => section.title === SystemDetailsTitle)!;
 }
 
 function getMods(report: CrashReport): Mod[] | undefined {
     const systemDetails = getSystemDetails(report);
     // Forge, Fabric and Quilt use a different format for the mod list.
-    const mods = parseMods(systemDetails.details!)
+    const mods = systemDetails !== undefined ? parseMods(systemDetails.details!) : undefined
     // Trim whitespace
     return mods?.map(mod => ({...mod, id: mod.id.trim()}))
 }
@@ -527,16 +523,12 @@ function parseMods(systemDetails: StringMap): Mod[] | undefined {
 function parseFabricMods(systemDetails: StringMap): Mod[] | undefined {
     const raw = systemDetails[FabricModsTitle];
     if (raw === undefined) return undefined;
-    // Remove leading newline
-    const noLeadingNewline = raw.substring(1);
     const suspectedMods = getSuspectedModIds(systemDetails);
-    return noLeadingNewline.split("\n")
+    return raw.split("\n")
         .map((modLine) => {
-            // Remove leading tab
-            const noLeadingTab = modLine.substring(1);
             //Example:    betterdroppeditems: Better Dropped Items 1.3.0-1.17
             // The first word is the id, the last word is the version and the words in-between are the name.
-            const words = noLeadingTab.split(" ");
+            const words = modLine.split(" ");
             // Remove trailing ':'
             const id = removeLastChar(words[0]);
             // Get words in-between and join them
@@ -566,15 +558,11 @@ function last<T>(arr: T[]): T {
 
 function parseForgeMods(systemDetails: StringMap): Mod[] {
     const raw = systemDetails[ForgeModsTitle];
-    // Remove leading newline
-    const noLeadingNewline = raw.substring(1);
     const suspectedMods = getSuspectedModIds(systemDetails);
 
-    return noLeadingNewline.split("\n")
+    return raw.split("\n")
         .map((modLine) => {
-            // Remove leading tab
-            const noLeadingTab = modLine.substring(1);
-            const [file, name, id, version, completeness, signature] = noLeadingTab.split("|")
+            const [file, name, id, version, completeness, signature] = modLine.split("|")
                 .map((part) => part.trimEnd());
             return {
                 id, name, version,

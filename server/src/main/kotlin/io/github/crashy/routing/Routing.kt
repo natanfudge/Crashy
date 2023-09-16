@@ -47,7 +47,7 @@ fun Application.configureRouting() {
 private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
     val timer = Timer()
     // Runs once every day
-    timer.schedule(Day) {
+    timer.schedule(delay = Day, period = Long.MAX_VALUE) {
         GlobalScope.launch(Dispatchers.IO) {
             Crashy.logger.startSuspend("scheduleTasks") {
                 logData("Crashy Home Dir") { Crashy.HomeDir.toAbsolutePath() }

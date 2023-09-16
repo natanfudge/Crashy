@@ -8,6 +8,8 @@ import {QuiltFabricLog} from "../test/testlogs/QuiltFabric";
 import {TestVerifyErrorCrash} from "../test/testlogs/TestVerifyErrorCrash";
 import {WayTooManyModsCrash} from "../test/testlogs/WayTooManyModsCrash";
 import {ClassicQuiltLog} from "../test/testlogs/ClassicQuilt";
+import {NoIndentCrash} from "../test/testlogs/NoIndentCrash";
+import {SeeminglySimpleLog} from "../test/testlogs/SeeminglySimpleLog";
 
 export namespace HttpStatusCode {
     export const OK = 200;
@@ -54,9 +56,11 @@ export namespace CrashyServer {
         // return ClassicQuiltLog
         // return TestQuiltLog
         // return VeryLongTraceCrash
+        // return NoIndentCrash
         // return TestVerifyErrorCrash;
         //  return WayTooManyModsCrash;
         // return testFabricCrashReport;
+        // return SeeminglySimpleLog
         // return SeeminglyInnocentCrashTest.replaceAll("    ", "\t")
         // Fast path in case the server identified that this crash log doesn't exist and served this page with invalid crash url already
         if (document.title === "Invalid Crash Url") return GetCrashError.NoSuchCrashId;

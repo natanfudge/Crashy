@@ -90,10 +90,6 @@ export interface ElementProps extends StyleProps {
      * `onClick` is invoked when the element is clicked. Passing a defined onClick will cause the element to appear clickable for the mouse cursor as well.
      */
     onClick?: ClickCallback
-    /**
-     * Use for when the other props don't satisfy the use case. Prioritize adding more props to Simple though.
-     * @deprecated
-     */
     style?: CSSProperties;
     className?: string;
 }

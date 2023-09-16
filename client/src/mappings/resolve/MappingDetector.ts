@@ -1,4 +1,3 @@
-import {MappingContext} from "./MappingStrategy";
 import {MappingsNamespace} from "../MappingsNamespace";
 import {JavaClass, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
 import {LoaderType, RichCrashReport} from "../../crash/model/RichCrashReport";
@@ -15,7 +14,7 @@ export function detectMappingNamespace(name: SimpleMappable, report: RichCrashRe
             case LoaderType.Quilt:
                 return "Intermediary"
             case LoaderType.Forge:
-                if (forgeUsesPureSrgForMinecraftVersion(report.context.minecraftVersion)) {
+                if (report.context.minecraftVersion !== undefined && forgeUsesPureSrgForMinecraftVersion(report.context.minecraftVersion)) {
                     return "Srg"
                 } else {
                     return "ForgeRuntime"
