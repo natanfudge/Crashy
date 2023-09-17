@@ -46,8 +46,8 @@ fun Application.configureRouting() {
 @OptIn(DelicateCoroutinesApi::class)
 private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
     val timer = Timer()
-    // Runs once every day
-    timer.schedule(delay = Day, period = Long.MAX_VALUE) {
+    // Runs once every day and once at startup
+    timer.schedule(delay = 0, period = Day) {
         GlobalScope.launch(Dispatchers.IO) {
             Crashy.logger.startSuspend("scheduleTasks") {
                 logData("Crashy Home Dir") { Crashy.HomeDir.toAbsolutePath() }
@@ -55,9 +55,6 @@ private fun scheduleTasks(crashlogStorage: CrashlogStorage) {
                 crashlogStorage.evictOld()
             }
         }
-    }.apply {
-        // Run once at startup
-        run()
     }
 }
 
