@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -112,7 +110,7 @@
       <recent name="C:\Users\natan\Desktop\Crashy\trash\table\editable" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Upload Release Server">
+  <component name="RunManager" selected="Compound.Run Fullstack">
     <configuration name="Upload Release Server" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -392,7 +390,7 @@
       <workItem from="1694808467737" duration="1362000" />
       <workItem from="1694846889888" duration="12279000" />
       <workItem from="1694861612026" duration="5293000" />
-      <workItem from="1694933650343" duration="1825000" />
+      <workItem from="1694933650343" duration="3198000" />
     </task>
     <servers />
   </component>
