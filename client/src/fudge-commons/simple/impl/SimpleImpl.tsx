@@ -4,7 +4,7 @@ import * as CSS from "csstype";
 import {Axes, Directions, Padding, Percent, Size} from "../GuiTypes";
 import {ElementProps} from "../SimpleElementProps";
 import {fixAlignment} from "./FlexImpl";
-import {isObj} from "fudge-lib/dist/methods/Typescript";
+import {isObj} from "../../../fudge-lib/methods/Typescript";
 
 export function deflattenStyle<T extends ElementProps>(props: T) {
     const {

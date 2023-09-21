@@ -3,8 +3,8 @@ import {parseTinyFile} from "./TinyMappings";
 import {HttpStatusCode} from "../../server/CrashyServer";
 import {MappingsFilter} from "../MappingsFilter";
 import {Mappings} from "../Mappings";
-import {httpGet} from "fudge-lib/dist/methods/Http";
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
+import {httpGet} from "../../fudge-lib/methods/Http";
+import {HashSet} from "../../fudge-lib/collections/hashmap/HashSet";
 
 
 export async function getYarnMappings(build: string, filter: MappingsFilter): Promise<Mappings> {

@@ -9,6 +9,7 @@ import {CrashyNewIssueUrl} from "./utils/Crashy";
 import {TextTheme} from "../fudge-commons/simple/Text";
 import {ErrorBoundary} from "../fudge-commons/components/ErrorBoundary";
 import "../fudge-lib-proposals/extensions/ExtensionsImpl"
+import "../fudge-lib/extensions/ExtensionsImpl"
 
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))

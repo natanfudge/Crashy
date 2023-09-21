@@ -3,7 +3,6 @@ import {useMappingsSelection} from "./MappingsUi";
 import {RichCrashReport, RichStackTrace, RichStackTraceElement} from "../../../../crash/model/RichCrashReport";
 import {useMemo, useState} from "react";
 import {SimpleMappable} from "../../../../crash/model/Mappable";
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 import {
     getMappingForContext,
     IdentityMapping,
@@ -11,8 +10,9 @@ import {
     MappingStrategy
 } from "../../../../mappings/resolve/MappingStrategy";
 import {MappingsNamespace} from "../../../../mappings/MappingsNamespace";
-import {usePromise} from "fudge-lib/dist/state/UsePromise";
 import {detectMappingNamespace} from "../../../../mappings/resolve/MappingDetector";
+import {usePromise} from "../../../../fudge-lib/state/UsePromise";
+import {HashSet} from "../../../../fudge-lib/collections/hashmap/HashSet";
 
 // import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 

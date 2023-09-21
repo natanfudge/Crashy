@@ -12,11 +12,10 @@ import {
 
 import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {JavaClass, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 import {LoaderType} from "../../crash/model/RichCrashReport";
 import {expect, test} from 'vitest'
-import {fetcher} from "fudge-lib/dist/methods/Http";
 import fetch from "node-fetch";
+import {HashSet} from "../../fudge-lib/collections/hashmap/HashSet";
 // @ts-ignore
 fetcher.fetch = fetch
 

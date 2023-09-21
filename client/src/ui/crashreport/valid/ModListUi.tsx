@@ -5,10 +5,10 @@ import {Column, Row} from "../../../fudge-commons/simple/Flex";
 import {Text} from "../../../fudge-commons/simple/Text";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {Fragment, useState} from "react";
-import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import styled from "@emotion/styled";
-import {usePersistentState} from "fudge-lib/dist/state/PersistentState";
-import {State} from "fudge-lib/dist/state/State";
+import {useScreenSize} from "../../../fudge-lib/methods/Gui";
+import {usePersistentState} from "../../../fudge-lib/state/PersistentState";
+import {State} from "../../../fudge-lib/state/State";
 
 interface ModDisplayPreferences {
     id: boolean

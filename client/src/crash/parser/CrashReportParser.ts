@@ -1,7 +1,6 @@
 import {CrashReport, CrashReportSection, ExceptionDetails, StackTrace, StackTraceElement, StringMap} from "../model/CrashReport";
-import "fudge-lib/dist/extensions/ExtensionsImpl"
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 import {QuiltModsTitle, SystemDetailsTitle} from "./CrashReportEnricher";
+import {HashSet} from "../../fudge-lib/collections/hashmap/HashSet";
 
 
 export function parseCrashReport(rawReport: string): CrashReport {

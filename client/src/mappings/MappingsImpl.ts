@@ -1,7 +1,7 @@
 import {ClassMappings, Mappings, SerializedMappings} from "./Mappings";
-import {Lazy} from "fudge-lib/dist/collections/Lazy";
 import {DescriptoredMethod, JavaClass, SimpleMethod} from "../crash/model/Mappable";
-import {Dict} from "fudge-lib/dist/collections/hashmap/HashMap";
+import {Lazy} from "../fudge-lib/collections/Lazy";
+import {Dict} from "../fudge-lib/collections/hashmap/HashMap";
 
 type SingleDirectionMappingData = Dict<JavaClass, ClassMappings>
 

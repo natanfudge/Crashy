@@ -2,7 +2,7 @@ import React from "react";
 import {_implExpansion} from "./Impl";
 import {_implUseExpansion} from "./Util";
 import {SingleChildParentProps} from "../SimpleElementProps";
-import {Alignment} from "fudge-lib/dist/types/Gui";
+import {Alignment} from "../../../fudge-lib/types/Gui";
 
 export function Expansion(props: ExpansionPropsApi) {
     return _implExpansion(props);

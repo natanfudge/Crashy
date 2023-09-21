@@ -5,7 +5,7 @@ import React from "react";
 import {SingleChildParentProps} from "./SimpleElementProps";
 import {ClickCallback} from "./GuiTypes";
 import {deflattenStyle} from "./impl/SimpleImpl";
-import {Require} from "fudge-lib/dist/types/Basic";
+import {Require} from "../../fudge-lib/types/Basic";
 
 export interface SimpleButtonProps extends Require<SingleChildParentProps,'onClick'> {
     variant?: 'text' | 'outlined' | 'contained'

@@ -6,8 +6,8 @@ import {
     JavaClass,
     SimpleMethod
 } from "../crash/model/Mappable";
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
-import {Lazy} from "fudge-lib/dist/collections/Lazy";
+import {HashSet} from "../fudge-lib/collections/hashmap/HashSet";
+import {Lazy} from "../fudge-lib/collections/Lazy";
 
 
 export interface MappingsFilter {

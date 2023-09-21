@@ -4,7 +4,7 @@ import {MappingsNamespace} from "../MappingsNamespace";
 import {resolveMappingsChain} from "./MappingsResolver";
 import {mappingFilterForMappables, MappingsFilter} from "../MappingsFilter";
 import {AnyMappable, isSimpleMethod, JavaClass, JavaMethod, Mappable, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
+import {HashSet} from "../../fudge-lib/collections/hashmap/HashSet";
 
 export interface MappingStrategy {
     mapMethod: (unmapped: SimpleMethod) => SimpleMethod

@@ -17,6 +17,5 @@ export interface ImageProps extends ElementProps {
  * {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img}
  */
 export function SimpleImage(props: ImageProps) {
-    // eslint-disable-next-line jsx-a11y/alt-text
     return <img {...deflattenStyle(props)}/>
 }

@@ -11,7 +11,6 @@ import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {getMcpBuilds} from "../../mappings/providers/McpMappingsProvider";
 import {expect, test} from 'vitest'
 import fetch from "node-fetch"
-import {fetcher} from "fudge-lib/dist/methods/Http";
 import {getQuiltBuilds, getQuiltMappings} from "../../mappings/providers/QuiltMappingsProvider";
 
 // @ts-ignore

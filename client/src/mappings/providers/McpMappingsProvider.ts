@@ -1,14 +1,13 @@
 import {Mappings} from "../Mappings";
 import {MappingsFilter} from "../MappingsFilter";
 import {isOlderThan1_12_2} from "./ProviderUtils";
-import {extractFromZip} from "fudge-lib/dist/methods/Zip";
 import {strFromU8} from "fflate";
 import {CrashyServer, HttpStatusCode} from "../../server/CrashyServer";
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
 import {MappingsBuilder} from "../MappingsBuilder";
 import {DescriptoredMethod, JavaClass, SimpleMethod} from "../../crash/model/Mappable";
 import {StringMap} from "../../crash/model/CrashReport";
-import {httpGet} from "fudge-lib/dist/methods/Http";
+import {HashSet} from "../../fudge-lib/collections/hashmap/HashSet";
+import {httpGet} from "../../fudge-lib/methods/Http";
 
 
 const mcpSupportedMcVersions = HashSet.of(

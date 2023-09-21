@@ -1,8 +1,7 @@
 import {ClassMethodSeparator, EnableAssertions} from "../../Constants";
 import {Mappings} from "../../mappings/Mappings";
-import {hashString} from "fudge-lib/dist/collections/hashmap/Hashing";
-import "fudge-lib/dist/extensions/Extensions"
 import {MappingStrategy} from "../../mappings/resolve/MappingStrategy";
+import {hashString} from "../../fudge-lib/collections/hashmap/Hashing";
 
 export interface AnyMappable {
     remap(mappings: Mappings, reverse: boolean): AnyMappable

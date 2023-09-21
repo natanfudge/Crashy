@@ -1,5 +1,5 @@
 import {CSSProperties} from "react";
-import {isObj} from "fudge-lib/dist/methods/Typescript";
+import {isObj} from "../../fudge-lib/methods/Typescript";
 //asd
 export type Color = string | Gradient
 

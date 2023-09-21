@@ -2,9 +2,9 @@ import {MappingsVersion} from "./MappingsProvider";
 import {MappingsFilter} from "../MappingsFilter";
 import {Mappings} from "../Mappings";
 import {MappingsBuilder} from "../MappingsBuilder";
-import {httpGet} from "fudge-lib/dist/methods/Http";
 import {extractTinyMappings} from "./ProviderUtils";
 import {parseTinyFile} from "./TinyMappings";
+import {httpGet} from "../../fudge-lib/methods/Http";
 
 export async function getQuiltBuilds(minecraftVersion: string): Promise<string[]> {
     // Arrives in xml

@@ -20,9 +20,8 @@ import {
     TraceLine
 } from "../model/RichCrashReport";
 import {parseCrashReport} from "./CrashReportParser";
-import "fudge-lib/dist/extensions/Extensions"
 import {JavaClass, SimpleMethod} from "../model/Mappable";
-import {typedKeys} from "fudge-lib/dist/methods/Typescript";
+import {typedKeys} from "../../fudge-lib/methods/Typescript";
 
 export function parseCrashReportRich(rawReport: string): RichCrashReport {
     return enrichCrashReport(parseCrashReport(rawReport));

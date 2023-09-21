@@ -4,7 +4,6 @@ import {StackTraceUi} from "./StackTraceUi";
 import {JVMDetailsSection} from "./JvmDetailsSection";
 import {Surface} from "../../../fudge-commons/simple/Surface";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
-import {ScreenSize, useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {Section, sectionNavigationOf, SectionState, SpecialSection} from "../../../utils/Section";
 import {WithChild} from "../../../fudge-commons/simple/SimpleElementProps";
 import {SectionNavigation} from "./SectionNavigation";
@@ -15,6 +14,7 @@ import {ForgeExtraInfoSection} from "./ForgeExtraInfoSection";
 import {SimpleDivider} from "../../../fudge-commons/simple/SimpleDivider";
 import {CrashLeftSide} from "./CrashContextUi";
 import {Text} from "../../../fudge-commons/simple/Text";
+import {ScreenSize, useScreenSize} from "../../../fudge-lib/methods/Gui";
 
 
 export interface ValidCrashProps {

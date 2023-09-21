@@ -18,7 +18,7 @@ import {SimpleDivider} from "../../../fudge-commons/simple/SimpleDivider";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
 import {Spacer} from "../../../fudge-commons/simple/SimpleDiv";
 import {Fragment, useState} from "react";
-import {Require} from "fudge-lib/dist/types/Basic";
+import {Require} from "../../../fudge-lib/types/Basic";
 
 type ElementWithFei = Require<FullRichStackTraceElement, "forgeMetadata">;
 

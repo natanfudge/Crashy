@@ -4,11 +4,11 @@ import ReactDOM from "react-dom";
 import {ClickAwayListener} from "@mui/material";
 import {Wrap} from "../SimpleDiv";
 import {SingleChildParentProps} from "../SimpleElementProps";
-import {Require} from "fudge-lib/dist/types/Basic";
-import {NumericAlignment, Rect} from "fudge-lib/dist/types/Gui";
-import {getDocumentRelativeRect} from "fudge-lib/dist/methods/Browser";
-import {toNumericAlignment} from "fudge-lib/dist/methods/Gui";
-import {coercePreferMin} from "fudge-lib/dist/methods/Javascript";
+import {Require} from "../../../fudge-lib/types/Basic";
+import {NumericAlignment, Rect} from "../../../fudge-lib/types/Gui";
+import {getDocumentRelativeRect} from "../../../fudge-lib/methods/Browser";
+import {toNumericAlignment} from "../../../fudge-lib/methods/Gui";
+import {coercePreferMin} from "../../../fudge-lib/methods/Javascript";
 
 export function _implExpansion(props: ExpansionPropsApi) {
     const manualProps: ManualExpansionProps = isManualApi(props) ? props : toManual(props)
@@ -37,7 +37,6 @@ function ExpansionPortal(props: ExpansionProps) {
     const [completelyClosed, setCompletelyClosed] = useState(false);
     const show = props.show
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const timeoutHandle = useMemo<TimeoutWrapper>(() => ({timeout: undefined}), [show]);
 
     useEffect(() => {
@@ -53,7 +52,6 @@ function ExpansionPortal(props: ExpansionProps) {
             // Existing composition, no need to completely close
             stop(timeoutHandle);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.animationDurationMillis, show, completelyClosed])
 
     // const
@@ -184,7 +182,6 @@ function SizeCalculator({
 
     useLayoutEffect(() => {
         if (!calculate) setCalculate(true)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depProps])
 
 
@@ -193,7 +190,6 @@ function SizeCalculator({
             setRect(getDocumentRelativeRect(ref.current))
             setCalculate(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depProps, calculate])
 
     return <Fragment>

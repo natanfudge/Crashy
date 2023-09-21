@@ -2,15 +2,14 @@ import {DesiredBuild, DesiredBuildProblem} from "../../../../mappings/resolve/Ma
 import {buildsOf} from "../../../../mappings/MappingsApi";
 import {WithChildren} from "../../../../fudge-commons/simple/SimpleElementProps";
 import {Column} from "../../../../fudge-commons/simple/Flex";
-import {usePromise} from "fudge-lib/dist/state/UsePromise";
-import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {getVisibleMappingNamespaces, MappingsNamespace} from "../../../../mappings/MappingsNamespace";
 import {MappingsSelectionUi} from "./MappingsSelectionUi";
 import {MappingsSelection, withBuild} from "./MappingsSelection";
 import {MappingsController} from "./MappingsController";
-import {PersistentValue} from "fudge-lib/dist/state/PersistentState";
-import {State, useStateObject} from "fudge-lib/dist/state/State";
-
+import {useScreenSize} from "../../../../fudge-lib/methods/Gui";
+import {State, useStateObject} from "../../../../fudge-lib/state/State";
+import {PersistentValue} from "../../../../fudge-lib/state/PersistentState";
+import {usePromise} from "../../../../fudge-lib/state/UsePromise";
 
 export function WithMappings({controller, children}:
                                  { controller: MappingsController }

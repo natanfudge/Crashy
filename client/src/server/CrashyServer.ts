@@ -1,7 +1,6 @@
 // import {deflate, inflate} from "zlib";
 
 
-import {httpGet, httpPost} from "fudge-lib/dist/methods/Http";
 import {VeryLongTraceCrash} from "../test/testlogs/VeryLongTraceCrash";
 import {TestQuiltLog} from "../test/testlogs/ConciseQuilt";
 import {QuiltFabricLog} from "../test/testlogs/QuiltFabric";
@@ -10,6 +9,7 @@ import {WayTooManyModsCrash} from "../test/testlogs/WayTooManyModsCrash";
 import {ClassicQuiltLog} from "../test/testlogs/ClassicQuilt";
 import {NoIndentCrash} from "../test/testlogs/NoIndentCrash";
 import {SeeminglySimpleLog} from "../test/testlogs/SeeminglySimpleLog";
+import {httpGet, httpPost} from "../fudge-lib/methods/Http";
 
 export namespace HttpStatusCode {
     export const OK = 200;

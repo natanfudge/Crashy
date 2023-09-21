@@ -4,8 +4,6 @@ import {Button, CircularProgress, Dialog, DialogContent, DialogTitle, Link} from
 import {crashyTitleColor, dialogBodyColor} from "../Colors";
 import {Text, TextTheme} from "../../fudge-commons/simple/Text";
 import {CrashyLogo} from "../utils/Crashy";
-import {gzipAsync} from "fudge-lib/dist/methods/Zip";
-import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {Surface} from "../../fudge-commons/simple/Surface";
 import {CrashyServer, UploadCrashError, UploadCrashResponse} from "../../server/CrashyServer";
 import {CloudUpload} from "@mui/icons-material";
@@ -13,6 +11,8 @@ import {Column, Row} from "../../fudge-commons/simple/Flex";
 import {SimpleTextField} from "../../fudge-commons/simple/SimpleTextField";
 import {goToUploadedCrash} from "../../utils/PageUrl";
 import {parseCrashReportRich} from "../../crash/parser/CrashReportEnricher";
+import {gzipAsync} from "../../utils/Zip";
+import {useScreenSize} from "../../fudge-lib/methods/Gui";
 
 
 enum InitialUploadState {

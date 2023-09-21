@@ -9,8 +9,8 @@ import {Wrap} from "../../../fudge-commons/simple/SimpleDiv";
 import {SimpleDivider} from "../../../fudge-commons/simple/SimpleDivider";
 import {Column, Row} from "../../../fudge-commons/simple/Flex";
 import {RichCrashReport, RichCrashReportSection, RichStackTraceElement} from "../../../crash/model/RichCrashReport";
-import {objectMap} from "fudge-lib/dist/methods/Javascript";
 import {Text} from "../../../fudge-commons/simple/Text";
+import {objectMap} from "../../../fudge-lib/methods/Javascript";
 
 export function CrashReportSectionUi({
     report,

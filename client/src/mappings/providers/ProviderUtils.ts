@@ -6,9 +6,9 @@ Credit to https://github.com/wagyourtail/wagyourtail.xyz/blob/master/views/secti
 // type MCVersionSlug =  ReleaseVersion | Snapshot;
 
 
-import {extractFromZipAtPath} from "fudge-lib/dist/methods/Zip";
-import {HashSet} from "fudge-lib/dist/collections/hashmap/HashSet";
-import {HttpResponse} from "fudge-lib/dist/methods/Http";
+import {extractFromZipAtPath} from "../../utils/Zip";
+import {HttpResponse} from "../../fudge-lib/methods/Http";
+import {HashSet} from "../../fudge-lib/collections/hashmap/HashSet";
 
 export type MCVersionSlug = string;
 

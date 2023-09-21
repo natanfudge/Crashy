@@ -1,5 +1,5 @@
 import {LoaderType, RichCrashReport} from "../crash/model/RichCrashReport";
-import {isObj} from "fudge-lib/dist/methods/Typescript";
+import {isObj} from "../fudge-lib/methods/Typescript";
 
 
 export interface SectionState {

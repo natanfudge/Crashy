@@ -1,4 +1,3 @@
-import {ScreenSize, useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {CrashProps, isCrashAttemptValid} from "../CrashReportPage";
 import {BorderColor, Delete, Subject, TextSnippet} from "@mui/icons-material";
 import {AppbarColor, crashyTitleColor, OnBackgroundColor, primaryColor} from "../../Colors";
@@ -12,6 +11,7 @@ import {Row} from "../../../fudge-commons/simple/Flex";
 import {Text, TextTheme} from "../../../fudge-commons/simple/Text";
 import {Fragment} from "react";
 import {Link} from "@mui/material";
+import {ScreenSize, useScreenSize} from "../../../fudge-lib/methods/Gui";
 
 
 export function CrashyAppBar({crash, sectionState, screen}: CrashProps & { screen: ScreenSize }) {

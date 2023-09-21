@@ -2,9 +2,9 @@
 import { AllowAllMappings } from "../../mappings/MappingsFilter";
 import {MappingsProvider} from "../../mappings/providers/MappingsProvider";
 import {DescriptoredMethod, JavaClass} from "../../crash/model/Mappable";
-import {equalsOfAnything} from "fudge-lib/dist/collections/hashmap/EqualsImplementation";
-import {typedKeys} from "fudge-lib/dist/methods/Typescript";
 import {expect} from 'vitest'
+import {typedKeys} from "../../fudge-lib/methods/Typescript";
+import {equalsOfAnything} from "../../fudge-lib/collections/hashmap/EqualsImplementation";
 
 export interface MappingAssertions {
     classes: Record<string, string>

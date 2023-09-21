@@ -2,7 +2,7 @@ import {IconButton} from "@mui/material";
 import React from "react";
 import {SingleChildParentProps} from "./SimpleElementProps";
 import {deflattenStyle} from "./impl/SimpleImpl";
-import {Require} from "fudge-lib/dist/types/Basic";
+import {Require} from "../../fudge-lib/types/Basic";
 
 export type SimpleIconButtonProps = Require<SingleChildParentProps, 'onClick'>
 

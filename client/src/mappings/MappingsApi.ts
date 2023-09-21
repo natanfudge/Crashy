@@ -9,7 +9,7 @@ import {
 } from "./providers/MappingsProvider";
 import {MappingsFilter} from "./MappingsFilter";
 import {EmptyMappings, Mappings} from "./Mappings";
-import {PromiseMemoryCache} from "fudge-lib/dist/collections/PromiseMemoryCache";
+import {PromiseMemoryCache} from "../fudge-lib/collections/PromiseMemoryCache";
 
 
 export async function buildsOf(namespace: MappingsNamespace, minecraftVersion: string): Promise<MappingsBuilds> {

@@ -3,10 +3,10 @@ import {MappingsFilter} from "../MappingsFilter";
 import {isOlderThan1_12_2} from "./ProviderUtils";
 import {MappingsBuilder} from "../MappingsBuilder";
 import {JavaClass} from "../../crash/model/Mappable";
-import {extractFromZip} from "fudge-lib/dist/methods/Zip";
 import {strFromU8} from "fflate";
 import {CrashyServer, HttpStatusCode} from "../../server/CrashyServer";
-import {httpGet} from "fudge-lib/dist/methods/Http";
+import {httpGet} from "../../fudge-lib/methods/Http";
+import {extractFromZip} from "../../utils/Zip";
 
 export {}
 
@@ -20,7 +20,7 @@ export async function getSrgMappings(mcVersion: string, filter: MappingsFilter):
     if (isOlderThan1_12_2(mcVersion)) {
         const url = `https://maven.minecraftforge.net/de/oceanlabs/mcp/mcp/${mcVersion}/mcp-${mcVersion}-srg.zip`
         const res = await httpGet({url});
-        if (res.status == HttpStatusCode.NotFound) {
+        if (res.status === HttpStatusCode.NotFound) {
             // Srg doesn't support snapshots I think
             return undefined
         }
@@ -100,7 +100,7 @@ function parseTsrg(mappings: string, filter: MappingsFilter) {
                 }
                 // Method, Example: a (La;)V func_195890_a
                 const [unmappedMethodName, unmappedDescriptor, mappedMethodName] = memberParts;
-                builder.addMethod(currentClass!, unmappedMethodName, unmappedDescriptor, mappedMethodName);
+                builder.addMethod(currentClass, unmappedMethodName, unmappedDescriptor, mappedMethodName);
             }
         }
     }

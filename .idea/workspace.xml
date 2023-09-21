@@ -4,7 +4,60 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="" />
+    <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/fudge-lib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/utils/Zip.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/push.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/model/Mappable.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportEnricher.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/Color.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/Color.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleIconButton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleIconButton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleImage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/SimpleImage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/expansion/Api.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/expansion/Api.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/expansion/Impl.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/expansion/Impl.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/fudge-commons/simple/impl/SimpleImpl.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/fudge-commons/simple/impl/SimpleImpl.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/Mappings.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/Mappings.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsFilter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/MappingsImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/MappingsImpl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/ForgeRuntimeMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/ForgeRuntimeMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/IntermediaryMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/IntermediaryMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/McpMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/MojangMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/ProviderUtils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/ProviderUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/QuiltMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/SrgMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/providers/YarnMappingsProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/providers/YarnMappingsProvider.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingStrategy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/mappings/resolve/MappingsResolver.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/server/CrashyServer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProviderTester.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProviderTester.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/CrashReportPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/appbar/CrashyAppBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashReportSectionUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/CrashReportSectionUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ForgeExtraInfoSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ModListUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ValidCrashReportUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/ValidCrashReportUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsController.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelectionUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsSelectionUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/crashreport/valid/mappings/MappingsUi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/ui/home/CrashyHome.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Cookies.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/Cookies.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/PageUrlImpl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/PageUrlImpl.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Preferences.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/Section.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/Section.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,53 +117,53 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1689693860614&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/.m2/repository/io/github/natanfudge/loggy/0.3.0/loggy-0.3.0-sources.jar&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\compat\\functions\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "ktor.last.update.timestamp": "1689693860614",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.tabs",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\server" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\fudge-lib-proposals" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\client\src\utils" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\state" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\test" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\collections" />
-      <recent name="C:\Users\natan\Desktop\Crashy\trash\table\editable" />
     </key>
   </component>
-  <component name="RunManager" selected="Compound.Run Fullstack">
+  <component name="RunManager" selected="npm.Client Development">
     <configuration name="Upload Release Server" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -391,6 +444,8 @@
       <workItem from="1694846889888" duration="12279000" />
       <workItem from="1694861612026" duration="5293000" />
       <workItem from="1694933650343" duration="3198000" />
+      <workItem from="1695102195573" duration="1530000" />
+      <workItem from="1695303659669" duration="1907000" />
     </task>
     <servers />
   </component>
@@ -435,36 +490,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.3.0/48bf39d9ee2b4a1a4812d012643ecb0ceb5a961e/ktor-server-core-jvm-2.3.0-sources.jar!/jvmMain/io/ktor/server/http/content/StaticContent.kt</url>
-          <line>210</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.3.0/48bf39d9ee2b4a1a4812d012643ecb0ceb5a961e/ktor-server-core-jvm-2.3.0-sources.jar!/jvmMain/io/ktor/server/http/content/StaticContent.kt</url>
-          <line>209</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.3.0/48bf39d9ee2b4a1a4812d012643ecb0ceb5a961e/ktor-server-core-jvm-2.3.0-sources.jar!/jvmMain/io/ktor/server/http/content/StaticContent.kt</url>
-          <line>206</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.3.0/48bf39d9ee2b4a1a4812d012643ecb0ceb5a961e/ktor-server-core-jvm-2.3.0-sources.jar!/jvmMain/io/ktor/server/http/content/StaticContent.kt</url>
-          <line>211</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.3.0/48bf39d9ee2b4a1a4812d012643ecb0ceb5a961e/ktor-server-core-jvm-2.3.0-sources.jar!/jvmMain/io/ktor/server/http/content/StaticContent.kt</url>
           <line>213</line>
           <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/client/src/crash/parser/CrashReportParser.ts</url>
-          <line>24</line>
-          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

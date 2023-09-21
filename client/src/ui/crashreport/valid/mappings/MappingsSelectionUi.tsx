@@ -4,15 +4,15 @@ import {DesiredBuildProblem, isValidDesiredBuild} from "../../../../mappings/res
 import {MappingsSelection, withBuild} from "./MappingsSelection";
 import {buildsOf} from "../../../../mappings/MappingsApi";
 import {DropdownSelection} from "../../../../fudge-commons/components/DropdownSelection";
-import {useScreenSize} from "fudge-lib/dist/methods/Gui";
 import {CircularProgress} from "@mui/material";
 import {getVisibleMappingNamespaces, mappingsName} from "../../../../mappings/MappingsNamespace";
 import {Column, Row} from "../../../../fudge-commons/simple/Flex";
 import {ItemSelection, SelectionType} from "../../../../fudge-commons/components/Selection";
 import {MappingsBuilds} from "../../../../mappings/providers/MappingsProvider";
 import {Text} from "../../../../fudge-commons/simple/Text";
-import {usePromise} from "fudge-lib/dist/state/UsePromise";
 import {MappingsController} from "./MappingsController";
+import {useScreenSize} from "../../../../fudge-lib/methods/Gui";
+import {usePromise} from "../../../../fudge-lib/state/UsePromise";
 
 
 function BuildSelection({isPortrait, builds, mappings, onMappingsChange}:

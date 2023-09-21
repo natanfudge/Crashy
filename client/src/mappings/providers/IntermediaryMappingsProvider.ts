@@ -2,7 +2,7 @@ import {extractTinyMappings, profiler, profilerDel} from "./ProviderUtils";
 import {parseTinyFile} from "./TinyMappings";
 import {MappingsFilter} from "../MappingsFilter";
 import {Mappings} from "../Mappings";
-import {httpGet} from "fudge-lib/dist/methods/Http";
+import {httpGet} from "../../fudge-lib/methods/Http";
 
 
 export async function getIntermediaryMappings(mcVersion: string, filter: MappingsFilter): Promise<Mappings> {
