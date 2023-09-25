@@ -13,7 +13,6 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.io.File
 
 fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
     options("/uploadCrash") {
@@ -27,6 +26,10 @@ fun Routing.crashlogEndpoints(crashlogs: CrashlogApi) {
         logData("GZip Compressed") { isGzipContentEncoding }
 
         val uncompressed = if (isGzipContentEncoding) it.decompressGzip() else it
+
+        // TODO: we log headers to try to see if the spammers are doing anything sus with that.
+        // If that doesn't point to anything, try other mechanisms such as suspicious activity monitoring and increased ban time on upload limit.
+        logData("Headers") { call.request.headers.entries().joinToString("\n") { (k, v) -> "$k: $v" } }
 
         respond(crashlogs.uploadCrash(UncompressedLog(uncompressed), ip = call.request.origin.remoteAddress))
     }

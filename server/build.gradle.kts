@@ -79,7 +79,7 @@ dependencies {
     // Use the linux natives when packaging because we run the server on a linux EC2 instance
     linuxOnly("com.aayushatharva.brotli4j:native-linux-x86_64:$brotliVersion")
     linuxOnly(objectboxLinuxNatives)
-    implementation("io.github.natanfudge:loggy:0.3.2")
+    implementation("io.github.natanfudge:loggy:0.3.3")
 }
 
 
