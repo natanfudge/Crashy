@@ -5,11 +5,16 @@ import com.aayushatharva.brotli4j.decoder.Decoder
 import com.aayushatharva.brotli4j.encoder.Encoder
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.zip.GZIPInputStream
+import java.util.zip.ZipException
 
 // decompress a Gzip file into a byte arrays
-fun ByteArray.decompressGzip(): ByteArray {
-    return GZIPInputStream(inputStream()).buffered().use { stream ->
-        stream.readAllBytes()
+fun ByteArray.decompressGzip(): Result<ByteArray> {
+    return try {
+        Result.success(GZIPInputStream(inputStream()).buffered().use { stream ->
+            stream.readAllBytes()
+        })
+    } catch (e: ZipException) {
+        Result.failure(e)
     }
 }
 

@@ -1,4 +1,3 @@
-import "fudge-lib/dist/extensions/Extensions"
 
 import {getYarnBuilds} from "../../mappings/providers/YarnMappingsProvider";
 import {DesiredBuildProblem, getMappingForContext, MappingContext} from "../../mappings/resolve/MappingStrategy";
@@ -9,13 +8,15 @@ import {
     OfficialToSrgMappingsProvider,
     SrgToMcpMappingsProvider
 } from "../../mappings/providers/MappingsProvider";
+import "../../fudge-lib/extensions/ExtensionsImpl"
 
-import "fudge-lib/dist/extensions/ExtensionsImpl"
 import {JavaClass, SimpleMappable, SimpleMethod} from "../../crash/model/Mappable";
 import {LoaderType} from "../../crash/model/RichCrashReport";
 import {expect, test} from 'vitest'
 import fetch from "node-fetch";
 import {HashSet} from "../../fudge-lib/collections/hashmap/HashSet";
+import {fetcher} from "../../fudge-lib/methods/Http";
+
 // @ts-ignore
 fetcher.fetch = fetch
 

@@ -7,6 +7,7 @@ import TestCrash
 import getCrashLogContents
 import io.github.crashy.api.utils.TestHttpResponse
 import io.github.crashy.crashlogs.api.UploadCrashResponse
+import io.github.crashy.utils.getResource
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.FixMethodOrder
@@ -48,6 +49,17 @@ class CrashLogApiTest {
 
         }
     }
+
+    @Test
+    fun `Firebase pass allows bypassing rate limiting`(): Unit = runBlocking {
+        with(httpTest()) {
+            repeat(100) {
+                expectThat(uploadCrash(TestCrash.Fabric, headers = mapOf("firebase-pass" to getResource("/secrets/firebase_pass.txt")!!)))
+                    .get { code }.isEqualTo(200)
+            }
+        }
+    }
+
 
     //ID = 0f0f6541-1210-4a67-b013-158db2659b15, code = q5xflD
     // Laptop: ID = c5b823d7-d4e5-4f71-b437-2a92e7824c8a, code = G3aNOj

@@ -5,10 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ff9610d3-dbce-41e4-b4ec-723f360ae1e5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/push.sh" beforeDir="false" afterPath="$PROJECT_DIR$/push.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EdgeCaseTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/EnrichmentTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsProvidersTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compat/functions/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/compat/functions/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/UploadLimiter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/UploadLimiter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/CrashlogApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/crashlogs/api/RequestResponse.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/routing/CrashlogRouting.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/CompressionUtils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/kotlin/io/github/crashy/utils/CompressionUtils.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/api/CrashLogApiTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/kotlin/io/github/crashy/scripts/FirebaseMigration.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,43 +86,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;js.linters.configure.manually.selectedeslint&quot;: &quot;true&quot;,
-    &quot;ktor.last.update.timestamp&quot;: &quot;1689693860614&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/natan/Desktop/Crashy&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/natan/Desktop/Crashy/client/node_modules/vitest&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "js.linters.configure.manually.selectedeslint": "true",
+    "ktor.last.update.timestamp": "1689693860614",
+    "last_opened_file_path": "C:/Users/natan/Desktop/Crashy/server/src/main/resources/secrets",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/natan/Desktop/Crashy/client/node_modules/vitest",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editor.preferences.tabs",
+    "ts.external.directory.path": "C:\\Users\\natan\\Desktop\\Crashy\\client\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\natan\Desktop\Crashy\server\src\main\resources\secrets" />
       <recent name="C:\Users\natan\Desktop\Crashy" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src" />
       <recent name="C:\Users\natan\Desktop\Crashy\server" />
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\test\testlogs" />
-      <recent name="C:\Users\natan\Desktop\Crashy\client\src\fudge-lib-proposals" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\natan\Desktop\Crashy\client\src\utils" />
@@ -115,7 +132,7 @@
       <recent name="C:\Users\natan\Desktop\Crashy\client\fudge-lib\src\collections" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.Client Development">
+  <component name="RunManager" selected="Vitest.Remapping from ForgeRuntime to yarn works correctly">
     <configuration name="Upload Release Server" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -138,86 +155,55 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="server [buildClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="buildClient" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="server [syncClient]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/server" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="syncClient" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="1.10.2 Forge crash parse doesn't fail" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="Mappings BFS works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
       <vitest-options value="--run" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/OldCrashlogTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
       <test-names>
-        <test-name value="1.10.2 Forge crash parse doesn't fail" />
+        <test-name value="Mappings BFS works correctly" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Crash that starts with the time can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="Remapping from ForgeRuntime to yarn works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
       <vitest-options value="--run" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
       <test-names>
-        <test-name value="Crash that starts with the time can be parsed" />
+        <test-name value="Remapping from ForgeRuntime to yarn works correctly" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="Crash with very little info can be parsed" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+    <configuration name="Remapping from yarn to mojmap works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
       <working-dir value="$PROJECT_DIR$/client" />
       <vitest-options value="--run" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/client/src/test/crashlog/ParsingTest.test.ts" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
       <test-names>
-        <test-name value="Crash with very little info can be parsed" />
+        <test-name value="Remapping from yarn to mojmap works correctly" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="Remapping works correctly" type="JavaScriptTestRunnerVitest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <vitest-package value="$PROJECT_DIR$/client/node_modules/vitest" />
+      <working-dir value="$PROJECT_DIR$/client" />
+      <vitest-options value="--run" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/client/src/test/mappings/MappingsTest.test.ts" />
+      <test-names>
+        <test-name value="Remapping works correctly" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -225,8 +211,6 @@
       <item itemvalue="Attach to Node.js/Chrome.Attach To Server" />
       <item itemvalue="Compound.Run Fullstack" />
       <item itemvalue="Gradle.Upload Beta Server" />
-      <item itemvalue="Gradle.server [buildClient]" />
-      <item itemvalue="Gradle.server [syncClient]" />
       <item itemvalue="Gradle.Upload Release Server" />
       <item itemvalue="JavaScript Debug.Debug Browser" />
       <item itemvalue="JUnit.All Local Server Tests" />
@@ -238,17 +222,18 @@
       <item itemvalue="Vitest.Crashlog JS Tests" />
       <item itemvalue="Vitest.Mappings JS Tests" />
       <item itemvalue="Vitest.All fudge-lib Tests" />
-      <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
-      <item itemvalue="Vitest.Crash that starts with the time can be parsed" />
-      <item itemvalue="Vitest.Crash with very little info can be parsed" />
+      <item itemvalue="Vitest.Mappings BFS works correctly" />
+      <item itemvalue="Vitest.Remapping from ForgeRuntime to yarn works correctly" />
+      <item itemvalue="Vitest.Remapping from yarn to mojmap works correctly" />
+      <item itemvalue="Vitest.Remapping works correctly" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Vitest.Remapping from ForgeRuntime to yarn works correctly" />
+        <item itemvalue="Vitest.Remapping from yarn to mojmap works correctly" />
+        <item itemvalue="Vitest.Remapping works correctly" />
+        <item itemvalue="Vitest.Mappings BFS works correctly" />
         <item itemvalue="Gradle.Upload Release Server" />
-        <item itemvalue="Vitest.Crash with very little info can be parsed" />
-        <item itemvalue="Vitest.1.10.2 Forge crash parse doesn't fail" />
-        <item itemvalue="Vitest.Crash that starts with the time can be parsed" />
-        <item itemvalue="Gradle.server [syncClient]" />
       </list>
     </recent_temporary>
   </component>
@@ -398,7 +383,8 @@
       <workItem from="1694933650343" duration="3198000" />
       <workItem from="1695102195573" duration="1530000" />
       <workItem from="1695303659669" duration="2047000" />
-      <workItem from="1695641384814" duration="517000" />
+      <workItem from="1695641384814" duration="3512000" />
+      <workItem from="1695656203264" duration="7292000" />
     </task>
     <servers />
   </component>

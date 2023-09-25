@@ -48,6 +48,8 @@ sealed interface UploadCrashResponse : StringResponse {
     object MalformedCrashError : UploadCrashResponse,
         StringResponse by textResponse("Invalid Crash", HttpStatusCode.BadRequest)
 
+    object NotGzipCompressed : UploadCrashResponse, StringResponse by textResponse("Crash not GZip Compressed", HttpStatusCode.BadRequest)
+
     /**
      * Too many crashes were uploaded in the last day (>1MB). We don't allow this to avoid overloading the server/storage.
      */

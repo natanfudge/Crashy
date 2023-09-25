@@ -1,5 +1,9 @@
 import * as functions from "firebase-functions";
 import axios from "axios";
+import {defineString} from "firebase-functions/params";
+
+// Secret passcode allowing the firebase function that exists for backward compatibility to bypass the rate limits
+const firebasePass = defineString("CRASHY_FIREBASE_PASS");
 
 /**
  * We have a new uploadCrash endpoint to redirect old users of the API to the new API
@@ -8,7 +12,7 @@ import axios from "axios";
 const betaBuild = false;
 const domain = betaBuild ? "beta.crashy.net" : "crashy.net";
 export const uploadCrash = functions.region("europe-west1").https.onRequest(async (request, response) => {
-    const newResponse = await axios.post(`https://${domain}/uploadCrash`, request.body, {headers: {"content-encoding": "gzip"}})
+    const newResponse = await axios.post(`https://${domain}/uploadCrash`, request.body, {headers: {"content-encoding": "gzip", "firebase-pass" : firebasePass.value()}})
     const newResponseBody = newResponse.data as NewUploadCrashResponse
 
     const legacyResponse: LegacyUploadCrashResponse = {

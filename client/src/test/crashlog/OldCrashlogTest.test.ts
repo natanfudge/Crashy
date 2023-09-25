@@ -3,7 +3,7 @@ import {BarebonesFabricCrash} from "../testlogs/BarebonesFabricCrash";
 import {enrichCrashReport} from "../../crash/parser/CrashReportEnricher";
 import {LoaderType} from "../../crash/model/RichCrashReport";
 import {OnePointTwelveForgeCrash} from "../testlogs/1.12.2Crash";
-import "fudge-lib/dist/extensions/ExtensionsImpl"
+import "../../fudge-lib/extensions/ExtensionsImpl"
 import {OnePointTenForgeCrash} from "../testlogs/1.10.2Crash";
 import {expect, test} from 'vitest'
 

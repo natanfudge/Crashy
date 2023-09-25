@@ -19,3 +19,4 @@ server/S3Export/*
 server/http_cache/*
 dist/
 *.dll
+.ENV.*

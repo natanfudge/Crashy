@@ -15,20 +15,23 @@ import java.time.Instant
 import kotlin.io.path.readText
 
 
-private const val MaxCrashSize = 200_000
+private const val MaxCrashSize = 300_000
 
 
 class CrashlogApi(private val logs: CrashlogStorage) {
     private val uploadLimiter = UploadLimiter()
 
+    /**
+     * @param firebasePassHeader the firebase function that exists for backwards compatability has a secret code that allows it to bypass rate limiting.
+     */
     context(LogContext)
-    fun uploadCrash(request: UploadCrashlogRequest, ip: String): UploadCrashResponse {
+    fun uploadCrash(request: UploadCrashlogRequest, ip: String, firebasePassHeader: String?): UploadCrashResponse {
         logData("Accepted size") { request.size }
         if (request.size > MaxCrashSize) {
             logInfo { "Crash size was ${request.size} which is over the max of $MaxCrashSize" }
             return UploadCrashResponse.CrashTooLargeError
         }
-        if (!uploadLimiter.requestUpload(ip, request.size)) {
+        if (!uploadLimiter.requestUpload(ip, request.size, firebasePassHeader)) {
             logInfo { "IP $ip is being rate limited" }
             return UploadCrashResponse.RateLimitedError
         }

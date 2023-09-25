@@ -103,7 +103,7 @@ class FirebaseMigration {
                         val gzipCompressed = crash.data["log"] as Blob
                         val deletionKey = crash.data["key"] as String
                         val uploadDate = crash.data["uploadDate"] as Timestamp
-                        val decompressed = gzipCompressed.toBytes().decompressGzip()
+                        val decompressed = gzipCompressed.toBytes().decompressGzip().getOrThrow()
                         val decompressedLog = UncompressedLog(decompressed)
                         val brotliCompressed = CompressedLog.compress(decompressed)
                         val header = CrashlogHeader.readFromLog(decompressedLog) ?: kotlin.run {

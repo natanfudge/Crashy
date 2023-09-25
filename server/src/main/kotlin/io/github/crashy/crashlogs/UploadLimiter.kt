@@ -3,6 +3,8 @@ package io.github.crashy.crashlogs
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.github.benmanes.caffeine.cache.Expiry
+import io.github.crashy.utils.getResource
+import io.github.natanfudge.logs.LogContext
 import java.time.Duration
 
 private val UploadLimitExpirationNano = Duration.ofDays(1).toNanos()
@@ -30,8 +32,14 @@ class UploadLimiter {
      * If client with IP [ip] is allowed to upload [size] bytes, mark that the client has uploaded [size] bytes
      * and return true.
      * If he is not allowed (he went over the limit), return false and do nothing.
+     * @param firebasePass the firebase function that exists for backwards compatability has a secret code that allows it to bypass rate limiting.
      */
-    fun requestUpload(ip: String, size: Int): Boolean {
+    context(LogContext)
+    fun requestUpload(ip: String, size: Int, firebasePass: String?): Boolean {
+        if (getResource("/secrets/firebase_pass.txt")!! == firebasePass) {
+            logInfo { "Handling rerouted firebase request" }
+            return true
+        }
         val uploadedAlready = recentClientUploadAmount.getIfPresent(ip) ?: 0
         val newUploadSize = uploadedAlready + size
         if (newUploadSize > UploadLimit) return false

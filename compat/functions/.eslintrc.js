@@ -36,5 +36,7 @@ module.exports = {
         "key-spacing": 0,
         "spaced-comment": 0,
         "comma-spacing": 0,
+        "linebreak-style": 0,
+        "@typescript-eslint/ban-ts-comment": 0
     },
 };

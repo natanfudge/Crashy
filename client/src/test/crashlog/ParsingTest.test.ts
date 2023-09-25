@@ -15,6 +15,7 @@ import {loliCrash} from "../testlogs/LoliCrash";
 import {MissingTitleLog} from "../testlogs/MIssingTitleLog";
 import {NoIndentCrash} from "../testlogs/NoIndentCrash";
 import {SeeminglySimpleLog} from "../testlogs/SeeminglySimpleLog";
+import "../../fudge-lib/extensions/ExtensionsImpl"
 
 export function testForgeCrashReportParse(report: CrashReport) {
     expect(report.wittyComment).toEqual("Don't be sad, have a hug! <3")
