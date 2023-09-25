@@ -36,10 +36,9 @@ class UploadLimiter {
      */
     context(LogContext)
     fun requestUpload(ip: String, size: Int, firebasePass: String?): Boolean {
-        if (getResource("/secrets/firebase_pass.txt")!! == firebasePass) {
-            logInfo { "Handling rerouted firebase request" }
-            return true
-        }
+        val fromFirebase = getResource("/secrets/firebase_pass.txt")!! == firebasePass
+        logData("Rerouted from firebase") { fromFirebase }
+        if (fromFirebase) return true
         val uploadedAlready = recentClientUploadAmount.getIfPresent(ip) ?: 0
         val newUploadSize = uploadedAlready + size
         if (newUploadSize > UploadLimit) return false
