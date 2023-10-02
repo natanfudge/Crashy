@@ -13,7 +13,6 @@ import "../fudge-lib/extensions/ExtensionsImpl"
 
 
 const CrashyHome = React.lazy(() => import("./home/CrashyHome"))
-const ServerLogs = React.lazy(() => import("./dev/ServerLogs"))
 
 export default function App() {
     const outerTheme = createTheme(CrashyTheme);
@@ -35,10 +34,6 @@ function CrashyUi() {
     if (location === "/") {
         return <Suspense fallback={<LinearProgress/>}>
             <CrashyHome/>
-        </Suspense>
-    } else if (location === "/logs") {
-        return <Suspense fallback={<LinearProgress/>}>
-            <ServerLogs/>
         </Suspense>
     } else {
         return <CrashyCrashReportPage/>;

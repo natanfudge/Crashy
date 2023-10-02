@@ -38,6 +38,7 @@ class UploadLimiter {
     fun requestUpload(ip: String, size: Int, firebasePass: String?): Boolean {
         val fromFirebase = getResource("/secrets/firebase_pass.txt")!! == firebasePass
         logData("Rerouted from firebase") { fromFirebase }
+        // Don't test against any upload limit if from firebase
         if (fromFirebase) return true
         val uploadedAlready = recentClientUploadAmount.getIfPresent(ip) ?: 0
         val newUploadSize = uploadedAlready + size
